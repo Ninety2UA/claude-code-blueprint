@@ -1,0 +1,47 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#D4A574', 'primaryTextColor': '#1a1a2e', 'primaryBorderColor': '#B8956A', 'lineColor': '#6B7280', 'secondaryColor': '#E8D5C4', 'tertiaryColor': '#F5EDE4', 'background': '#FEFCF9', 'mainBkg': '#FEFCF9', 'nodeBorder': '#B8956A', 'clusterBkg': '#FAF5EF', 'clusterBorder': '#D4A574', 'titleColor': '#1a1a2e', 'edgeLabelBackground': '#FEFCF9'}}}%%
+flowchart TB
+    MAIN["<b>Claude Code</b><br/>Main Session"]
+
+    subgraph QUALITY ["Quality Agents"]
+        CR["<b>Code Reviewer</b><br/>Standards & correctness"]
+        CSR["<b>Simplicity Reviewer</b><br/>YAGNI & over-engineering"]
+    end
+
+    subgraph ANALYSIS ["Analysis Agents"]
+        AS["<b>Architecture Strategist</b><br/>Patterns & compliance"]
+        PO["<b>Performance Oracle</b><br/>Bottlenecks & scalability"]
+        GHA["<b>Git History Analyzer</b><br/>Code evolution & patterns"]
+    end
+
+    subgraph SAFETY ["Safety Agents"]
+        SS["<b>Security Sentinel</b><br/>Vulnerabilities & OWASP"]
+    end
+
+    subgraph RESEARCH_A ["Research Agents"]
+        BPR["<b>Best Practices Researcher</b><br/>Industry standards & docs"]
+    end
+
+    MAIN -->|"dispatch"| CR
+    MAIN -->|"dispatch"| CSR
+    MAIN -->|"dispatch"| AS
+    MAIN -->|"dispatch"| PO
+    MAIN -->|"dispatch"| GHA
+    MAIN -->|"dispatch"| SS
+    MAIN -->|"dispatch"| BPR
+
+    CR -.->|"findings"| MAIN
+    CSR -.->|"findings"| MAIN
+    AS -.->|"findings"| MAIN
+    PO -.->|"findings"| MAIN
+    GHA -.->|"findings"| MAIN
+    SS -.->|"findings"| MAIN
+    BPR -.->|"findings"| MAIN
+
+    style MAIN fill:#D4A574,stroke:#8B6914,color:#1a1a2e,stroke-width:3px
+    style CR fill:#C9E4CA,stroke:#5C8A5E,color:#1a1a2e
+    style CSR fill:#C9E4CA,stroke:#5C8A5E,color:#1a1a2e
+    style AS fill:#B8D4E3,stroke:#4A7C9B,color:#1a1a2e
+    style PO fill:#B8D4E3,stroke:#4A7C9B,color:#1a1a2e
+    style GHA fill:#B8D4E3,stroke:#4A7C9B,color:#1a1a2e
+    style SS fill:#FFB3B3,stroke:#CC6666,color:#1a1a2e
+    style BPR fill:#D4B8E3,stroke:#7A4C9B,color:#1a1a2e

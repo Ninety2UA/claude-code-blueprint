@@ -1,0 +1,59 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#D4A574', 'primaryTextColor': '#1a1a2e', 'primaryBorderColor': '#B8956A', 'lineColor': '#6B7280', 'secondaryColor': '#E8D5C4', 'tertiaryColor': '#F5EDE4', 'background': '#FEFCF9', 'mainBkg': '#FEFCF9', 'nodeBorder': '#B8956A', 'clusterBkg': '#FAF5EF', 'clusterBorder': '#D4A574', 'titleColor': '#1a1a2e', 'edgeLabelBackground': '#FEFCF9'}}}%%
+graph TD
+    ROOT["<b>Project Root</b>"]
+
+    subgraph CLAUDE_DIR [".claude/ — AI Configuration"]
+        direction TB
+        COMMANDS["<b>commands/</b><br/>7 slash commands<br/><i>/plan /review /status...</i>"]
+        SKILLS["<b>skills/</b><br/>14 workflow skills<br/><i>TDD, debugging, planning...</i>"]
+        AGENTS["<b>agents/</b><br/>7 specialized agents<br/><i>reviewer, security, perf...</i>"]
+        SETTINGS["settings.json"]
+    end
+
+    subgraph DOCS_DIR ["docs/ — Living Documentation"]
+        direction TB
+        CONTEXT["<b>context/</b><br/>GOALS.md · STATUS.md · CONVENTIONS.md"]
+        PLANS["<b>plans/</b><br/>Implementation plans"]
+        SPECS["<b>specs/</b><br/>Feature specifications"]
+        DECISIONS["<b>decisions/</b><br/>Architecture Decision Records"]
+        RESEARCH["<b>research/</b><br/>Spike results & evaluations"]
+    end
+
+    subgraph CODE_DIR ["Source Code"]
+        direction TB
+        SRC["<b>src/</b>"]
+        TESTS["<b>tests/</b>"]
+        SCRIPTS["<b>scripts/</b>"]
+        INFRA["<b>infra/</b>"]
+    end
+
+    CLAUDEMD["<b>CLAUDE.md</b><br/>Master orchestration"]
+    BACKLOG["<b>BACKLOG.md</b><br/>Intake & triage"]
+
+    ROOT --> CLAUDEMD
+    ROOT --> BACKLOG
+    ROOT --> CLAUDE_DIR
+    ROOT --> DOCS_DIR
+    ROOT --> CODE_DIR
+
+    CLAUDEMD -.->|"loads"| CONTEXT
+    CLAUDEMD -.->|"triggers"| SKILLS
+    CLAUDEMD -.->|"dispatches"| AGENTS
+    COMMANDS -.->|"invoke"| SKILLS
+
+    style ROOT fill:#D4A574,stroke:#8B6914,color:#1a1a2e,stroke-width:3px
+    style CLAUDEMD fill:#D4A574,stroke:#8B6914,color:#1a1a2e,stroke-width:2px
+    style BACKLOG fill:#E8D5C4,stroke:#B8956A,color:#1a1a2e
+    style COMMANDS fill:#C9E4CA,stroke:#5C8A5E,color:#1a1a2e
+    style SKILLS fill:#B8D4E3,stroke:#4A7C9B,color:#1a1a2e
+    style AGENTS fill:#D4B8E3,stroke:#7A4C9B,color:#1a1a2e
+    style SETTINGS fill:#E8E8E8,stroke:#999,color:#1a1a2e
+    style CONTEXT fill:#FFE4B5,stroke:#D4A574,color:#1a1a2e
+    style PLANS fill:#FFE4B5,stroke:#D4A574,color:#1a1a2e
+    style SPECS fill:#FFE4B5,stroke:#D4A574,color:#1a1a2e
+    style DECISIONS fill:#FFE4B5,stroke:#D4A574,color:#1a1a2e
+    style RESEARCH fill:#FFE4B5,stroke:#D4A574,color:#1a1a2e
+    style SRC fill:#F0F0F0,stroke:#999,color:#1a1a2e
+    style TESTS fill:#F0F0F0,stroke:#999,color:#1a1a2e
+    style SCRIPTS fill:#F0F0F0,stroke:#999,color:#1a1a2e
+    style INFRA fill:#F0F0F0,stroke:#999,color:#1a1a2e

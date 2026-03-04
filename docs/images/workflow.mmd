@@ -1,0 +1,47 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#D4A574', 'primaryTextColor': '#1a1a2e', 'primaryBorderColor': '#B8956A', 'lineColor': '#6B7280', 'secondaryColor': '#E8D5C4', 'tertiaryColor': '#F5EDE4', 'background': '#FEFCF9', 'mainBkg': '#FEFCF9', 'nodeBorder': '#B8956A', 'clusterBkg': '#FAF5EF', 'clusterBorder': '#D4A574', 'titleColor': '#1a1a2e', 'edgeLabelBackground': '#FEFCF9'}}}%%
+flowchart LR
+    subgraph START ["1 · Orient"]
+        direction TB
+        S1["<b>/init</b><br/>First session setup"]
+        S2["<b>/status</b><br/>Load context"]
+    end
+
+    subgraph DESIGN ["2 · Design"]
+        direction TB
+        D1["<b>/plan</b><br/>Brainstorm options"]
+        D2["Present design<br/>Get approval ✓"]
+    end
+
+    subgraph PLAN ["3 · Plan"]
+        direction TB
+        P1["Write plan<br/>Bite-sized tasks"]
+        P2["Create worktree<br/>Isolate work"]
+    end
+
+    subgraph BUILD ["4 · Build"]
+        direction TB
+        B1["<b>TDD cycle</b><br/>Red → Green → Refactor"]
+        B2["<b>Verify</b><br/>Evidence-based"]
+        B3["<b>/review</b><br/>Agent review"]
+    end
+
+    subgraph FINISH ["5 · Ship"]
+        direction TB
+        F1["Merge branch"]
+        F2["<b>/wrap</b><br/>Update docs"]
+    end
+
+    START --> DESIGN --> PLAN --> BUILD --> FINISH
+    FINISH -.->|"Next task"| START
+
+    style S1 fill:#C9E4CA,stroke:#5C8A5E,color:#1a1a2e
+    style S2 fill:#C9E4CA,stroke:#5C8A5E,color:#1a1a2e
+    style D1 fill:#B8D4E3,stroke:#4A7C9B,color:#1a1a2e
+    style D2 fill:#B8D4E3,stroke:#4A7C9B,color:#1a1a2e
+    style P1 fill:#FFE4B5,stroke:#D4A574,color:#1a1a2e
+    style P2 fill:#FFE4B5,stroke:#D4A574,color:#1a1a2e
+    style B1 fill:#D4A574,stroke:#8B6914,color:#1a1a2e,stroke-width:2px
+    style B2 fill:#D4A574,stroke:#8B6914,color:#1a1a2e,stroke-width:2px
+    style B3 fill:#D4B8E3,stroke:#7A4C9B,color:#1a1a2e
+    style F1 fill:#E8D5C4,stroke:#B8956A,color:#1a1a2e
+    style F2 fill:#E8D5C4,stroke:#B8956A,color:#1a1a2e

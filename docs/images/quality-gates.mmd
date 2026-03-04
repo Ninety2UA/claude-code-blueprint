@@ -1,0 +1,32 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#D4A574', 'primaryTextColor': '#1a1a2e', 'primaryBorderColor': '#B8956A', 'lineColor': '#6B7280', 'secondaryColor': '#E8D5C4', 'tertiaryColor': '#F5EDE4', 'background': '#FEFCF9', 'mainBkg': '#FEFCF9', 'nodeBorder': '#B8956A', 'clusterBkg': '#FAF5EF', 'clusterBorder': '#D4A574', 'titleColor': '#1a1a2e', 'edgeLabelBackground': '#FEFCF9'}}}%%
+flowchart LR
+    subgraph GATE1 ["Gate 1"]
+        G1["No code without<br/><b>design approval</b>"]
+    end
+
+    subgraph GATE2 ["Gate 2"]
+        G2["No production code<br/>without <b>failing test</b>"]
+    end
+
+    subgraph GATE3 ["Gate 3"]
+        G3["No fix without<br/><b>root cause</b>"]
+    end
+
+    subgraph GATE4 ["Gate 4"]
+        G4["No completion claim<br/>without <b>verification</b>"]
+    end
+
+    subgraph GATE5 ["Gate 5"]
+        G5["No merge without<br/><b>code review</b>"]
+    end
+
+    GATE1 -->|"✓"| GATE2
+    GATE2 -->|"✓"| GATE3
+    GATE3 -->|"✓"| GATE4
+    GATE4 -->|"✓"| GATE5
+
+    style G1 fill:#FFB3B3,stroke:#CC6666,color:#1a1a2e,stroke-width:2px
+    style G2 fill:#FFB3B3,stroke:#CC6666,color:#1a1a2e,stroke-width:2px
+    style G3 fill:#FFB3B3,stroke:#CC6666,color:#1a1a2e,stroke-width:2px
+    style G4 fill:#FFB3B3,stroke:#CC6666,color:#1a1a2e,stroke-width:2px
+    style G5 fill:#FFB3B3,stroke:#CC6666,color:#1a1a2e,stroke-width:2px
