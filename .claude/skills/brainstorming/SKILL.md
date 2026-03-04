@@ -15,9 +15,13 @@ Start by understanding the current project context, then ask questions one at a 
 Do NOT invoke any implementation skill, write any code, scaffold any project, or take any implementation action until you have presented a design and the user has approved it. This applies to EVERY project regardless of perceived simplicity.
 </HARD-GATE>
 
+## Exception: Lightweight Changes
+
+If a change qualifies under the **Lightweight Workflow** defined in CLAUDE.md (bug fix with obvious root cause touching < 3 files, typo fix, adding a test for existing behavior), you may skip brainstorming and go directly to TDD. When in doubt, brainstorm anyway — the cost of a 2-minute design review is much lower than rework.
+
 ## Anti-Pattern: "This Is Too Simple To Need A Design"
 
-Every project goes through this process. A todo list, a single-function utility, a config change — all of them. "Simple" projects are where unexamined assumptions cause the most wasted work. The design can be short (a few sentences for truly simple projects), but you MUST present it and get approval.
+For changes that DON'T qualify as lightweight: every project goes through this process. A todo list, a single-function utility, a config change — all of them. "Simple" projects are where unexamined assumptions cause the most wasted work. The design can be short (a few sentences for truly simple projects), but you MUST present it and get approval.
 
 ## Checklist
 

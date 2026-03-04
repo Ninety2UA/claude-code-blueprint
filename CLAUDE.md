@@ -59,6 +59,41 @@ When choosing what to work on next:
 
 Use micro tasks — smaller the task, better the code. Each task should be completable in one focused session with a clean commit at the end.
 
+## Lightweight Workflow for Small Changes
+
+Not everything needs the full brainstorm → plan → execute flow. Use this shortcut for small, well-understood changes:
+
+**Qualifies as small change:**
+- Bug fix with obvious root cause (< 3 files touched)
+- Typo, copy, or config fix
+- Adding a test for existing behavior
+- Renaming or minor refactor within a single module
+
+**Lightweight flow:**
+1. Write a failing test (TDD still applies)
+2. Fix the issue
+3. Verify (run tests, check build)
+4. Commit
+
+**Does NOT qualify — use full workflow:**
+- Touching 4+ files
+- Adding new public API or endpoint
+- Changing data models or schemas
+- Anything where you're unsure of the approach
+
+When in doubt, use the full workflow. The cost of over-planning is low; the cost of under-planning is rework.
+
+## Error Recovery
+
+When things go wrong during a session:
+
+- **Failed test after code change:** Don't iterate blindly. Use systematic-debugging skill — gather evidence, form hypothesis, test it.
+- **Merge conflict:** Read both sides carefully. Understand intent of both changes before resolving. If unclear, ask.
+- **Broken build after dependency update:** Pin the previous working version, create a BACKLOG item for the upgrade, and continue with the current task.
+- **Corrupted worktree:** Create a fresh worktree from main. Cherry-pick completed commits from the broken one. Don't try to repair in-place.
+- **Agent returns unexpected results:** Verify findings manually before acting on them. Agents can hallucinate file paths or misread code.
+- **Lost work (uncommitted changes):** Check `git stash list`, `git reflog`, and `git fsck --lost-found` before assuming it's gone.
+
 ## Workspace Structure
 
 ```
@@ -72,7 +107,7 @@ project/
 │   │   ├── debug.md       # /debug [issue] — root cause investigation
 │   │   ├── backlog.md     # /backlog — triage capture inbox
 │   │   └── wrap.md        # /wrap — end-of-session documentation
-│   ├── skills/            # Workflow skills (14 skills)
+│   ├── skills/            # Workflow skills (14+ skills)
 │   │   ├── brainstorming/
 │   │   ├── writing-plans/
 │   │   ├── executing-plans/
@@ -156,6 +191,8 @@ The Session Continuity section above tells you where to start. If it's empty, ru
 | Implementation complete, integrate | finishing-a-development-branch | — |
 | Creating or editing skills | writing-skills | — |
 | End of work session | session-wrap | `/wrap` |
+| Small bug fix or config change | (lightweight flow — see above) | — |
+| Exploratory spike or research | best-practices-researcher agent + `docs/research/` | — |
 
 ## Agents — When to Dispatch
 

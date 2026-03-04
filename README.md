@@ -7,13 +7,14 @@
 </p>
 
 <p align="center">
-  <a href="#-quick-start">Quick Start</a> ·
-  <a href="#-what-you-get">What You Get</a> ·
-  <a href="#-workflow">Workflow</a> ·
-  <a href="#-skills-reference">Skills</a> ·
-  <a href="#-agents-reference">Agents</a> ·
-  <a href="#-commands-reference">Commands</a> ·
-  <a href="#-customization">Customization</a>
+  <a href="#quick-start">Quick Start</a> ·
+  <a href="#what-you-get">What You Get</a> ·
+  <a href="#workflow">Workflow</a> ·
+  <a href="#skills-reference">Skills</a> ·
+  <a href="#agents-reference">Agents</a> ·
+  <a href="#commands-reference">Commands</a> ·
+  <a href="#customization">Customization</a> ·
+  <a href="#error-recovery">Error Recovery</a>
 </p>
 
 ---
@@ -123,6 +124,16 @@ Orient → Design → Plan → Build → Ship
 **4. Build** — Execute using TDD (red-green-refactor). Verify with evidence. Dispatch code review agents.
 
 **5. Ship** — Merge the branch. Update all documentation with `/wrap`. Capture learnings for next session.
+
+### Lightweight workflow for small changes
+
+Not everything needs the full 5-step flow. Bug fixes with obvious root causes, typo fixes, config changes, and adding tests for existing behavior can use a shortcut:
+
+```
+Write failing test → Fix it → Verify → Commit
+```
+
+The boundary is clear: if you're touching 4+ files, adding a new API, or unsure of the approach, use the full workflow. See CLAUDE.md for the complete criteria.
 
 ### Quality gates
 
@@ -309,6 +320,15 @@ If you only want specific components:
 
 ## Documentation structure
 
+The template includes **example docs** in each category so you can see the expected format immediately. Delete them when you start your project (they're clearly marked as examples).
+
+| Example file | Shows you how to write |
+|-------------|----------------------|
+| `docs/decisions/001-example-project-structure.md` | Architecture Decision Records |
+| `docs/plans/2026-03-04-example-user-auth.md` | Implementation plans with bite-sized tasks |
+| `docs/specs/example-csv-export.md` | Feature specifications with acceptance criteria |
+| `docs/research/example-jwt-refresh-strategies.md` | Research docs with findings and recommendations |
+
 The `docs/` directory uses four categories, each with its own lifecycle:
 
 | Directory | Contains | Lifecycle |
@@ -361,6 +381,19 @@ The `Session Continuity` section in CLAUDE.md acts as a handoff note between ses
 
 This is updated automatically by `/wrap` at the end of each session.
 
+## Error recovery
+
+CLAUDE.md includes built-in guidance for common failure scenarios:
+
+| Situation | Recovery |
+|-----------|----------|
+| Test fails after code change | Don't iterate blindly — use `systematic-debugging` skill |
+| Merge conflict | Read both sides, understand intent, then resolve |
+| Broken build after dep update | Pin previous version, BACKLOG the upgrade |
+| Corrupted worktree | Create fresh from main, cherry-pick completed commits |
+| Agent returns bad results | Verify findings manually before acting |
+| Lost uncommitted changes | Check `git stash list`, `git reflog`, `git fsck --lost-found` |
+
 ## FAQ
 
 <details>
@@ -397,6 +430,18 @@ Yes. The template works identically in VS Code, JetBrains, and the CLI. Slash co
 <summary><strong>How do I update the template after installation?</strong></summary>
 
 Re-run the install script with `--no-overwrite` to get new skills and agents without overwriting your customizations. Or cherry-pick specific files from the repository.
+</details>
+
+<details>
+<summary><strong>What are the example docs? Should I keep them?</strong></summary>
+
+The template includes example files in `docs/decisions/`, `docs/plans/`, `docs/specs/`, and `docs/research/` showing the expected format for each document type. They're clearly marked as examples. Delete them when you start your own project — they're there to help you understand the structure.
+</details>
+
+<details>
+<summary><strong>Do small bug fixes need the full brainstorm/plan flow?</strong></summary>
+
+No. The template includes a **lightweight workflow** for small, well-understood changes (< 3 files, obvious root cause). Write a failing test, fix it, verify, commit. See the "Lightweight Workflow" section in CLAUDE.md for the full criteria.
 </details>
 
 ## Contributing

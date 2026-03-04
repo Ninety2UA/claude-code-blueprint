@@ -308,7 +308,28 @@ If it exists, update with:
 
 If no memory file exists, skip this step.
 
-## Step 14: Commit Documentation Updates
+## Step 14: Clean Up Temporary Artifacts
+
+Check for and clean up session artifacts:
+
+```bash
+# List any git worktrees created during the session
+git worktree list
+
+# Check for orphaned worktrees (worktree directory deleted but ref remains)
+git worktree prune --dry-run
+
+# Check for temp files in project root
+ls -la *.tmp *.bak *~ 2>/dev/null
+```
+
+**Actions:**
+- If feature worktrees exist and the branch was merged, remove them: `git worktree remove <path>`
+- If worktrees are still in progress, document them in Session Continuity ("worktree at .claude/worktrees/feat-auth still active")
+- Remove any temp/backup files that shouldn't be committed
+- If completed plans should be archived, add a completion note at the top rather than moving/deleting them
+
+## Step 15: Commit Documentation Updates
 
 After all documentation updates are complete:
 
@@ -322,7 +343,7 @@ If ADRs were created, mention them in the commit message:
 git commit -m "docs: session wrap-up YYYY-MM-DD — [summary]. ADR-NNN: [decision title]"
 ```
 
-## Step 15: Final Verification
+## Step 16: Final Verification
 
 After committing:
 

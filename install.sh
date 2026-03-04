@@ -185,10 +185,17 @@ if [ "$CLAUDE_ONLY" = false ]; then
     if [ -d "$SOURCE_DIR/docs" ]; then
         find "$SOURCE_DIR/docs" -type f | while read -r file; do
             rel="${file#$SOURCE_DIR/}"
+
+            # Skip README diagram images (only needed for GitHub display)
+            case "$rel" in
+                docs/images/*.svg|docs/images/*.mmd|docs/images/*.png)
+                    continue ;;
+            esac
+
             copy_item "$file" "$TARGET_DIR/$rel"
         done
         INSTALLED=$((INSTALLED + 1))
-        success "docs/ installed"
+        success "docs/ installed (examples included — delete when ready)"
     fi
 
     # Core files
