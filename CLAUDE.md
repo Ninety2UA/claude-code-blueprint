@@ -10,20 +10,28 @@ Quality over speed. Small steps compound into big progress. The patterns you est
 
 <!-- Updated by /wrap at end of each work session. Read this FIRST when starting a new session. -->
 
-**Last session:** [not yet started]
+**Last session:** 2026-03-04
 
 **What was done:**
-- [nothing yet]
+- Created complete GitHub repository from ZIP template (https://github.com/Ninety2UA/claude-code-blueprint)
+- Wrote comprehensive README.md (450+ lines) with hero banner SVG, 5 Mermaid diagrams rendered to SVG, full reference tables, FAQ
+- Created install.sh — one-line installer with `--claude-only`, `--docs-only`, `--no-overwrite`, `--dry-run`, `--force` options
+- Added LICENSE (MIT), CONTRIBUTING.md
+- Applied review findings: populated settings.json, added 4 example docs (ADR, plan, spec, research), added lightweight workflow for small changes, added error recovery guidance, added worktree cleanup to session-wrap, added brainstorming escape hatch for trivial fixes
+- Verified install script works end-to-end from live GitHub URL
 
 **What's remaining:**
-- [nothing yet]
+- Consider adding more skills (dependency management, spike/exploration, scope cutting)
+- Add GitHub Actions CI to validate template (lint markdown, test install script)
+- Consider a `--version` flag or release tagging strategy
+- The example docs can be expanded with more variety
 
-**Start here:** [no active work — run /status or /plan to begin]
+**Start here:** The template is deployed and functional. Next work should focus on expanding skills or adding CI. Run `/status` to orient.
 
 **Current state of the code:**
-- Build: [unknown]
-- Tests: [unknown]
-- Uncommitted changes: [none]
+- Build: n/a (template repo, no build step)
+- Tests: n/a (install.sh tested manually via dry-run)
+- Uncommitted changes: none — working tree clean
 
 ## Behavioral Rules
 
@@ -228,7 +236,5 @@ Scope is optional but encouraged: `feat(auth): add JWT refresh token rotation`
 
 _Append dated entries here as the project evolves. This section is the project's institutional memory. Updated by /wrap._
 
-<!-- Example:
-### 2026-03-03: Chose Cloud Run over Vertex AI for deployment
-Cloud Run was cheaper for bursty workloads and simpler to configure. Vertex AI's managed endpoints weren't worth the cost for our traffic pattern. See docs/decisions/001-deployment-platform.md.
--->
+### 2026-03-04: Initial template creation and review findings
+Created the full template repo from a ZIP source. Key design decisions: (1) SVG diagrams for README rendered from Mermaid .mmd sources via `mmdc` — keep both in repo so diagrams can be regenerated. (2) Install script excludes `docs/images/` (SVGs are only for GitHub README display, not needed in user projects). (3) Example docs are clearly marked as examples with deletion guidance — this was a critical gap since first-time users had no reference for document format. (4) Lightweight workflow exception added to brainstorming skill — not everything needs full brainstorm→plan flow. The boundary is clear: < 3 files + obvious fix = lightweight; 4+ files or unclear approach = full workflow.
