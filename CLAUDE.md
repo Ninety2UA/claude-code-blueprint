@@ -13,12 +13,10 @@ Quality over speed. Small steps compound into big progress. The patterns you est
 **Last session:** 2026-03-04
 
 **What was done:**
-- Created complete GitHub repository from ZIP template (https://github.com/Ninety2UA/claude-code-blueprint)
-- Wrote comprehensive README.md (450+ lines) with hero banner SVG, 5 Mermaid diagrams rendered to SVG, full reference tables, FAQ
-- Created install.sh — one-line installer with `--claude-only`, `--docs-only`, `--no-overwrite`, `--dry-run`, `--force` options
-- Added LICENSE (MIT), CONTRIBUTING.md
-- Applied review findings: populated settings.json, added 4 example docs (ADR, plan, spec, research), added lightweight workflow for small changes, added error recovery guidance, added worktree cleanup to session-wrap, added brainstorming escape hatch for trivial fixes
-- Verified install script works end-to-end from live GitHub URL
+- Fixed all 5 README diagrams that were unreadable on GitHub due to extreme aspect ratios (up to 12.7:1)
+- Redesigned `.mmd` sources from `flowchart LR`/`graph TD` to `block-beta` grid layout with 3-column grids
+- Rendered PNG files at 2x scale, switched README from SVG to PNG references
+- Verified all diagrams display clearly on GitHub at `0c6c961`
 
 **What's remaining:**
 - Consider adding more skills (dependency management, spike/exploration, scope cutting)
@@ -26,7 +24,7 @@ Quality over speed. Small steps compound into big progress. The patterns you est
 - Consider a `--version` flag or release tagging strategy
 - The example docs can be expanded with more variety
 
-**Start here:** The template is deployed and functional. Next work should focus on expanding skills or adding CI. Run `/status` to orient.
+**Start here:** The template is deployed and functional at https://github.com/Ninety2UA/claude-code-blueprint. All diagrams are readable. Next work should focus on expanding skills or adding CI. Run `/status` to orient.
 
 **Current state of the code:**
 - Build: n/a (template repo, no build step)
@@ -238,3 +236,6 @@ _Append dated entries here as the project evolves. This section is the project's
 
 ### 2026-03-04: Initial template creation and review findings
 Created the full template repo from a ZIP source. Key design decisions: (1) SVG diagrams for README rendered from Mermaid .mmd sources via `mmdc` — keep both in repo so diagrams can be regenerated. (2) Install script excludes `docs/images/` (SVGs are only for GitHub README display, not needed in user projects). (3) Example docs are clearly marked as examples with deletion guidance — this was a critical gap since first-time users had no reference for document format. (4) Lightweight workflow exception added to brainstorming skill — not everything needs full brainstorm→plan flow. The boundary is clear: < 3 files + obvious fix = lightweight; 4+ files or unclear approach = full workflow.
+
+### 2026-03-04: Mermaid diagram readability on GitHub
+Original `flowchart LR` diagrams had extreme aspect ratios (workflow was 2864×225 = 12.7:1) making text unreadable when GitHub scales to ~700px container width. Fix: use `block-beta` with `columns 3` for explicit grid control — gives 2:1 to 3:1 ratios. Key gotchas: (1) `direction LR` inside subgraphs does NOT work in mmdc v11.12.0 — nodes stack vertically regardless. (2) Cross-row arrows in `block-beta` create phantom routing rows — keep arrows within same row only. (3) PNG is more predictable than SVG on GitHub — SVG `max-width` CSS conflicts with GitHub's container. Target aspect ratios between 1:1 and 3:1 for GitHub README diagrams.
