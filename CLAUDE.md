@@ -10,26 +10,20 @@ Quality over speed. Small steps compound into big progress. The patterns you est
 
 <!-- Updated by /wrap at end of each work session. Read this FIRST when starting a new session. -->
 
-**Last session:** 2026-03-04
+**Last session:** _none yet_
 
 **What was done:**
-- Fixed all 5 README diagrams that were unreadable on GitHub due to extreme aspect ratios (up to 12.7:1)
-- Redesigned `.mmd` sources from `flowchart LR`/`graph TD` to `block-beta` grid layout with 3-column grids
-- Rendered PNG files at 2x scale, switched README from SVG to PNG references
-- Verified all diagrams display clearly on GitHub at `0c6c961`
+- _Run `/wrap` at the end of each session to update this section automatically._
 
 **What's remaining:**
-- Consider adding more skills (dependency management, spike/exploration, scope cutting)
-- Add GitHub Actions CI to validate template (lint markdown, test install script)
-- Consider a `--version` flag or release tagging strategy
-- The example docs can be expanded with more variety
+- _Captured during sessions and via `/backlog`._
 
-**Start here:** The template is deployed and functional at https://github.com/Ninety2UA/claude-code-blueprint. All diagrams are readable. Next work should focus on expanding skills or adding CI. Run `/status` to orient.
+**Start here:** Run `/init` to set up the project, or `/status` to orient if already initialized.
 
 **Current state of the code:**
-- Build: n/a (template repo, no build step)
-- Tests: n/a (install.sh tested manually via dry-run)
-- Uncommitted changes: none — working tree clean
+- Build: _unknown — run build to verify_
+- Tests: _unknown — run tests to verify_
+- Uncommitted changes: _unknown — run `git status` to check_
 
 ## Behavioral Rules
 
@@ -232,10 +226,9 @@ Scope is optional but encouraged: `feat(auth): add JWT refresh token rotation`
 
 ## Key Learnings
 
-_Append dated entries here as the project evolves. This section is the project's institutional memory. Updated by /wrap._
+_Append dated entries here as the project evolves. This section is the project's institutional memory. Updated by `/wrap`._
 
-### 2026-03-04: Initial template creation and review findings
-Created the full template repo from a ZIP source. Key design decisions: (1) SVG diagrams for README rendered from Mermaid .mmd sources via `mmdc` — keep both in repo so diagrams can be regenerated. (2) Install script excludes `docs/images/` (SVGs are only for GitHub README display, not needed in user projects). (3) Example docs are clearly marked as examples with deletion guidance — this was a critical gap since first-time users had no reference for document format. (4) Lightweight workflow exception added to brainstorming skill — not everything needs full brainstorm→plan flow. The boundary is clear: < 3 files + obvious fix = lightweight; 4+ files or unclear approach = full workflow.
-
-### 2026-03-04: Mermaid diagram readability on GitHub
-Original `flowchart LR` diagrams had extreme aspect ratios (workflow was 2864×225 = 12.7:1) making text unreadable when GitHub scales to ~700px container width. Fix: use `block-beta` with `columns 3` for explicit grid control — gives 2:1 to 3:1 ratios. Key gotchas: (1) `direction LR` inside subgraphs does NOT work in mmdc v11.12.0 — nodes stack vertically regardless. (2) Cross-row arrows in `block-beta` create phantom routing rows — keep arrows within same row only. (3) PNG is more predictable than SVG on GitHub — SVG `max-width` CSS conflicts with GitHub's container. Target aspect ratios between 1:1 and 3:1 for GitHub README diagrams.
+<!-- Example entry format:
+### YYYY-MM-DD: Brief title
+One paragraph describing what was learned, why it matters, and how it affects future work.
+-->
