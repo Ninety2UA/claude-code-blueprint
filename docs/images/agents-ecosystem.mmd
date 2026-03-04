@@ -1,41 +1,24 @@
-%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#D4A574', 'primaryTextColor': '#1a1a2e', 'primaryBorderColor': '#B8956A', 'lineColor': '#6B7280', 'secondaryColor': '#E8D5C4', 'tertiaryColor': '#F5EDE4', 'background': '#FEFCF9', 'mainBkg': '#FEFCF9', 'nodeBorder': '#B8956A', 'clusterBkg': '#FAF5EF', 'clusterBorder': '#D4A574', 'titleColor': '#1a1a2e', 'edgeLabelBackground': '#FEFCF9'}}}%%
-flowchart TB
-    MAIN["<b>Claude Code</b><br/>Main Session"]
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#D4A574', 'primaryTextColor': '#1a1a2e', 'primaryBorderColor': '#B8956A', 'lineColor': '#6B7280', 'fontSize': '16px'}}}%%
+block-beta
+    columns 3
+    space:1 MAIN["Claude Code\nMain Session"]:1 space:1
+    CR["Code Reviewer\nStandards & correctness"]:1
+    AS["Architecture Strategist\nPatterns & compliance"]:1
+    SS["Security Sentinel\nVulnerabilities & OWASP"]:1
+    CSR["Simplicity Reviewer\nYAGNI & over-engineering"]:1
+    PO["Performance Oracle\nBottlenecks & scalability"]:1
+    BPR["Best Practices Researcher\nIndustry standards & docs"]:1
+    space:1
+    GHA["Git History Analyzer\nCode evolution & patterns"]:1
+    space:1
 
-    subgraph QUALITY ["Quality Agents"]
-        CR["<b>Code Reviewer</b><br/>Standards & correctness"]
-        CSR["<b>Simplicity Reviewer</b><br/>YAGNI & over-engineering"]
-    end
-
-    subgraph ANALYSIS ["Analysis Agents"]
-        AS["<b>Architecture Strategist</b><br/>Patterns & compliance"]
-        PO["<b>Performance Oracle</b><br/>Bottlenecks & scalability"]
-        GHA["<b>Git History Analyzer</b><br/>Code evolution & patterns"]
-    end
-
-    subgraph SAFETY ["Safety Agents"]
-        SS["<b>Security Sentinel</b><br/>Vulnerabilities & OWASP"]
-    end
-
-    subgraph RESEARCH_A ["Research Agents"]
-        BPR["<b>Best Practices Researcher</b><br/>Industry standards & docs"]
-    end
-
-    MAIN -->|"dispatch"| CR
-    MAIN -->|"dispatch"| CSR
-    MAIN -->|"dispatch"| AS
-    MAIN -->|"dispatch"| PO
-    MAIN -->|"dispatch"| GHA
-    MAIN -->|"dispatch"| SS
-    MAIN -->|"dispatch"| BPR
-
-    CR -.->|"findings"| MAIN
-    CSR -.->|"findings"| MAIN
-    AS -.->|"findings"| MAIN
-    PO -.->|"findings"| MAIN
-    GHA -.->|"findings"| MAIN
-    SS -.->|"findings"| MAIN
-    BPR -.->|"findings"| MAIN
+    MAIN --> CR
+    MAIN --> AS
+    MAIN --> SS
+    MAIN --> CSR
+    MAIN --> PO
+    MAIN --> BPR
+    MAIN --> GHA
 
     style MAIN fill:#D4A574,stroke:#8B6914,color:#1a1a2e,stroke-width:3px
     style CR fill:#C9E4CA,stroke:#5C8A5E,color:#1a1a2e

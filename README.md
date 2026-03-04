@@ -63,7 +63,7 @@ claude          # Start Claude Code
 ## What You Get
 
 <p align="center">
-  <img src="docs/images/project-structure.svg" alt="Project Structure" width="90%">
+  <img src="docs/images/project-structure.png" alt="Project Structure" width="90%">
 </p>
 
 ### Project structure
@@ -102,7 +102,7 @@ your-project/
 ## Workflow
 
 <p align="center">
-  <img src="docs/images/workflow.svg" alt="Development Workflow" width="90%">
+  <img src="docs/images/workflow.png" alt="Development Workflow" width="90%">
 </p>
 
 ### The development loop
@@ -138,7 +138,7 @@ The boundary is clear: if you're touching 4+ files, adding a new API, or unsure 
 ### Quality gates
 
 <p align="center">
-  <img src="docs/images/quality-gates.svg" alt="Quality Gates" width="90%">
+  <img src="docs/images/quality-gates.png" alt="Quality Gates" width="90%">
 </p>
 
 Five non-negotiable checkpoints enforce quality at every stage:
@@ -156,7 +156,7 @@ These aren't suggestions — they're hard gates. Claude will stop and course-cor
 ## Skills Reference
 
 <p align="center">
-  <img src="docs/images/skills-map.svg" alt="Skills Map" width="90%">
+  <img src="docs/images/skills-map.png" alt="Skills Map" width="90%">
 </p>
 
 Skills are workflow modules that activate at specific development phases. They contain detailed instructions, flowcharts, and examples that guide Claude through each step.
@@ -203,7 +203,7 @@ Skills are workflow modules that activate at specific development phases. They c
 ## Agents Reference
 
 <p align="center">
-  <img src="docs/images/agents-ecosystem.svg" alt="Agent Ecosystem" width="90%">
+  <img src="docs/images/agents-ecosystem.png" alt="Agent Ecosystem" width="90%">
 </p>
 
 Agents are specialized subprocesses dispatched via Claude's Task tool. Each agent gets a fresh 200K-token context window focused entirely on its domain.
