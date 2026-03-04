@@ -71,9 +71,9 @@ claude          # Start Claude Code
 ```
 your-project/
 ├── .claude/
-│   ├── commands/       # 7 slash commands (/plan, /review, /status, ...)
-│   ├── skills/         # 14 workflow skills (TDD, debugging, planning, ...)
-│   └── agents/         # 7 specialized agents (reviewer, security, perf, ...)
+│   ├── commands/       # 17 slash commands (/plan, /review, /pr, /map, ...)
+│   ├── skills/         # 25 workflow skills (TDD, debugging, planning, ...)
+│   └── agents/         # 19 specialized agents (reviewer, security, perf, ...)
 ├── docs/
 │   ├── context/        # GOALS.md · STATUS.md · CONVENTIONS.md
 │   ├── plans/          # Implementation plans
@@ -194,6 +194,22 @@ Skills are workflow modules that activate at specific development phases. They c
 | **finishing-a-development-branch** | Structured merge workflow with options for squash, rebase, or merge | After all tests pass |
 | **session-wrap** | Documents work done, updates all project docs, captures learnings | `/wrap` or end of session |
 
+### Operations phase
+
+| Skill | What it does | Trigger |
+|-------|-------------|---------|
+| **codebase-mapping** | Maps unfamiliar codebase into structured documentation | `/map` or before modifying unfamiliar code |
+| **context-checkpoint** | Mid-session state capture — lighter than `/wrap` | `/pause` or before risky operations |
+| **pr-workflow** | End-to-end PR lifecycle — create, self-review, handle feedback | `/pr` or when creating pull requests |
+| **resolve-in-parallel** | Batch-resolves independent items concurrently | 2+ independent items to fix |
+| **deployment-verification** | Go/no-go pre-deploy checklist across 8 areas | Before any production deployment |
+| **document-review** | Structured three-pass critique (accuracy, clarity, completeness) | When reviewing specs, plans, or docs |
+| **changelog-generation** | Release notes from git history in Keep a Changelog format | `/changelog` or preparing a release |
+| **migration-planning** | Safe migration plans with rollback procedures | Database/API/dependency migrations |
+| **performance-profiling** | Profile-driven investigation — measure before optimizing | When something is "slow" |
+| **browser-testing** | Verify UI changes via Playwright MCP browser tools | After UI changes need visual verification |
+| **autonomous-loop** | Iterate through plan tasks with retry, backoff, and completion tracking | Autonomous plan execution — "just do it all" |
+
 ### Meta
 
 | Skill | What it does | Trigger |
@@ -217,6 +233,18 @@ Agents are specialized subprocesses dispatched via Claude's Task tool. Each agen
 | **performance-oracle** | Bottlenecks, N+1 queries, algorithmic complexity | After features are built, on performance concerns |
 | **best-practices-researcher** | Industry standards, library documentation | When needing external guidance |
 | **git-history-analyzer** | Code evolution, pattern archaeology | When understanding why code is the way it is |
+| **learnings-researcher** | Past solutions, decisions, patterns | Before planning — searches docs/ for prior art |
+| **plan-checker** | Plan validation, gap detection | After writing a plan, before execution |
+| **integration-checker** | Component wiring, connection validation | After implementation — verifies components connect |
+| **bug-reproduction-validator** | Bug reproduction, fix verification | When debugging — validates repro steps and fixes |
+| **codebase-mapper** | Architecture, conventions, stack analysis | Onboarding to unfamiliar code or before modifying it |
+| **pr-comment-resolver** | Targeted PR comment resolution | Processing review feedback — one comment per agent |
+| **test-gap-analyzer** | Coverage gaps, test generation | Improving coverage or before major refactors |
+| **research-synthesizer** | Multi-agent output consolidation | After parallel research — unifies findings |
+| **deployment-verifier** | Deployment readiness verification | Before deploying — checks 8 critical areas |
+| **schema-drift-detector** | Unrelated schema/migration changes | Reviewing PRs — catches scope creep in data layer |
+| **frontend-reviewer** | UI/UX code quality review | Reviewing frontend code — a11y, responsive, perf |
+| **convention-enforcer** | CONVENTIONS.md compliance checking | Reviewing code against project standards |
 
 ### How agents work
 
@@ -246,6 +274,14 @@ Commands are user-facing shortcuts that invoke the right skills with the right c
 | **`/debug [issue]`** | Root cause investigation. Gathers evidence, forms hypotheses, tests them systematically. |
 | **`/backlog`** | Triages inbox items in BACKLOG.md into prioritized tasks using GOALS.md context. |
 | **`/wrap`** | End-of-session documentation. Updates CLAUDE.md session continuity, STATUS.md, and captures learnings. |
+| **`/pr`** | Create, manage, or respond to pull requests. Full PR lifecycle. |
+| **`/map`** | Map an unfamiliar codebase into structured documentation before modifying it. |
+| **`/resume`** | Resume work from where the last session left off. Loads context and orients you. |
+| **`/pause`** | Quick mid-session checkpoint. Captures state without full `/wrap`. |
+| **`/quick`** | Fast-track a small, well-understood change with TDD and verification gates. |
+| **`/changelog`** | Generate release notes from git history using Keep a Changelog format. |
+| **`/add-tests`** | Analyze test coverage gaps and generate tests for untested code paths. |
+| **`/health`** | Comprehensive project health check — build, tests, lint, deps, conventions, docs, backlog, git. |
 
 ### Typical session flow
 

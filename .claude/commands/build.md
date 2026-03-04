@@ -55,6 +55,14 @@ Read and invoke the verification-before-completion skill in `.claude/skills/veri
 
 Run all tests. Verify all acceptance criteria from the plan are met. Confirm no regressions.
 
+### Stage 6.5: Deploy Check (Optional)
+
+If the user said `/build --deploy` or requests deployment:
+
+Read and invoke the deployment-verification skill in `.claude/skills/deployment-verification/SKILL.md`. Dispatch the **deployment-verifier** agent to check all 8 verification areas.
+
+Only proceed with deployment if the verdict is GO or CONDITIONAL GO. If NO-GO, stop and report the blocking issues.
+
 ## Checkpoints
 
 Between EVERY stage, report what was accomplished and ask: "Ready to proceed to [next stage]?"

@@ -134,7 +134,7 @@ When things go wrong during a session:
 ```
 project/
 ├── .claude/
-│   ├── commands/          # Slash commands (9 commands)
+│   ├── commands/          # Slash commands (17 commands)
 │   │   ├── init.md        # /init — interactive project setup
 │   │   ├── plan.md        # /plan — brainstorm before building
 │   │   ├── build.md       # /build — full-cycle autonomous pipeline
@@ -143,11 +143,19 @@ project/
 │   │   ├── status.md      # /status — project state + goal alignment
 │   │   ├── debug.md       # /debug [issue] — root cause investigation
 │   │   ├── backlog.md     # /backlog — triage capture inbox
-│   │   └── wrap.md        # /wrap — end-of-session documentation
+│   │   ├── wrap.md        # /wrap — end-of-session documentation
+│   │   ├── pr.md          # /pr — create/manage pull requests
+│   │   ├── map.md         # /map — analyze unfamiliar codebase
+│   │   ├── resume.md      # /resume — reload context from last session
+│   │   ├── pause.md       # /pause — mid-session checkpoint
+│   │   ├── quick.md       # /quick — fast-track small changes with TDD
+│   │   ├── changelog.md   # /changelog — generate release notes
+│   │   ├── add-tests.md   # /add-tests — find and fill test gaps
+│   │   └── health.md      # /health — comprehensive project health check
 │   ├── hooks/             # Lifecycle hooks
 │   │   ├── session-start.js   # Bootstrap context on session start
 │   │   └── context-monitor.js # Track context usage + analysis paralysis guard
-│   ├── skills/            # Workflow skills (14 skills)
+│   ├── skills/            # Workflow skills (25 skills)
 │   │   ├── brainstorming/
 │   │   ├── writing-plans/
 │   │   ├── executing-plans/
@@ -161,8 +169,19 @@ project/
 │   │   ├── finishing-a-development-branch/
 │   │   ├── using-git-worktrees/
 │   │   ├── writing-skills/
-│   │   └── session-wrap/
-│   └── agents/            # Specialized subagents (11 agents, dispatched via Task tool)
+│   │   ├── session-wrap/
+│   │   ├── codebase-mapping/
+│   │   ├── context-checkpoint/
+│   │   ├── pr-workflow/
+│   │   ├── resolve-in-parallel/
+│   │   ├── deployment-verification/
+│   │   ├── document-review/
+│   │   ├── changelog-generation/
+│   │   ├── migration-planning/
+│   │   ├── performance-profiling/
+│   │   ├── browser-testing/
+│   │   └── autonomous-loop/
+│   └── agents/            # Specialized subagents (19 agents, dispatched via Task tool)
 │       ├── code-reviewer.md
 │       ├── architecture-strategist.md
 │       ├── security-sentinel.md
@@ -173,7 +192,15 @@ project/
 │       ├── learnings-researcher.md
 │       ├── plan-checker.md
 │       ├── integration-checker.md
-│       └── bug-reproduction-validator.md
+│       ├── bug-reproduction-validator.md
+│       ├── codebase-mapper.md
+│       ├── pr-comment-resolver.md
+│       ├── test-gap-analyzer.md
+│       ├── research-synthesizer.md
+│       ├── deployment-verifier.md
+│       ├── schema-drift-detector.md
+│       ├── frontend-reviewer.md
+│       └── convention-enforcer.md
 ├── .claude-plugin/
 │   └── plugin.json        # Plugin manifest for marketplace distribution
 ├── docs/
@@ -242,8 +269,19 @@ The Session Continuity section above tells you where to start. If it's empty, ru
 | Implementation complete, integrate | finishing-a-development-branch | — |
 | Creating or editing skills | writing-skills | — |
 | End of work session | session-wrap | `/wrap` |
-| Small bug fix or config change | (lightweight flow — see above) | — |
+| Small bug fix or config change | (lightweight flow — see above) | `/quick` |
 | Exploratory spike or research | best-practices-researcher agent + `docs/research/` | — |
+| Onboarding to unfamiliar codebase | codebase-mapping | `/map` |
+| Mid-session state capture | context-checkpoint | `/pause` |
+| Creating or managing pull requests | pr-workflow | `/pr` |
+| Batch-resolving independent items | resolve-in-parallel | — |
+| Pre-production deployment check | deployment-verification | — |
+| Reviewing specs, plans, or docs | document-review | — |
+| Generating release notes | changelog-generation | `/changelog` |
+| Planning database or API migrations | migration-planning | — |
+| Investigating performance issues | performance-profiling | — |
+| Verifying UI in a real browser | browser-testing | — |
+| Autonomous plan execution with retry | autonomous-loop | — |
 
 ## Agents — When to Dispatch
 
@@ -262,6 +300,14 @@ Use Task tool to dispatch agents when you need isolated 200K context for a speci
 | plan-checker | After writing a plan — verifies it will work before execution begins |
 | integration-checker | After implementation — verifies components are wired together correctly |
 | bug-reproduction-validator | When debugging — validates reproduction steps and verifies fixes work |
+| codebase-mapper | Onboarding to unfamiliar code — maps architecture, conventions, stack, concerns |
+| pr-comment-resolver | Processing PR feedback — resolves a single review comment with minimal change |
+| test-gap-analyzer | Improving coverage — finds untested paths and generates behavioral tests |
+| research-synthesizer | After parallel research — consolidates multiple agent outputs into unified summary |
+| deployment-verifier | Before deploying — verifies build, tests, security, migrations, rollback plan |
+| schema-drift-detector | Reviewing PRs — catches unrelated schema/migration changes in diffs |
+| frontend-reviewer | Reviewing UI code — checks a11y, responsive, CSS perf, component architecture |
+| convention-enforcer | Reviewing code — validates changes against CONVENTIONS.md rules |
 
 ## Commit Conventions
 
