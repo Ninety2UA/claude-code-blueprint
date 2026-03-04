@@ -10,20 +10,25 @@ Quality over speed. Small steps compound into big progress. The patterns you est
 
 <!-- Updated by /wrap at end of each work session. Read this FIRST when starting a new session. -->
 
-**Last session:** _none yet_
+**Last session:** 2026-03-04
 
 **What was done:**
-- _Run `/wrap` at the end of each session to update this section automatically._
+- Templatized CLAUDE.md — replaced project-specific content with clean placeholders (`642f64e`)
+- Fixed hero banner title clipping — font 52→46, terminal shifted right (`be83171`, `docs/images/hero-banner.svg`)
+- Redesigned project-structure diagram — removed arrows, added dark section headers (`884d342`, `docs/images/project-structure.mmd`)
 
 **What's remaining:**
-- _Captured during sessions and via `/backlog`._
+- Add GitHub Actions CI (lint markdown, test install script)
+- Add more skills (dependency management, spike/exploration, scope cutting)
+- Add `--version` flag or release tagging strategy to install.sh
+- Expand example docs with more variety
 
-**Start here:** Run `/init` to set up the project, or `/status` to orient if already initialized.
+**Start here:** Template is deployed and functional. All visuals are polished. Next work should focus on CI or expanding skills. Run `/status` to orient.
 
 **Current state of the code:**
-- Build: _unknown — run build to verify_
-- Tests: _unknown — run tests to verify_
-- Uncommitted changes: _unknown — run `git status` to check_
+- Build: n/a (template repo, no build step)
+- Tests: n/a (install.sh tested manually via dry-run)
+- Uncommitted changes: none — working tree clean
 
 ## Behavioral Rules
 
@@ -228,7 +233,5 @@ Scope is optional but encouraged: `feat(auth): add JWT refresh token rotation`
 
 _Append dated entries here as the project evolves. This section is the project's institutional memory. Updated by `/wrap`._
 
-<!-- Example entry format:
-### YYYY-MM-DD: Brief title
-One paragraph describing what was learned, why it matters, and how it affects future work.
--->
+### 2026-03-04: Block-beta diagrams — arrows cause phantom rows, use color for hierarchy
+Removing arrows from `block-beta` Mermaid diagrams eliminates the phantom routing rows that made diagrams visually cluttered. Instead, use dark section headers (#2C3E50, white text) paired with light child nodes to create clear visual containment without needing connectors or subgraph nesting. This dark/light contrast pattern should be used for all future block-beta diagrams in the template.

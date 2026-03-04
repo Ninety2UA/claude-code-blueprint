@@ -28,6 +28,9 @@ Last updated: 2026-03-04
 
 | Date | Commit | Description |
 |------|--------|-------------|
+| 2026-03-04 | `884d342` | Fix: redesign project-structure diagram — remove arrows, add dark section headers |
+| 2026-03-04 | `be83171` | Fix: hero banner title clipping — reduce font, shift terminal right |
+| 2026-03-04 | `642f64e` | Templatize CLAUDE.md — replace project-specific content with clean placeholders |
 | 2026-03-04 | `0c6c961` | Fix: redesign all 5 README diagrams for GitHub readability — switched from flowchart to block-beta grid layout, SVG to PNG |
 | 2026-03-04 | `419bfcf` | Apply review findings: example docs, lightweight workflow, error recovery, brainstorming escape hatch |
 | 2026-03-04 | `7531075` | Initial release: full template with 14 skills, 7 agents, 7 commands, install script, README |
@@ -36,6 +39,7 @@ Last updated: 2026-03-04
 
 | Date | Decision | ADR |
 |------|----------|-----|
+| 2026-03-04 | Remove arrows from block-beta diagrams, use dark/light color contrast for hierarchy instead | — |
 | 2026-03-04 | Use block-beta grid layout for Mermaid diagrams instead of flowchart LR — better aspect ratios for GitHub | — |
 | 2026-03-04 | Switch README images from SVG to PNG — more predictable rendering on GitHub | — |
 | 2026-03-04 | Template uses MIT license, public repo, one-line curl installer | — |
