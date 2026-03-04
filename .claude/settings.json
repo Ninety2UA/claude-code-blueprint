@@ -14,5 +14,31 @@
       "Bash(git push --force*)",
       "Bash(git reset --hard*)"
     ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .claude/hooks/session-start.js",
+            "timeout": 10000
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .claude/hooks/context-monitor.js",
+            "timeout": 3000
+          }
+        ]
+      }
+    ]
   }
 }

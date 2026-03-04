@@ -67,6 +67,17 @@ After all tasks complete and verified:
 
 **Don't force through blockers** - stop and ask.
 
+## Analysis Paralysis Guard
+
+**If you make 5+ consecutive read-only operations (Read, Glob, Grep) without any Edit, Write, or Bash action that modifies state, STOP.**
+
+You are in analysis paralysis. Do one of:
+1. **Write code** — you have enough information, start implementing
+2. **Report a blocker** — explain what's preventing you from writing code
+3. **Ask for help** — if the plan is unclear, ask rather than endlessly reading
+
+Reading code is preparation. Writing code is progress. Don't confuse the two.
+
 ## Remember
 - Review plan critically first
 - Follow plan steps exactly

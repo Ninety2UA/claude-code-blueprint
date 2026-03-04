@@ -88,6 +88,36 @@ Not everything needs the full brainstorm → plan → execute flow. Use this sho
 
 When in doubt, use the full workflow. The cost of over-planning is low; the cost of under-planning is rework.
 
+## Deviation Rules — What You Can Auto-Fix vs. Must Ask About
+
+When executing a plan or working autonomously, use these rules to decide whether to fix inline or stop and ask:
+
+**Auto-fix (no permission needed):**
+- Wrong queries, logic errors, type errors — fix inline
+- Missing error handling, input validation, null checks — add inline
+- Missing imports, broken dependencies, incorrect paths — fix inline
+- Linting or formatting issues — fix inline
+- Typos in code or strings — fix inline
+
+**Must ask the user FIRST:**
+- Adding new database tables, columns, or migrations
+- Switching frameworks, libraries, or core technologies
+- Changing public API contracts or interfaces
+- Modifying authentication/authorization logic
+- Adding new environment variables or external service dependencies
+- Architectural decisions not covered by existing ADRs
+
+**Scope boundary:** Only fix issues directly caused by the current task's changes. Pre-existing issues go in BACKLOG.md, not inline fixes.
+
+## Analysis Paralysis Guard
+
+If you make 5+ consecutive read-only operations (Read, Glob, Grep) without any Edit, Write, or Bash action that modifies state, STOP and either:
+1. **Write code** — you have enough information
+2. **Report a blocker** — explain what's preventing progress
+3. **Ask for help** — the requirements are unclear
+
+Reading is preparation. Writing is progress. Don't confuse the two.
+
 ## Error Recovery
 
 When things go wrong during a session:
@@ -104,15 +134,20 @@ When things go wrong during a session:
 ```
 project/
 ├── .claude/
-│   ├── commands/          # Slash commands
+│   ├── commands/          # Slash commands (9 commands)
 │   │   ├── init.md        # /init — interactive project setup
 │   │   ├── plan.md        # /plan — brainstorm before building
+│   │   ├── build.md       # /build — full-cycle autonomous pipeline
+│   │   ├── discuss.md     # /discuss — capture decisions before planning
 │   │   ├── review.md      # /review — code review against standards
 │   │   ├── status.md      # /status — project state + goal alignment
 │   │   ├── debug.md       # /debug [issue] — root cause investigation
 │   │   ├── backlog.md     # /backlog — triage capture inbox
 │   │   └── wrap.md        # /wrap — end-of-session documentation
-│   ├── skills/            # Workflow skills (14+ skills)
+│   ├── hooks/             # Lifecycle hooks
+│   │   ├── session-start.js   # Bootstrap context on session start
+│   │   └── context-monitor.js # Track context usage + analysis paralysis guard
+│   ├── skills/            # Workflow skills (14 skills)
 │   │   ├── brainstorming/
 │   │   ├── writing-plans/
 │   │   ├── executing-plans/
@@ -127,14 +162,20 @@ project/
 │   │   ├── using-git-worktrees/
 │   │   ├── writing-skills/
 │   │   └── session-wrap/
-│   └── agents/            # Specialized subagents (dispatched via Task tool)
+│   └── agents/            # Specialized subagents (11 agents, dispatched via Task tool)
 │       ├── code-reviewer.md
 │       ├── architecture-strategist.md
 │       ├── security-sentinel.md
 │       ├── code-simplicity-reviewer.md
 │       ├── performance-oracle.md
 │       ├── best-practices-researcher.md
-│       └── git-history-analyzer.md
+│       ├── git-history-analyzer.md
+│       ├── learnings-researcher.md
+│       ├── plan-checker.md
+│       ├── integration-checker.md
+│       └── bug-reproduction-validator.md
+├── .claude-plugin/
+│   └── plugin.json        # Plugin manifest for marketplace distribution
 ├── docs/
 │   ├── decisions/         # Architecture Decision Records (ADRs)
 │   ├── plans/             # Implementation plans (YYYY-MM-DD-topic.md)
@@ -143,7 +184,8 @@ project/
 │   └── context/           # Project goals, status, conventions
 │       ├── GOALS.md       # Objectives + priority framework
 │       ├── STATUS.md      # Commit log, current state, known issues
-│       └── CONVENTIONS.md # Tech stack, coding standards, boundaries
+│       ├── CONVENTIONS.md # Tech stack, coding standards, boundaries
+│       └── DECISIONS.md   # Locked decisions from /discuss (created on demand)
 ├── src/                   # Application source code
 ├── tests/                 # Test suite
 ├── infra/                 # Docker, CI/CD, deployment configs
@@ -168,13 +210,15 @@ project/
 
 When starting a session, context loads in this order:
 
-1. **CLAUDE.md** (this file) — always loaded, includes Session Continuity
-2. **docs/context/STATUS.md** — read for full project state, commit history, known issues
-3. **docs/context/GOALS.md** — read when prioritizing work or triaging backlog
-4. **docs/context/CONVENTIONS.md** — read before writing code (tech stack, naming, patterns)
-5. **BACKLOG.md** — read when looking for what to work on next
-6. **.claude/skills/** — triggered contextually or invoked via commands
-7. **.claude/agents/** — dispatched via Task tool for isolated 200K-context work
+1. **SessionStart hook** — bootstraps project state summary automatically
+2. **CLAUDE.md** (this file) — always loaded, includes Session Continuity
+3. **docs/context/STATUS.md** — read for full project state, commit history, known issues
+4. **docs/context/GOALS.md** — read when prioritizing work or triaging backlog
+5. **docs/context/CONVENTIONS.md** — read before writing code (tech stack, naming, patterns)
+6. **docs/context/DECISIONS.md** — locked decisions that MUST be honored (created by `/discuss`)
+7. **BACKLOG.md** — read when looking for what to work on next
+8. **.claude/skills/** — triggered contextually or invoked via commands
+9. **.claude/agents/** — dispatched via Task tool for isolated 200K-context work
 
 The Session Continuity section above tells you where to start. If it's empty, run `/init` to set up the project or `/status` to orient.
 
@@ -182,6 +226,8 @@ The Session Continuity section above tells you where to start. If it's empty, ru
 
 | Situation | Skill | Command |
 |-----------|-------|---------|
+| Full-cycle feature development | (chains all below) | `/build` |
+| Capture decisions before planning | (discuss process) | `/discuss` |
 | Before building anything new | brainstorming | `/plan` |
 | Have approved design, need steps | writing-plans | — |
 | Executing a multi-step plan | executing-plans | — |
@@ -212,6 +258,10 @@ Use Task tool to dispatch agents when you need isolated 200K context for a speci
 | performance-oracle | After features are built — finds bottlenecks, N+1 queries, scaling issues |
 | best-practices-researcher | Need industry standards or implementation guidance for a technology |
 | git-history-analyzer | Need to understand why code evolved to its current state |
+| learnings-researcher | Before planning — searches docs/ for past solutions, decisions, and patterns |
+| plan-checker | After writing a plan — verifies it will work before execution begins |
+| integration-checker | After implementation — verifies components are wired together correctly |
+| bug-reproduction-validator | When debugging — validates reproduction steps and verifies fixes work |
 
 ## Commit Conventions
 

@@ -198,6 +198,15 @@ if [ "$CLAUDE_ONLY" = false ]; then
         success "docs/ installed (examples included — delete when ready)"
     fi
 
+    # Plugin manifest
+    if [ -d "$SOURCE_DIR/.claude-plugin" ]; then
+        find "$SOURCE_DIR/.claude-plugin" -type f | while read -r file; do
+            rel="${file#$SOURCE_DIR/}"
+            copy_item "$file" "$TARGET_DIR/$rel"
+        done
+        success ".claude-plugin/ installed (plugin manifest)"
+    fi
+
     # Core files
     for file in CLAUDE.md BACKLOG.md .gitignore; do
         if [ -f "$SOURCE_DIR/$file" ]; then
@@ -229,7 +238,7 @@ else
     echo -e "  ${DIM}2.${NC} claude"
     echo -e "  ${DIM}3.${NC} /init ${DIM}← interactive project setup${NC}"
     echo ""
-    echo -e "  ${DIM}Quick commands: /plan · /status · /review · /debug · /wrap${NC}"
+    echo -e "  ${DIM}Quick commands: /build · /plan · /discuss · /status · /review · /debug · /wrap${NC}"
 fi
 
 echo ""
