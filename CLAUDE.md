@@ -10,20 +10,23 @@ Quality over speed. Small steps compound into big progress. The patterns you est
 
 <!-- Updated by /wrap at end of each work session. Read this FIRST when starting a new session. -->
 
-**Last session:** 2026-03-04
+**Last session:** 2026-03-05
 
 **What was done:**
-- Templatized CLAUDE.md — replaced project-specific content with clean placeholders (`642f64e`)
-- Fixed hero banner title clipping — font 52→46, terminal shifted right (`be83171`, `docs/images/hero-banner.svg`)
-- Redesigned project-structure diagram — removed arrows, added dark section headers (`884d342`, `docs/images/project-structure.mmd`)
+- Added 8 agents, 11 skills, 8 commands based on gap analysis of 5 leading Claude Code repos (`b399f7f`)
+- New agents: codebase-mapper, pr-comment-resolver, test-gap-analyzer, research-synthesizer, deployment-verifier, schema-drift-detector, frontend-reviewer, convention-enforcer
+- New skills: codebase-mapping, context-checkpoint, pr-workflow, resolve-in-parallel, deployment-verification, document-review, changelog-generation, migration-planning, performance-profiling, browser-testing, autonomous-loop
+- New commands: /pr, /map, /resume, /pause, /quick, /changelog, /add-tests, /health
+- Updated CLAUDE.md, README.md, and build.md with new counts and reference tables
+- Totals now: 25 skills, 19 agents, 17 commands
 
 **What's remaining:**
 - Add GitHub Actions CI (lint markdown, test install script)
-- Add more skills (dependency management, spike/exploration, scope cutting)
 - Add `--version` flag or release tagging strategy to install.sh
 - Expand example docs with more variety
+- Consider adding skills: dependency management, spike/exploration, scope cutting
 
-**Start here:** Template is deployed and functional. All visuals are polished. Next work should focus on CI or expanding skills. Run `/status` to orient.
+**Start here:** All new skills/agents/commands are deployed and pushed. Next work should focus on CI or the remaining skill gaps (dependency management, spike/exploration, scope cutting). Run `/status` to orient.
 
 **Current state of the code:**
 - Build: n/a (template repo, no build step)
@@ -331,3 +334,6 @@ _Append dated entries here as the project evolves. This section is the project's
 
 ### 2026-03-04: Block-beta diagrams — arrows cause phantom rows, use color for hierarchy
 Removing arrows from `block-beta` Mermaid diagrams eliminates the phantom routing rows that made diagrams visually cluttered. Instead, use dark section headers (#2C3E50, white text) paired with light child nodes to create clear visual containment without needing connectors or subgraph nesting. This dark/light contrast pattern should be used for all future block-beta diagrams in the template.
+
+### 2026-03-05: Gap analysis across 5 repos shaped the skill/agent expansion
+Researched ruflo, compound-engineering, superpowers, get-shit-done, and ralphy repos to identify missing capabilities. Key patterns adopted: autonomous retry loop with exponential backoff (ralphy), structured document review with three-pass critique, deployment verification checklists, and parallel resolution of independent items. Multi-engine orchestration (ralphy) was explicitly excluded as out of scope for a Claude-focused template.

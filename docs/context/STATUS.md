@@ -1,6 +1,6 @@
 # Project Status
 
-Last updated: 2026-03-04
+Last updated: 2026-03-05
 
 ## Current State of the Code
 
@@ -23,11 +23,13 @@ Last updated: 2026-03-04
 2. Add more skills — dependency management, spike/exploration, scope cutting
 3. Add `--version` flag or release tagging strategy to install.sh
 4. Expand example docs with more variety
+5. Update diagrams (project-structure, skills-map, agents-ecosystem) to reflect new counts
 
 ## What's Done
 
 | Date | Commit | Description |
 |------|--------|-------------|
+| 2026-03-05 | `b399f7f` | Feat: add 11 skills, 8 agents, 8 commands — expand blueprint coverage from gap analysis of 5 repos |
 | 2026-03-04 | `884d342` | Fix: redesign project-structure diagram — remove arrows, add dark section headers |
 | 2026-03-04 | `be83171` | Fix: hero banner title clipping — reduce font, shift terminal right |
 | 2026-03-04 | `642f64e` | Templatize CLAUDE.md — replace project-specific content with clean placeholders |
@@ -39,6 +41,8 @@ Last updated: 2026-03-04
 
 | Date | Decision | ADR |
 |------|----------|-----|
+| 2026-03-05 | Adopt ralphy autonomous retry loop pattern as autonomous-loop skill | — |
+| 2026-03-05 | Expand template based on gap analysis of 5 leading Claude Code repos — 27 new files | — |
 | 2026-03-04 | Remove arrows from block-beta diagrams, use dark/light color contrast for hierarchy instead | — |
 | 2026-03-04 | Use block-beta grid layout for Mermaid diagrams instead of flowchart LR — better aspect ratios for GitHub | — |
 | 2026-03-04 | Switch README images from SVG to PNG — more predictable rendering on GitHub | — |
