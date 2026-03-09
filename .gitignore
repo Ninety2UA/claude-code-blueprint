@@ -36,3 +36,6 @@ coverage/
 *.key
 credentials.json
 service-account.json
+
+# Per-developer config
+blueprint.local.md

@@ -136,12 +136,16 @@ When things go wrong during a session:
 ```
 project/
 ├── .claude/
-│   ├── commands/          # Slash commands (17 commands)
+│   ├── commands/          # Slash commands (21 commands)
 │   │   ├── init.md        # /init — interactive project setup
 │   │   ├── plan.md        # /plan — brainstorm before building
 │   │   ├── build.md       # /build — full-cycle autonomous pipeline
 │   │   ├── discuss.md     # /discuss — capture decisions before planning
 │   │   ├── review.md      # /review — code review against standards
+│   │   ├── review-swarm.md # /review-swarm — multi-agent parallel review
+│   │   ├── deep-research.md # /deep-research — multi-agent parallel research
+│   │   ├── compound.md    # /compound — document solved problem for reuse
+│   │   ├── orchestrate.md # /orchestrate — wave-based parallel execution
 │   │   ├── status.md      # /status — project state + goal alignment
 │   │   ├── debug.md       # /debug [issue] — root cause investigation
 │   │   ├── backlog.md     # /backlog — triage capture inbox
@@ -157,7 +161,7 @@ project/
 │   ├── hooks/             # Lifecycle hooks
 │   │   ├── session-start.js   # Bootstrap context on session start
 │   │   └── context-monitor.js # Track context usage + analysis paralysis guard
-│   ├── skills/            # Workflow skills (25 skills)
+│   ├── skills/            # Workflow skills (29 skills)
 │   │   ├── brainstorming/
 │   │   ├── writing-plans/
 │   │   ├── executing-plans/
@@ -182,8 +186,12 @@ project/
 │   │   ├── migration-planning/
 │   │   ├── performance-profiling/
 │   │   ├── browser-testing/
-│   │   └── autonomous-loop/
-│   └── agents/            # Specialized subagents (19 agents, dispatched via Task tool)
+│   │   ├── autonomous-loop/
+│   │   ├── wave-orchestration/
+│   │   ├── swarm-orchestration/
+│   │   ├── knowledge-compounding/
+│   │   └── session-continuity/
+│   └── agents/            # Specialized subagents (25 agents, dispatched via Task tool)
 │       ├── code-reviewer.md
 │       ├── architecture-strategist.md
 │       ├── security-sentinel.md
@@ -202,14 +210,22 @@ project/
 │       ├── deployment-verifier.md
 │       ├── schema-drift-detector.md
 │       ├── frontend-reviewer.md
-│       └── convention-enforcer.md
+│       ├── convention-enforcer.md
+│       ├── data-integrity-guardian.md
+│       ├── test-coverage-reviewer.md
+│       ├── framework-docs-researcher.md
+│       ├── codebase-context-mapper.md
+│       ├── integration-verifier.md
+│       └── findings-synthesizer.md
 ├── .claude-plugin/
 │   └── plugin.json        # Plugin manifest for marketplace distribution
+├── blueprint.local.md    # Per-project agent config (gitignored)
 ├── docs/
 │   ├── decisions/         # Architecture Decision Records (ADRs)
 │   ├── plans/             # Implementation plans (YYYY-MM-DD-topic.md)
 │   ├── specs/             # Feature specs and requirements
 │   ├── research/          # Domain research and analysis
+│   ├── solutions/         # Solved problems — institutional knowledge (created by /compound)
 │   └── context/           # Project goals, status, conventions
 │       ├── GOALS.md       # Objectives + priority framework
 │       ├── STATUS.md      # Commit log, current state, known issues
@@ -246,8 +262,10 @@ When starting a session, context loads in this order:
 5. **docs/context/CONVENTIONS.md** — read before writing code (tech stack, naming, patterns)
 6. **docs/context/DECISIONS.md** — locked decisions that MUST be honored (created by `/discuss`)
 7. **BACKLOG.md** — read when looking for what to work on next
-8. **.claude/skills/** — triggered contextually or invoked via commands
-9. **.claude/agents/** — dispatched via Task tool for isolated 200K-context work
+8. **docs/solutions/** — searched by learnings-researcher before planning (institutional knowledge)
+9. **blueprint.local.md** — per-project agent configuration (which reviewers/researchers to use)
+10. **.claude/skills/** — triggered contextually or invoked via commands
+11. **.claude/agents/** — dispatched via Task tool for isolated 200K-context work
 
 The Session Continuity section above tells you where to start. If it's empty, run `/init` to set up the project or `/status` to orient.
 
@@ -284,6 +302,10 @@ The Session Continuity section above tells you where to start. If it's empty, ru
 | Investigating performance issues | performance-profiling | — |
 | Verifying UI in a real browser | browser-testing | — |
 | Autonomous plan execution with retry | autonomous-loop | — |
+| Plan with mixed dependencies, parallel+serial | wave-orchestration | `/orchestrate` |
+| Dispatching multiple agents on same problem | swarm-orchestration | `/review-swarm`, `/deep-research` |
+| Documenting a solved problem for reuse | knowledge-compounding | `/compound` |
+| Tracking state across session boundaries | session-continuity | `/pause`, `/resume` |
 
 ## Agents — When to Dispatch
 
@@ -310,6 +332,55 @@ Use Task tool to dispatch agents when you need isolated 200K context for a speci
 | schema-drift-detector | Reviewing PRs — catches unrelated schema/migration changes in diffs |
 | frontend-reviewer | Reviewing UI code — checks a11y, responsive, CSS perf, component architecture |
 | convention-enforcer | Reviewing code — validates changes against CONVENTIONS.md rules |
+| data-integrity-guardian | PRs with migrations, schema changes, or data transformations |
+| test-coverage-reviewer | After implementation — verifies test quality, not just line coverage |
+| framework-docs-researcher | Before planning — gathers current docs for frameworks used in project |
+| codebase-context-mapper | Before planning — maps files and dependencies affected by a specific change |
+| integration-verifier | After wave completion — verifies parallel implementations work together |
+| findings-synthesizer | After review/research swarm — de-duplicates and prioritizes all findings |
+
+## Agent Teams — Structured Swarms
+
+Agents are organized into teams for coordinated multi-agent workflows. Use `/review-swarm`, `/deep-research`, or `/orchestrate` to dispatch these teams.
+
+```
+Controller (main Claude session)
+│
+├── Research Swarm (/deep-research) ── all run in parallel
+│   ├── best-practices-researcher
+│   ├── framework-docs-researcher
+│   ├── learnings-researcher
+│   ├── git-history-analyzer
+│   ├── codebase-context-mapper
+│   └── → research-synthesizer (sequential, after all above)
+│
+├── Planning Pipeline (sequential)
+│   ├── plan-checker
+│   └── integration-checker
+│
+├── Execution Waves (/orchestrate) ── parallel within waves
+│   ├── Wave 1: [implementer-A, implementer-B] (parallel)
+│   │   └── spec-reviewer + quality-reviewer per task
+│   ├── Wave 2: [implementer-C] (depends on Wave 1)
+│   │   └── spec-reviewer + quality-reviewer
+│   └── integration-verifier (between each wave)
+│
+├── Review Swarm (/review-swarm) ── all run in parallel
+│   ├── code-reviewer
+│   ├── security-sentinel
+│   ├── performance-oracle
+│   ├── code-simplicity-reviewer
+│   ├── convention-enforcer
+│   ├── test-coverage-reviewer
+│   ├── + conditional: architecture-strategist, frontend-reviewer,
+│   │     data-integrity-guardian, schema-drift-detector
+│   └── → findings-synthesizer (sequential, after all above)
+│
+└── Knowledge Loop
+    └── /compound → docs/solutions/ → learnings-researcher → /plan
+```
+
+**Per-project config:** Edit `blueprint.local.md` to enable/disable agents for your stack.
 
 ## Commit Conventions
 

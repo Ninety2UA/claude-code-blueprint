@@ -40,14 +40,9 @@ Read and invoke the executing-plans skill in `.claude/skills/executing-plans/SKI
 
 ### Stage 5: Review (Quality Check)
 
-Read and invoke the requesting-code-review skill in `.claude/skills/requesting-code-review/SKILL.md`.
+Run `/review-swarm` to dispatch the full review agent swarm in parallel. This dispatches all configured review agents (code-reviewer, security-sentinel, performance-oracle, code-simplicity-reviewer, convention-enforcer, test-coverage-reviewer, plus conditional agents based on changes), then synthesizes findings via the findings-synthesizer.
 
-Dispatch these agents in parallel:
-- **code-reviewer** — diffs against plan and standards
-- **code-simplicity-reviewer** — YAGNI violations and over-engineering
-- **integration-checker** — verify all new components are properly wired
-
-Address any critical or important findings before proceeding.
+Address all P1 (critical) and P2 (important) findings before proceeding. Use resolve-in-parallel to fix independent findings concurrently.
 
 ### Stage 6: Verify (Completion)
 
@@ -62,6 +57,12 @@ If the user said `/build --deploy` or requests deployment:
 Read and invoke the deployment-verification skill in `.claude/skills/deployment-verification/SKILL.md`. Dispatch the **deployment-verifier** agent to check all 8 verification areas.
 
 Only proceed with deployment if the verdict is GO or CONDITIONAL GO. If NO-GO, stop and report the blocking issues.
+
+### Stage 7: Compound (Knowledge Capture)
+
+If the implementation involved solving a non-trivial problem (debugging, framework gotcha, architectural decision), run `/compound` to document it in `docs/solutions/`. This makes the solution searchable for future planning.
+
+Skip this stage if the work was straightforward with no novel insights.
 
 ## Checkpoints
 

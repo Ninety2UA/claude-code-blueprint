@@ -11,13 +11,14 @@ Reload all session context and present a clear starting point. Follow these step
 Read these files to understand where things stand:
 
 - `CLAUDE.md` — Read the **Session Continuity** section first. This tells you what was done, what's remaining, and where to start.
+- `docs/context/STATE.md` — Execution state: current wave, task progress, blockers (if exists)
 - `docs/context/STATUS.md` — Current project state, in-flight work, known issues
 - `docs/context/GOALS.md` — Current objectives and priorities
 - `BACKLOG.md` — Pending items and their priority
 
 Also check for checkpoint files:
 ```bash
-ls docs/context/CHECKPOINT-*.md 2>/dev/null | sort -r | head -3
+ls docs/context/CHECKPOINT-*.md docs/context/STATE.md 2>/dev/null | sort -r | head -5
 ```
 
 ## Step 2: Check Git State

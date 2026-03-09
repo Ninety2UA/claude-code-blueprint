@@ -11,6 +11,7 @@
   <a href="#quick-start">Quick Start</a> ·
   <a href="#what-you-get">What You Get</a> ·
   <a href="#workflow">Workflow</a> ·
+  <a href="#agent-teams--swarms">Agent Teams</a> ·
   <a href="#skills-reference">Skills</a> ·
   <a href="#agents-reference">Agents</a> ·
   <a href="#commands-reference">Commands</a> ·
@@ -84,33 +85,37 @@ claude          # Start Claude Code
 ```
 your-project/
 ├── .claude/
-│   ├── commands/       # 17 slash commands (/plan, /review, /pr, /map, ...)
-│   ├── skills/         # 25 workflow skills (TDD, debugging, planning, ...)
-│   └── agents/         # 19 specialized agents (reviewer, security, perf, ...)
+│   ├── commands/       # 21 slash commands (/plan, /review-swarm, /orchestrate, ...)
+│   ├── skills/         # 29 workflow skills (TDD, wave-orchestration, swarms, ...)
+│   └── agents/         # 25 specialized agents (reviewer, security, perf, ...)
 ├── docs/
-│   ├── context/        # GOALS.md · STATUS.md · CONVENTIONS.md
+│   ├── context/        # GOALS.md · STATUS.md · CONVENTIONS.md · STATE.md
 │   ├── plans/          # Implementation plans
 │   ├── specs/          # Feature specifications
 │   ├── decisions/      # Architecture Decision Records
-│   └── research/       # Spike results & evaluations
+│   ├── research/       # Spike results & evaluations
+│   └── solutions/      # Institutional knowledge (created by /compound)
 ├── src/                # Your application code
 ├── tests/              # Your test suite
 ├── scripts/            # Automation & utility scripts
 ├── infra/              # Deployment & infrastructure
 ├── CLAUDE.md           # Master orchestration — Claude reads this first
-└── BACKLOG.md          # Idea & bug capture inbox
+├── BACKLOG.md          # Idea & bug capture inbox
+└── blueprint.local.md  # Per-project agent config (gitignored)
 ```
 
 ### What each piece does
 
 | Component | Purpose |
 |-----------|---------|
-| **CLAUDE.md** | Master configuration that Claude reads at session start. Contains behavioral rules, session continuity, skill triggers, and project-specific learnings. |
-| **Skills** | Workflow modules that activate at specific points — TDD, debugging, code review, planning. They enforce quality gates automatically. |
-| **Agents** | Specialized subprocesses dispatched for focused analysis — security audits, performance reviews, architecture evaluation. Each gets a fresh 200K context. |
-| **Commands** | User-facing slash commands (`/plan`, `/review`, `/debug`) that invoke the right skills with the right context. |
-| **docs/context/** | Living project state — goals, current status, conventions. Updated every session by `/wrap`. |
+| **CLAUDE.md** | Master configuration that Claude reads at session start. Contains behavioral rules, session continuity, agent team hierarchy, skill triggers, and project-specific learnings. |
+| **Skills** | Workflow modules that activate at specific points — TDD, debugging, code review, wave orchestration, swarm coordination, knowledge compounding. They enforce quality gates automatically. |
+| **Agents** | Specialized subprocesses dispatched for focused analysis — security audits, performance reviews, architecture evaluation. Organized into teams (review swarm, research swarm, execution waves). Each gets a fresh 200K context. |
+| **Commands** | User-facing slash commands (`/plan`, `/review-swarm`, `/orchestrate`, `/compound`) that invoke the right skills with the right context. |
+| **docs/context/** | Living project state — goals, current status, conventions, execution state. Updated every session by `/wrap`. |
+| **docs/solutions/** | Institutional knowledge — solved problems documented by `/compound` and searched by `/plan` before future work. |
 | **BACKLOG.md** | Quick-capture inbox for ideas, bugs, and tasks. Triaged by `/backlog` into prioritized work. |
+| **blueprint.local.md** | Per-project agent configuration — choose which review/research agents are relevant for your tech stack. Gitignored so each developer can customize. |
 
 ## Workflow
 
@@ -166,6 +171,75 @@ Five non-negotiable checkpoints enforce quality at every stage:
 | **5** | No merge without code review | `requesting-code-review` skill |
 
 These aren't suggestions — they're hard gates. Claude will stop and course-correct if any gate is skipped.
+
+## Agent Teams & Swarms
+
+Agents are organized into coordinated teams for multi-agent workflows. Three orchestration patterns are built in:
+
+### Review Swarm (`/review-swarm`)
+
+Dispatches 6-10 specialized reviewers in parallel, each analyzing the same code from a different angle. A findings-synthesizer merges all results into one prioritized report (P1/P2/P3).
+
+```
+Controller
+├── code-reviewer          ─┐
+├── security-sentinel       │
+├── performance-oracle      ├── All run in parallel
+├── code-simplicity-reviewer│
+├── convention-enforcer     │
+├── test-coverage-reviewer ─┘
+│   + conditional: architecture-strategist, frontend-reviewer,
+│     data-integrity-guardian, schema-drift-detector
+│
+└── → findings-synthesizer (merges all outputs)
+```
+
+### Research Swarm (`/deep-research`)
+
+Spawns 5 research agents in parallel before planning, then synthesizes findings into a unified research brief.
+
+```
+Controller
+├── learnings-researcher       ─┐
+├── framework-docs-researcher   │
+├── best-practices-researcher   ├── All run in parallel
+├── git-history-analyzer        │
+├── codebase-context-mapper    ─┘
+│
+└── → research-synthesizer (merges all outputs)
+```
+
+### Wave Orchestration (`/orchestrate`)
+
+Groups plan tasks by dependency into waves. Independent tasks within each wave run in parallel; an integration-verifier validates between waves.
+
+```
+Wave 1: [Task A, Task B, Task C]  ← independent, run in parallel
+         │         │         │
+    ┌────┴─────────┴─────────┴────┐
+    │     Integration Verifier     │
+    └──────────────┬──────────────┘
+Wave 2: [Task D, Task E]          ← depend on Wave 1
+         │         │
+    ┌────┴─────────┴──────────────┐
+    │     Integration Verifier     │
+    └──────────────┬──────────────┘
+Wave 3: [Task F]                   ← depends on Wave 2
+```
+
+### Knowledge Loop (`/compound`)
+
+Each solved problem becomes searchable institutional knowledge. Future `/plan` and `/deep-research` commands automatically consult past solutions.
+
+```
+Solve problem → /compound → docs/solutions/
+                                    ↓
+              /plan ← learnings-researcher ← searches solutions
+```
+
+### Per-Project Configuration
+
+Edit `blueprint.local.md` to enable/disable agents for your stack. No need for Rails reviewers on a Python project.
 
 ## Skills Reference
 
@@ -224,6 +298,15 @@ Skills are workflow modules that activate at specific development phases. They c
 | **browser-testing** | Verify UI changes via Playwright MCP browser tools | After UI changes need visual verification |
 | **autonomous-loop** | Iterate through plan tasks with retry, backoff, and completion tracking | Autonomous plan execution — "just do it all" |
 
+### Orchestration phase
+
+| Skill | What it does | Trigger |
+|-------|-------------|---------|
+| **wave-orchestration** | Groups tasks by dependency into waves, parallel within waves, integration verification between | `/orchestrate` or plans with mixed dependencies |
+| **swarm-orchestration** | Coordinates multiple specialized agents analyzing the same input in parallel | `/review-swarm`, `/deep-research`, or custom swarms |
+| **knowledge-compounding** | Documents solved problems as searchable institutional knowledge in docs/solutions/ | `/compound` or after solving non-trivial problems |
+| **session-continuity** | Manages STATE.md for execution tracking across session boundaries | `/pause`, `/resume`, or during wave orchestration |
+
 ### Meta
 
 | Skill | What it does | Trigger |
@@ -259,25 +342,37 @@ Agents are specialized subprocesses dispatched via Claude's Task tool. Each agen
 | **schema-drift-detector** | Unrelated schema/migration changes | Reviewing PRs — catches scope creep in data layer |
 | **frontend-reviewer** | UI/UX code quality review | Reviewing frontend code — a11y, responsive, perf |
 | **convention-enforcer** | CONVENTIONS.md compliance checking | Reviewing code against project standards |
+| **data-integrity-guardian** | Migration safety, transactions, rollback plans | PRs with migrations, schema changes, data transforms |
+| **test-coverage-reviewer** | Test quality, assertion meaningfulness, edge cases | After implementation — verifies tests actually validate behavior |
+| **framework-docs-researcher** | Current framework docs for installed versions | Before planning features that use specific framework APIs |
+| **codebase-context-mapper** | Focused impact map for a specific change | Before planning — maps files and dependencies a change will touch |
+| **integration-verifier** | Cross-task integration verification | After wave completion — ensures parallel implementations work together |
+| **findings-synthesizer** | Review swarm output consolidation | After `/review-swarm` — de-duplicates and prioritizes all findings |
 
 ### How agents work
 
+Agents run in isolation with their own 200K context window. They can be dispatched individually or as coordinated swarms:
+
+**Single dispatch** — one agent, one focused job:
 ```
-                    Main Claude Session
-                    ┌───────┴───────┐
-                    ▼               ▼
-            code-reviewer   security-sentinel
-                    │               │
-                 findings        findings
-                    └───────┬───────┘
-                            ▼
-                    Review & integrate
-                            │
-                            ▼
-                    Continue building
+Main Session → Task("security-sentinel: audit auth endpoints") → findings → act on results
 ```
 
-Agents run in isolation and return structured findings. The main session integrates their feedback and decides what to act on.
+**Swarm dispatch** — multiple agents, same input, different lenses:
+```
+Main Session
+├── code-reviewer          → findings ─┐
+├── security-sentinel      → findings  │
+├── performance-oracle     → findings  ├── findings-synthesizer → unified report
+├── convention-enforcer    → findings  │
+└── test-coverage-reviewer → findings ─┘
+```
+
+**Wave dispatch** — parallel within waves, sequential between:
+```
+Wave 1: implementer-A + implementer-B (parallel) → integration-verifier
+Wave 2: implementer-C (depends on Wave 1)         → integration-verifier
+```
 
 ## Commands Reference
 
@@ -288,6 +383,10 @@ Commands are user-facing shortcuts that invoke the right skills with the right c
 | **`/init`** | Interactive project setup. Fills in CONVENTIONS.md, GOALS.md, STATUS.md through a guided conversation. |
 | **`/plan`** | Brainstorming session. Explores design options, presents tradeoffs, gets approval, then creates implementation plan. |
 | **`/review`** | Dispatches code-reviewer agent against your current changes. |
+| **`/review-swarm`** | Multi-agent parallel review — dispatches 6-10 specialized reviewers, synthesizes findings into prioritized P1/P2/P3 report. |
+| **`/deep-research`** | Multi-agent parallel research — spawns 5 research agents, synthesizes into unified brief for planning. |
+| **`/compound`** | Document a solved problem for future reference. Creates searchable entry in docs/solutions/. |
+| **`/orchestrate`** | Wave-based parallel execution — groups plan tasks by dependency, runs independent tasks in parallel per wave. |
 | **`/status`** | Shows current project state, goal alignment, blockers, and suggests next actions. |
 | **`/debug [issue]`** | Root cause investigation. Gathers evidence, forms hypotheses, tests them systematically. |
 | **`/backlog`** | Triages inbox items in BACKLOG.md into prioritized tasks using GOALS.md context. |
@@ -305,12 +404,13 @@ Commands are user-facing shortcuts that invoke the right skills with the right c
 
 ```bash
 claude
-> /status                        # Where did we leave off?
-> /plan add OAuth2 login          # Design before building
-> # ... approve design ...
-> # ... Claude builds with TDD ...
-> /review                         # Automated code review
-> /wrap                           # Document everything for next session
+> /resume                            # Reload context from last session
+> /deep-research add OAuth2 login    # Research before planning (5 agents in parallel)
+> /plan add OAuth2 login             # Design + plan based on research findings
+> /orchestrate                       # Execute plan with wave-based parallelism
+> /review-swarm                      # Multi-agent review (6-10 reviewers in parallel)
+> /compound OAuth2 session handling  # Document the solution for future reference
+> /wrap                              # Document everything for next session
 ```
 
 ## Customization
@@ -392,6 +492,7 @@ The `docs/` directory uses four categories, each with its own lifecycle:
 | `docs/specs/` | `feature-name.md` specifications | Created before building, stable after approval |
 | `docs/decisions/` | `NNN-kebab-case-title.md` ADRs | Created when choosing between options, permanent |
 | `docs/research/` | Spike results, tool evaluations | Created during exploration, referenced later |
+| `docs/solutions/` | Solved problems, institutional knowledge | Created by `/compound`, searched by `/plan` and `/deep-research` |
 
 ## How it works under the hood
 
@@ -399,13 +500,16 @@ The `docs/` directory uses four categories, each with its own lifecycle:
 
 When Claude starts a session, it loads context in this order:
 
-1. **CLAUDE.md** — Behavioral rules, session continuity, skill/agent dispatch tables
+1. **CLAUDE.md** — Behavioral rules, session continuity, agent team hierarchy, skill/agent dispatch tables
 2. **docs/context/STATUS.md** — What happened recently, what's in flight
-3. **docs/context/GOALS.md** — What we're trying to achieve
-4. **docs/context/CONVENTIONS.md** — How we write code here
-5. **BACKLOG.md** — What's waiting to be done
-6. **Skills** — Activated contextually based on what's happening
-7. **Agents** — Dispatched on-demand for focused analysis
+3. **docs/context/STATE.md** — Execution state for resuming in-progress work (wave progress, task completion)
+4. **docs/context/GOALS.md** — What we're trying to achieve
+5. **docs/context/CONVENTIONS.md** — How we write code here
+6. **BACKLOG.md** — What's waiting to be done
+7. **docs/solutions/** — Institutional knowledge searched before planning
+8. **blueprint.local.md** — Per-project agent configuration
+9. **Skills** — Activated contextually based on what's happening
+10. **Agents** — Dispatched on-demand for focused analysis (individually or as swarms)
 
 ### Session continuity
 
@@ -496,6 +600,30 @@ The template includes example files in `docs/decisions/`, `docs/plans/`, `docs/s
 <summary><strong>Do small bug fixes need the full brainstorm/plan flow?</strong></summary>
 
 No. The template includes a **lightweight workflow** for small, well-understood changes (< 3 files, obvious root cause). Write a failing test, fix it, verify, commit. See the "Lightweight Workflow" section in CLAUDE.md for the full criteria.
+</details>
+
+<details>
+<summary><strong>What are agent swarms and when should I use them?</strong></summary>
+
+Agent swarms dispatch multiple specialized agents in parallel on the same input. `/review-swarm` runs 6-10 reviewers simultaneously (security, performance, code quality, etc.) and merges their findings. `/deep-research` runs 5 research agents in parallel before planning. Use swarms for significant changes — they consume more tokens but catch issues a single reviewer would miss. For small changes (< 50 lines), a single `/review` is usually sufficient.
+</details>
+
+<details>
+<summary><strong>What is wave orchestration?</strong></summary>
+
+Wave orchestration (`/orchestrate`) groups plan tasks by dependency. Independent tasks run in parallel within each "wave," while dependent tasks wait for their prerequisites. An integration-verifier checks that parallel implementations work together between waves. It's the sweet spot between fully sequential execution and fully parallel — maximizing speed without breaking dependency order.
+</details>
+
+<details>
+<summary><strong>What is knowledge compounding?</strong></summary>
+
+After solving a non-trivial problem, `/compound` saves it as a structured document in `docs/solutions/`. Future `/plan` and `/deep-research` commands automatically search this directory before starting new work. Over time, your project builds institutional knowledge that prevents repeated mistakes and informs better plans.
+</details>
+
+<details>
+<summary><strong>How do I configure which agents run for my project?</strong></summary>
+
+Edit `blueprint.local.md` (gitignored, so each developer can customize). It has YAML frontmatter listing which review and research agents to dispatch. Comment out agents that aren't relevant to your stack — no point running a frontend-reviewer on a CLI tool.
 </details>
 
 ## Contributing

@@ -62,7 +62,7 @@ if (fs.existsSync(lockedFile)) {
   lines.push('DECISIONS.md exists — locked decisions that MUST be honored during planning.');
 }
 
-// Check for past research/solutions
+// Check for past research
 const researchDir = path.join(cwd, 'docs', 'research');
 if (fs.existsSync(researchDir)) {
   try {
@@ -73,6 +73,23 @@ if (fs.existsSync(researchDir)) {
   } catch (e) { /* ignore */ }
 }
 
+// Check for compounded solutions
+const solutionsDir = path.join(cwd, 'docs', 'solutions');
+if (fs.existsSync(solutionsDir)) {
+  try {
+    const solutions = fs.readdirSync(solutionsDir).filter(f => f.endsWith('.md') && f !== 'README.md');
+    if (solutions.length > 0) {
+      lines.push(solutions.length + ' solution(s) in docs/solutions/ — institutional knowledge for planning.');
+    }
+  } catch (e) { /* ignore */ }
+}
+
+// Check for session state (for resume)
+const stateFile = path.join(cwd, 'docs', 'context', 'STATE.md');
+if (fs.existsSync(stateFile)) {
+  lines.push('STATE.md exists — read it to resume in-progress work.');
+}
+
 // Reset context monitor state for fresh session
 const stateDir = path.join(os.tmpdir(), 'claude-blueprint');
 const stateFile = path.join(stateDir, 'ctx-' + Buffer.from(cwd).toString('hex').slice(0, 16) + '.json');
@@ -81,7 +98,7 @@ try {
 } catch (e) { /* ignore */ }
 
 // Remind about commands
-lines.push('Commands: /plan · /build · /discuss · /status · /review · /debug · /backlog · /wrap');
+lines.push('Commands: /plan · /build · /discuss · /review · /review-swarm · /deep-research · /compound · /orchestrate · /status · /debug · /backlog · /wrap');
 
 if (lines.length > 0) {
   console.log(lines.join('\n'));
