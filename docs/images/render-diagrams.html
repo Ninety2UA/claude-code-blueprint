@@ -247,7 +247,7 @@
 
   .ae-hub {
     text-align: center;
-    margin-bottom: 28px;
+    margin-bottom: 24px;
   }
 
   .ae-hub-label {
@@ -277,7 +277,7 @@
 
   .ae-dispatch {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
     color: #94a3b8;
     font-size: 12px;
     font-weight: 500;
@@ -296,31 +296,74 @@
     margin: 0 12px;
   }
 
-  .ae-categories {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
+  /* Team-based layout */
+  .ae-team {
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    border: 1.5px solid;
   }
 
-  .ae-cat {
-    border-radius: 10px;
-    padding: 14px;
-    border: 1px solid;
+  .ae-team:last-child { margin-bottom: 0; }
+
+  .ae-team-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
   }
 
-  .ae-cat-name {
-    font-size: 11px;
+  .ae-team-name {
+    font-size: 13px;
     font-weight: 700;
+    letter-spacing: -0.2px;
+  }
+
+  .ae-team-badge {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 8px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    color: #fff;
+  }
+
+  .ae-team-agents {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .ae-output {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+    padding-top: 8px;
+    border-top: 1px dashed;
+    border-color: inherit;
+    width: 100%;
+  }
+
+  .ae-output-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #94a3b8;
+    flex-shrink: 0;
   }
 
   .ae-agent {
     font-size: 12px;
     font-weight: 500;
-    padding: 4px 0;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid;
     line-height: 1.3;
+    white-space: nowrap;
   }
 
   .ae-agent-sub {
@@ -329,34 +372,57 @@
     opacity: 0.65;
   }
 
-  /* Agent category colors */
-  .ae-code-quality { background: #ecfdf5; border-color: #a7f3d0; }
-  .ae-code-quality .ae-cat-name { color: #059669; }
-  .ae-code-quality .ae-agent { color: #065f46; }
+  .ae-arrow {
+    font-size: 16px;
+    color: #94a3b8;
+    padding: 0 2px;
+    flex-shrink: 0;
+  }
 
-  .ae-architecture { background: #eff6ff; border-color: #bfdbfe; }
-  .ae-architecture .ae-cat-name { color: #2563eb; }
-  .ae-architecture .ae-agent { color: #1e40af; }
+  .ae-synthesizer {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: 2px solid;
+    white-space: nowrap;
+  }
 
-  .ae-security { background: #fff1f2; border-color: #fecdd3; }
-  .ae-security .ae-cat-name { color: #e11d48; }
-  .ae-security .ae-agent { color: #9f1239; }
+  /* Two-column row for smaller teams */
+  .ae-teams-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
 
-  .ae-research { background: #f5f3ff; border-color: #c4b5fd; }
-  .ae-research .ae-cat-name { color: #7c3aed; }
-  .ae-research .ae-agent { color: #5b21b6; }
+  .ae-teams-row .ae-team { margin-bottom: 0; }
 
-  .ae-testing { background: #f0fdfa; border-color: #99f6e4; }
-  .ae-testing .ae-cat-name { color: #0d9488; }
-  .ae-testing .ae-agent { color: #115e59; }
+  /* Research Swarm — purple */
+  .ae-research-swarm { background: #faf5ff; border-color: #d8b4fe; }
+  .ae-research-swarm .ae-team-name { color: #7c3aed; }
+  .ae-research-swarm .ae-team-badge { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+  .ae-research-swarm .ae-agent { background: #f5f3ff; border-color: #c4b5fd; color: #5b21b6; }
+  .ae-research-swarm .ae-synthesizer { background: #ede9fe; border-color: #8b5cf6; color: #5b21b6; }
 
-  .ae-performance { background: #fffbeb; border-color: #fde68a; }
-  .ae-performance .ae-cat-name { color: #d97706; }
-  .ae-performance .ae-agent { color: #92400e; }
+  /* Review Swarm — green */
+  .ae-review-swarm { background: #f0fdf4; border-color: #86efac; }
+  .ae-review-swarm .ae-team-name { color: #059669; }
+  .ae-review-swarm .ae-team-badge { background: linear-gradient(135deg, #10b981, #059669); }
+  .ae-review-swarm .ae-agent { background: #ecfdf5; border-color: #a7f3d0; color: #065f46; }
+  .ae-review-swarm .ae-synthesizer { background: #d1fae5; border-color: #059669; color: #065f46; }
 
-  .ae-operations { background: #f0f9ff; border-color: #bae6fd; }
-  .ae-operations .ae-cat-name { color: #0284c7; }
-  .ae-operations .ae-agent { color: #075985; }
+  /* Planning — blue */
+  .ae-planning { background: #eff6ff; border-color: #93c5fd; }
+  .ae-planning .ae-team-name { color: #2563eb; }
+  .ae-planning .ae-team-badge { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+  .ae-planning .ae-agent { background: #f0f7ff; border-color: #bfdbfe; color: #1e40af; }
+
+  /* Operations — slate/cyan */
+  .ae-standalone { background: #f0f9ff; border-color: #a5f3fc; }
+  .ae-standalone .ae-team-name { color: #0284c7; }
+  .ae-standalone .ae-team-badge { background: linear-gradient(135deg, #06b6d4, #0284c7); }
+  .ae-standalone .ae-agent { background: #f0f9ff; border-color: #bae6fd; color: #075985; }
 
   /* ── PROJECT STRUCTURE ─────────────────────────────── */
   #project-structure { }
@@ -701,13 +767,15 @@
   </div>
   <!-- Execution Phase -->
   <div class="sm-phase sm-execution">
-    <div class="sm-header">Execution <span class="sm-count">5</span></div>
+    <div class="sm-header">Execution <span class="sm-count">7</span></div>
     <div class="sm-skills">
       <div class="sm-skill">Executing Plans</div>
       <div class="sm-skill">Test-Driven Development</div>
       <div class="sm-skill">Subagent-Driven Dev</div>
       <div class="sm-skill">Parallel Agents</div>
       <div class="sm-skill">Git Worktrees</div>
+      <div class="sm-skill">Wave Orchestration</div>
+      <div class="sm-skill">Swarm Orchestration</div>
     </div>
   </div>
   <!-- Quality Phase -->
@@ -722,10 +790,12 @@
   </div>
   <!-- Completion Phase -->
   <div class="sm-phase sm-completion">
-    <div class="sm-header">Completion <span class="sm-count">2</span></div>
+    <div class="sm-header">Completion <span class="sm-count">4</span></div>
     <div class="sm-skills">
       <div class="sm-skill">Finishing Branch</div>
       <div class="sm-skill">Session Wrap</div>
+      <div class="sm-skill">Knowledge Compounding</div>
+      <div class="sm-skill">Session Continuity</div>
     </div>
   </div>
   <!-- Operations Phase -->
@@ -762,54 +832,77 @@
       Claude Code Main Session
     </div>
   </div>
-  <div class="ae-dispatch">dispatches 19 specialized agents</div>
-  <div class="ae-categories">
-    <!-- Code Quality -->
-    <div class="ae-cat ae-code-quality">
-      <div class="ae-cat-name">Code Quality</div>
-      <div class="ae-agent">Code Reviewer</div>
-      <div class="ae-agent">Simplicity Reviewer</div>
-      <div class="ae-agent">Frontend Reviewer</div>
-      <div class="ae-agent">Convention Enforcer</div>
+  <div class="ae-dispatch">orchestrates 25 agents across 4 teams</div>
+
+  <!-- Research Swarm -->
+  <div class="ae-team ae-research-swarm">
+    <div class="ae-team-header">
+      <div class="ae-team-badge">Swarm</div>
+      <div class="ae-team-name">Research Swarm — /deep-research</div>
     </div>
-    <!-- Architecture -->
-    <div class="ae-cat ae-architecture">
-      <div class="ae-cat-name">Architecture</div>
-      <div class="ae-agent">Architecture Strategist</div>
-      <div class="ae-agent">Plan Checker</div>
-      <div class="ae-agent">Integration Checker</div>
-    </div>
-    <!-- Security -->
-    <div class="ae-cat ae-security">
-      <div class="ae-cat-name">Security</div>
-      <div class="ae-agent">Security Sentinel</div>
-      <div class="ae-agent">Deployment Verifier</div>
-    </div>
-    <!-- Research -->
-    <div class="ae-cat ae-research">
-      <div class="ae-cat-name">Research</div>
+    <div class="ae-team-agents">
       <div class="ae-agent">Best Practices</div>
+      <div class="ae-agent">Framework Docs</div>
       <div class="ae-agent">Learnings Researcher</div>
       <div class="ae-agent">Git History Analyzer</div>
-      <div class="ae-agent">Research Synthesizer</div>
+      <div class="ae-agent">Context Mapper</div>
+      <div class="ae-output">
+        <div class="ae-output-label">output →</div>
+        <div class="ae-synthesizer">Research Synthesizer</div>
+      </div>
     </div>
-    <!-- Testing -->
-    <div class="ae-cat ae-testing">
-      <div class="ae-cat-name">Testing</div>
-      <div class="ae-agent">Bug Reproduction</div>
-      <div class="ae-agent">Test Gap Analyzer</div>
+  </div>
+
+  <!-- Review Swarm -->
+  <div class="ae-team ae-review-swarm">
+    <div class="ae-team-header">
+      <div class="ae-team-badge">Swarm</div>
+      <div class="ae-team-name">Review Swarm — /review-swarm</div>
     </div>
-    <!-- Performance -->
-    <div class="ae-cat ae-performance">
-      <div class="ae-cat-name">Performance</div>
+    <div class="ae-team-agents">
+      <div class="ae-agent">Code Reviewer</div>
+      <div class="ae-agent">Security Sentinel</div>
       <div class="ae-agent">Performance Oracle</div>
+      <div class="ae-agent">Simplicity Reviewer</div>
+      <div class="ae-agent">Convention Enforcer</div>
+      <div class="ae-agent">Test Coverage</div>
+      <div class="ae-agent" style="opacity:0.6">+ Architecture Strategist</div>
+      <div class="ae-agent" style="opacity:0.6">+ Frontend Reviewer</div>
+      <div class="ae-agent" style="opacity:0.6">+ Data Integrity</div>
+      <div class="ae-agent" style="opacity:0.6">+ Schema Drift</div>
+      <div class="ae-output">
+        <div class="ae-output-label">output →</div>
+        <div class="ae-synthesizer">Findings Synthesizer</div>
+      </div>
     </div>
-    <!-- Operations -->
-    <div class="ae-cat ae-operations">
-      <div class="ae-cat-name">Operations</div>
-      <div class="ae-agent">Codebase Mapper</div>
-      <div class="ae-agent">PR Comment Resolver</div>
-      <div class="ae-agent">Schema Drift Detector</div>
+  </div>
+
+  <!-- Planning + Execution row -->
+  <div class="ae-teams-row">
+    <div class="ae-team ae-planning">
+      <div class="ae-team-header">
+        <div class="ae-team-badge">Pipeline</div>
+        <div class="ae-team-name">Planning &amp; Verification</div>
+      </div>
+      <div class="ae-team-agents">
+        <div class="ae-agent">Plan Checker</div>
+        <div class="ae-agent">Integration Checker</div>
+        <div class="ae-agent">Integration Verifier</div>
+        <div class="ae-agent">Deployment Verifier</div>
+      </div>
+    </div>
+
+    <div class="ae-team ae-standalone">
+      <div class="ae-team-header">
+        <div class="ae-team-badge">Standalone</div>
+        <div class="ae-team-name">Operations &amp; Testing</div>
+      </div>
+      <div class="ae-team-agents">
+        <div class="ae-agent">Codebase Mapper</div>
+        <div class="ae-agent">PR Comment Resolver</div>
+        <div class="ae-agent">Bug Reproduction</div>
+        <div class="ae-agent">Test Gap Analyzer</div>
+      </div>
     </div>
   </div>
 </div>
@@ -830,6 +923,10 @@
           <div class="ps-child-name">BACKLOG.md</div>
           <div class="ps-child-desc">Intake &amp; triage</div>
         </div>
+        <div class="ps-child">
+          <div class="ps-child-name">blueprint.local.md</div>
+          <div class="ps-child-desc">Per-project agent config</div>
+        </div>
       </div>
     </div>
 
@@ -838,15 +935,15 @@
       <div class="ps-children">
         <div class="ps-child">
           <div class="ps-child-name">commands/</div>
-          <div class="ps-child-desc">17 slash commands</div>
+          <div class="ps-child-desc">21 slash commands</div>
         </div>
         <div class="ps-child">
           <div class="ps-child-name">skills/</div>
-          <div class="ps-child-desc">25 workflow skills</div>
+          <div class="ps-child-desc">29 workflow skills</div>
         </div>
         <div class="ps-child">
           <div class="ps-child-name">agents/</div>
-          <div class="ps-child-desc">19 specialized agents</div>
+          <div class="ps-child-desc">25 specialized agents</div>
         </div>
       </div>
     </div>
@@ -873,6 +970,10 @@
         <div class="ps-child">
           <div class="ps-child-name">research/</div>
           <div class="ps-child-desc">Spike results</div>
+        </div>
+        <div class="ps-child">
+          <div class="ps-child-name">solutions/</div>
+          <div class="ps-child-desc">Institutional knowledge</div>
         </div>
       </div>
     </div>

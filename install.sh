@@ -8,7 +8,7 @@ set -euo pipefail
 
 REPO_URL="https://github.com/Ninety2UA/claude-code-blueprint"
 TEMP_DIR=""
-VERSION="1.0.0"
+VERSION="2.0.0"
 
 # Colors
 RED='\033[0;31m'
@@ -188,7 +188,7 @@ if [ "$CLAUDE_ONLY" = false ]; then
 
             # Skip README diagram images (only needed for GitHub display)
             case "$rel" in
-                docs/images/*.svg|docs/images/*.mmd|docs/images/*.png)
+                docs/images/*.svg|docs/images/*.mmd|docs/images/*.png|docs/images/*.html)
                     continue ;;
             esac
 
@@ -208,7 +208,7 @@ if [ "$CLAUDE_ONLY" = false ]; then
     fi
 
     # Core files
-    for file in CLAUDE.md BACKLOG.md .gitignore; do
+    for file in CLAUDE.md BACKLOG.md blueprint.local.md .gitignore; do
         if [ -f "$SOURCE_DIR/$file" ]; then
             copy_item "$SOURCE_DIR/$file" "$TARGET_DIR/$file"
         fi
@@ -238,7 +238,7 @@ else
     echo -e "  ${DIM}2.${NC} claude"
     echo -e "  ${DIM}3.${NC} /init ${DIM}← interactive project setup${NC}"
     echo ""
-    echo -e "  ${DIM}Quick commands: /build · /plan · /discuss · /status · /review · /debug · /wrap${NC}"
+    echo -e "  ${DIM}Quick commands: /build · /plan · /review-swarm · /deep-research · /orchestrate · /wrap${NC}"
 fi
 
 echo ""
