@@ -10,15 +10,14 @@ Quality over speed. Small steps compound into big progress. The patterns you est
 
 <!-- Updated by /wrap at end of each work session. Read this FIRST when starting a new session. -->
 
-**Last session:** 2026-03-05
+**Last session:** 2026-03-09
 
 **What was done:**
-- Added 8 agents, 11 skills, 8 commands based on gap analysis of 5 leading Claude Code repos (`b399f7f`)
-- New agents: codebase-mapper, pr-comment-resolver, test-gap-analyzer, research-synthesizer, deployment-verifier, schema-drift-detector, frontend-reviewer, convention-enforcer
-- New skills: codebase-mapping, context-checkpoint, pr-workflow, resolve-in-parallel, deployment-verification, document-review, changelog-generation, migration-planning, performance-profiling, browser-testing, autonomous-loop
-- New commands: /pr, /map, /resume, /pause, /quick, /changelog, /add-tests, /health
-- Updated CLAUDE.md, README.md, and build.md with new counts and reference tables
-- Totals now: 25 skills, 19 agents, 17 commands
+- Added Claude Code plugin ecosystem ebook (`ebook/claude-code-tools-guide.pdf`) and README section linking to it (`7a242a5`)
+- Redesigned all 5 README diagrams from HTML/CSS source via Playwright screenshots (`98a9fa0`): workflow, quality-gates, skills-map, agents-ecosystem, project-structure
+- Updated hero banner SVG with correct counts: 25 Skills, 17 Commands, 19 Agents
+- Fixed ASCII art in README: development loop and agent dispatch diagrams
+- Added `docs/images/render-diagrams.html` as reproducible source for PNG generation
 
 **What's remaining:**
 - Add GitHub Actions CI (lint markdown, test install script)
@@ -26,7 +25,7 @@ Quality over speed. Small steps compound into big progress. The patterns you est
 - Expand example docs with more variety
 - Consider adding skills: dependency management, spike/exploration, scope cutting
 
-**Start here:** All new skills/agents/commands are deployed and pushed. Next work should focus on CI or the remaining skill gaps (dependency management, spike/exploration, scope cutting). Run `/status` to orient.
+**Start here:** All diagrams are updated and pushed. The ebook PDF evaluating 8 Claude Code tools is in `ebook/`. Next work should focus on CI setup or remaining skill gaps. Run `/status` to orient.
 
 **Current state of the code:**
 - Build: n/a (template repo, no build step)
@@ -337,3 +336,6 @@ Removing arrows from `block-beta` Mermaid diagrams eliminates the phantom routin
 
 ### 2026-03-05: Gap analysis across 5 repos shaped the skill/agent expansion
 Researched ruflo, compound-engineering, superpowers, get-shit-done, and ralphy repos to identify missing capabilities. Key patterns adopted: autonomous retry loop with exponential backoff (ralphy), structured document review with three-pass critique, deployment verification checklists, and parallel resolution of independent items. Multi-engine orchestration (ralphy) was explicitly excluded as out of scope for a Claude-focused template.
+
+### 2026-03-09: HTML/CSS diagrams via Playwright beat Mermaid for quality
+Switching from Mermaid block-beta → HTML/CSS rendered via Playwright `element.screenshot()` produces dramatically better diagrams: proper Inter/JetBrains Mono fonts, flexbox layout, gradient badges, and full color control. Source is `docs/images/render-diagrams.html`. Mermaid `.mmd` files kept for reference but are no longer the primary rendering path. Also: `background-clip: text` CSS gradient breaks in Chromium PDF — use solid color instead.
