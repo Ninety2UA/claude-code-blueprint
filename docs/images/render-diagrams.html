@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #f8fafc;
+    color: #0f172a;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .diagram {
+    width: 880px;
+    padding: 48px 44px;
+    margin: 60px auto;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+
+  /* ── WORKFLOW ──────────────────────────────────────── */
+  #workflow { padding-bottom: 56px; }
+
+  .wf-pipeline {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    position: relative;
+  }
+
+  .wf-step {
+    flex: 1;
+    position: relative;
+    padding: 0 6px;
+  }
+
+  .wf-card {
+    border-radius: 12px;
+    padding: 20px 14px 16px;
+    text-align: center;
+    position: relative;
+    height: 100%;
+    border: 1.5px solid;
+  }
+
+  .wf-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 auto 10px;
+  }
+
+  .wf-name {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.3px;
+  }
+
+  .wf-cmds {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #64748b;
+    line-height: 1.5;
+  }
+
+  .wf-arrow {
+    position: absolute;
+    right: -11px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    color: #94a3b8;
+    font-size: 18px;
+  }
+
+  .wf-loop {
+    margin-top: 16px;
+    text-align: center;
+    position: relative;
+    height: 44px;
+  }
+
+  .wf-loop svg {
+    width: 100%;
+    height: 44px;
+  }
+
+  /* Step colors */
+  .wf-orient .wf-card { background: #ecfdf5; border-color: #6ee7b7; }
+  .wf-orient .wf-num { background: #059669; }
+  .wf-design .wf-card { background: #eff6ff; border-color: #93c5fd; }
+  .wf-design .wf-num { background: #2563eb; }
+  .wf-plan .wf-card { background: #fefce8; border-color: #fde68a; }
+  .wf-plan .wf-num { background: #d97706; }
+  .wf-build .wf-card { background: #fdf2f8; border-color: #f9a8d4; }
+  .wf-build .wf-num { background: #db2777; }
+  .wf-ship .wf-card { background: #f5f3ff; border-color: #c4b5fd; }
+  .wf-ship .wf-num { background: #7c3aed; }
+
+  /* ── QUALITY GATES ─────────────────────────────────── */
+  #quality-gates { }
+
+  .qg-row {
+    display: flex;
+    gap: 14px;
+  }
+
+  .qg-gate {
+    flex: 1;
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px 16px;
+    text-align: center;
+    border: 1.5px solid #e2e8f0;
+    position: relative;
+  }
+
+  .qg-shield {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 800;
+    color: #fff;
+    margin: 0 auto 12px;
+  }
+
+  .qg-rule {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.45;
+    color: #0f172a;
+    margin-bottom: 8px;
+  }
+
+  .qg-skill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: #64748b;
+    background: #f1f5f9;
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+
+  .qg-connector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    color: #cbd5e1;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .qg-gate:nth-child(1) .qg-shield { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+  .qg-gate:nth-child(1) { border-color: #bfdbfe; }
+  .qg-gate:nth-child(3) .qg-shield { background: linear-gradient(135deg, #f59e0b, #d97706); }
+  .qg-gate:nth-child(3) { border-color: #fde68a; }
+  .qg-gate:nth-child(5) .qg-shield { background: linear-gradient(135deg, #10b981, #059669); }
+  .qg-gate:nth-child(5) { border-color: #a7f3d0; }
+  .qg-gate:nth-child(7) .qg-shield { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+  .qg-gate:nth-child(7) { border-color: #c4b5fd; }
+  .qg-gate:nth-child(9) .qg-shield { background: linear-gradient(135deg, #f43f5e, #e11d48); }
+  .qg-gate:nth-child(9) { border-color: #fecdd3; }
+
+  /* ── SKILLS MAP ────────────────────────────────────── */
+  #skills-map { }
+
+  .sm-phase {
+    margin-bottom: 20px;
+  }
+
+  .sm-phase:last-child { margin-bottom: 0; }
+
+  .sm-header {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 10px;
+  }
+
+  .sm-count {
+    font-size: 11px;
+    font-weight: 600;
+    opacity: 0.7;
+  }
+
+  .sm-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .sm-skill {
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 12.5px;
+    font-weight: 500;
+    border: 1px solid;
+    white-space: nowrap;
+  }
+
+  /* Phase colors */
+  .sm-design .sm-header { background: #dbeafe; color: #1e40af; }
+  .sm-design .sm-skill { background: #eff6ff; border-color: #bfdbfe; color: #1e40af; }
+
+  .sm-execution .sm-header { background: #fef3c7; color: #92400e; }
+  .sm-execution .sm-skill { background: #fffbeb; border-color: #fde68a; color: #92400e; }
+
+  .sm-quality .sm-header { background: #d1fae5; color: #065f46; }
+  .sm-quality .sm-skill { background: #ecfdf5; border-color: #a7f3d0; color: #065f46; }
+
+  .sm-completion .sm-header { background: #ede9fe; color: #5b21b6; }
+  .sm-completion .sm-skill { background: #f5f3ff; border-color: #c4b5fd; color: #5b21b6; }
+
+  .sm-operations .sm-header { background: #e0f2fe; color: #075985; }
+  .sm-operations .sm-skill { background: #f0f9ff; border-color: #bae6fd; color: #075985; }
+
+  .sm-meta .sm-header { background: #f1f5f9; color: #334155; }
+  .sm-meta .sm-skill { background: #f8fafc; border-color: #e2e8f0; color: #334155; }
+
+  /* ── AGENTS ECOSYSTEM ──────────────────────────────── */
+  #agents-ecosystem { }
+
+  .ae-hub {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  .ae-hub-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #0f172a;
+    color: #fff;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  .ae-hub-icon {
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .ae-dispatch {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #94a3b8;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .ae-dispatch::before,
+  .ae-dispatch::after {
+    content: '';
+    display: inline-block;
+    width: 40px;
+    height: 1px;
+    background: #e2e8f0;
+    vertical-align: middle;
+    margin: 0 12px;
+  }
+
+  .ae-categories {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+
+  .ae-cat {
+    border-radius: 10px;
+    padding: 14px;
+    border: 1px solid;
+  }
+
+  .ae-cat-name {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+
+  .ae-agent {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 0;
+    line-height: 1.3;
+  }
+
+  .ae-agent-sub {
+    font-size: 10px;
+    font-weight: 400;
+    opacity: 0.65;
+  }
+
+  /* Agent category colors */
+  .ae-code-quality { background: #ecfdf5; border-color: #a7f3d0; }
+  .ae-code-quality .ae-cat-name { color: #059669; }
+  .ae-code-quality .ae-agent { color: #065f46; }
+
+  .ae-architecture { background: #eff6ff; border-color: #bfdbfe; }
+  .ae-architecture .ae-cat-name { color: #2563eb; }
+  .ae-architecture .ae-agent { color: #1e40af; }
+
+  .ae-security { background: #fff1f2; border-color: #fecdd3; }
+  .ae-security .ae-cat-name { color: #e11d48; }
+  .ae-security .ae-agent { color: #9f1239; }
+
+  .ae-research { background: #f5f3ff; border-color: #c4b5fd; }
+  .ae-research .ae-cat-name { color: #7c3aed; }
+  .ae-research .ae-agent { color: #5b21b6; }
+
+  .ae-testing { background: #f0fdfa; border-color: #99f6e4; }
+  .ae-testing .ae-cat-name { color: #0d9488; }
+  .ae-testing .ae-agent { color: #115e59; }
+
+  .ae-performance { background: #fffbeb; border-color: #fde68a; }
+  .ae-performance .ae-cat-name { color: #d97706; }
+  .ae-performance .ae-agent { color: #92400e; }
+
+  .ae-operations { background: #f0f9ff; border-color: #bae6fd; }
+  .ae-operations .ae-cat-name { color: #0284c7; }
+  .ae-operations .ae-agent { color: #075985; }
+
+  /* ── PROJECT STRUCTURE ─────────────────────────────── */
+  #project-structure { }
+
+  .ps-tree {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .ps-root {
+    background: #0f172a;
+    color: #fff;
+    padding: 14px 24px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .ps-section {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .ps-section-label {
+    min-width: 200px;
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-weight: 700;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+
+  .ps-children {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    flex: 1;
+    align-items: flex-start;
+  }
+
+  .ps-child {
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 12.5px;
+    font-weight: 500;
+    border: 1px solid;
+  }
+
+  .ps-child-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+  }
+
+  .ps-child-desc {
+    font-size: 11px;
+    opacity: 0.7;
+    margin-top: 2px;
+  }
+
+  /* Section colors */
+  .ps-root-files .ps-section-label { background: #0f172a; color: #fff; }
+  .ps-root-files .ps-child { background: #f8fafc; border-color: #e2e8f0; }
+
+  .ps-claude .ps-section-label { background: #eef2ff; color: #4338ca; border: 2px solid #c7d2fe; }
+  .ps-claude .ps-child { background: #f5f3ff; border-color: #c4b5fd; color: #5b21b6; }
+
+  .ps-docs .ps-section-label { background: #fef3c7; color: #92400e; border: 2px solid #fde68a; }
+  .ps-docs .ps-child { background: #fffbeb; border-color: #fde68a; color: #92400e; }
+
+  .ps-source .ps-section-label { background: #d1fae5; color: #065f46; border: 2px solid #a7f3d0; }
+  .ps-source .ps-child { background: #ecfdf5; border-color: #a7f3d0; color: #065f46; }
+</style>
+</head>
+<body>
+
+<!-- ════════════ WORKFLOW ════════════ -->
+<div class="diagram" id="workflow">
+  <div class="wf-pipeline">
+    <div class="wf-step wf-orient">
+      <div class="wf-card">
+        <div class="wf-num">1</div>
+        <div class="wf-name">Orient</div>
+        <div class="wf-cmds">/init · /status<br>Load context</div>
+      </div>
+      <div class="wf-arrow">→</div>
+    </div>
+    <div class="wf-step wf-design">
+      <div class="wf-card">
+        <div class="wf-num">2</div>
+        <div class="wf-name">Design</div>
+        <div class="wf-cmds">/plan · Brainstorm<br>Get approval</div>
+      </div>
+      <div class="wf-arrow">→</div>
+    </div>
+    <div class="wf-step wf-plan">
+      <div class="wf-card">
+        <div class="wf-num">3</div>
+        <div class="wf-name">Plan</div>
+        <div class="wf-cmds">Bite-sized tasks<br>Create worktree</div>
+      </div>
+      <div class="wf-arrow">→</div>
+    </div>
+    <div class="wf-step wf-build">
+      <div class="wf-card">
+        <div class="wf-num">4</div>
+        <div class="wf-name">Build</div>
+        <div class="wf-cmds">TDD · Verify<br>/review</div>
+      </div>
+      <div class="wf-arrow">→</div>
+    </div>
+    <div class="wf-step wf-ship">
+      <div class="wf-card">
+        <div class="wf-num">5</div>
+        <div class="wf-name">Ship</div>
+        <div class="wf-cmds">Merge · /wrap<br>Next task ↩</div>
+      </div>
+    </div>
+  </div>
+  <div class="wf-loop">
+    <svg viewBox="0 0 860 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M 770 4 C 810 4, 830 18, 830 28 C 830 38, 810 44, 770 44 L 90 44 C 50 44, 30 38, 30 28 C 30 18, 50 4, 90 4" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="6 4" fill="none" marker-start="url(#arrowStart)"/>
+      <defs>
+        <marker id="arrowStart" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto-start-reverse">
+          <path d="M 8 0 L 0 4 L 8 8" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+        </marker>
+      </defs>
+      <rect x="370" y="16" width="120" height="22" rx="11" fill="#f1f5f9"/>
+      <text x="430" y="31" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="500" fill="#64748b">next task</text>
+    </svg>
+  </div>
+</div>
+
+<!-- ════════════ QUALITY GATES ════════════ -->
+<div class="diagram" id="quality-gates">
+  <div class="qg-row">
+    <div class="qg-gate">
+      <div class="qg-shield">1</div>
+      <div class="qg-rule">No code without design approval</div>
+      <div class="qg-skill">brainstorming</div>
+    </div>
+    <div class="qg-connector">→</div>
+    <div class="qg-gate">
+      <div class="qg-shield">2</div>
+      <div class="qg-rule">No production code without failing test</div>
+      <div class="qg-skill">test-driven-development</div>
+    </div>
+    <div class="qg-connector">→</div>
+    <div class="qg-gate">
+      <div class="qg-shield">3</div>
+      <div class="qg-rule">No fix without root cause investigation</div>
+      <div class="qg-skill">systematic-debugging</div>
+    </div>
+    <div class="qg-connector">→</div>
+    <div class="qg-gate">
+      <div class="qg-shield">4</div>
+      <div class="qg-rule">No completion claim without evidence</div>
+      <div class="qg-skill">verification</div>
+    </div>
+    <div class="qg-connector">→</div>
+    <div class="qg-gate">
+      <div class="qg-shield">5</div>
+      <div class="qg-rule">No merge without code review</div>
+      <div class="qg-skill">requesting-code-review</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ SKILLS MAP ════════════ -->
+<div class="diagram" id="skills-map">
+  <!-- Design Phase -->
+  <div class="sm-phase sm-design">
+    <div class="sm-header">Design <span class="sm-count">2</span></div>
+    <div class="sm-skills">
+      <div class="sm-skill">Brainstorming</div>
+      <div class="sm-skill">Writing Plans</div>
+    </div>
+  </div>
+  <!-- Execution Phase -->
+  <div class="sm-phase sm-execution">
+    <div class="sm-header">Execution <span class="sm-count">5</span></div>
+    <div class="sm-skills">
+      <div class="sm-skill">Executing Plans</div>
+      <div class="sm-skill">Test-Driven Development</div>
+      <div class="sm-skill">Subagent-Driven Dev</div>
+      <div class="sm-skill">Parallel Agents</div>
+      <div class="sm-skill">Git Worktrees</div>
+    </div>
+  </div>
+  <!-- Quality Phase -->
+  <div class="sm-phase sm-quality">
+    <div class="sm-header">Quality <span class="sm-count">4</span></div>
+    <div class="sm-skills">
+      <div class="sm-skill">Systematic Debugging</div>
+      <div class="sm-skill">Verification</div>
+      <div class="sm-skill">Requesting Review</div>
+      <div class="sm-skill">Receiving Review</div>
+    </div>
+  </div>
+  <!-- Completion Phase -->
+  <div class="sm-phase sm-completion">
+    <div class="sm-header">Completion <span class="sm-count">2</span></div>
+    <div class="sm-skills">
+      <div class="sm-skill">Finishing Branch</div>
+      <div class="sm-skill">Session Wrap</div>
+    </div>
+  </div>
+  <!-- Operations Phase -->
+  <div class="sm-phase sm-operations">
+    <div class="sm-header">Operations <span class="sm-count">11</span></div>
+    <div class="sm-skills">
+      <div class="sm-skill">Codebase Mapping</div>
+      <div class="sm-skill">Context Checkpoint</div>
+      <div class="sm-skill">PR Workflow</div>
+      <div class="sm-skill">Resolve in Parallel</div>
+      <div class="sm-skill">Deploy Verification</div>
+      <div class="sm-skill">Document Review</div>
+      <div class="sm-skill">Changelog</div>
+      <div class="sm-skill">Migration Planning</div>
+      <div class="sm-skill">Perf Profiling</div>
+      <div class="sm-skill">Browser Testing</div>
+      <div class="sm-skill">Autonomous Loop</div>
+    </div>
+  </div>
+  <!-- Meta -->
+  <div class="sm-phase sm-meta">
+    <div class="sm-header">Meta <span class="sm-count">1</span></div>
+    <div class="sm-skills">
+      <div class="sm-skill">Writing Skills</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ AGENTS ECOSYSTEM ════════════ -->
+<div class="diagram" id="agents-ecosystem">
+  <div class="ae-hub">
+    <div class="ae-hub-label">
+      <div class="ae-hub-icon">>_</div>
+      Claude Code Main Session
+    </div>
+  </div>
+  <div class="ae-dispatch">dispatches 19 specialized agents</div>
+  <div class="ae-categories">
+    <!-- Code Quality -->
+    <div class="ae-cat ae-code-quality">
+      <div class="ae-cat-name">Code Quality</div>
+      <div class="ae-agent">Code Reviewer</div>
+      <div class="ae-agent">Simplicity Reviewer</div>
+      <div class="ae-agent">Frontend Reviewer</div>
+      <div class="ae-agent">Convention Enforcer</div>
+    </div>
+    <!-- Architecture -->
+    <div class="ae-cat ae-architecture">
+      <div class="ae-cat-name">Architecture</div>
+      <div class="ae-agent">Architecture Strategist</div>
+      <div class="ae-agent">Plan Checker</div>
+      <div class="ae-agent">Integration Checker</div>
+    </div>
+    <!-- Security -->
+    <div class="ae-cat ae-security">
+      <div class="ae-cat-name">Security</div>
+      <div class="ae-agent">Security Sentinel</div>
+      <div class="ae-agent">Deployment Verifier</div>
+    </div>
+    <!-- Research -->
+    <div class="ae-cat ae-research">
+      <div class="ae-cat-name">Research</div>
+      <div class="ae-agent">Best Practices</div>
+      <div class="ae-agent">Learnings Researcher</div>
+      <div class="ae-agent">Git History Analyzer</div>
+      <div class="ae-agent">Research Synthesizer</div>
+    </div>
+    <!-- Testing -->
+    <div class="ae-cat ae-testing">
+      <div class="ae-cat-name">Testing</div>
+      <div class="ae-agent">Bug Reproduction</div>
+      <div class="ae-agent">Test Gap Analyzer</div>
+    </div>
+    <!-- Performance -->
+    <div class="ae-cat ae-performance">
+      <div class="ae-cat-name">Performance</div>
+      <div class="ae-agent">Performance Oracle</div>
+    </div>
+    <!-- Operations -->
+    <div class="ae-cat ae-operations">
+      <div class="ae-cat-name">Operations</div>
+      <div class="ae-agent">Codebase Mapper</div>
+      <div class="ae-agent">PR Comment Resolver</div>
+      <div class="ae-agent">Schema Drift Detector</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ PROJECT STRUCTURE ════════════ -->
+<div class="diagram" id="project-structure">
+  <div class="ps-tree">
+    <div class="ps-root">your-project/</div>
+
+    <div class="ps-section ps-root-files">
+      <div class="ps-section-label">Root Files</div>
+      <div class="ps-children">
+        <div class="ps-child">
+          <div class="ps-child-name">CLAUDE.md</div>
+          <div class="ps-child-desc">Master orchestration</div>
+        </div>
+        <div class="ps-child">
+          <div class="ps-child-name">BACKLOG.md</div>
+          <div class="ps-child-desc">Intake &amp; triage</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ps-section ps-claude">
+      <div class="ps-section-label">.claude/<br><span style="font-weight:500;font-size:11px;opacity:0.7">AI Configuration</span></div>
+      <div class="ps-children">
+        <div class="ps-child">
+          <div class="ps-child-name">commands/</div>
+          <div class="ps-child-desc">17 slash commands</div>
+        </div>
+        <div class="ps-child">
+          <div class="ps-child-name">skills/</div>
+          <div class="ps-child-desc">25 workflow skills</div>
+        </div>
+        <div class="ps-child">
+          <div class="ps-child-name">agents/</div>
+          <div class="ps-child-desc">19 specialized agents</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ps-section ps-docs">
+      <div class="ps-section-label">docs/<br><span style="font-weight:500;font-size:11px;opacity:0.7">Living Documentation</span></div>
+      <div class="ps-children">
+        <div class="ps-child">
+          <div class="ps-child-name">context/</div>
+          <div class="ps-child-desc">GOALS · STATUS · CONVENTIONS</div>
+        </div>
+        <div class="ps-child">
+          <div class="ps-child-name">plans/</div>
+          <div class="ps-child-desc">Implementation plans</div>
+        </div>
+        <div class="ps-child">
+          <div class="ps-child-name">specs/</div>
+          <div class="ps-child-desc">Feature specs</div>
+        </div>
+        <div class="ps-child">
+          <div class="ps-child-name">decisions/</div>
+          <div class="ps-child-desc">ADRs</div>
+        </div>
+        <div class="ps-child">
+          <div class="ps-child-name">research/</div>
+          <div class="ps-child-desc">Spike results</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ps-section ps-source">
+      <div class="ps-section-label">Source Code</div>
+      <div class="ps-children">
+        <div class="ps-child">
+          <div class="ps-child-name">src/</div>
+          <div class="ps-child-desc">Application code</div>
+        </div>
+        <div class="ps-child">
+          <div class="ps-child-name">tests/</div>
+          <div class="ps-child-desc">Test suite</div>
+        </div>
+        <div class="ps-child">
+          <div class="ps-child-name">scripts/</div>
+          <div class="ps-child-desc">Automation</div>
+        </div>
+        <div class="ps-child">
+          <div class="ps-child-name">infra/</div>
+          <div class="ps-child-desc">Deployment</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

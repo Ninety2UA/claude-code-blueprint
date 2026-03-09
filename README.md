@@ -110,9 +110,10 @@ your-project/
 Every feature follows this flow:
 
 ```
-Orient → Design → Plan → Build → Ship
-  ↑                                 │
-  └─────────── next task ───────────┘
+ ┌──────────────────────────────────────────────┐
+ │                                              │
+ ▼                                              │
+Orient ──▶ Design ──▶ Plan ──▶ Build ──▶ Ship ──┘
 ```
 
 **1. Orient** — Load context with `/status` or set up with `/init`
@@ -249,14 +250,18 @@ Agents are specialized subprocesses dispatched via Claude's Task tool. Each agen
 ### How agents work
 
 ```
-Main Claude Session
-  │
-  ├─► dispatch code-reviewer ──► findings ──┐
-  ├─► dispatch security-sentinel ──► findings ──┤
-  │                                            ▼
-  │                                    Review & integrate
-  │                                            │
-  └──────────── continue building ◄────────────┘
+                    Main Claude Session
+                    ┌───────┴───────┐
+                    ▼               ▼
+            code-reviewer   security-sentinel
+                    │               │
+                 findings        findings
+                    └───────┬───────┘
+                            ▼
+                    Review & integrate
+                            │
+                            ▼
+                    Continue building
 ```
 
 Agents run in isolation and return structured findings. The main session integrates their feedback and decides what to act on.
