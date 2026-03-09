@@ -13,22 +13,22 @@ Quality over speed. Small steps compound into big progress. The patterns you est
 **Last session:** 2026-03-09
 
 **What was done:**
-- Added `--version` / `-v` flag to install.sh
-- Bumped version to 2.1.0
-- Added 3 new skills: dependency-management, spike-exploration, scope-cutting (32 total)
-- Updated all counts and references in CLAUDE.md and STATUS.md
-- Cleared "Up Next" items — all completed
+- Added `-v`/`--version` flag to install.sh (`611902d`)
+- Bumped version to 2.1.0 (`611902d`)
+- Added 3 new skills: dependency-management, spike-exploration, scope-cutting — 29 → 32 total (`611902d`)
+- Updated all counts in README.md, CLAUDE.md, STATUS.md, plugin.json, hero-banner.svg (`611902d`)
+- All "Up Next" items from previous session completed
 
 **What's remaining:**
 - (none)
 
-**Start here:** All items complete. Run `/status` to orient or check BACKLOG.md for new work.
+**Start here:** All planned work complete. Check BACKLOG.md for new work or run `/status` to orient.
 
 **Current state of the code:**
 - Build: n/a (template repo, no build step)
-- Tests: CI needs re-run after commit (install threshold tests should pass — 32 skills > 20)
-- Lint: needs verification
-- Uncommitted changes: install.sh, CLAUDE.md, STATUS.md, 3 new skill files
+- Tests: CI should pass (threshold-based counts, 32 > 20)
+- Lint: shellcheck clean (verified locally), markdownlint not re-run
+- Uncommitted changes: none — working tree clean
 
 ## Behavioral Rules
 
