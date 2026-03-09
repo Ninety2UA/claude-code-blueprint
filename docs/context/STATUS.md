@@ -5,8 +5,8 @@ Last updated: 2026-03-09
 ## Current State of the Code
 
 - **Build:** n/a (template repo, no build step)
-- **Tests:** n/a (install.sh tested manually via dry-run)
-- **Lint:** not yet configured
+- **Tests:** CI passing (4/4 jobs — lint-markdown, shellcheck, install ubuntu, install macos)
+- **Lint:** markdownlint clean, shellcheck clean
 - **Last verified:** 2026-03-09
 - **Version:** 2.0.0 (29 skills, 25 agents, 21 commands, 2 hooks)
 
@@ -14,22 +14,19 @@ Last updated: 2026-03-09
 
 | Task | Status | Blockers | Notes |
 |------|--------|----------|-------|
-| Update diagrams for v2.0.0 | Not started | — | Hero banner needs new counts; agents-ecosystem diagram needs swarm/wave structure |
-| Update install.sh for new files | Not started | — | Must handle blueprint.local.md, docs/solutions/ |
+| (none) | — | — | — |
 
 ## Up Next
 
-1. Update hero-banner.svg with new counts (29 Skills, 21 Commands, 25 Agents)
-2. Re-render all 5 README diagrams from `docs/images/render-diagrams.html` to reflect agent teams
-3. Update install.sh to handle blueprint.local.md and docs/solutions/
-4. Add GitHub Actions CI — lint markdown, test install script on ubuntu/macos
-5. Add `--version` flag or release tagging strategy to install.sh
-6. Consider adding skills: dependency management, spike/exploration, scope cutting
+1. Add `--version` flag or release tagging strategy to install.sh
+2. Consider adding skills: dependency management, spike/exploration, scope cutting
 
 ## What's Done
 
 | Date | Commit | Description |
 |------|--------|-------------|
+| 2026-03-09 | `aece6df` | Chore: add GitHub Actions CI — lint markdown, shellcheck, install tests on ubuntu+macos. All 4 jobs passing. |
+| 2026-03-09 | `06c261d` | Docs: update all diagrams for v2.0.0 — team-based agents-ecosystem, 4 new skills in skills-map, updated counts in hero-banner and project-structure. Re-rendered 6 PNGs. install.sh bumped to v2.0.0. |
 | 2026-03-09 | `780a037` | Feat: v2.0.0 — add agent swarms (review/research), wave orchestration, knowledge compounding. +6 agents, +4 commands, +4 skills, blueprint.local.md, docs/solutions/ |
 | 2026-03-09 | `98a9fa0` | Docs: redesign all 5 diagrams with HTML/CSS rendering, update hero banner counts, fix ASCII art |
 | 2026-03-09 | `7a242a5` | Docs: add Claude Code plugin ecosystem ebook (PDF) and README section |
@@ -58,7 +55,6 @@ Last updated: 2026-03-09
 
 | Issue | Severity | Workaround | Discovered |
 |-------|----------|------------|------------|
-| No CI — install script not automatically tested | P2 | Manual dry-run testing | 2026-03-04 |
 | docs/context/ files still have placeholder templates | P3 | Filled in by `/init` when user installs | 2026-03-04 |
 
 ## Dependencies and External Blockers

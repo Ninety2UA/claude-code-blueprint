@@ -13,29 +13,25 @@ Quality over speed. Small steps compound into big progress. The patterns you est
 **Last session:** 2026-03-09
 
 **What was done:**
-- Evaluated 8 Claude Code repos (superpowers, compound-engineering, GSD, ralphy, claude-skills, everything-claude-code, plugins-plus-skills, ui-ux-pro-max) and applied best patterns
-- Added 6 agents: data-integrity-guardian, test-coverage-reviewer, framework-docs-researcher, codebase-context-mapper, integration-verifier, findings-synthesizer (`780a037`)
-- Added 4 commands: `/review-swarm`, `/deep-research`, `/compound`, `/orchestrate` (`780a037`)
-- Added 4 skills: wave-orchestration, swarm-orchestration, knowledge-compounding, session-continuity (`780a037`)
-- Added `blueprint.local.md` (per-project agent config) and `docs/solutions/` (knowledge compounding)
-- Organized agents into coordinated teams: Review Swarm, Research Swarm, Execution Waves, Knowledge Loop
-- Updated build pipeline: Stage 5 now uses `/review-swarm`, added Stage 7 (Compound)
-- Bumped to v2.0.0, updated README with Agent Teams section, new FAQs, updated all counts
-- Earlier: added ecosystem ebook PDF (`7a242a5`), redesigned all 5 diagrams (`98a9fa0`)
+- Updated hero-banner.svg with new counts (29 Skills, 21 Commands, 25 Agents) (`06c261d`)
+- Redesigned agents-ecosystem diagram from flat 19-agent categories to 25-agent swarm/wave team layout with OUTPUT → synthesizer flow (`06c261d`)
+- Added 4 new skills to skills-map diagram (wave/swarm orchestration, knowledge compounding, session continuity) (`06c261d`)
+- Updated project-structure diagram: new counts, added blueprint.local.md + docs/solutions/ (`06c261d`)
+- Re-rendered all 6 PNGs via Playwright (`06c261d`)
+- Updated install.sh: v2.0.0, added blueprint.local.md to core files, filtered render-diagrams.html, fixed shellcheck SC2295 (`06c261d`, `aece6df`)
+- Added GitHub Actions CI: 3 jobs (lint-markdown, shellcheck, install-test on ubuntu+macos) — all 4 jobs passing (`aece6df`)
+- Added .markdownlint.json config (`aece6df`)
 
 **What's remaining:**
-- Update hero-banner.svg with new counts (29 Skills, 21 Commands, 25 Agents)
-- Re-render all 5 README diagrams from `docs/images/render-diagrams.html` to reflect new agent teams
-- Update install.sh to handle new files (blueprint.local.md, docs/solutions/)
-- Add GitHub Actions CI (lint markdown, test install script)
 - Add `--version` flag or release tagging strategy to install.sh
 - Consider adding skills: dependency management, spike/exploration, scope cutting
 
-**Start here:** Diagrams and hero banner need updating to reflect v2.0.0 counts and new agent team architecture. Start with `docs/images/render-diagrams.html` — update the agents-ecosystem diagram to show swarm/wave structure, then re-render all PNGs via Playwright. Run `/status` to orient.
+**Start here:** Small items remaining. Add `--version` flag to install.sh, then evaluate whether new skills are worth adding. Run `/status` to orient.
 
 **Current state of the code:**
 - Build: n/a (template repo, no build step)
-- Tests: n/a (install.sh tested manually via dry-run)
+- Tests: CI passing (4/4 jobs green — lint, shellcheck, install ubuntu, install macos)
+- Lint: markdownlint clean, shellcheck clean
 - Uncommitted changes: none — working tree clean
 
 ## Behavioral Rules
@@ -419,3 +415,6 @@ Switching from Mermaid block-beta → HTML/CSS rendered via Playwright `element.
 
 ### 2026-03-09: Agent swarm architecture — three orchestration patterns
 After evaluating 8 Claude Code repos, three multi-agent patterns emerged: (1) **Swarm** — N specialists analyze same input in parallel, synthesizer merges findings (used for review and research); (2) **Wave** — tasks grouped by dependency, parallel within waves, integration-verifier between waves; (3) **Knowledge loop** — `/compound` saves solved problems to `docs/solutions/`, learnings-researcher searches them before future planning. Per-project config (`blueprint.local.md`) prevents irrelevant agents from wasting tokens. Compound Engineering's parallel review was the gold standard; GSD's context monitoring was already in our hooks.
+
+### 2026-03-09: CI install tests should use threshold counts, not exact
+Testing `>=20 commands` instead of `==21` means adding new components doesn't break CI. The install script tests on both ubuntu and macos to catch platform-specific issues (e.g., `find` flag differences, `wc` whitespace handling). ShellCheck SC2295: parameter expansions inside `${..#..}` need inner quotes to prevent glob pattern matching — `"${dest#"$TARGET_DIR"/}"` not `"${dest#$TARGET_DIR/}"`.
