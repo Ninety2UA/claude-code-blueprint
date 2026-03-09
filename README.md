@@ -480,6 +480,20 @@ The template includes example files in `docs/decisions/`, `docs/plans/`, `docs/s
 No. The template includes a **lightweight workflow** for small, well-understood changes (< 3 files, obvious root cause). Write a failing test, fix it, verify, commit. See the "Lightweight Workflow" section in CLAUDE.md for the full criteria.
 </details>
 
+## Exploring the Claude Code Plugin Ecosystem
+
+Wondering how this template compares to other Claude Code tools like Superpowers, Get Shit Done, or Everything Claude Code? We published a free guide that evaluates the top 8 plugins, frameworks, and orchestration tools side by side.
+
+**[The Claude Code Tools Guide (PDF)](ebook/claude-code-tools-guide.pdf)** covers:
+
+- Honest profiles of each tool — what works, what doesn't, and what's hype
+- A classification matrix comparing architecture, scope, and overhead
+- Scenario-based recommendations (solo dev vs. team, simple vs. complex projects)
+- Which tools combine safely and which ones conflict
+- A confidence-scored final ranking based on direct repository inspection
+
+> *The best tool is the one that matches your actual workflow, not the one with the most stars.*
+
 ## Contributing
 
 Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
