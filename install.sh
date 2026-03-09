@@ -125,7 +125,7 @@ SOURCE_DIR="$TEMP_DIR/template"
 copy_item() {
     local src="$1"
     local dest="$2"
-    local rel_path="${dest#$TARGET_DIR/}"
+    local rel_path="${dest#"$TARGET_DIR"/}"
 
     if [ -d "$src" ]; then
         if [ "$DRY_RUN" = true ]; then
@@ -172,7 +172,7 @@ if [ "$DOCS_ONLY" = false ]; then
     info "Installing .claude/ (skills, agents, commands)..."
     if [ -d "$SOURCE_DIR/.claude" ]; then
         find "$SOURCE_DIR/.claude" -type f | while read -r file; do
-            rel="${file#$SOURCE_DIR/}"
+            rel="${file#"$SOURCE_DIR"/}"
             copy_item "$file" "$TARGET_DIR/$rel"
         done
         INSTALLED=$((INSTALLED + 1))
@@ -184,7 +184,7 @@ if [ "$CLAUDE_ONLY" = false ]; then
     info "Installing docs/ structure..."
     if [ -d "$SOURCE_DIR/docs" ]; then
         find "$SOURCE_DIR/docs" -type f | while read -r file; do
-            rel="${file#$SOURCE_DIR/}"
+            rel="${file#"$SOURCE_DIR"/}"
 
             # Skip README diagram images (only needed for GitHub display)
             case "$rel" in
@@ -201,7 +201,7 @@ if [ "$CLAUDE_ONLY" = false ]; then
     # Plugin manifest
     if [ -d "$SOURCE_DIR/.claude-plugin" ]; then
         find "$SOURCE_DIR/.claude-plugin" -type f | while read -r file; do
-            rel="${file#$SOURCE_DIR/}"
+            rel="${file#"$SOURCE_DIR"/}"
             copy_item "$file" "$TARGET_DIR/$rel"
         done
         success ".claude-plugin/ installed (plugin manifest)"

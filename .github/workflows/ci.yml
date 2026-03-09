@@ -1,0 +1,117 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-markdown:
+    name: Lint Markdown
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install markdownlint-cli
+        run: npm install -g markdownlint-cli
+
+      - name: Lint markdown files
+        run: markdownlint '**/*.md' --ignore node_modules --ignore docs/images
+
+  install-test:
+    name: Install Script (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run install (dry-run from local checkout)
+        run: |
+          # Test dry-run mode — should list files without errors
+          bash install.sh --dry-run /tmp/blueprint-test 2>&1 | tee /tmp/dry-run.log
+          # Verify key lines appeared
+          grep -q "Dry run complete" /tmp/dry-run.log
+
+      - name: Run full install
+        run: |
+          bash install.sh --force /tmp/blueprint-test
+
+      - name: Verify installed files exist
+        run: |
+          set -e
+          echo "Checking core files..."
+          test -f /tmp/blueprint-test/CLAUDE.md
+          test -f /tmp/blueprint-test/BACKLOG.md
+          test -f /tmp/blueprint-test/blueprint.local.md
+          test -f /tmp/blueprint-test/.gitignore
+
+          echo "Checking .claude/ structure..."
+          test -d /tmp/blueprint-test/.claude/commands
+          test -d /tmp/blueprint-test/.claude/skills
+          test -d /tmp/blueprint-test/.claude/agents
+          test -d /tmp/blueprint-test/.claude/hooks
+
+          # Count installed components
+          COMMANDS=$(find /tmp/blueprint-test/.claude/commands -name '*.md' | wc -l | tr -d ' ')
+          AGENTS=$(find /tmp/blueprint-test/.claude/agents -name '*.md' | wc -l | tr -d ' ')
+          SKILLS=$(find /tmp/blueprint-test/.claude/skills -name 'SKILL.md' | wc -l | tr -d ' ')
+
+          echo "Commands: $COMMANDS, Agents: $AGENTS, Skills: $SKILLS"
+
+          # Verify expected counts (fail if something is missing)
+          test "$COMMANDS" -ge 20 || { echo "Expected >= 20 commands, got $COMMANDS"; exit 1; }
+          test "$AGENTS" -ge 24 || { echo "Expected >= 24 agents, got $AGENTS"; exit 1; }
+          test "$SKILLS" -ge 28 || { echo "Expected >= 28 skills, got $SKILLS"; exit 1; }
+
+          echo "Checking docs/ structure..."
+          test -d /tmp/blueprint-test/docs/context
+          test -d /tmp/blueprint-test/docs/plans
+          test -d /tmp/blueprint-test/docs/specs
+          test -d /tmp/blueprint-test/docs/decisions
+          test -d /tmp/blueprint-test/docs/research
+          test -d /tmp/blueprint-test/docs/solutions
+          test -f /tmp/blueprint-test/docs/solutions/README.md
+
+          echo "Checking no image files leaked..."
+          IMAGES=$(find /tmp/blueprint-test/docs/images -type f 2>/dev/null | wc -l | tr -d ' ')
+          test "$IMAGES" -eq 0 || { echo "Image files leaked: $IMAGES files"; exit 1; }
+
+          echo "Checking placeholder dirs..."
+          test -d /tmp/blueprint-test/src
+          test -d /tmp/blueprint-test/tests
+          test -d /tmp/blueprint-test/scripts
+          test -d /tmp/blueprint-test/infra
+
+          echo "All checks passed!"
+
+      - name: Test --claude-only mode
+        run: |
+          bash install.sh --claude-only --force /tmp/blueprint-claude-only
+          test -d /tmp/blueprint-claude-only/.claude/commands
+          test -d /tmp/blueprint-claude-only/.claude/skills
+          test -d /tmp/blueprint-claude-only/.claude/agents
+          # Should NOT have docs/ or CLAUDE.md
+          test ! -f /tmp/blueprint-claude-only/CLAUDE.md
+          echo "--claude-only mode passed!"
+
+      - name: Test --no-overwrite mode
+        run: |
+          # Create a sentinel file
+          mkdir -p /tmp/blueprint-nooverwrite
+          echo "ORIGINAL" > /tmp/blueprint-nooverwrite/CLAUDE.md
+          bash install.sh --no-overwrite --force /tmp/blueprint-nooverwrite
+          # CLAUDE.md should still contain ORIGINAL
+          grep -q "ORIGINAL" /tmp/blueprint-nooverwrite/CLAUDE.md
+          echo "--no-overwrite mode passed!"
+
+  shellcheck:
+    name: ShellCheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run ShellCheck on install.sh
+        run: shellcheck install.sh
