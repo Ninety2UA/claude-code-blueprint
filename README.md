@@ -86,7 +86,7 @@ claude          # Start Claude Code
 your-project/
 ├── .claude/
 │   ├── commands/       # 21 slash commands (/plan, /review-swarm, /orchestrate, ...)
-│   ├── skills/         # 29 workflow skills (TDD, wave-orchestration, swarms, ...)
+│   ├── skills/         # 32 workflow skills (TDD, wave-orchestration, swarms, ...)
 │   └── agents/         # 25 specialized agents (reviewer, security, perf, ...)
 ├── docs/
 │   ├── context/        # GOALS.md · STATUS.md · CONVENTIONS.md · STATE.md
@@ -255,6 +255,8 @@ Skills are workflow modules that activate at specific development phases. They c
 |-------|-------------|---------|
 | **brainstorming** | Explores 3+ design options with tradeoff analysis before any creative work | `/plan` or before any new feature |
 | **writing-plans** | Converts approved design into implementation plan with bite-sized tasks | After design approval |
+| **spike-exploration** | Timeboxed investigation to answer a specific technical question before committing to an approach | Significant technical uncertainty |
+| **scope-cutting** | Systematically separates must-haves from nice-to-haves using MoSCoW classification | Feature too large or deadline at risk |
 
 ### Execution phase
 
@@ -297,6 +299,7 @@ Skills are workflow modules that activate at specific development phases. They c
 | **performance-profiling** | Profile-driven investigation — measure before optimizing | When something is "slow" |
 | **browser-testing** | Verify UI changes via Playwright MCP browser tools | After UI changes need visual verification |
 | **autonomous-loop** | Iterate through plan tasks with retry, backoff, and completion tracking | Autonomous plan execution — "just do it all" |
+| **dependency-management** | Evaluates, adds, upgrades, and removes dependencies with safety gates | Adding, upgrading, or auditing dependencies |
 
 ### Orchestration phase
 

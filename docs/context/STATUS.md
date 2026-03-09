@@ -8,7 +8,7 @@ Last updated: 2026-03-09
 - **Tests:** CI passing (4/4 jobs — lint-markdown, shellcheck, install ubuntu, install macos)
 - **Lint:** markdownlint clean, shellcheck clean
 - **Last verified:** 2026-03-09
-- **Version:** 2.0.0 (29 skills, 25 agents, 21 commands, 2 hooks)
+- **Version:** 2.1.0 (32 skills, 25 agents, 21 commands, 2 hooks)
 
 ## In Flight
 
@@ -18,8 +18,9 @@ Last updated: 2026-03-09
 
 ## Up Next
 
-1. Add `--version` flag or release tagging strategy to install.sh
-2. Consider adding skills: dependency management, spike/exploration, scope cutting
+| Task | Status | Blockers | Notes |
+|------|--------|----------|-------|
+| (none) | — | — | — |
 
 ## What's Done
 

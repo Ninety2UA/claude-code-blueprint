@@ -13,26 +13,22 @@ Quality over speed. Small steps compound into big progress. The patterns you est
 **Last session:** 2026-03-09
 
 **What was done:**
-- Updated hero-banner.svg with new counts (29 Skills, 21 Commands, 25 Agents) (`06c261d`)
-- Redesigned agents-ecosystem diagram from flat 19-agent categories to 25-agent swarm/wave team layout with OUTPUT → synthesizer flow (`06c261d`)
-- Added 4 new skills to skills-map diagram (wave/swarm orchestration, knowledge compounding, session continuity) (`06c261d`)
-- Updated project-structure diagram: new counts, added blueprint.local.md + docs/solutions/ (`06c261d`)
-- Re-rendered all 6 PNGs via Playwright (`06c261d`)
-- Updated install.sh: v2.0.0, added blueprint.local.md to core files, filtered render-diagrams.html, fixed shellcheck SC2295 (`06c261d`, `aece6df`)
-- Added GitHub Actions CI: 3 jobs (lint-markdown, shellcheck, install-test on ubuntu+macos) — all 4 jobs passing (`aece6df`)
-- Added .markdownlint.json config (`aece6df`)
+- Added `--version` / `-v` flag to install.sh
+- Bumped version to 2.1.0
+- Added 3 new skills: dependency-management, spike-exploration, scope-cutting (32 total)
+- Updated all counts and references in CLAUDE.md and STATUS.md
+- Cleared "Up Next" items — all completed
 
 **What's remaining:**
-- Add `--version` flag or release tagging strategy to install.sh
-- Consider adding skills: dependency management, spike/exploration, scope cutting
+- (none)
 
-**Start here:** Small items remaining. Add `--version` flag to install.sh, then evaluate whether new skills are worth adding. Run `/status` to orient.
+**Start here:** All items complete. Run `/status` to orient or check BACKLOG.md for new work.
 
 **Current state of the code:**
 - Build: n/a (template repo, no build step)
-- Tests: CI passing (4/4 jobs green — lint, shellcheck, install ubuntu, install macos)
-- Lint: markdownlint clean, shellcheck clean
-- Uncommitted changes: none — working tree clean
+- Tests: CI needs re-run after commit (install threshold tests should pass — 32 skills > 20)
+- Lint: needs verification
+- Uncommitted changes: install.sh, CLAUDE.md, STATUS.md, 3 new skill files
 
 ## Behavioral Rules
 
@@ -163,7 +159,7 @@ project/
 │   ├── hooks/             # Lifecycle hooks
 │   │   ├── session-start.js   # Bootstrap context on session start
 │   │   └── context-monitor.js # Track context usage + analysis paralysis guard
-│   ├── skills/            # Workflow skills (29 skills)
+│   ├── skills/            # Workflow skills (32 skills)
 │   │   ├── brainstorming/
 │   │   ├── writing-plans/
 │   │   ├── executing-plans/
@@ -192,7 +188,10 @@ project/
 │   │   ├── wave-orchestration/
 │   │   ├── swarm-orchestration/
 │   │   ├── knowledge-compounding/
-│   │   └── session-continuity/
+│   │   ├── session-continuity/
+│   │   ├── dependency-management/
+│   │   ├── spike-exploration/
+│   │   └── scope-cutting/
 │   └── agents/            # Specialized subagents (25 agents, dispatched via Task tool)
 │       ├── code-reviewer.md
 │       ├── architecture-strategist.md
@@ -292,7 +291,7 @@ The Session Continuity section above tells you where to start. If it's empty, ru
 | Creating or editing skills | writing-skills | — |
 | End of work session | session-wrap | `/wrap` |
 | Small bug fix or config change | (lightweight flow — see above) | `/quick` |
-| Exploratory spike or research | best-practices-researcher agent + `docs/research/` | — |
+| Exploratory spike or research | spike-exploration | — |
 | Onboarding to unfamiliar codebase | codebase-mapping | `/map` |
 | Mid-session state capture | context-checkpoint | `/pause` |
 | Creating or managing pull requests | pr-workflow | `/pr` |
@@ -308,6 +307,8 @@ The Session Continuity section above tells you where to start. If it's empty, ru
 | Dispatching multiple agents on same problem | swarm-orchestration | `/review-swarm`, `/deep-research` |
 | Documenting a solved problem for reuse | knowledge-compounding | `/compound` |
 | Tracking state across session boundaries | session-continuity | `/pause`, `/resume` |
+| Adding, upgrading, or removing dependencies | dependency-management | — |
+| Feature too large, need to reduce scope | scope-cutting | — |
 
 ## Agents — When to Dispatch
 

@@ -47,7 +47,7 @@
   <!-- Tags -->
   <g transform="translate(80, 225)">
     <rect width="95" height="30" rx="15" fill="none" stroke="#D4A574" stroke-width="1.5" opacity="0.6"/>
-    <text x="47" y="20" font-family="system-ui, sans-serif" font-size="13" fill="#D4A574" text-anchor="middle">29 Skills</text>
+    <text x="47" y="20" font-family="system-ui, sans-serif" font-size="13" fill="#D4A574" text-anchor="middle">32 Skills</text>
 
     <rect x="110" width="120" height="30" rx="15" fill="none" stroke="#D4A574" stroke-width="1.5" opacity="0.6"/>
     <text x="170" y="20" font-family="system-ui, sans-serif" font-size="13" fill="#D4A574" text-anchor="middle">21 Commands</text>

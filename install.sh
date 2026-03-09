@@ -8,7 +8,7 @@ set -euo pipefail
 
 REPO_URL="https://github.com/Ninety2UA/claude-code-blueprint"
 TEMP_DIR=""
-VERSION="2.0.0"
+VERSION="2.1.0"
 
 # Colors
 RED='\033[0;31m'
@@ -52,6 +52,7 @@ usage() {
     echo "  --no-overwrite      Skip files that already exist"
     echo "  --force             Overwrite all existing files without prompting"
     echo "  --dry-run           Show what would be installed without making changes"
+    echo "  -v, --version       Show version and exit"
     echo "  -h, --help          Show this help message"
     echo ""
     echo "Examples:"
@@ -77,6 +78,7 @@ while [[ $# -gt 0 ]]; do
         --no-overwrite) NO_OVERWRITE=true; shift ;;
         --force)        FORCE=true; shift ;;
         --dry-run)      DRY_RUN=true; shift ;;
+        -v|--version)   echo "claude-code-blueprint v${VERSION}"; exit 0 ;;
         -h|--help)      usage; exit 0 ;;
         -*)             error "Unknown option: $1"; usage; exit 1 ;;
         *)              TARGET_DIR="$1"; shift ;;
