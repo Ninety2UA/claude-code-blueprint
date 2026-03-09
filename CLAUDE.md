@@ -13,13 +13,13 @@ Quality over speed. Small steps compound into big progress. The patterns you est
 **Last session:** 2026-03-09
 
 **What was done:**
-- v2.2.0: Added tool restrictions to all 25 agents (principle of least privilege)
-- Added Agent Teams integration: `/team` command, `agent-teams` skill, quality gate hooks
-- Added `isolation: worktree` to pr-comment-resolver and wave-orchestration guidance
-- Added TeammateIdle + TaskCompleted quality gate hooks for Agent Teams
-- Updated swarm-orchestration skill with Agent Teams comparison
+- v2.2.0: Added `tools` frontmatter to all 25 agents (principle of least privilege — 3 tiers: read-only, read+web, read+write)
+- Added Agent Teams integration (`4605205`): `/team` command, `agent-teams` skill, TeammateIdle + TaskCompleted quality gate hooks
+- Added `isolation: worktree` to pr-comment-resolver and wave-orchestration dispatch template
+- Updated swarm-orchestration with Agent Teams comparison table; CLAUDE.md "Multi-Agent Patterns" with 4-pattern decision matrix
+- Updated README.md with Agent Teams section, agent frontmatter guide, FAQ entry
 - Fixed duplicate `stateFile` variable bug in session-start.js
-- Updated all counts: 33 skills, 22 commands, 4 hooks
+- Bumped to v2.2.0 (33 skills, 25 agents, 22 commands, 4 hooks)
 
 **What's remaining:**
 - (none)
@@ -29,8 +29,8 @@ Quality over speed. Small steps compound into big progress. The patterns you est
 **Current state of the code:**
 - Build: n/a (template repo, no build step)
 - Tests: CI should pass (threshold-based counts, 33 > 20)
-- Lint: shellcheck not re-run on install.sh, markdownlint not re-run
-- Uncommitted changes: all changes from v2.2.0 update
+- Lint: shellcheck and markdownlint not re-run this session
+- Uncommitted changes: none — working tree clean
 
 ## Behavioral Rules
 
@@ -440,3 +440,9 @@ After evaluating 8 Claude Code repos, three multi-agent patterns emerged: (1) **
 
 ### 2026-03-09: CI install tests should use threshold counts, not exact
 Testing `>=20 commands` instead of `==21` means adding new components doesn't break CI. The install script tests on both ubuntu and macos to catch platform-specific issues (e.g., `find` flag differences, `wc` whitespace handling). ShellCheck SC2295: parameter expansions inside `${..#..}` need inner quotes to prevent glob pattern matching — `"${dest#"$TARGET_DIR"/}"` not `"${dest#$TARGET_DIR/}"`.
+
+### 2026-03-09: Agent tool restrictions — principle of least privilege from official docs
+Official Claude Code docs recommend "grant only necessary permissions" via the `tools` frontmatter field. Three tiers emerged: (1) review/verification agents get `[Read, Glob, Grep, Bash]` — read-only analysis; (2) web researchers add `WebFetch, WebSearch`; (3) only 3 agents that must modify code get `Edit, Write`. Synthesizers need only `[Read, Glob, Grep]` — no Bash, no web. This prevents accidental writes during analysis and makes agent intent explicit in the frontmatter.
+
+### 2026-03-09: Agent Teams complement swarms — don't replace them
+Anthropic's experimental Agent Teams feature (shared task list + messaging between independent Claude instances) serves a different purpose than subagent swarms. Swarms are best for parallel read-only analysis; Agent Teams for collaborative implementation where teammates need to discuss and divide file ownership. The template integrates both: `/deep-research` (swarm) → `/plan` → `/team` OR `/orchestrate` → `/review-swarm` (swarm). Key requirement: each teammate MUST own specific files — concurrent modification causes conflicts. Quality gate hooks (`TeammateIdle`, `TaskCompleted`) enforce standards. Use `execFileSync` not `execSync` in template hooks to prevent shell injection.

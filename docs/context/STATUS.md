@@ -5,9 +5,9 @@ Last updated: 2026-03-09 (v2.2.0)
 ## Current State of the Code
 
 - **Build:** n/a (template repo, no build step)
-- **Tests:** CI passing (4/4 jobs — lint-markdown, shellcheck, install ubuntu, install macos)
-- **Lint:** markdownlint clean, shellcheck clean
-- **Last verified:** 2026-03-09
+- **Tests:** CI should pass (threshold-based counts, 33 > 20)
+- **Lint:** shellcheck and markdownlint not re-run this session
+- **Last verified:** 2026-03-09 (CI not re-run after v2.2.0)
 - **Version:** 2.2.0 (33 skills, 25 agents, 22 commands, 4 hooks)
 
 ## In Flight
@@ -26,6 +26,7 @@ Last updated: 2026-03-09 (v2.2.0)
 
 | Date | Commit | Description |
 |------|--------|-------------|
+| 2026-03-09 | `4605205` | Feat: v2.2.0 — add tool restrictions to all 25 agents, Agent Teams integration (`/team` command, agent-teams skill, quality gate hooks), worktree isolation, README update. 38 files, +616/-46. |
 | 2026-03-09 | `611902d` | Feat: v2.1.0 — add 3 skills (dependency-management, spike-exploration, scope-cutting), add `--version` flag to install.sh, update all counts (29 → 32 skills). |
 | 2026-03-09 | `aece6df` | Chore: add GitHub Actions CI — lint markdown, shellcheck, install tests on ubuntu+macos. All 4 jobs passing. |
 | 2026-03-09 | `06c261d` | Docs: update all diagrams for v2.0.0 — team-based agents-ecosystem, 4 new skills in skills-map, updated counts in hero-banner and project-structure. Re-rendered 6 PNGs. install.sh bumped to v2.0.0. |
@@ -44,6 +45,7 @@ Last updated: 2026-03-09 (v2.2.0)
 
 | Date | Decision | ADR |
 |------|----------|-----|
+| 2026-03-09 | v2.2.0: Add tool restrictions (least privilege), Agent Teams integration, worktree isolation, quality gate hooks | — |
 | 2026-03-09 | v2.0.0: Organize agents into swarm/wave/loop teams; add per-project config; add knowledge compounding | — |
 | 2026-03-09 | Switch diagram rendering from Mermaid to HTML/CSS + Playwright screenshots for better quality | — |
 | 2026-03-05 | Adopt ralphy autonomous retry loop pattern as autonomous-loop skill | — |
