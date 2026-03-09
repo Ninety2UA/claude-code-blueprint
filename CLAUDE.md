@@ -13,19 +13,25 @@ Quality over speed. Small steps compound into big progress. The patterns you est
 **Last session:** 2026-03-09
 
 **What was done:**
-- Added Claude Code plugin ecosystem ebook (`ebook/claude-code-tools-guide.pdf`) and README section linking to it (`7a242a5`)
-- Redesigned all 5 README diagrams from HTML/CSS source via Playwright screenshots (`98a9fa0`): workflow, quality-gates, skills-map, agents-ecosystem, project-structure
-- Updated hero banner SVG with correct counts: 25 Skills, 17 Commands, 19 Agents
-- Fixed ASCII art in README: development loop and agent dispatch diagrams
-- Added `docs/images/render-diagrams.html` as reproducible source for PNG generation
+- Evaluated 8 Claude Code repos (superpowers, compound-engineering, GSD, ralphy, claude-skills, everything-claude-code, plugins-plus-skills, ui-ux-pro-max) and applied best patterns
+- Added 6 agents: data-integrity-guardian, test-coverage-reviewer, framework-docs-researcher, codebase-context-mapper, integration-verifier, findings-synthesizer (`780a037`)
+- Added 4 commands: `/review-swarm`, `/deep-research`, `/compound`, `/orchestrate` (`780a037`)
+- Added 4 skills: wave-orchestration, swarm-orchestration, knowledge-compounding, session-continuity (`780a037`)
+- Added `blueprint.local.md` (per-project agent config) and `docs/solutions/` (knowledge compounding)
+- Organized agents into coordinated teams: Review Swarm, Research Swarm, Execution Waves, Knowledge Loop
+- Updated build pipeline: Stage 5 now uses `/review-swarm`, added Stage 7 (Compound)
+- Bumped to v2.0.0, updated README with Agent Teams section, new FAQs, updated all counts
+- Earlier: added ecosystem ebook PDF (`7a242a5`), redesigned all 5 diagrams (`98a9fa0`)
 
 **What's remaining:**
+- Update hero-banner.svg with new counts (29 Skills, 21 Commands, 25 Agents)
+- Re-render all 5 README diagrams from `docs/images/render-diagrams.html` to reflect new agent teams
+- Update install.sh to handle new files (blueprint.local.md, docs/solutions/)
 - Add GitHub Actions CI (lint markdown, test install script)
 - Add `--version` flag or release tagging strategy to install.sh
-- Expand example docs with more variety
 - Consider adding skills: dependency management, spike/exploration, scope cutting
 
-**Start here:** All diagrams are updated and pushed. The ebook PDF evaluating 8 Claude Code tools is in `ebook/`. Next work should focus on CI setup or remaining skill gaps. Run `/status` to orient.
+**Start here:** Diagrams and hero banner need updating to reflect v2.0.0 counts and new agent team architecture. Start with `docs/images/render-diagrams.html` — update the agents-ecosystem diagram to show swarm/wave structure, then re-render all PNGs via Playwright. Run `/status` to orient.
 
 **Current state of the code:**
 - Build: n/a (template repo, no build step)
@@ -410,3 +416,6 @@ Researched ruflo, compound-engineering, superpowers, get-shit-done, and ralphy r
 
 ### 2026-03-09: HTML/CSS diagrams via Playwright beat Mermaid for quality
 Switching from Mermaid block-beta → HTML/CSS rendered via Playwright `element.screenshot()` produces dramatically better diagrams: proper Inter/JetBrains Mono fonts, flexbox layout, gradient badges, and full color control. Source is `docs/images/render-diagrams.html`. Mermaid `.mmd` files kept for reference but are no longer the primary rendering path. Also: `background-clip: text` CSS gradient breaks in Chromium PDF — use solid color instead.
+
+### 2026-03-09: Agent swarm architecture — three orchestration patterns
+After evaluating 8 Claude Code repos, three multi-agent patterns emerged: (1) **Swarm** — N specialists analyze same input in parallel, synthesizer merges findings (used for review and research); (2) **Wave** — tasks grouped by dependency, parallel within waves, integration-verifier between waves; (3) **Knowledge loop** — `/compound` saves solved problems to `docs/solutions/`, learnings-researcher searches them before future planning. Per-project config (`blueprint.local.md`) prevents irrelevant agents from wasting tokens. Compound Engineering's parallel review was the gold standard; GSD's context monitoring was already in our hooks.
