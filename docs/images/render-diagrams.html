@@ -432,6 +432,167 @@
 
   .ps-source .ps-section-label { background: #d1fae5; color: #065f46; border: 2px solid #a7f3d0; }
   .ps-source .ps-child { background: #ecfdf5; border-color: #a7f3d0; color: #065f46; }
+
+  /* ── ECOSYSTEM GUIDE ──────────────────────────── */
+  #ecosystem-guide {
+    background: linear-gradient(160deg, #f8fafc 0%, #eef2ff 50%, #faf5ff 100%);
+    border: 2px solid #e0e7ff;
+  }
+
+  .eg-header {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  .eg-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 5px 16px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+  }
+
+  .eg-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+  }
+
+  .eg-subtitle {
+    font-size: 13px;
+    color: #64748b;
+    font-weight: 400;
+  }
+
+  .eg-tools {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .eg-tool {
+    background: #fff;
+    border-radius: 10px;
+    padding: 14px 10px 12px;
+    text-align: center;
+    border: 1.5px solid #e2e8f0;
+  }
+
+  .eg-tool-cat {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+
+  .eg-tool-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 3px;
+    letter-spacing: -0.2px;
+  }
+
+  .eg-tool-stars {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  /* Tool category badges */
+  .eg-cat-methodology { background: #dbeafe; color: #1e40af; }
+  .eg-cat-allinone { background: #e0e7ff; color: #3730a3; }
+  .eg-cat-design { background: #fce7f3; color: #9d174d; }
+  .eg-cat-orchestration { background: #fef3c7; color: #92400e; }
+  .eg-cat-plugin { background: #d1fae5; color: #065f46; }
+  .eg-cat-skills { background: #ede9fe; color: #5b21b6; }
+  .eg-cat-orchestrator { background: #ffe4e6; color: #9f1239; }
+  .eg-cat-marketplace { background: #ccfbf1; color: #115e59; }
+
+  /* Star colors matching categories */
+  .eg-tool:nth-child(1) .eg-tool-stars { color: #2563eb; }
+  .eg-tool:nth-child(2) .eg-tool-stars { color: #4338ca; }
+  .eg-tool:nth-child(3) .eg-tool-stars { color: #be185d; }
+  .eg-tool:nth-child(4) .eg-tool-stars { color: #b45309; }
+  .eg-tool:nth-child(5) .eg-tool-stars { color: #059669; }
+  .eg-tool:nth-child(6) .eg-tool-stars { color: #7c3aed; }
+  .eg-tool:nth-child(7) .eg-tool-stars { color: #e11d48; }
+  .eg-tool:nth-child(8) .eg-tool-stars { color: #0d9488; }
+
+  .eg-divider {
+    text-align: center;
+    margin-bottom: 18px;
+    color: #94a3b8;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .eg-divider::before,
+  .eg-divider::after {
+    content: '';
+    display: inline-block;
+    width: 80px;
+    height: 1px;
+    background: #cbd5e1;
+    vertical-align: middle;
+    margin: 0 14px;
+  }
+
+  .eg-features {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .eg-feature {
+    flex: 1;
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px 10px 14px;
+    text-align: center;
+    border: 1.5px solid #e2e8f0;
+    border-top: 3.5px solid;
+  }
+
+  .eg-feature:nth-child(1) { border-top-color: #3b82f6; }
+  .eg-feature:nth-child(2) { border-top-color: #8b5cf6; }
+  .eg-feature:nth-child(3) { border-top-color: #f59e0b; }
+  .eg-feature:nth-child(4) { border-top-color: #10b981; }
+  .eg-feature:nth-child(5) { border-top-color: #f43f5e; }
+
+  .eg-feature-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 4px;
+    line-height: 1.35;
+  }
+
+  .eg-feature-desc {
+    font-size: 10.5px;
+    color: #64748b;
+    line-height: 1.4;
+  }
+
+  .eg-footer {
+    text-align: center;
+    font-size: 13px;
+    color: #475569;
+    font-style: italic;
+  }
 </style>
 </head>
 <body>
@@ -738,6 +899,85 @@
       </div>
     </div>
   </div>
+</div>
+
+<!-- ════════════ ECOSYSTEM GUIDE ════════════ -->
+<div class="diagram" id="ecosystem-guide">
+  <div class="eg-header">
+    <div class="eg-badge">FREE GUIDE</div>
+    <div class="eg-title">The Claude Code Tools Guide</div>
+    <div class="eg-subtitle">An unbiased, evidence-based evaluation of the top 8 plugins and frameworks</div>
+  </div>
+
+  <div class="eg-tools">
+    <div class="eg-tool">
+      <div class="eg-tool-cat eg-cat-methodology">Methodology</div>
+      <div class="eg-tool-name">Superpowers</div>
+      <div class="eg-tool-stars">71.3K ★</div>
+    </div>
+    <div class="eg-tool">
+      <div class="eg-tool-cat eg-cat-allinone">All-in-One</div>
+      <div class="eg-tool-name">Everything CC</div>
+      <div class="eg-tool-stars">50K+ ★</div>
+    </div>
+    <div class="eg-tool">
+      <div class="eg-tool-cat eg-cat-design">Design Skill</div>
+      <div class="eg-tool-name">UI/UX Pro Max</div>
+      <div class="eg-tool-stars">37.3K ★</div>
+    </div>
+    <div class="eg-tool">
+      <div class="eg-tool-cat eg-cat-orchestration">Orchestration</div>
+      <div class="eg-tool-name">Get Shit Done</div>
+      <div class="eg-tool-stars">24.7K ★</div>
+    </div>
+    <div class="eg-tool">
+      <div class="eg-tool-cat eg-cat-plugin">Plugin + CLI</div>
+      <div class="eg-tool-name">Compound Eng.</div>
+      <div class="eg-tool-stars">9.9K ★</div>
+    </div>
+    <div class="eg-tool">
+      <div class="eg-tool-cat eg-cat-skills">Skills Pack</div>
+      <div class="eg-tool-name">Claude Skills</div>
+      <div class="eg-tool-stars">4.9K ★</div>
+    </div>
+    <div class="eg-tool">
+      <div class="eg-tool-cat eg-cat-orchestrator">Orchestrator</div>
+      <div class="eg-tool-name">Ralphy</div>
+      <div class="eg-tool-stars">2.5K ★</div>
+    </div>
+    <div class="eg-tool">
+      <div class="eg-tool-cat eg-cat-marketplace">Marketplace</div>
+      <div class="eg-tool-name">Plugins+Skills</div>
+      <div class="eg-tool-stars">1.5K ★</div>
+    </div>
+  </div>
+
+  <div class="eg-divider">what's inside</div>
+
+  <div class="eg-features">
+    <div class="eg-feature">
+      <div class="eg-feature-title">Honest Profiles</div>
+      <div class="eg-feature-desc">What works, what doesn't, what's hype</div>
+    </div>
+    <div class="eg-feature">
+      <div class="eg-feature-title">Classification Matrix</div>
+      <div class="eg-feature-desc">Architecture, scope, and overhead</div>
+    </div>
+    <div class="eg-feature">
+      <div class="eg-feature-title">Scenario Recs</div>
+      <div class="eg-feature-desc">Solo dev vs. team, simple vs. complex</div>
+    </div>
+    <div class="eg-feature">
+      <div class="eg-feature-title">Combination Safety</div>
+      <div class="eg-feature-desc">Which tools pair and which conflict</div>
+    </div>
+    <div class="eg-feature">
+      <div class="eg-feature-title">Final Ranking</div>
+      <div class="eg-feature-desc">Confidence-scored from repo inspection</div>
+    </div>
+  </div>
+
+  <div class="eg-footer">The best tool is the one that matches your actual workflow, not the one with the most stars.</div>
 </div>
 
 </body>

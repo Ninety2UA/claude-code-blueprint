@@ -7,6 +7,7 @@
 </p>
 
 <p align="center">
+  <a href="#how-does-this-compare">Compare</a> ·
   <a href="#quick-start">Quick Start</a> ·
   <a href="#what-you-get">What You Get</a> ·
   <a href="#workflow">Workflow</a> ·
@@ -28,6 +29,18 @@ It gives Claude Code a **structured operating system** — a set of skills, agen
 **The core philosophy:**
 
 > *Each unit of engineering work should make subsequent units easier — not harder.*
+
+## How Does This Compare?
+
+Before committing to any tool, it helps to understand the landscape. We evaluated the 8 most popular Claude Code plugins, frameworks, and orchestration tools — through direct repository inspection, not marketing claims.
+
+<p align="center">
+  <img src="docs/images/ecosystem-guide.png" alt="Claude Code Tools Guide — 8 tools evaluated side by side" width="90%">
+</p>
+
+**[Download the free guide (PDF)](ebook/claude-code-tools-guide.pdf)** — covers tool profiles, a classification matrix, scenario-based recommendations, combination safety, and a confidence-scored final ranking.
+
+> *The best tool is the one that matches your actual workflow, not the one with the most stars.*
 
 ## Quick Start
 
@@ -484,20 +497,6 @@ The template includes example files in `docs/decisions/`, `docs/plans/`, `docs/s
 
 No. The template includes a **lightweight workflow** for small, well-understood changes (< 3 files, obvious root cause). Write a failing test, fix it, verify, commit. See the "Lightweight Workflow" section in CLAUDE.md for the full criteria.
 </details>
-
-## Exploring the Claude Code Plugin Ecosystem
-
-Wondering how this template compares to other Claude Code tools like Superpowers, Get Shit Done, or Everything Claude Code? We published a free guide that evaluates the top 8 plugins, frameworks, and orchestration tools side by side.
-
-**[The Claude Code Tools Guide (PDF)](ebook/claude-code-tools-guide.pdf)** covers:
-
-- Honest profiles of each tool — what works, what doesn't, and what's hype
-- A classification matrix comparing architecture, scope, and overhead
-- Scenario-based recommendations (solo dev vs. team, simple vs. complex projects)
-- Which tools combine safely and which ones conflict
-- A confidence-scored final ranking based on direct repository inspection
-
-> *The best tool is the one that matches your actual workflow, not the one with the most stars.*
 
 ## Contributing
 
