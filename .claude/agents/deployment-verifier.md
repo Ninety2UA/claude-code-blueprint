@@ -1,6 +1,8 @@
 ---
 name: deployment-verifier
 description: "Creates a go/no-go deployment checklist by verifying build, tests, security, migrations, configuration, dependencies, rollback plan, and monitoring. Use before any production deployment."
+model: inherit
+tools: [Read, Glob, Grep, Bash]
 ---
 
 # Deployment Verifier

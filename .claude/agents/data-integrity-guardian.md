@@ -2,6 +2,7 @@
 name: data-integrity-guardian
 description: "Reviews database migrations, data models, and persistent data code for safety — transaction boundaries, constraint validation, rollback plans, and privacy compliance. Use when PRs touch migrations, schema changes, or data transformations."
 model: inherit
+tools: [Read, Glob, Grep, Bash]
 ---
 
 <examples>

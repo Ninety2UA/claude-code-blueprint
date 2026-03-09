@@ -2,6 +2,7 @@
 name: integration-verifier
 description: "Verifies cross-task integration after a wave of parallel implementations — runs tests, checks for conflicts, validates that independently-built components work together. Use after completing a wave in wave-orchestrated execution."
 model: inherit
+tools: [Read, Glob, Grep, Bash]
 ---
 
 <examples>

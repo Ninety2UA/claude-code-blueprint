@@ -1,6 +1,8 @@
 ---
 name: learnings-researcher
 description: "Searches project documentation for past solutions, patterns, decisions, and learnings relevant to the current task."
+model: inherit
+tools: [Read, Glob, Grep]
 ---
 
 # Learnings Researcher

@@ -32,6 +32,15 @@ research-agents:
 # Options: web-fullstack, api-backend, cli-tool, library, mobile, data-pipeline
 project-type: web-fullstack
 
+# Agent Teams configuration (experimental — /team command)
+# Requires CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS: "1" in settings.json
+agent-teams:
+  enabled: false  # Set to true after enabling the experimental feature
+  default-team-size: 3  # 3-5 recommended
+  quality-gates:
+    teammate-idle: true   # Run tests/lint before teammate goes idle
+    task-completed: true  # Check syntax/debug artifacts on task completion
+
 # Tech stack (informational — helps agents focus)
 # languages: [typescript, python, ruby, go, rust, etc.]
 # frameworks: [next.js, rails, django, express, etc.]

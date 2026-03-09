@@ -1,6 +1,8 @@
 ---
 name: research-synthesizer
 description: "Consolidates outputs from multiple parallel research agents into a unified, de-duplicated summary. Use after dispatching parallel research agents to synthesize their findings."
+model: inherit
+tools: [Read, Glob, Grep]
 ---
 
 # Research Synthesizer

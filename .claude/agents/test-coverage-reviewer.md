@@ -2,6 +2,7 @@
 name: test-coverage-reviewer
 description: "Reviews test quality beyond line coverage — checks for meaningful assertions, edge cases, error paths, and behavioral coverage. Use after implementation to verify tests actually validate the intended behavior."
 model: inherit
+tools: [Read, Glob, Grep, Bash]
 ---
 
 <examples>

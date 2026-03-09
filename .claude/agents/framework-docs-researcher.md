@@ -2,6 +2,7 @@
 name: framework-docs-researcher
 description: "Gathers up-to-date documentation, best practices, and version-specific constraints for frameworks and libraries used in the project. Use before planning features that depend on specific framework APIs."
 model: inherit
+tools: [Read, Glob, Grep, Bash, WebFetch, WebSearch]
 ---
 
 <examples>

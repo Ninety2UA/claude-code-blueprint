@@ -85,9 +85,10 @@ claude          # Start Claude Code
 ```
 your-project/
 ├── .claude/
-│   ├── commands/       # 21 slash commands (/plan, /review-swarm, /orchestrate, ...)
-│   ├── skills/         # 32 workflow skills (TDD, wave-orchestration, swarms, ...)
-│   └── agents/         # 25 specialized agents (reviewer, security, perf, ...)
+│   ├── commands/       # 22 slash commands (/plan, /review-swarm, /orchestrate, /team, ...)
+│   ├── skills/         # 33 workflow skills (TDD, wave-orchestration, swarms, agent-teams, ...)
+│   ├── agents/         # 25 specialized agents (reviewer, security, perf, ...)
+│   └── hooks/          # 4 lifecycle hooks (session-start, context-monitor, quality gates)
 ├── docs/
 │   ├── context/        # GOALS.md · STATUS.md · CONVENTIONS.md · STATE.md
 │   ├── plans/          # Implementation plans
@@ -174,7 +175,7 @@ These aren't suggestions — they're hard gates. Claude will stop and course-cor
 
 ## Agent Teams & Swarms
 
-Agents are organized into coordinated teams for multi-agent workflows. Three orchestration patterns are built in:
+Agents are organized into coordinated teams for multi-agent workflows. Four orchestration patterns are built in:
 
 ### Review Swarm (`/review-swarm`)
 
@@ -226,6 +227,29 @@ Wave 2: [Task D, Task E]          ← depend on Wave 1
     └──────────────┬──────────────┘
 Wave 3: [Task F]                   ← depends on Wave 2
 ```
+
+### Agent Teams (`/team`) — Experimental
+
+For complex multi-file implementations where teammates need to discuss and coordinate, Agent Teams spawns fully independent Claude Code instances with a shared task list and messaging system.
+
+```
+Team Lead (your session)
+├── Teammate: backend (owns src/api/*, src/services/*)    ─┐
+├── Teammate: frontend (owns src/components/*, src/pages/)  ├── shared task list
+├── Teammate: tests (owns tests/*, __mocks__/*)            ─┘
+│
+└── Quality gates: TeammateIdle + TaskCompleted hooks
+```
+
+**When to use which:**
+
+| Pattern | Best For | Key Feature |
+|---------|----------|-------------|
+| **Swarms** (`/review-swarm`, `/deep-research`) | Parallel analysis — same code, different lenses | Read-only, synthesizer merges outputs |
+| **Waves** (`/orchestrate`) | Dependency-ordered implementation | Worktree isolation, integration verification |
+| **Agent Teams** (`/team`) | Collaborative multi-file implementation | Shared task list, inter-teammate messaging |
+
+Agent Teams is an experimental Claude Code feature. Enable it with `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS: "1"` in settings.json. The typical workflow combines all patterns: `/deep-research` (swarm) → `/plan` → `/team` (agent teams) → `/review-swarm` (swarm).
 
 ### Knowledge Loop (`/compound`)
 
@@ -307,6 +331,7 @@ Skills are workflow modules that activate at specific development phases. They c
 |-------|-------------|---------|
 | **wave-orchestration** | Groups tasks by dependency into waves, parallel within waves, integration verification between | `/orchestrate` or plans with mixed dependencies |
 | **swarm-orchestration** | Coordinates multiple specialized agents analyzing the same input in parallel | `/review-swarm`, `/deep-research`, or custom swarms |
+| **agent-teams** | Collaborative multi-file implementation with shared task list and messaging (experimental) | `/team` or complex cross-layer features |
 | **knowledge-compounding** | Documents solved problems as searchable institutional knowledge in docs/solutions/ | `/compound` or after solving non-trivial problems |
 | **session-continuity** | Manages STATE.md for execution tracking across session boundaries | `/pause`, `/resume`, or during wave orchestration |
 
@@ -371,10 +396,19 @@ Main Session
 └── test-coverage-reviewer → findings ─┘
 ```
 
-**Wave dispatch** — parallel within waves, sequential between:
+**Wave dispatch** — parallel within waves, worktree-isolated, sequential between:
 ```
-Wave 1: implementer-A + implementer-B (parallel) → integration-verifier
-Wave 2: implementer-C (depends on Wave 1)         → integration-verifier
+Wave 1: implementer-A + implementer-B (parallel, worktree-isolated) → integration-verifier
+Wave 2: implementer-C (depends on Wave 1)                           → integration-verifier
+```
+
+**Agent team dispatch** — collaborative instances with shared task list:
+```
+Team Lead → spawns teammates with file ownership boundaries
+├── Teammate A (owns src/api/*)     ─┐
+├── Teammate B (owns src/ui/*)       ├── shared tasks + messaging
+└── Teammate C (owns tests/*)       ─┘
+    Quality gates: TeammateIdle + TaskCompleted hooks
 ```
 
 ## Commands Reference
@@ -390,6 +424,7 @@ Commands are user-facing shortcuts that invoke the right skills with the right c
 | **`/deep-research`** | Multi-agent parallel research — spawns 5 research agents, synthesizes into unified brief for planning. |
 | **`/compound`** | Document a solved problem for future reference. Creates searchable entry in docs/solutions/. |
 | **`/orchestrate`** | Wave-based parallel execution — groups plan tasks by dependency, runs independent tasks in parallel per wave. |
+| **`/team`** | Spawn an Agent Team for collaborative multi-file implementation with shared task list and messaging (experimental). |
 | **`/status`** | Shows current project state, goal alignment, blockers, and suggests next actions. |
 | **`/debug [issue]`** | Root cause investigation. Gathers evidence, forms hypotheses, tests them systematically. |
 | **`/backlog`** | Triages inbox items in BACKLOG.md into prioritized tasks using GOALS.md context. |
@@ -410,7 +445,8 @@ claude
 > /resume                            # Reload context from last session
 > /deep-research add OAuth2 login    # Research before planning (5 agents in parallel)
 > /plan add OAuth2 login             # Design + plan based on research findings
-> /orchestrate                       # Execute plan with wave-based parallelism
+> /orchestrate                       # Execute with wave-based parallelism
+>   # OR: /team                      # Execute with collaborative Agent Team
 > /review-swarm                      # Multi-agent review (6-10 reviewers in parallel)
 > /compound OAuth2 session handling  # Document the solution for future reference
 > /wrap                              # Document everything for next session
@@ -441,20 +477,36 @@ claude
 
 ### Adding your own agents
 
-Agents live in `.claude/agents/your-agent-name.md`. Create a markdown file with:
+Agents live in `.claude/agents/your-agent-name.md`. Create a markdown file with YAML frontmatter and a system prompt:
 
 ```markdown
-# Agent Name
+---
+name: your-agent-name
+description: "When to use this agent. Be specific so Claude knows when to delegate."
+model: inherit
+tools: [Read, Glob, Grep, Bash]
+---
 
-## Role
-What this agent specializes in.
+You are a [role] specializing in [domain].
 
-## Instructions
-Detailed instructions for how the agent should analyze code and report findings.
+## Process
+1. [Step-by-step instructions]
 
 ## Output Format
-How findings should be structured.
+[How findings should be structured]
+
+## Rules
+- [Operational guardrails]
 ```
+
+**Key frontmatter fields:**
+
+| Field | Purpose | Example |
+|-------|---------|---------|
+| `tools` | Restrict which tools the agent can use (principle of least privilege) | `[Read, Glob, Grep, Bash]` for read-only; add `Edit, Write` for agents that modify code |
+| `model` | Override the model (`sonnet`, `opus`, `haiku`, or `inherit`) | `inherit` to use the session's model |
+| `isolation` | Set to `worktree` for agents that modify files in parallel | Used by `pr-comment-resolver` |
+| `maxTurns` | Limit agentic turns to prevent runaway token consumption | `20` for focused tasks |
 
 ### Adjusting quality gates
 
@@ -621,6 +673,12 @@ Wave orchestration (`/orchestrate`) groups plan tasks by dependency. Independent
 <summary><strong>What is knowledge compounding?</strong></summary>
 
 After solving a non-trivial problem, `/compound` saves it as a structured document in `docs/solutions/`. Future `/plan` and `/deep-research` commands automatically search this directory before starting new work. Over time, your project builds institutional knowledge that prevents repeated mistakes and informs better plans.
+</details>
+
+<details>
+<summary><strong>What are Agent Teams and how do they differ from swarms?</strong></summary>
+
+Agent Teams (`/team`) spawn fully independent Claude Code instances that collaborate through a shared task list and messaging. Unlike swarms (which are read-only subagents reporting analysis back to a controller), Agent Teams are peers that can discuss design decisions, divide file ownership, and coordinate in real time. Use swarms for parallel analysis (review, research) and Agent Teams for collaborative implementation. Agent Teams is an experimental feature — enable with `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS: "1"` in settings.json.
 </details>
 
 <details>

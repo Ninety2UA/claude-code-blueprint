@@ -13,11 +13,13 @@ Quality over speed. Small steps compound into big progress. The patterns you est
 **Last session:** 2026-03-09
 
 **What was done:**
-- Added `-v`/`--version` flag to install.sh (`611902d`)
-- Bumped version to 2.1.0 (`611902d`)
-- Added 3 new skills: dependency-management, spike-exploration, scope-cutting — 29 → 32 total (`611902d`)
-- Updated all counts in README.md, CLAUDE.md, STATUS.md, plugin.json, hero-banner.svg (`611902d`)
-- All "Up Next" items from previous session completed
+- v2.2.0: Added tool restrictions to all 25 agents (principle of least privilege)
+- Added Agent Teams integration: `/team` command, `agent-teams` skill, quality gate hooks
+- Added `isolation: worktree` to pr-comment-resolver and wave-orchestration guidance
+- Added TeammateIdle + TaskCompleted quality gate hooks for Agent Teams
+- Updated swarm-orchestration skill with Agent Teams comparison
+- Fixed duplicate `stateFile` variable bug in session-start.js
+- Updated all counts: 33 skills, 22 commands, 4 hooks
 
 **What's remaining:**
 - (none)
@@ -26,9 +28,9 @@ Quality over speed. Small steps compound into big progress. The patterns you est
 
 **Current state of the code:**
 - Build: n/a (template repo, no build step)
-- Tests: CI should pass (threshold-based counts, 32 > 20)
-- Lint: shellcheck clean (verified locally), markdownlint not re-run
-- Uncommitted changes: none — working tree clean
+- Tests: CI should pass (threshold-based counts, 33 > 20)
+- Lint: shellcheck not re-run on install.sh, markdownlint not re-run
+- Uncommitted changes: all changes from v2.2.0 update
 
 ## Behavioral Rules
 
@@ -134,7 +136,7 @@ When things go wrong during a session:
 ```
 project/
 ├── .claude/
-│   ├── commands/          # Slash commands (21 commands)
+│   ├── commands/          # Slash commands (22 commands)
 │   │   ├── init.md        # /init — interactive project setup
 │   │   ├── plan.md        # /plan — brainstorm before building
 │   │   ├── build.md       # /build — full-cycle autonomous pipeline
@@ -144,6 +146,7 @@ project/
 │   │   ├── deep-research.md # /deep-research — multi-agent parallel research
 │   │   ├── compound.md    # /compound — document solved problem for reuse
 │   │   ├── orchestrate.md # /orchestrate — wave-based parallel execution
+│   │   ├── team.md        # /team — collaborative agent team (experimental)
 │   │   ├── status.md      # /status — project state + goal alignment
 │   │   ├── debug.md       # /debug [issue] — root cause investigation
 │   │   ├── backlog.md     # /backlog — triage capture inbox
@@ -158,8 +161,10 @@ project/
 │   │   └── health.md      # /health — comprehensive project health check
 │   ├── hooks/             # Lifecycle hooks
 │   │   ├── session-start.js   # Bootstrap context on session start
-│   │   └── context-monitor.js # Track context usage + analysis paralysis guard
-│   ├── skills/            # Workflow skills (32 skills)
+│   │   ├── context-monitor.js # Track context usage + analysis paralysis guard
+│   │   ├── teammate-idle.js   # Agent Teams: quality gate when teammate finishes
+│   │   └── task-completed.js  # Agent Teams: quality gate on task completion
+│   ├── skills/            # Workflow skills (33 skills)
 │   │   ├── brainstorming/
 │   │   ├── writing-plans/
 │   │   ├── executing-plans/
@@ -187,6 +192,7 @@ project/
 │   │   ├── autonomous-loop/
 │   │   ├── wave-orchestration/
 │   │   ├── swarm-orchestration/
+│   │   ├── agent-teams/
 │   │   ├── knowledge-compounding/
 │   │   ├── session-continuity/
 │   │   ├── dependency-management/
@@ -305,6 +311,7 @@ The Session Continuity section above tells you where to start. If it's empty, ru
 | Autonomous plan execution with retry | autonomous-loop | — |
 | Plan with mixed dependencies, parallel+serial | wave-orchestration | `/orchestrate` |
 | Dispatching multiple agents on same problem | swarm-orchestration | `/review-swarm`, `/deep-research` |
+| Collaborative multi-file implementation | agent-teams | `/team` |
 | Documenting a solved problem for reuse | knowledge-compounding | `/compound` |
 | Tracking state across session boundaries | session-continuity | `/pause`, `/resume` |
 | Adding, upgrading, or removing dependencies | dependency-management | — |
@@ -342,9 +349,9 @@ Use Task tool to dispatch agents when you need isolated 200K context for a speci
 | integration-verifier | After wave completion — verifies parallel implementations work together |
 | findings-synthesizer | After review/research swarm — de-duplicates and prioritizes all findings |
 
-## Agent Teams — Structured Swarms
+## Multi-Agent Patterns
 
-Agents are organized into teams for coordinated multi-agent workflows. Use `/review-swarm`, `/deep-research`, or `/orchestrate` to dispatch these teams.
+Four orchestration patterns for coordinated multi-agent workflows:
 
 ```
 Controller (main Claude session)
@@ -361,12 +368,18 @@ Controller (main Claude session)
 │   ├── plan-checker
 │   └── integration-checker
 │
-├── Execution Waves (/orchestrate) ── parallel within waves
-│   ├── Wave 1: [implementer-A, implementer-B] (parallel)
-│   │   └── spec-reviewer + quality-reviewer per task
-│   ├── Wave 2: [implementer-C] (depends on Wave 1)
-│   │   └── spec-reviewer + quality-reviewer
-│   └── integration-verifier (between each wave)
+├── Execution — choose one:
+│   │
+│   ├── Execution Waves (/orchestrate) ── parallel within waves
+│   │   ├── Wave 1: [implementer-A, implementer-B] (parallel, worktree-isolated)
+│   │   ├── integration-verifier (between each wave)
+│   │   └── Wave 2: [implementer-C] (depends on Wave 1)
+│   │
+│   └── Agent Teams (/team) ── collaborative instances (experimental)
+│       ├── Teammate A (owns src/api/*) ──┐
+│       ├── Teammate B (owns src/ui/*)    ├── shared task list + messaging
+│       ├── Teammate C (owns tests/*)   ──┘
+│       └── Quality gates: TeammateIdle + TaskCompleted hooks
 │
 ├── Review Swarm (/review-swarm) ── all run in parallel
 │   ├── code-reviewer
@@ -382,6 +395,14 @@ Controller (main Claude session)
 └── Knowledge Loop
     └── /compound → docs/solutions/ → learnings-researcher → /plan
 ```
+
+**Choosing an execution pattern:**
+
+| Pattern | Use When | Key Feature |
+|---------|----------|-------------|
+| **Waves** (`/orchestrate`) | Tasks have dependency ordering | Worktree isolation + integration verification |
+| **Agent Teams** (`/team`) | Teammates need to discuss and coordinate | Shared task list + messaging |
+| **Sequential** | All tasks are dependent | Autonomous loop |
 
 **Per-project config:** Edit `blueprint.local.md` to enable/disable agents for your stack.
 

@@ -91,14 +91,14 @@ if (fs.existsSync(stateFile)) {
 }
 
 // Reset context monitor state for fresh session
-const stateDir = path.join(os.tmpdir(), 'claude-blueprint');
-const stateFile = path.join(stateDir, 'ctx-' + Buffer.from(cwd).toString('hex').slice(0, 16) + '.json');
+const ctxStateDir = path.join(os.tmpdir(), 'claude-blueprint');
+const ctxStateFile = path.join(ctxStateDir, 'ctx-' + Buffer.from(cwd).toString('hex').slice(0, 16) + '.json');
 try {
-  if (fs.existsSync(stateFile)) fs.unlinkSync(stateFile);
+  if (fs.existsSync(ctxStateFile)) fs.unlinkSync(ctxStateFile);
 } catch (e) { /* ignore */ }
 
 // Remind about commands
-lines.push('Commands: /plan · /build · /discuss · /review · /review-swarm · /deep-research · /compound · /orchestrate · /status · /debug · /backlog · /wrap');
+lines.push('Commands: /plan · /build · /discuss · /review · /review-swarm · /deep-research · /compound · /orchestrate · /team · /status · /debug · /backlog · /wrap');
 
 if (lines.length > 0) {
   console.log(lines.join('\n'));

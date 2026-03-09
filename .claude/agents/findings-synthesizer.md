@@ -2,6 +2,7 @@
 name: findings-synthesizer
 description: "Synthesizes results from a review swarm — collects findings from multiple parallel reviewers, de-duplicates, prioritizes by severity (P1/P2/P3), and produces a single actionable report. Use after /review-swarm completes."
 model: inherit
+tools: [Read, Glob, Grep]
 ---
 
 <examples>

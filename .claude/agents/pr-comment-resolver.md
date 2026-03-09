@@ -1,6 +1,9 @@
 ---
 name: pr-comment-resolver
 description: "Resolves a single PR review comment with a targeted, minimal code change. Use when processing feedback from code review — dispatched once per comment."
+model: inherit
+tools: [Read, Glob, Grep, Bash, Edit, Write]
+isolation: worktree
 ---
 
 # PR Comment Resolver

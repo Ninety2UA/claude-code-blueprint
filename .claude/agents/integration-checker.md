@@ -1,6 +1,8 @@
 ---
 name: integration-checker
 description: "Verifies that implemented components are properly wired together — imports exist, routes registered, configs updated, and features are reachable."
+model: inherit
+tools: [Read, Glob, Grep, Bash]
 ---
 
 # Integration Checker

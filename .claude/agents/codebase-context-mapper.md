@@ -2,6 +2,7 @@
 name: codebase-context-mapper
 description: "Produces a focused map of files, functions, and dependencies relevant to a specific planned change. Use before planning to understand what the change will touch."
 model: inherit
+tools: [Read, Glob, Grep, Bash]
 ---
 
 <examples>

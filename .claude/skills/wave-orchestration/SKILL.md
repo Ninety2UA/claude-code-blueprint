@@ -105,16 +105,19 @@ For each wave:
 
 #### 4a. Dispatch Parallel Subagents
 
-For each task in the wave, dispatch an implementer subagent using the subagent-driven-development pattern:
+For each task in the wave, dispatch an implementer subagent using the subagent-driven-development pattern. **Use `isolation: worktree`** to give each implementer an isolated copy of the repo, preventing file conflicts between parallel tasks:
 
 ```
 Task("Implement Task [N]: [full task description].
 Context: [relevant project context, file paths, conventions].
 Constraints: Only modify [specific files]. Follow TDD.
-Return: Summary of changes, files modified, test results.")
+Return: Summary of changes, files modified, test results.",
+isolation: "worktree")
 ```
 
 Dispatch ALL tasks in the wave in a single message for maximum parallelism.
+
+**Why worktree isolation matters:** Without isolation, parallel implementers can overwrite each other's changes to the same files. Worktrees give each implementer a clean copy. Changes are merged back after the wave completes.
 
 #### 4b. Collect Results
 

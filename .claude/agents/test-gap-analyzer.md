@@ -1,6 +1,8 @@
 ---
 name: test-gap-analyzer
 description: "Finds untested code paths and generates prioritized behavioral tests. Use when improving test coverage or before major refactors to ensure safety nets exist."
+model: inherit
+tools: [Read, Glob, Grep, Bash, Edit, Write]
 ---
 
 # Test Gap Analyzer

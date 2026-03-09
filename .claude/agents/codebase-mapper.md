@@ -1,6 +1,8 @@
 ---
 name: codebase-mapper
 description: "Analyzes unfamiliar codebases and produces structured documentation covering architecture, conventions, tech stack, and concerns. Use when onboarding to a new codebase or before making changes to unfamiliar code."
+model: inherit
+tools: [Read, Glob, Grep, Bash]
 ---
 
 # Codebase Mapper

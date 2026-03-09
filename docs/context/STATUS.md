@@ -1,6 +1,6 @@
 # Project Status
 
-Last updated: 2026-03-09 (v2.1.0)
+Last updated: 2026-03-09 (v2.2.0)
 
 ## Current State of the Code
 
@@ -8,7 +8,7 @@ Last updated: 2026-03-09 (v2.1.0)
 - **Tests:** CI passing (4/4 jobs — lint-markdown, shellcheck, install ubuntu, install macos)
 - **Lint:** markdownlint clean, shellcheck clean
 - **Last verified:** 2026-03-09
-- **Version:** 2.1.0 (32 skills, 25 agents, 21 commands, 2 hooks)
+- **Version:** 2.2.0 (33 skills, 25 agents, 22 commands, 4 hooks)
 
 ## In Flight
 

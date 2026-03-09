@@ -152,6 +152,20 @@ For small changes (< 50 lines), a single code-reviewer is usually sufficient. Re
 
 **Missing synthesizer** — Raw outputs from 6 agents are noisy and duplicative. Always synthesize.
 
-**Wrong swarm for the job** — If agents need to build on each other's work, use wave-orchestration, not a swarm.
+**Wrong swarm for the job** — If agents need to build on each other's work, use wave-orchestration, not a swarm. If they need to discuss and coordinate in real time, use Agent Teams (`/team`).
 
 **No shared output format** — If each agent reports in a different format, synthesis is much harder. Specify the format in the dispatch prompt.
+
+## Swarms vs Agent Teams
+
+Swarms and Agent Teams serve different purposes and complement each other:
+
+| Aspect | Swarms | Agent Teams |
+|--------|--------|-------------|
+| **Communication** | One-way (report to controller) | Multi-directional (teammates message each other) |
+| **Best for** | Parallel analysis (review, research) | Collaborative implementation |
+| **File access** | Read-only (analysis agents) | Read-write (each teammate owns files) |
+| **Coordination** | Synthesizer merges outputs | Shared task list + messaging |
+| **When to use** | Multiple perspectives on same code | Complex multi-file implementation |
+
+**Typical workflow:** `/deep-research` (swarm) → `/plan` → `/team` (agent teams) → `/review-swarm` (swarm)
