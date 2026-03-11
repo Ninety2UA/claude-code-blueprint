@@ -1214,6 +1214,308 @@
   .lw-fix    { background: #d1fae5; color: #065f46; border: 2px solid #6ee7b7; }
   .lw-verify { background: #dbeafe; color: #1e40af; border: 2px solid #93c5fd; }
   .lw-commit { background: #f3e8ff; color: #6b21a8; border: 2px solid #c4b5fd; }
+
+  /* ── DISPATCH PATTERNS (compact) ────────────── */
+  .dp-diagram {
+    padding: 32px 44px;
+  }
+
+  .dp-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #64748b;
+    margin-bottom: 16px;
+  }
+
+  /* Single dispatch */
+  .dp-single-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+  }
+
+  .dp-session {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #0f172a;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .dp-session-icon {
+    width: 22px;
+    height: 22px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .dp-arrow {
+    font-size: 18px;
+    color: #94a3b8;
+    padding: 0 10px;
+    flex-shrink: 0;
+  }
+
+  .dp-task {
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 12.5px;
+    font-weight: 600;
+    border: 1.5px solid;
+    white-space: nowrap;
+  }
+
+  .dp-task-mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  .dp-task-blue { background: #eff6ff; border-color: #93c5fd; color: #1e40af; }
+  .dp-task-green { background: #ecfdf5; border-color: #6ee7b7; color: #065f46; }
+  .dp-task-amber { background: #fffbeb; border-color: #fde68a; color: #92400e; }
+  .dp-task-purple { background: #f5f3ff; border-color: #c4b5fd; color: #5b21b6; }
+
+  /* Swarm dispatch compact */
+  .dp-swarm {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .dp-swarm-agents {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .dp-swarm-agent {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .dp-swarm-agent-name {
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1.5px solid;
+    background: #ecfdf5;
+    border-color: #a7f3d0;
+    color: #065f46;
+    min-width: 160px;
+  }
+
+  .dp-swarm-finding {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: #94a3b8;
+    font-weight: 500;
+  }
+
+  .dp-swarm-bracket {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    color: #94a3b8;
+    flex-shrink: 0;
+  }
+
+  .dp-swarm-bracket svg {
+    width: 20px;
+    flex-shrink: 0;
+  }
+
+  .dp-swarm-synth {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    border: 2px solid #059669;
+    background: #ecfdf5;
+    color: #065f46;
+    flex-shrink: 0;
+  }
+
+  .dp-swarm-synth-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #10b981, #059669);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #fff;
+  }
+
+  .dp-swarm-output {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #64748b;
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+
+  /* Wave dispatch compact */
+  .dp-waves {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .dp-wave-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .dp-wave-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 64px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .dp-wave-badge-1 { background: linear-gradient(135deg, #f59e0b, #d97706); }
+  .dp-wave-badge-2 { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+
+  .dp-wave-tasks {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+  }
+
+  .dp-wave-task {
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1.5px solid;
+  }
+
+  .dp-wave-task-1 { background: #fffbeb; border-color: #fde68a; color: #92400e; }
+  .dp-wave-task-2 { background: #eff6ff; border-color: #93c5fd; color: #1e40af; }
+
+  .dp-wave-meta {
+    font-size: 10.5px;
+    color: #94a3b8;
+    font-style: italic;
+    font-weight: 500;
+  }
+
+  .dp-wave-verifier {
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    background: #ecfdf5;
+    border: 1.5px solid #6ee7b7;
+    color: #065f46;
+    flex-shrink: 0;
+  }
+
+  /* Team dispatch compact */
+  .dp-team {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .dp-team-lead-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .dp-team-lead {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #0f172a;
+    color: #fff;
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .dp-team-spawns {
+    font-size: 11px;
+    color: #94a3b8;
+    font-weight: 500;
+  }
+
+  .dp-team-members {
+    display: flex;
+    gap: 10px;
+    padding-left: 20px;
+  }
+
+  .dp-team-member {
+    flex: 1;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1.5px solid;
+    text-align: center;
+  }
+
+  .dp-team-member-name {
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+
+  .dp-team-member-owns {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    opacity: 0.7;
+  }
+
+  .dp-team-member-blue { background: #eff6ff; border-color: #93c5fd; color: #1e40af; }
+  .dp-team-member-pink { background: #fdf2f8; border-color: #f9a8d4; color: #9d174d; }
+  .dp-team-member-green { background: #ecfdf5; border-color: #86efac; color: #065f46; }
+
+  .dp-team-infra {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 8px 0;
+  }
+
+  .dp-team-infra-item {
+    font-size: 11px;
+    font-weight: 600;
+    color: #64748b;
+  }
 </style>
 </head>
 <body>
@@ -1699,6 +2001,102 @@
     <span style="display: inline-block; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 6px; padding: 4px 14px; font-size: 11px; color: #64748b; font-family: 'JetBrains Mono', monospace; font-weight: 500;">
       ship-loop.sh (Stop hook) — blocks premature exit within session
     </span>
+  </div>
+</div>
+
+<!-- ════════════ DISPATCH: SWARM ════════════ -->
+<div class="diagram dp-diagram" id="dispatch-swarm">
+  <div class="dp-swarm">
+    <div class="dp-session">
+      <div class="dp-session-icon">>_</div>
+      Main Session
+    </div>
+    <div class="dp-arrow" style="padding: 0 6px;">→</div>
+    <div class="dp-swarm-agents">
+      <div class="dp-swarm-agent">
+        <div class="dp-swarm-agent-name">code-reviewer</div>
+        <div class="dp-swarm-finding">→ findings</div>
+      </div>
+      <div class="dp-swarm-agent">
+        <div class="dp-swarm-agent-name">security-sentinel</div>
+        <div class="dp-swarm-finding">→ findings</div>
+      </div>
+      <div class="dp-swarm-agent">
+        <div class="dp-swarm-agent-name">performance-oracle</div>
+        <div class="dp-swarm-finding">→ findings</div>
+      </div>
+      <div class="dp-swarm-agent">
+        <div class="dp-swarm-agent-name">convention-enforcer</div>
+        <div class="dp-swarm-finding">→ findings</div>
+      </div>
+      <div class="dp-swarm-agent">
+        <div class="dp-swarm-agent-name">test-coverage-reviewer</div>
+        <div class="dp-swarm-finding">→ findings</div>
+      </div>
+    </div>
+    <div class="dp-arrow" style="padding: 0 6px;">→</div>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+      <div class="dp-swarm-synth">
+        <div class="dp-swarm-synth-icon">&#x2728;</div>
+        findings-synthesizer
+      </div>
+      <div class="dp-swarm-output">→ unified report</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ DISPATCH: WAVE ════════════ -->
+<div class="diagram dp-diagram" id="dispatch-wave">
+  <div class="dp-waves">
+    <div class="dp-wave-row">
+      <div class="dp-wave-badge dp-wave-badge-1">Wave 1</div>
+      <div class="dp-wave-tasks">
+        <div class="dp-wave-task dp-wave-task-1">implementer-A</div>
+        <span style="font-size:11px; color:#94a3b8;">+</span>
+        <div class="dp-wave-task dp-wave-task-1">implementer-B</div>
+        <div class="dp-wave-meta">(parallel, worktree-isolated)</div>
+      </div>
+      <div class="dp-arrow">→</div>
+      <div class="dp-wave-verifier">integration-verifier</div>
+    </div>
+    <div class="dp-wave-row">
+      <div class="dp-wave-badge dp-wave-badge-2">Wave 2</div>
+      <div class="dp-wave-tasks">
+        <div class="dp-wave-task dp-wave-task-2">implementer-C</div>
+        <div class="dp-wave-meta">(depends on Wave 1)</div>
+      </div>
+      <div class="dp-arrow">→</div>
+      <div class="dp-wave-verifier">integration-verifier</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ DISPATCH: AGENT TEAM ════════════ -->
+<div class="diagram dp-diagram" id="dispatch-team">
+  <div class="dp-team">
+    <div class="dp-team-lead-row">
+      <div class="dp-team-lead">Team Lead</div>
+      <div class="dp-team-spawns">spawns teammates with file ownership boundaries</div>
+    </div>
+    <div class="dp-team-members">
+      <div class="dp-team-member dp-team-member-blue">
+        <div class="dp-team-member-name">Teammate A</div>
+        <div class="dp-team-member-owns">owns src/api/*</div>
+      </div>
+      <div class="dp-team-member dp-team-member-pink">
+        <div class="dp-team-member-name">Teammate B</div>
+        <div class="dp-team-member-owns">owns src/ui/*</div>
+      </div>
+      <div class="dp-team-member dp-team-member-green">
+        <div class="dp-team-member-name">Teammate C</div>
+        <div class="dp-team-member-owns">owns tests/*</div>
+      </div>
+    </div>
+    <div class="dp-team-infra">
+      <div class="dp-team-infra-item">shared tasks + messaging</div>
+      <div class="dp-team-infra-item" style="color: #94a3b8;">·</div>
+      <div class="dp-team-infra-item" style="font-family: 'JetBrains Mono', monospace; font-size: 10px;">TeammateIdle + TaskCompleted hooks</div>
+    </div>
   </div>
 </div>
 

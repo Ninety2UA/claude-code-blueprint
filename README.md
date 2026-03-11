@@ -387,29 +387,22 @@ Main Session → Task("security-sentinel: audit auth endpoints") → findings �
 ```
 
 **Swarm dispatch** — multiple agents, same input, different lenses:
-```
-Main Session
-├── code-reviewer          → findings ─┐
-├── security-sentinel      → findings  │
-├── performance-oracle     → findings  ├── findings-synthesizer → unified report
-├── convention-enforcer    → findings  │
-└── test-coverage-reviewer → findings ─┘
-```
+
+<p align="center">
+  <img src="docs/images/dispatch-swarm.png" alt="Swarm dispatch — 5 agents → findings-synthesizer → unified report" width="90%">
+</p>
 
 **Wave dispatch** — parallel within waves, worktree-isolated, sequential between:
-```
-Wave 1: implementer-A + implementer-B (parallel, worktree-isolated) → integration-verifier
-Wave 2: implementer-C (depends on Wave 1)                           → integration-verifier
-```
+
+<p align="center">
+  <img src="docs/images/dispatch-wave.png" alt="Wave dispatch — parallel within waves, integration-verifier between" width="90%">
+</p>
 
 **Agent team dispatch** — collaborative instances with shared task list:
-```
-Team Lead → spawns teammates with file ownership boundaries
-├── Teammate A (owns src/api/*)     ─┐
-├── Teammate B (owns src/ui/*)       ├── shared tasks + messaging
-└── Teammate C (owns tests/*)       ─┘
-    Quality gates: TeammateIdle + TaskCompleted hooks
-```
+
+<p align="center">
+  <img src="docs/images/dispatch-team.png" alt="Agent team dispatch — teammates with file ownership, shared tasks + messaging" width="90%">
+</p>
 
 ## Commands Reference
 
