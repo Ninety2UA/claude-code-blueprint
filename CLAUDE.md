@@ -13,28 +13,26 @@ Quality over speed. Small steps compound into big progress. The patterns you est
 **Last session:** 2026-03-11
 
 **What was done:**
-- v2.3.0: Autonomous pipeline, iteration loops, team-lead orchestrator
-- New `/ship` command — fully autonomous end-to-end pipeline (zero checkpoints, fire-and-forget)
-- New `/deepen` command — parallel plan enrichment via research agent swarm
-- New `iterative-refinement` skill — review→fix→review cycles with 3 convergence modes (fast/deep/perfect)
-- New `team-lead` agent — dedicated orchestrator (200K fresh context) that delegates to workers, monitors, reviews, signs off
-- New `ship-loop.sh` Stop hook — Ralph-style session iteration with `<promise>` completion gate
-- Rewired `/orchestrate` and `/team` to dispatch team-lead agent (`--no-review` flag for pipeline use)
-- Enhanced `/build` with `--iterate N`, `--team` flags and team-lead dispatch for complex plans
-- Enhanced `autonomous-loop` skill with circuit breaker (3 no-progress / 5 same-error thresholds)
-- Bumped to v2.3.0 (24 commands, 34 skills, 26 agents, 5 hooks)
+- Fixed `/ship` pipeline's context exhaustion recovery — added missing Stage 0 (state file creation)
+- New `scripts/ship.sh` — Ralph-style external bash loop (fresh 200K context per iteration, `--max N`)
+- Dual-loop architecture: outer loop (`ship.sh`) for context exhaustion, inner guard (`ship-loop.sh`) for premature exit
+- Added `--external` flag to `/ship` — skips Stop hook activation when managed by outer loop
+- Added continuation detection to `/ship` Stage 0 — checks git log, plan files, progress file to resume mid-pipeline
+- Updated README.md with `/ship` pipeline section, diagram (`ship-pipeline.png`), context management table, pipeline comparison, new commands/skills/agents, updated component counts (24/34/26/5), new FAQ entries
+- Re-rendered `project-structure.png` and `agents-ecosystem.png` with updated counts
+- Fixed markdownlint MD049 — asterisk emphasis → underscore in CLAUDE.md
 
 **What's remaining:**
-- README.md update with new commands, components, and pipeline diagram
-- Consider updating `docs/images/render-diagrams.html` to show `/ship` pipeline architecture
+- No immediate work remaining — v2.3.0 is fully documented and CI is green
+- GOALS.md still has placeholder templates (P3 — filled by `/init` on install)
 
-**Start here:** Update README.md to document `/ship`, `/deepen`, team-lead agent, and iterative-refinement skill. Update component counts (24/34/26/5) and add pipeline comparison section.
+**Start here:** All v2.3.0 work is complete. Next feature or improvement can be started fresh.
 
 **Current state of the code:**
 - Build: n/a (template repo, no build step)
-- Tests: CI should pass (threshold-based counts, 34 > 20)
-- Lint: shellcheck clean on ship-loop.sh; markdownlint not re-run
-- Uncommitted changes: 5 new files + 6 modified files (v2.3.0 work)
+- Tests: CI passing (4/4 jobs green — install ubuntu, install macos, shellcheck, markdownlint)
+- Lint: markdownlint clean, shellcheck clean
+- Uncommitted changes: none (working tree clean)
 
 ## Behavioral Rules
 
@@ -490,3 +488,6 @@ Dedicating a team-lead agent (fresh 200K context) to coordinate `/orchestrate` a
 
 ### 2026-03-11: GSD's plan-checker verify loop is the highest-ROI quality gate
 Researching GSD, Ralph, and CE revealed that validating plans _before_ execution catches the most expensive mistakes earliest. `/ship` now runs a plan-checker → fix → re-check loop (max 3 passes) before committing to execution. Fixing a wrong approach in a markdown plan costs seconds; fixing it after implementation costs minutes of rework + debugging + re-review. This is combined with `/deepen` (parallel research enrichment) to produce plans that are both validated and deeply informed.
+
+### 2026-03-11: Stop hook "decision: block" does NOT reset context — use external bash loop for that
+Ralph (`ralph.sh`) spawns a fresh `claude --print` process per iteration in a bash for-loop — each gets clean 200K context. Our `ship-loop.sh` Stop hook uses `"decision": "block"` which prevents exit but continues the same session (context keeps growing). These solve different problems: the Stop hook catches premature exit (Claude gives up too early), while the external loop handles genuine context exhaustion. The `--external` flag in `/ship` disables the Stop hook when the outer loop manages restarts, preventing conflict between the two mechanisms.

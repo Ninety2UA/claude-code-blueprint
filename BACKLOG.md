@@ -4,9 +4,7 @@ Dump anything here — ideas, bugs, tasks, notes. No structure required for new 
 
 ## Inbox
 
-- Update README.md with v2.3.0 components: `/ship`, `/deepen`, team-lead agent, iterative-refinement skill, pipeline comparison table
-- Update render-diagrams.html to show `/ship` pipeline architecture (optional)
-- Re-run full CI to verify threshold counts still pass with new component counts
+<!-- All v2.3.0 items completed in commit 26bd912 and verified by CI (4dc5408) -->
 
 ## Triaged
 

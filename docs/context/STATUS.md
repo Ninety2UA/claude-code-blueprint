@@ -5,29 +5,31 @@ Last updated: 2026-03-11 (v2.3.0)
 ## Current State of the Code
 
 - **Build:** n/a (template repo, no build step)
-- **Tests:** CI should pass (threshold-based counts, 34 > 20)
-- **Lint:** shellcheck clean on new hook; markdownlint not re-run
-- **Last verified:** 2026-03-11 (shellcheck on ship-loop.sh, JSON validation on settings.json)
+- **Tests:** CI passing (4/4 jobs green — install ubuntu, install macos, shellcheck, markdownlint)
+- **Lint:** markdownlint clean, shellcheck clean
+- **Last verified:** 2026-03-11 (CI run after commit `4dc5408`)
 - **Version:** 2.3.0 (34 skills, 26 agents, 24 commands, 5 hooks)
 
 ## In Flight
 
 | Task | Status | Blockers | Notes |
 |------|--------|----------|-------|
-| README.md update for v2.3.0 | Not started | — | Add `/ship`, `/deepen`, team-lead, iterative-refinement, pipeline comparison |
+| (none) | — | — | — |
 
 ## Up Next
 
 | Task | Status | Blockers | Notes |
 |------|--------|----------|-------|
-| Update render-diagrams.html for pipeline architecture | Not started | — | Optional: show `/ship` pipeline flow |
-| Re-run CI to verify threshold counts | Not started | — | 34 > 20 should pass |
+| (no immediate work) | — | — | v2.3.0 is fully documented and CI is green |
 
 ## What's Done
 
 | Date | Commit | Description |
 |------|--------|-------------|
-| 2026-03-11 | (uncommitted) | Feat: v2.3.0 — autonomous pipeline (`/ship`), iterative refinement skill, team-lead agent, `/deepen` command, Stop hook, circuit breaker, `--no-review` composability. 5 new files, 6 modified. |
+| 2026-03-11 | `4dc5408` | Fix: markdownlint MD049 — asterisk emphasis → underscore in CLAUDE.md |
+| 2026-03-11 | `26bd912` | Feat: add `/ship` pipeline, `scripts/ship.sh` external loop, dual-loop context management, pipeline diagram, README update with `/ship` section + context management docs. 17 files, +1477/-100. |
+| 2026-03-11 | `866abca` | Docs: session wrap-up for v2.3.0 autonomous pipeline and iteration loops |
+| 2026-03-11 | (prior session) | Feat: v2.3.0 — autonomous pipeline (`/ship`), iterative refinement skill, team-lead agent, `/deepen` command, Stop hook, circuit breaker, `--no-review` composability. |
 | 2026-03-09 | `4605205` | Feat: v2.2.0 — add tool restrictions to all 25 agents, Agent Teams integration (`/team` command, agent-teams skill, quality gate hooks), worktree isolation, README update. 38 files, +616/-46. |
 | 2026-03-09 | `611902d` | Feat: v2.1.0 — add 3 skills (dependency-management, spike-exploration, scope-cutting), add `--version` flag to install.sh, update all counts (29 → 32 skills). |
 | 2026-03-09 | `aece6df` | Chore: add GitHub Actions CI — lint markdown, shellcheck, install tests on ubuntu+macos. All 4 jobs passing. |
@@ -47,6 +49,7 @@ Last updated: 2026-03-11 (v2.3.0)
 
 | Date | Decision | ADR |
 |------|----------|-----|
+| 2026-03-11 | Dual-loop context management: external bash loop (`ship.sh`) for context exhaustion, Stop hook (`ship-loop.sh`) for premature exit, `--external` flag to avoid conflict | — |
 | 2026-03-11 | v2.3.0: `/ship` as autonomous pipeline name, team-lead as dedicated agent (not skill), `--no-review` composability pattern, 3 iteration layers (task/quality/session), plan-checker verify loop before execution | — |
 | 2026-03-09 | v2.2.0: Add tool restrictions (least privilege), Agent Teams integration, worktree isolation, quality gate hooks | — |
 | 2026-03-09 | v2.0.0: Organize agents into swarm/wave/loop teams; add per-project config; add knowledge compounding | — |
@@ -63,7 +66,7 @@ Last updated: 2026-03-11 (v2.3.0)
 | Issue | Severity | Workaround | Discovered |
 |-------|----------|------------|------------|
 | docs/context/ files still have placeholder templates | P3 | Filled in by `/init` when user installs | 2026-03-04 |
-| README.md doesn't document v2.3.0 components | P2 | CLAUDE.md has full documentation | 2026-03-11 |
+| README.md doesn't document v2.3.0 components | ~~P2~~ RESOLVED | Fixed in `26bd912` | 2026-03-11 |
 
 ## Dependencies and External Blockers
 
