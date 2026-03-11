@@ -1,31 +1,33 @@
 # Project Status
 
-Last updated: 2026-03-09 (v2.2.0)
+Last updated: 2026-03-11 (v2.3.0)
 
 ## Current State of the Code
 
 - **Build:** n/a (template repo, no build step)
-- **Tests:** CI should pass (threshold-based counts, 33 > 20)
-- **Lint:** shellcheck and markdownlint not re-run this session
-- **Last verified:** 2026-03-09 (CI not re-run after v2.2.0)
-- **Version:** 2.2.0 (33 skills, 25 agents, 22 commands, 4 hooks)
+- **Tests:** CI should pass (threshold-based counts, 34 > 20)
+- **Lint:** shellcheck clean on new hook; markdownlint not re-run
+- **Last verified:** 2026-03-11 (shellcheck on ship-loop.sh, JSON validation on settings.json)
+- **Version:** 2.3.0 (34 skills, 26 agents, 24 commands, 5 hooks)
 
 ## In Flight
 
 | Task | Status | Blockers | Notes |
 |------|--------|----------|-------|
-| (none) | — | — | — |
+| README.md update for v2.3.0 | Not started | — | Add `/ship`, `/deepen`, team-lead, iterative-refinement, pipeline comparison |
 
 ## Up Next
 
 | Task | Status | Blockers | Notes |
 |------|--------|----------|-------|
-| (none) | — | — | — |
+| Update render-diagrams.html for pipeline architecture | Not started | — | Optional: show `/ship` pipeline flow |
+| Re-run CI to verify threshold counts | Not started | — | 34 > 20 should pass |
 
 ## What's Done
 
 | Date | Commit | Description |
 |------|--------|-------------|
+| 2026-03-11 | (uncommitted) | Feat: v2.3.0 — autonomous pipeline (`/ship`), iterative refinement skill, team-lead agent, `/deepen` command, Stop hook, circuit breaker, `--no-review` composability. 5 new files, 6 modified. |
 | 2026-03-09 | `4605205` | Feat: v2.2.0 — add tool restrictions to all 25 agents, Agent Teams integration (`/team` command, agent-teams skill, quality gate hooks), worktree isolation, README update. 38 files, +616/-46. |
 | 2026-03-09 | `611902d` | Feat: v2.1.0 — add 3 skills (dependency-management, spike-exploration, scope-cutting), add `--version` flag to install.sh, update all counts (29 → 32 skills). |
 | 2026-03-09 | `aece6df` | Chore: add GitHub Actions CI — lint markdown, shellcheck, install tests on ubuntu+macos. All 4 jobs passing. |
@@ -45,6 +47,7 @@ Last updated: 2026-03-09 (v2.2.0)
 
 | Date | Decision | ADR |
 |------|----------|-----|
+| 2026-03-11 | v2.3.0: `/ship` as autonomous pipeline name, team-lead as dedicated agent (not skill), `--no-review` composability pattern, 3 iteration layers (task/quality/session), plan-checker verify loop before execution | — |
 | 2026-03-09 | v2.2.0: Add tool restrictions (least privilege), Agent Teams integration, worktree isolation, quality gate hooks | — |
 | 2026-03-09 | v2.0.0: Organize agents into swarm/wave/loop teams; add per-project config; add knowledge compounding | — |
 | 2026-03-09 | Switch diagram rendering from Mermaid to HTML/CSS + Playwright screenshots for better quality | — |
@@ -60,6 +63,7 @@ Last updated: 2026-03-09 (v2.2.0)
 | Issue | Severity | Workaround | Discovered |
 |-------|----------|------------|------------|
 | docs/context/ files still have placeholder templates | P3 | Filled in by `/init` when user installs | 2026-03-04 |
+| README.md doesn't document v2.3.0 components | P2 | CLAUDE.md has full documentation | 2026-03-11 |
 
 ## Dependencies and External Blockers
 

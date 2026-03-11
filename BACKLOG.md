@@ -4,14 +4,9 @@ Dump anything here — ideas, bugs, tasks, notes. No structure required for new 
 
 ## Inbox
 
-<!-- New items go here. Just write them down. /backlog will sort them. -->
-
-<!-- Example entries:
-- look into why the ETL pipeline is slow on weekends
-- idea: add conversational AI layer to the dashboard
-- follow up with team about API rate limits
-- bug: date formatting is wrong in the export
--->
+- Update README.md with v2.3.0 components: `/ship`, `/deepen`, team-lead agent, iterative-refinement skill, pipeline comparison table
+- Update render-diagrams.html to show `/ship` pipeline architecture (optional)
+- Re-run full CI to verify threshold counts still pass with new component counts
 
 ## Triaged
 

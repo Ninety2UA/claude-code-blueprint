@@ -10,27 +10,31 @@ Quality over speed. Small steps compound into big progress. The patterns you est
 
 <!-- Updated by /wrap at end of each work session. Read this FIRST when starting a new session. -->
 
-**Last session:** 2026-03-09
+**Last session:** 2026-03-11
 
 **What was done:**
-- v2.2.0: Added `tools` frontmatter to all 25 agents (principle of least privilege — 3 tiers: read-only, read+web, read+write)
-- Added Agent Teams integration (`4605205`): `/team` command, `agent-teams` skill, TeammateIdle + TaskCompleted quality gate hooks
-- Added `isolation: worktree` to pr-comment-resolver and wave-orchestration dispatch template
-- Updated swarm-orchestration with Agent Teams comparison table; CLAUDE.md "Multi-Agent Patterns" with 4-pattern decision matrix
-- Updated README.md with Agent Teams section, agent frontmatter guide, FAQ entry
-- Fixed duplicate `stateFile` variable bug in session-start.js
-- Bumped to v2.2.0 (33 skills, 25 agents, 22 commands, 4 hooks)
+- v2.3.0: Autonomous pipeline, iteration loops, team-lead orchestrator
+- New `/ship` command — fully autonomous end-to-end pipeline (zero checkpoints, fire-and-forget)
+- New `/deepen` command — parallel plan enrichment via research agent swarm
+- New `iterative-refinement` skill — review→fix→review cycles with 3 convergence modes (fast/deep/perfect)
+- New `team-lead` agent — dedicated orchestrator (200K fresh context) that delegates to workers, monitors, reviews, signs off
+- New `ship-loop.sh` Stop hook — Ralph-style session iteration with `<promise>` completion gate
+- Rewired `/orchestrate` and `/team` to dispatch team-lead agent (`--no-review` flag for pipeline use)
+- Enhanced `/build` with `--iterate N`, `--team` flags and team-lead dispatch for complex plans
+- Enhanced `autonomous-loop` skill with circuit breaker (3 no-progress / 5 same-error thresholds)
+- Bumped to v2.3.0 (24 commands, 34 skills, 26 agents, 5 hooks)
 
 **What's remaining:**
-- (none)
+- README.md update with new commands, components, and pipeline diagram
+- Consider updating `docs/images/render-diagrams.html` to show `/ship` pipeline architecture
 
-**Start here:** All planned work complete. Check BACKLOG.md for new work or run `/status` to orient.
+**Start here:** Update README.md to document `/ship`, `/deepen`, team-lead agent, and iterative-refinement skill. Update component counts (24/34/26/5) and add pipeline comparison section.
 
 **Current state of the code:**
 - Build: n/a (template repo, no build step)
-- Tests: CI should pass (threshold-based counts, 33 > 20)
-- Lint: shellcheck and markdownlint not re-run this session
-- Uncommitted changes: none — working tree clean
+- Tests: CI should pass (threshold-based counts, 34 > 20)
+- Lint: shellcheck clean on ship-loop.sh; markdownlint not re-run
+- Uncommitted changes: 5 new files + 6 modified files (v2.3.0 work)
 
 ## Behavioral Rules
 
@@ -136,10 +140,12 @@ When things go wrong during a session:
 ```
 project/
 ├── .claude/
-│   ├── commands/          # Slash commands (22 commands)
+│   ├── commands/          # Slash commands (24 commands)
 │   │   ├── init.md        # /init — interactive project setup
 │   │   ├── plan.md        # /plan — brainstorm before building
-│   │   ├── build.md       # /build — full-cycle autonomous pipeline
+│   │   ├── build.md       # /build — full-cycle supervised pipeline (with checkpoints)
+│   │   ├── ship.md        # /ship — fully autonomous pipeline (zero checkpoints, fire-and-forget)
+│   │   ├── deepen.md      # /deepen — enrich a plan with parallel research agents
 │   │   ├── discuss.md     # /discuss — capture decisions before planning
 │   │   ├── review.md      # /review — code review against standards
 │   │   ├── review-swarm.md # /review-swarm — multi-agent parallel review
@@ -163,8 +169,9 @@ project/
 │   │   ├── session-start.js   # Bootstrap context on session start
 │   │   ├── context-monitor.js # Track context usage + analysis paralysis guard
 │   │   ├── teammate-idle.js   # Agent Teams: quality gate when teammate finishes
-│   │   └── task-completed.js  # Agent Teams: quality gate on task completion
-│   ├── skills/            # Workflow skills (33 skills)
+│   │   ├── task-completed.js  # Agent Teams: quality gate on task completion
+│   │   └── ship-loop.sh       # Stop hook: Ralph-style session iteration for /ship
+│   ├── skills/            # Workflow skills (34 skills)
 │   │   ├── brainstorming/
 │   │   ├── writing-plans/
 │   │   ├── executing-plans/
@@ -190,6 +197,7 @@ project/
 │   │   ├── performance-profiling/
 │   │   ├── browser-testing/
 │   │   ├── autonomous-loop/
+│   │   ├── iterative-refinement/
 │   │   ├── wave-orchestration/
 │   │   ├── swarm-orchestration/
 │   │   ├── agent-teams/
@@ -198,7 +206,7 @@ project/
 │   │   ├── dependency-management/
 │   │   ├── spike-exploration/
 │   │   └── scope-cutting/
-│   └── agents/            # Specialized subagents (25 agents, dispatched via Task tool)
+│   └── agents/            # Specialized subagents (26 agents, dispatched via Task tool)
 │       ├── code-reviewer.md
 │       ├── architecture-strategist.md
 │       ├── security-sentinel.md
@@ -223,7 +231,8 @@ project/
 │       ├── framework-docs-researcher.md
 │       ├── codebase-context-mapper.md
 │       ├── integration-verifier.md
-│       └── findings-synthesizer.md
+│       ├── findings-synthesizer.md
+│       └── team-lead.md
 ├── .claude-plugin/
 │   └── plugin.json        # Plugin manifest for marketplace distribution
 ├── blueprint.local.md    # Per-project agent config (gitignored)
@@ -280,7 +289,9 @@ The Session Continuity section above tells you where to start. If it's empty, ru
 
 | Situation | Skill | Command |
 |-----------|-------|---------|
-| Full-cycle feature development | (chains all below) | `/build` |
+| Full-cycle supervised development | (chains all below) | `/build` |
+| Full-cycle autonomous development | (chains all below, zero checkpoints) | `/ship` |
+| Enrich a plan with parallel research | (plan deepening) | `/deepen` |
 | Capture decisions before planning | (discuss process) | `/discuss` |
 | Before building anything new | brainstorming | `/plan` |
 | Have approved design, need steps | writing-plans | — |
@@ -308,7 +319,8 @@ The Session Continuity section above tells you where to start. If it's empty, ru
 | Planning database or API migrations | migration-planning | — |
 | Investigating performance issues | performance-profiling | — |
 | Verifying UI in a real browser | browser-testing | — |
-| Autonomous plan execution with retry | autonomous-loop | — |
+| Autonomous plan execution with retry | autonomous-loop (with circuit breaker) | — |
+| Iterative review→fix→review cycles | iterative-refinement | — |
 | Plan with mixed dependencies, parallel+serial | wave-orchestration | `/orchestrate` |
 | Dispatching multiple agents on same problem | swarm-orchestration | `/review-swarm`, `/deep-research` |
 | Collaborative multi-file implementation | agent-teams | `/team` |
@@ -348,6 +360,7 @@ Use Task tool to dispatch agents when you need isolated 200K context for a speci
 | codebase-context-mapper | Before planning — maps files and dependencies affected by a specific change |
 | integration-verifier | After wave completion — verifies parallel implementations work together |
 | findings-synthesizer | After review/research swarm — de-duplicates and prioritizes all findings |
+| team-lead | Orchestrates /orchestrate and /team — delegates to workers, monitors, reviews, signs off |
 
 ## Multi-Agent Patterns
 
@@ -365,21 +378,35 @@ Controller (main Claude session)
 │   └── → research-synthesizer (sequential, after all above)
 │
 ├── Planning Pipeline (sequential)
-│   ├── plan-checker
+│   ├── plan-checker (loop: verify → fix → re-verify, max 3 passes)
+│   ├── /deepen (parallel research enrichment)
 │   └── integration-checker
 │
-├── Execution — choose one:
+├── Execution — team-lead agent orchestrates (choose one mode):
 │   │
-│   ├── Execution Waves (/orchestrate) ── parallel within waves
-│   │   ├── Wave 1: [implementer-A, implementer-B] (parallel, worktree-isolated)
-│   │   ├── integration-verifier (between each wave)
-│   │   └── Wave 2: [implementer-C] (depends on Wave 1)
-│   │
-│   └── Agent Teams (/team) ── collaborative instances (experimental)
-│       ├── Teammate A (owns src/api/*) ──┐
-│       ├── Teammate B (owns src/ui/*)    ├── shared task list + messaging
-│       ├── Teammate C (owns tests/*)   ──┘
-│       └── Quality gates: TeammateIdle + TaskCompleted hooks
+│   ├── team-lead (dedicated 200K context, delegates all work)
+│   │   ├── Designs execution strategy
+│   │   ├── Dispatches and monitors workers
+│   │   ├── Runs integration verification
+│   │   ├── Reviews + signs off (standalone) or reports (pipeline --no-review)
+│   │   │
+│   │   ├── Wave Mode (/orchestrate)
+│   │   │   ├── Wave 1: [implementer-A, implementer-B] (parallel, worktree-isolated)
+│   │   │   ├── integration-verifier (between each wave)
+│   │   │   └── Wave 2: [implementer-C] (depends on Wave 1)
+│   │   │
+│   │   └── Team Mode (/team)
+│   │       ├── Plan approval gate (each teammate submits plan before coding)
+│   │       ├── Teammate A (owns src/api/*) ──┐
+│   │       ├── Teammate B (owns src/ui/*)    ├── shared task list + messaging
+│   │       ├── Teammate C (owns tests/*)   ──┘
+│   │       └── Quality gates: TeammateIdle + TaskCompleted hooks
+│
+├── Iterative Review (/ship, /build --iterate N)
+│   ├── iteration 1: /review-swarm → findings → resolve-in-parallel → test
+│   ├── iteration 2: /review-swarm → findings → resolve-in-parallel → test
+│   ├── ... (converges when P1 = 0 or max iterations reached)
+│   └── Circuit breaker: stops on no-progress or repeated errors
 │
 ├── Review Swarm (/review-swarm) ── all run in parallel
 │   ├── code-reviewer
@@ -401,8 +428,16 @@ Controller (main Claude session)
 | Pattern | Use When | Key Feature |
 |---------|----------|-------------|
 | **Waves** (`/orchestrate`) | Tasks have dependency ordering | Worktree isolation + integration verification |
-| **Agent Teams** (`/team`) | Teammates need to discuss and coordinate | Shared task list + messaging |
-| **Sequential** | All tasks are dependent | Autonomous loop |
+| **Agent Teams** (`/team`) | Teammates need to discuss and coordinate | Shared task list + messaging + plan approval gate |
+| **Sequential** | All tasks are dependent | Autonomous loop (with circuit breaker) |
+
+**Choosing a pipeline:**
+
+| Pipeline | Checkpoints | Review | Best For |
+|----------|-------------|--------|----------|
+| `/build` | Between every stage | Single pass (or `--iterate N`) | Features needing human guidance |
+| `/ship` | None (fully autonomous) | Iterative (default 3 cycles) | Well-defined features, fire-and-forget |
+| `/quick` | None | None | Trivial changes (< 3 files) |
 
 **Per-project config:** Edit `blueprint.local.md` to enable/disable agents for your stack.
 
@@ -446,3 +481,12 @@ Official Claude Code docs recommend "grant only necessary permissions" via the `
 
 ### 2026-03-09: Agent Teams complement swarms — don't replace them
 Anthropic's experimental Agent Teams feature (shared task list + messaging between independent Claude instances) serves a different purpose than subagent swarms. Swarms are best for parallel read-only analysis; Agent Teams for collaborative implementation where teammates need to discuss and divide file ownership. The template integrates both: `/deep-research` (swarm) → `/plan` → `/team` OR `/orchestrate` → `/review-swarm` (swarm). Key requirement: each teammate MUST own specific files — concurrent modification causes conflicts. Quality gate hooks (`TeammateIdle`, `TaskCompleted`) enforce standards. Use `execFileSync` not `execSync` in template hooks to prevent shell injection.
+
+### 2026-03-11: Three iteration layers compose naturally — task, quality, session
+The template now has three distinct iteration mechanisms at different granularities: (1) **Task-level** (`autonomous-loop` + circuit breaker) — retry individual tasks with exponential backoff, stop on stalls; (2) **Quality-level** (`iterative-refinement`) — review→fix→review N times, converge on P1=0; (3) **Session-level** (`ship-loop.sh` Stop hook) — Ralph-style re-feed of prompt when context exhausts. They compose within `/ship`: autonomous loop executes tasks, iterative refinement polishes output, Stop hook restarts if the session runs out of context before `<promise>DONE</promise>`.
+
+### 2026-03-11: Team-lead agent + --no-review flag enables composable execution
+Dedicating a team-lead agent (fresh 200K context) to coordinate `/orchestrate` and `/team` solves two problems: (1) the main session's context isn't consumed by coordination overhead, and (2) standalone execution commands self-review and sign off, while pipeline commands (`/ship`, `/build`) pass `--no-review` to avoid double review. This composability pattern — inner components controllable by outer pipelines — is how CE's `disable-model-invocation` works, adapted for project-level commands without plugin infrastructure.
+
+### 2026-03-11: GSD's plan-checker verify loop is the highest-ROI quality gate
+Researching GSD, Ralph, and CE revealed that validating plans *before* execution catches the most expensive mistakes earliest. `/ship` now runs a plan-checker → fix → re-check loop (max 3 passes) before committing to execution. Fixing a wrong approach in a markdown plan costs seconds; fixing it after implementation costs minutes of rework + debugging + re-review. This is combined with `/deepen` (parallel research enrichment) to produce plans that are both validated and deeply informed.
