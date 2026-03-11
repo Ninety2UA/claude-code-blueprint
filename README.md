@@ -275,70 +275,70 @@ Skills are workflow modules that activate at specific development phases. They c
 
 | Skill | What it does | Trigger |
 |-------|-------------|---------|
-| **brainstorming** | Explores 3+ design options with tradeoff analysis before any creative work | `/plan` or before any new feature |
-| **writing-plans** | Converts approved design into implementation plan with bite-sized tasks | After design approval |
-| **spike-exploration** | Timeboxed investigation to answer a specific technical question before committing to an approach | Significant technical uncertainty |
-| **scope-cutting** | Systematically separates must-haves from nice-to-haves using MoSCoW classification | Feature too large or deadline at risk |
+| [**brainstorming**](.claude/skills/brainstorming/) | Explores 3+ design options with tradeoff analysis before any creative work | `/plan` or before any new feature |
+| [**writing-plans**](.claude/skills/writing-plans/) | Converts approved design into implementation plan with bite-sized tasks | After design approval |
+| [**spike-exploration**](.claude/skills/spike-exploration/) | Timeboxed investigation to answer a specific technical question before committing to an approach | Significant technical uncertainty |
+| [**scope-cutting**](.claude/skills/scope-cutting/) | Systematically separates must-haves from nice-to-haves using MoSCoW classification | Feature too large or deadline at risk |
 
 ### Execution phase
 
 | Skill | What it does | Trigger |
 |-------|-------------|---------|
-| **executing-plans** | Executes plans in batches with review checkpoints | Separate session from planning |
-| **test-driven-development** | Enforces red-green-refactor for all code changes | Before any code implementation |
-| **subagent-driven-development** | Dispatches fresh subagent per task with two-stage review | In-session plan execution |
-| **dispatching-parallel-agents** | Runs independent investigations concurrently | 2+ independent failure domains |
-| **using-git-worktrees** | Creates isolated git workspace for feature work | Before major features |
+| [**executing-plans**](.claude/skills/executing-plans/) | Executes plans in batches with review checkpoints | Separate session from planning |
+| [**test-driven-development**](.claude/skills/test-driven-development/) | Enforces red-green-refactor for all code changes | Before any code implementation |
+| [**subagent-driven-development**](.claude/skills/subagent-driven-development/) | Dispatches fresh subagent per task with two-stage review | In-session plan execution |
+| [**dispatching-parallel-agents**](.claude/skills/dispatching-parallel-agents/) | Runs independent investigations concurrently | 2+ independent failure domains |
+| [**using-git-worktrees**](.claude/skills/using-git-worktrees/) | Creates isolated git workspace for feature work | Before major features |
 
 ### Quality phase
 
 | Skill | What it does | Trigger |
 |-------|-------------|---------|
-| **systematic-debugging** | Root cause investigation before any fix is attempted | Any bug or test failure |
-| **verification-before-completion** | Requires fresh evidence before claiming work is done | Before any success claim |
-| **requesting-code-review** | Dispatches code-reviewer agent for automated review | After completing a task |
-| **receiving-code-review** | Evaluates review feedback technically, not defensively | When review feedback arrives |
+| [**systematic-debugging**](.claude/skills/systematic-debugging/) | Root cause investigation before any fix is attempted | Any bug or test failure |
+| [**verification-before-completion**](.claude/skills/verification-before-completion/) | Requires fresh evidence before claiming work is done | Before any success claim |
+| [**requesting-code-review**](.claude/skills/requesting-code-review/) | Dispatches code-reviewer agent for automated review | After completing a task |
+| [**receiving-code-review**](.claude/skills/receiving-code-review/) | Evaluates review feedback technically, not defensively | When review feedback arrives |
 
 ### Completion phase
 
 | Skill | What it does | Trigger |
 |-------|-------------|---------|
-| **finishing-a-development-branch** | Structured merge workflow with options for squash, rebase, or merge | After all tests pass |
-| **session-wrap** | Documents work done, updates all project docs, captures learnings | `/wrap` or end of session |
+| [**finishing-a-development-branch**](.claude/skills/finishing-a-development-branch/) | Structured merge workflow with options for squash, rebase, or merge | After all tests pass |
+| [**session-wrap**](.claude/skills/session-wrap/) | Documents work done, updates all project docs, captures learnings | `/wrap` or end of session |
 
 ### Operations phase
 
 | Skill | What it does | Trigger |
 |-------|-------------|---------|
-| **codebase-mapping** | Maps unfamiliar codebase into structured documentation | `/map` or before modifying unfamiliar code |
-| **context-checkpoint** | Mid-session state capture — lighter than `/wrap` | `/pause` or before risky operations |
-| **pr-workflow** | End-to-end PR lifecycle — create, self-review, handle feedback | `/pr` or when creating pull requests |
-| **resolve-in-parallel** | Batch-resolves independent items concurrently | 2+ independent items to fix |
-| **deployment-verification** | Go/no-go pre-deploy checklist across 8 areas | Before any production deployment |
-| **document-review** | Structured three-pass critique (accuracy, clarity, completeness) | When reviewing specs, plans, or docs |
-| **changelog-generation** | Release notes from git history in Keep a Changelog format | `/changelog` or preparing a release |
-| **migration-planning** | Safe migration plans with rollback procedures | Database/API/dependency migrations |
-| **performance-profiling** | Profile-driven investigation — measure before optimizing | When something is "slow" |
-| **browser-testing** | Verify UI changes via Playwright MCP browser tools | After UI changes need visual verification |
-| **autonomous-loop** | Iterate through plan tasks with retry, backoff, circuit breaker (3 no-progress / 5 same-error) | Autonomous plan execution — "just do it all" |
-| **iterative-refinement** | Review→fix→review cycles with 3 convergence modes (fast/deep/perfect), early exit on convergence | `/ship` Stage 5, `/build --iterate N` |
-| **dependency-management** | Evaluates, adds, upgrades, and removes dependencies with safety gates | Adding, upgrading, or auditing dependencies |
+| [**codebase-mapping**](.claude/skills/codebase-mapping/) | Maps unfamiliar codebase into structured documentation | `/map` or before modifying unfamiliar code |
+| [**context-checkpoint**](.claude/skills/context-checkpoint/) | Mid-session state capture — lighter than `/wrap` | `/pause` or before risky operations |
+| [**pr-workflow**](.claude/skills/pr-workflow/) | End-to-end PR lifecycle — create, self-review, handle feedback | `/pr` or when creating pull requests |
+| [**resolve-in-parallel**](.claude/skills/resolve-in-parallel/) | Batch-resolves independent items concurrently | 2+ independent items to fix |
+| [**deployment-verification**](.claude/skills/deployment-verification/) | Go/no-go pre-deploy checklist across 8 areas | Before any production deployment |
+| [**document-review**](.claude/skills/document-review/) | Structured three-pass critique (accuracy, clarity, completeness) | When reviewing specs, plans, or docs |
+| [**changelog-generation**](.claude/skills/changelog-generation/) | Release notes from git history in Keep a Changelog format | `/changelog` or preparing a release |
+| [**migration-planning**](.claude/skills/migration-planning/) | Safe migration plans with rollback procedures | Database/API/dependency migrations |
+| [**performance-profiling**](.claude/skills/performance-profiling/) | Profile-driven investigation — measure before optimizing | When something is "slow" |
+| [**browser-testing**](.claude/skills/browser-testing/) | Verify UI changes via Playwright MCP browser tools | After UI changes need visual verification |
+| [**autonomous-loop**](.claude/skills/autonomous-loop/) | Iterate through plan tasks with retry, backoff, circuit breaker (3 no-progress / 5 same-error) | Autonomous plan execution — "just do it all" |
+| [**iterative-refinement**](.claude/skills/iterative-refinement/) | Review→fix→review cycles with 3 convergence modes (fast/deep/perfect), early exit on convergence | `/ship` Stage 5, `/build --iterate N` |
+| [**dependency-management**](.claude/skills/dependency-management/) | Evaluates, adds, upgrades, and removes dependencies with safety gates | Adding, upgrading, or auditing dependencies |
 
 ### Orchestration phase
 
 | Skill | What it does | Trigger |
 |-------|-------------|---------|
-| **wave-orchestration** | Groups tasks by dependency into waves, parallel within waves, integration verification between | `/orchestrate` or plans with mixed dependencies |
-| **swarm-orchestration** | Coordinates multiple specialized agents analyzing the same input in parallel | `/review-swarm`, `/deep-research`, or custom swarms |
-| **agent-teams** | Collaborative multi-file implementation with shared task list and messaging (experimental) | `/team` or complex cross-layer features |
-| **knowledge-compounding** | Documents solved problems as searchable institutional knowledge in docs/solutions/ | `/compound` or after solving non-trivial problems |
-| **session-continuity** | Manages STATE.md for execution tracking across session boundaries | `/pause`, `/resume`, or during wave orchestration |
+| [**wave-orchestration**](.claude/skills/wave-orchestration/) | Groups tasks by dependency into waves, parallel within waves, integration verification between | `/orchestrate` or plans with mixed dependencies |
+| [**swarm-orchestration**](.claude/skills/swarm-orchestration/) | Coordinates multiple specialized agents analyzing the same input in parallel | `/review-swarm`, `/deep-research`, or custom swarms |
+| [**agent-teams**](.claude/skills/agent-teams/) | Collaborative multi-file implementation with shared task list and messaging (experimental) | `/team` or complex cross-layer features |
+| [**knowledge-compounding**](.claude/skills/knowledge-compounding/) | Documents solved problems as searchable institutional knowledge in docs/solutions/ | `/compound` or after solving non-trivial problems |
+| [**session-continuity**](.claude/skills/session-continuity/) | Manages STATE.md for execution tracking across session boundaries | `/pause`, `/resume`, or during wave orchestration |
 
 ### Meta
 
 | Skill | What it does | Trigger |
 |-------|-------------|---------|
-| **writing-skills** | Creates and tests new skills using TDD for documentation | When creating new skills |
+| [**writing-skills**](.claude/skills/writing-skills/) | Creates and tests new skills using TDD for documentation | When creating new skills |
 
 ## Agents Reference
 
@@ -350,32 +350,32 @@ Agents are specialized subprocesses dispatched via Claude's Task tool. Each agen
 
 | Agent | Domain | When to dispatch |
 |-------|--------|-----------------|
-| **code-reviewer** | Standards, correctness, plan compliance | After completing a major step or before merge |
-| **architecture-strategist** | Structural patterns, service boundaries | When reviewing PRs, adding services, refactoring |
-| **security-sentinel** | OWASP, auth flows, vulnerability scanning | Before deployment, after auth/payment/API work |
-| **code-simplicity-reviewer** | YAGNI violations, over-engineering | After implementation is complete |
-| **performance-oracle** | Bottlenecks, N+1 queries, algorithmic complexity | After features are built, on performance concerns |
-| **best-practices-researcher** | Industry standards, library documentation | When needing external guidance |
-| **git-history-analyzer** | Code evolution, pattern archaeology | When understanding why code is the way it is |
-| **learnings-researcher** | Past solutions, decisions, patterns | Before planning — searches docs/ for prior art |
-| **plan-checker** | Plan validation, gap detection | After writing a plan, before execution |
-| **integration-checker** | Component wiring, connection validation | After implementation — verifies components connect |
-| **bug-reproduction-validator** | Bug reproduction, fix verification | When debugging — validates repro steps and fixes |
-| **codebase-mapper** | Architecture, conventions, stack analysis | Onboarding to unfamiliar code or before modifying it |
-| **pr-comment-resolver** | Targeted PR comment resolution | Processing review feedback — one comment per agent |
-| **test-gap-analyzer** | Coverage gaps, test generation | Improving coverage or before major refactors |
-| **research-synthesizer** | Multi-agent output consolidation | After parallel research — unifies findings |
-| **deployment-verifier** | Deployment readiness verification | Before deploying — checks 8 critical areas |
-| **schema-drift-detector** | Unrelated schema/migration changes | Reviewing PRs — catches scope creep in data layer |
-| **frontend-reviewer** | UI/UX code quality review | Reviewing frontend code — a11y, responsive, perf |
-| **convention-enforcer** | CONVENTIONS.md compliance checking | Reviewing code against project standards |
-| **data-integrity-guardian** | Migration safety, transactions, rollback plans | PRs with migrations, schema changes, data transforms |
-| **test-coverage-reviewer** | Test quality, assertion meaningfulness, edge cases | After implementation — verifies tests actually validate behavior |
-| **framework-docs-researcher** | Current framework docs for installed versions | Before planning features that use specific framework APIs |
-| **codebase-context-mapper** | Focused impact map for a specific change | Before planning — maps files and dependencies a change will touch |
-| **integration-verifier** | Cross-task integration verification | After wave completion — ensures parallel implementations work together |
-| **findings-synthesizer** | Review swarm output consolidation | After `/review-swarm` — de-duplicates and prioritizes all findings |
-| **team-lead** | Dedicated orchestrator (200K fresh context) | Coordinates `/orchestrate` and `/team` — delegates to workers, monitors progress, reviews, signs off |
+| [**code-reviewer**](.claude/agents/code-reviewer.md) | Standards, correctness, plan compliance | After completing a major step or before merge |
+| [**architecture-strategist**](.claude/agents/architecture-strategist.md) | Structural patterns, service boundaries | When reviewing PRs, adding services, refactoring |
+| [**security-sentinel**](.claude/agents/security-sentinel.md) | OWASP, auth flows, vulnerability scanning | Before deployment, after auth/payment/API work |
+| [**code-simplicity-reviewer**](.claude/agents/code-simplicity-reviewer.md) | YAGNI violations, over-engineering | After implementation is complete |
+| [**performance-oracle**](.claude/agents/performance-oracle.md) | Bottlenecks, N+1 queries, algorithmic complexity | After features are built, on performance concerns |
+| [**best-practices-researcher**](.claude/agents/best-practices-researcher.md) | Industry standards, library documentation | When needing external guidance |
+| [**git-history-analyzer**](.claude/agents/git-history-analyzer.md) | Code evolution, pattern archaeology | When understanding why code is the way it is |
+| [**learnings-researcher**](.claude/agents/learnings-researcher.md) | Past solutions, decisions, patterns | Before planning — searches docs/ for prior art |
+| [**plan-checker**](.claude/agents/plan-checker.md) | Plan validation, gap detection | After writing a plan, before execution |
+| [**integration-checker**](.claude/agents/integration-checker.md) | Component wiring, connection validation | After implementation — verifies components connect |
+| [**bug-reproduction-validator**](.claude/agents/bug-reproduction-validator.md) | Bug reproduction, fix verification | When debugging — validates repro steps and fixes |
+| [**codebase-mapper**](.claude/agents/codebase-mapper.md) | Architecture, conventions, stack analysis | Onboarding to unfamiliar code or before modifying it |
+| [**pr-comment-resolver**](.claude/agents/pr-comment-resolver.md) | Targeted PR comment resolution | Processing review feedback — one comment per agent |
+| [**test-gap-analyzer**](.claude/agents/test-gap-analyzer.md) | Coverage gaps, test generation | Improving coverage or before major refactors |
+| [**research-synthesizer**](.claude/agents/research-synthesizer.md) | Multi-agent output consolidation | After parallel research — unifies findings |
+| [**deployment-verifier**](.claude/agents/deployment-verifier.md) | Deployment readiness verification | Before deploying — checks 8 critical areas |
+| [**schema-drift-detector**](.claude/agents/schema-drift-detector.md) | Unrelated schema/migration changes | Reviewing PRs — catches scope creep in data layer |
+| [**frontend-reviewer**](.claude/agents/frontend-reviewer.md) | UI/UX code quality review | Reviewing frontend code — a11y, responsive, perf |
+| [**convention-enforcer**](.claude/agents/convention-enforcer.md) | CONVENTIONS.md compliance checking | Reviewing code against project standards |
+| [**data-integrity-guardian**](.claude/agents/data-integrity-guardian.md) | Migration safety, transactions, rollback plans | PRs with migrations, schema changes, data transforms |
+| [**test-coverage-reviewer**](.claude/agents/test-coverage-reviewer.md) | Test quality, assertion meaningfulness, edge cases | After implementation — verifies tests actually validate behavior |
+| [**framework-docs-researcher**](.claude/agents/framework-docs-researcher.md) | Current framework docs for installed versions | Before planning features that use specific framework APIs |
+| [**codebase-context-mapper**](.claude/agents/codebase-context-mapper.md) | Focused impact map for a specific change | Before planning — maps files and dependencies a change will touch |
+| [**integration-verifier**](.claude/agents/integration-verifier.md) | Cross-task integration verification | After wave completion — ensures parallel implementations work together |
+| [**findings-synthesizer**](.claude/agents/findings-synthesizer.md) | Review swarm output consolidation | After `/review-swarm` — de-duplicates and prioritizes all findings |
+| [**team-lead**](.claude/agents/team-lead.md) | Dedicated orchestrator (200K fresh context) | Coordinates `/orchestrate` and `/team` — delegates to workers, monitors progress, reviews, signs off |
 
 ### How agents work
 
