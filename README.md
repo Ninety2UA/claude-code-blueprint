@@ -22,6 +22,10 @@
 
 ---
 
+<p align="center">
+  <video src="docs/images/overview.mp4" width="90%" controls autoplay muted loop></video>
+</p>
+
 ## Why This Template?
 
 Most AI coding sessions start from scratch: no conventions, no memory, no workflow. Each session reinvents the wheel. This template fixes that.
