@@ -39,6 +39,18 @@
           }
         ]
       }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/ship-loop.sh",
+            "timeout": 10000
+          }
+        ]
+      }
     ]
   }
 }

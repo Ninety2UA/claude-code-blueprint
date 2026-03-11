@@ -1,114 +1,81 @@
 ---
-description: "Spawn an Agent Team for collaborative multi-file implementation with shared task list and inter-teammate messaging."
-argument-hint: "<plan file or task description>"
+description: "Spawn an Agent Team for collaborative multi-file implementation — delegates to a team-lead agent that designs the team, enforces plan approval, coordinates teammates, and optionally reviews + signs off."
+argument-hint: "<plan file or task description> [--no-review]"
 ---
 
 # /team — Collaborative Agent Team
 
-Spawn a team of independent Claude Code instances that coordinate through a shared task list and messaging. Use for complex multi-file implementations where teammates need to discuss and divide work.
+Spawn a team of independent Claude Code instances that coordinate through a shared task list and messaging. A dedicated **team-lead agent** manages the entire lifecycle: designs the team structure, enforces plan approval before coding, monitors progress, resolves blockers, and (unless `--no-review`) reviews the combined output and signs off.
 
-**Announce at start:** "Setting up Agent Team for collaborative implementation."
+**Announce at start:** "Setting up Agent Team — dispatching team-lead agent."
 
 **Prerequisite:** Agent Teams is an experimental feature. Ensure `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS: "1"` is set in your Claude Code settings.json.
 
-## Step 1: Understand the Work
+## Parse Arguments
 
-If `$ARGUMENTS` points to a plan file, read it. Otherwise, use the argument as the task description.
+- **Plan file or task description:** From `$ARGUMENTS`
+- **`--no-review`:** Skip the team-lead's built-in review and sign-off (used when called from `/ship` or `/build`, which handle review themselves)
 
-Identify:
-- What components need to be built or changed
-- Which files will be created or modified
-- Natural ownership boundaries (by layer, module, or feature area)
+## Dispatch Team Lead
 
-## Step 2: Design the Team
+Dispatch the **team-lead** agent with a full context prompt:
 
-Based on the work, determine:
+```
+Task("team-lead: Execute this plan using TEAM mode (Agent Teams).
 
-1. **Team size:** 3-5 teammates (see agent-teams skill for sizing guidance)
-2. **Responsibility domains:** What each teammate owns
-3. **File ownership:** Explicit file assignments (NO overlap)
-4. **Task breakdown:** 5-6 tasks per teammate
+Plan file / task: [path or description]
+Review mode: [with-review | no-review]
+Autonomous mode: [autonomous if called from /ship, supervised otherwise]
 
-Present the team design to the user:
+Read the plan file completely. Design a team of 3-5 teammates.
+Assign file ownership (NO overlap between teammates).
+Break work into 5-6 tasks per teammate.
+Spawn teammates, enforce plan approval gate, then monitor execution.
+After all tasks complete, run tests + build + lint.
+[If with-review: Run /review-swarm, fix findings, sign off when P1=0.]
+[If no-review: Report execution results only.]
 
-```markdown
-## Proposed Team
+Follow the team-lead agent instructions and agent-teams skill exactly.
 
-| Teammate | Responsibility | Files Owned |
-|----------|---------------|-------------|
-| backend | API routes and handlers | src/api/*, src/services/* |
-| frontend | UI components and pages | src/components/*, src/pages/* |
-| tests | Test suite for new features | tests/*, __mocks__/* |
+CRITICAL: You are the coordinator. Do NOT write code yourself.
+If something needs fixing, assign it to a teammate.
 
-### Task Breakdown
-**backend:** 1. Set up routes, 2. Implement handlers, 3. Add validation, 4. Error handling, 5. Integration with services
-**frontend:** 1. Create page skeleton, 2. Build form component, 3. Add API calls, 4. Loading/error states, 5. Polish UI
-**tests:** 1. Unit tests for handlers, 2. Unit tests for components, 3. Integration tests, 4. E2E test, 5. Edge cases
+Project conventions: docs/context/CONVENTIONS.md
+Agent config: blueprint.local.md")
 ```
 
-Ask: **"Approve this team structure? I'll spawn teammates and they'll start working."**
+## Wait for Team Lead
 
-## Step 3: Spawn the Team
+The team-lead agent runs autonomously in its own 200K context window. When it returns:
 
-For each teammate, use the TeamCreate tool to spawn with a detailed prompt that includes:
+1. Read the team-lead's report
+2. Present the team performance summary to the user
+3. If team-lead signed off (with-review mode): report the sign-off status
+4. If team-lead reports blockers: present them and ask the user how to proceed
 
-1. Their specific responsibility
-2. Project conventions (reference `docs/context/CONVENTIONS.md`)
-3. Their file ownership list (what they CAN and CANNOT modify)
-4. What other teammates are building (for coordination context)
-5. Instructions to use the shared task list
+## Team Lead Responsibilities
 
-**Important:** Include this in every spawn prompt:
-```
-Read docs/context/CONVENTIONS.md before writing any code.
-Use the shared task list to track your progress.
-Message the team lead when you complete a major milestone or need a decision.
-Wait for dependent tasks from other teammates before starting dependent work.
-```
+The team-lead agent handles all the coordination that the main session previously did:
 
-## Step 4: Monitor and Steer
+| Responsibility | What Team Lead Does |
+|----------------|--------------------|
+| **Team design** | Determines team size, responsibility domains, file ownership |
+| **Spawn teammates** | Creates team, spawns each with detailed context prompts |
+| **Plan approval gate** | Reviews each teammate's implementation plan before they code |
+| **Monitor progress** | Watches task list, intervenes on blockers, relays info |
+| **Delegate mode** | Never writes code — creates tasks and assigns to teammates |
+| **Integration check** | Runs tests + build + lint after all teammates complete |
+| **Review (if enabled)** | Dispatches review-swarm, evaluates findings, creates fix tasks |
+| **Sign-off** | Reports APPROVED, APPROVED WITH NOTES, or NOT APPROVED |
 
-While the team works:
+## Standalone vs Pipeline Usage
 
-1. Watch for idle notifications (teammates finishing their tasks)
-2. Check task list progress periodically
-3. Intervene if a teammate is stuck or going in the wrong direction
-4. Relay information between teammates when needed
-5. Resolve design questions that require cross-team decisions
-
-**Tell the team lead session:** "Wait for your teammates to complete their tasks before proceeding."
-
-## Step 5: Verify and Review
-
-When all teammates complete:
-
-1. Check the shared task list — all tasks should be `completed`
-2. Run the full test suite to verify everything works together
-3. Run build and lint checks
-4. Dispatch `/review-swarm` on the combined changes for quality review
-
-## Step 6: Report
-
-```markdown
-## Agent Team Complete
-
-### Team Performance
-| Teammate | Tasks | Status | Files Changed |
-|----------|-------|--------|---------------|
-| backend | 5/5 | Complete | [list] |
-| frontend | 5/5 | Complete | [list] |
-| tests | 5/5 | Complete | [list] |
-
-### Integration
-- Tests: [X passing, Y failing]
-- Build: [pass/fail]
-- Lint: [pass/fail]
-
-### Next Steps
-- [ ] Run /review-swarm for quality review
-- [ ] Address any review findings
-- [ ] Create PR
-```
+| Context | --no-review | Review happens in |
+|---------|-------------|-------------------|
+| `/team` (standalone) | No (default) | Team-lead agent reviews + signs off |
+| Called from `/ship` | Yes | `/ship` Stage 5 (iterative-refinement) |
+| Called from `/ship --swarm` | Yes | `/ship` Stage 5 (parallel review + test) |
+| Called from `/build` | Yes | `/build` Stage 5 (review-swarm) |
 
 ## When NOT to Use /team
 

@@ -832,7 +832,7 @@
       Claude Code Main Session
     </div>
   </div>
-  <div class="ae-dispatch">orchestrates 25 agents across 4 teams</div>
+  <div class="ae-dispatch">orchestrates 26 agents across 4 teams</div>
 
   <!-- Research Swarm -->
   <div class="ae-team ae-research-swarm">
@@ -935,15 +935,15 @@
       <div class="ps-children">
         <div class="ps-child">
           <div class="ps-child-name">commands/</div>
-          <div class="ps-child-desc">21 slash commands</div>
+          <div class="ps-child-desc">24 slash commands</div>
         </div>
         <div class="ps-child">
           <div class="ps-child-name">skills/</div>
-          <div class="ps-child-desc">29 workflow skills</div>
+          <div class="ps-child-desc">34 workflow skills</div>
         </div>
         <div class="ps-child">
           <div class="ps-child-name">agents/</div>
-          <div class="ps-child-desc">25 specialized agents</div>
+          <div class="ps-child-desc">26 specialized agents</div>
         </div>
       </div>
     </div>
@@ -1079,6 +1079,72 @@
   </div>
 
   <div class="eg-footer">The best tool is the one that matches your actual workflow, not the one with the most stars.</div>
+</div>
+
+<!-- ════════════ SHIP PIPELINE ════════════ -->
+<div class="diagram" id="ship-pipeline" style="padding-bottom: 56px;">
+  <div class="wf-pipeline">
+    <div class="wf-step wf-orient" style="flex: 0.8;">
+      <div class="wf-card">
+        <div class="wf-num" style="width:28px;height:28px;font-size:12px;">0</div>
+        <div class="wf-name" style="font-size:13px;">Init</div>
+        <div class="wf-cmds">Detect continuation<br>Activate loop</div>
+      </div>
+      <div class="wf-arrow">→</div>
+    </div>
+    <div class="wf-step wf-design" style="flex: 1;">
+      <div class="wf-card">
+        <div class="wf-num" style="width:28px;height:28px;font-size:12px;">1–2</div>
+        <div class="wf-name" style="font-size:13px;">Plan</div>
+        <div class="wf-cmds">Research · Write plan<br>Verify · Deepen</div>
+      </div>
+      <div class="wf-arrow">→</div>
+    </div>
+    <div class="wf-step wf-plan" style="flex: 1;">
+      <div class="wf-card">
+        <div class="wf-num" style="width:28px;height:28px;font-size:12px;">4</div>
+        <div class="wf-name" style="font-size:13px;">Execute</div>
+        <div class="wf-cmds">Team-lead agent<br>Workers (200K each)</div>
+      </div>
+      <div class="wf-arrow">→</div>
+    </div>
+    <div class="wf-step wf-build" style="flex: 1;">
+      <div class="wf-card">
+        <div class="wf-num" style="width:28px;height:28px;font-size:12px;">5</div>
+        <div class="wf-name" style="font-size:13px;">Review</div>
+        <div class="wf-cmds">Iterative refinement<br>3 cycles · P1 = 0</div>
+      </div>
+      <div class="wf-arrow">→</div>
+    </div>
+    <div class="wf-step wf-ship" style="flex: 0.8;">
+      <div class="wf-card">
+        <div class="wf-num" style="width:28px;height:28px;font-size:12px;">7</div>
+        <div class="wf-name" style="font-size:13px;">Ship</div>
+        <div class="wf-cmds">PR · Compound<br>&lt;promise&gt;DONE&lt;/promise&gt;</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Outer loop arrow (ship.sh) -->
+  <div class="wf-loop" style="margin-top: 18px; height: 50px;">
+    <svg viewBox="0 0 860 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M 770 4 C 815 4, 840 20, 840 30 C 840 42, 815 50, 770 50 L 90 50 C 45 50, 20 42, 20 30 C 20 20, 45 4, 90 4" stroke="#7c3aed" stroke-width="2" stroke-dasharray="8 4" fill="none" marker-start="url(#shipArrow)"/>
+      <defs>
+        <marker id="shipArrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto-start-reverse">
+          <path d="M 8 0 L 0 4 L 8 8" fill="none" stroke="#7c3aed" stroke-width="1.5"/>
+        </marker>
+      </defs>
+      <rect x="290" y="15" width="280" height="24" rx="12" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1"/>
+      <text x="430" y="32" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600" fill="#7c3aed">ship.sh — fresh 200K context</text>
+    </svg>
+  </div>
+
+  <!-- Inner guard label -->
+  <div style="text-align: center; margin-top: 6px;">
+    <span style="display: inline-block; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 6px; padding: 4px 14px; font-size: 11px; color: #64748b; font-family: 'JetBrains Mono', monospace; font-weight: 500;">
+      ship-loop.sh (Stop hook) — blocks premature exit within session
+    </span>
+  </div>
 </div>
 
 </body>

@@ -36,7 +36,16 @@ Get user approval of the plan.
 
 ### Stage 4: Execute (Implementation)
 
+Choose the execution method based on plan complexity:
+
+**Default (< 4 tasks or all sequential):**
 Read and invoke the executing-plans skill in `.claude/skills/executing-plans/SKILL.md`. Execute the plan in batches with checkpoints.
+
+**For complex plans (4+ tasks with mixed dependencies):**
+Read and invoke `/orchestrate [plan file] --no-review`. This dispatches a team-lead agent that coordinates wave-based parallel execution. Review is handled by Stage 5, not the team-lead.
+
+**For collaborative work (user says `/build --team`):**
+Read and invoke `/team [plan file] --no-review`. This dispatches a team-lead agent that spawns teammates for collaborative implementation. Review is handled by Stage 5.
 
 ### Stage 5: Review (Quality Check)
 
@@ -73,6 +82,18 @@ The user can:
 - **Request changes** to the current stage's output
 - **Skip** a stage (only if they explicitly say so)
 - **Stop** the pipeline (work so far is preserved)
+
+## Iterate Mode
+
+If the user says `/build --iterate N` (where N is 1-10):
+- Replace the single-pass Stage 5 (Review) with the iterative-refinement skill
+- Pass `max_iterations: N` and `convergence: fast` to the iterative-refinement skill
+- The review→fix→review cycle runs up to N times until P1 findings reach zero
+- All other stages remain the same with normal checkpoints
+
+Example: `/build --iterate 5` runs the standard pipeline but reviews and fixes up to 5 times.
+
+This can be combined with other flags: `/build --quick --iterate 3`
 
 ## Quick Mode
 

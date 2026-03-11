@@ -11,6 +11,7 @@
   <a href="#quick-start">Quick Start</a> ·
   <a href="#what-you-get">What You Get</a> ·
   <a href="#workflow">Workflow</a> ·
+  <a href="#autonomous-pipeline-ship">Ship</a> ·
   <a href="#agent-teams--swarms">Agent Teams</a> ·
   <a href="#skills-reference">Skills</a> ·
   <a href="#agents-reference">Agents</a> ·
@@ -85,10 +86,10 @@ claude          # Start Claude Code
 ```
 your-project/
 ├── .claude/
-│   ├── commands/       # 22 slash commands (/plan, /review-swarm, /orchestrate, /team, ...)
-│   ├── skills/         # 33 workflow skills (TDD, wave-orchestration, swarms, agent-teams, ...)
-│   ├── agents/         # 25 specialized agents (reviewer, security, perf, ...)
-│   └── hooks/          # 4 lifecycle hooks (session-start, context-monitor, quality gates)
+│   ├── commands/       # 24 slash commands (/plan, /ship, /review-swarm, /orchestrate, /team, ...)
+│   ├── skills/         # 34 workflow skills (TDD, wave-orchestration, swarms, iterative-refinement, ...)
+│   ├── agents/         # 26 specialized agents (team-lead, reviewer, security, perf, ...)
+│   └── hooks/          # 5 lifecycle hooks (session-start, context-monitor, ship-loop, quality gates)
 ├── docs/
 │   ├── context/        # GOALS.md · STATUS.md · CONVENTIONS.md · STATE.md
 │   ├── plans/          # Implementation plans
@@ -154,6 +155,40 @@ Write failing test → Fix it → Verify → Commit
 ```
 
 The boundary is clear: if you're touching 4+ files, adding a new API, or unsure of the approach, use the full workflow. See CLAUDE.md for the complete criteria.
+
+### Autonomous pipeline: `/ship`
+
+<p align="center">
+  <img src="docs/images/ship-pipeline.png" alt="/ship Pipeline" width="90%">
+</p>
+
+For well-defined features you want to fire and forget, `/ship` runs the entire development lifecycle autonomously — zero checkpoints, zero user input. It plans, researches, executes via a dedicated team-lead agent, iteratively reviews (3 cycles by default), and opens a PR.
+
+```bash
+# Inside Claude — interactive mode (single session)
+> /ship add JWT authentication with refresh tokens
+
+# From terminal — external loop mode (fresh 200K context per iteration)
+./scripts/ship.sh "add JWT authentication with refresh tokens" --max 10
+```
+
+**Two loop mechanisms handle context exhaustion:**
+
+| Mechanism | Where it runs | Context reset | Purpose |
+|-----------|--------------|---------------|---------|
+| **`ship-loop.sh`** (Stop hook) | Inside Claude session | No (same session) | Blocks premature exit — Claude gives up too early |
+| **`scripts/ship.sh`** (bash loop) | Outside, in terminal | Yes (fresh process) | Handles context exhaustion — spawns fresh 200K per iteration |
+
+The external loop (`ship.sh`) is inspired by [Ralph](https://github.com/snarktank/ralph) — each iteration is a brand new Claude process with clean context. State persists via git commits, plan files, and progress tracking. The inner Stop hook guards against Claude stopping before `<promise>DONE</promise>` is output within a single session.
+
+**Pipeline comparison:**
+
+| Pipeline | Checkpoints | Review | Best for |
+|----------|-------------|--------|----------|
+| `/build` | Between every stage | Single pass | Human-guided features |
+| `/ship` (interactive) | None | 3 iterative cycles | Single-context fire-and-forget |
+| `ship.sh` (external) | None | 3 iterative cycles | Large features, context exhaustion |
+| `/quick` | None | None | Trivial changes (< 3 files) |
 
 ### Quality gates
 
@@ -322,7 +357,8 @@ Skills are workflow modules that activate at specific development phases. They c
 | **migration-planning** | Safe migration plans with rollback procedures | Database/API/dependency migrations |
 | **performance-profiling** | Profile-driven investigation — measure before optimizing | When something is "slow" |
 | **browser-testing** | Verify UI changes via Playwright MCP browser tools | After UI changes need visual verification |
-| **autonomous-loop** | Iterate through plan tasks with retry, backoff, and completion tracking | Autonomous plan execution — "just do it all" |
+| **autonomous-loop** | Iterate through plan tasks with retry, backoff, circuit breaker (3 no-progress / 5 same-error) | Autonomous plan execution — "just do it all" |
+| **iterative-refinement** | Review→fix→review cycles with 3 convergence modes (fast/deep/perfect), early exit on convergence | `/ship` Stage 5, `/build --iterate N` |
 | **dependency-management** | Evaluates, adds, upgrades, and removes dependencies with safety gates | Adding, upgrading, or auditing dependencies |
 
 ### Orchestration phase
@@ -376,6 +412,7 @@ Agents are specialized subprocesses dispatched via Claude's Task tool. Each agen
 | **codebase-context-mapper** | Focused impact map for a specific change | Before planning — maps files and dependencies a change will touch |
 | **integration-verifier** | Cross-task integration verification | After wave completion — ensures parallel implementations work together |
 | **findings-synthesizer** | Review swarm output consolidation | After `/review-swarm` — de-duplicates and prioritizes all findings |
+| **team-lead** | Dedicated orchestrator (200K fresh context) | Coordinates `/orchestrate` and `/team` — delegates to workers, monitors progress, reviews, signs off |
 
 ### How agents work
 
@@ -419,6 +456,9 @@ Commands are user-facing shortcuts that invoke the right skills with the right c
 |---------|-------------|
 | **`/init`** | Interactive project setup. Fills in CONVENTIONS.md, GOALS.md, STATUS.md through a guided conversation. |
 | **`/plan`** | Brainstorming session. Explores design options, presents tradeoffs, gets approval, then creates implementation plan. |
+| **`/build`** | Full-cycle supervised pipeline with checkpoints between every stage. Supports `--iterate N` for iterative review and `--team` for team-lead dispatch. |
+| **`/ship`** | Fully autonomous pipeline — zero checkpoints, fire-and-forget. Plans, executes via team-lead, iteratively reviews (3 cycles), and opens a PR. |
+| **`/deepen`** | Enrich an existing plan with parallel research agents. Dispatches all configured researchers in parallel, then merges findings into the plan. |
 | **`/review`** | Dispatches code-reviewer agent against your current changes. |
 | **`/review-swarm`** | Multi-agent parallel review — dispatches 6-10 specialized reviewers, synthesizes findings into prioritized P1/P2/P3 report. |
 | **`/deep-research`** | Multi-agent parallel research — spawns 5 research agents, synthesizes into unified brief for planning. |
@@ -440,6 +480,7 @@ Commands are user-facing shortcuts that invoke the right skills with the right c
 
 ### Typical session flow
 
+**Supervised (human in the loop):**
 ```bash
 claude
 > /resume                            # Reload context from last session
@@ -450,6 +491,16 @@ claude
 > /review-swarm                      # Multi-agent review (6-10 reviewers in parallel)
 > /compound OAuth2 session handling  # Document the solution for future reference
 > /wrap                              # Document everything for next session
+```
+
+**Autonomous (fire and forget):**
+```bash
+# Inside Claude — single session
+claude
+> /ship add OAuth2 login with JWT refresh tokens --iterations 5
+
+# From terminal — with context-exhaustion recovery
+./scripts/ship.sh "add OAuth2 login with JWT refresh tokens" --max 10 --swarm
 ```
 
 ## Customization
@@ -566,6 +617,20 @@ When Claude starts a session, it loads context in this order:
 9. **Skills** — Activated contextually based on what's happening
 10. **Agents** — Dispatched on-demand for focused analysis (individually or as swarms)
 
+### Context window management
+
+Large features can exhaust Claude's context window. The template has layered defenses:
+
+| Layer | Mechanism | What it does |
+|-------|-----------|-------------|
+| **Prevention** | Subagent isolation | Each agent gets fresh 200K context; main session only sees results |
+| **Detection** | `context-monitor.js` (PostToolUse hook) | Warns at 150 tool calls, escalates at 200, detects analysis paralysis at 8+ consecutive reads |
+| **Inner guard** | `ship-loop.sh` (Stop hook) | Blocks premature exit within a session — re-injects the prompt (max 5 retries) |
+| **Outer loop** | `scripts/ship.sh` (bash) | Spawns fresh Claude process per iteration — true context reset (max 10, configurable) |
+| **Circuit breakers** | `autonomous-loop` skill | Stops after 3 no-progress iterations or 5 identical errors |
+
+The inner guard and outer loop solve different problems: the Stop hook catches Claude quitting early (same session, growing context), while the external bash loop handles genuine context exhaustion (fresh 200K per iteration, state persists via git).
+
 ### Session continuity
 
 The `Session Continuity` section in CLAUDE.md acts as a handoff note between sessions:
@@ -679,6 +744,18 @@ After solving a non-trivial problem, `/compound` saves it as a structured docume
 <summary><strong>What are Agent Teams and how do they differ from swarms?</strong></summary>
 
 Agent Teams (`/team`) spawn fully independent Claude Code instances that collaborate through a shared task list and messaging. Unlike swarms (which are read-only subagents reporting analysis back to a controller), Agent Teams are peers that can discuss design decisions, divide file ownership, and coordinate in real time. Use swarms for parallel analysis (review, research) and Agent Teams for collaborative implementation. Agent Teams is an experimental feature — enable with `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS: "1"` in settings.json.
+</details>
+
+<details>
+<summary><strong>What is /ship and when should I use it?</strong></summary>
+
+`/ship` is the fully autonomous development pipeline — zero checkpoints, fire-and-forget. It plans, researches, executes via a dedicated team-lead agent, iteratively reviews (3 cycles by default), and opens a PR. Use it for well-defined features where you don't need to approve each stage. For large features that may exhaust context, use `scripts/ship.sh` from your terminal — it spawns a fresh Claude process per iteration so each run gets a clean 200K context window. State persists through git commits and plan files.
+</details>
+
+<details>
+<summary><strong>How does context exhaustion recovery work?</strong></summary>
+
+Two mechanisms work at different layers. **Inside** a session, the `ship-loop.sh` Stop hook blocks premature exit — if Claude tries to stop before `<promise>DONE</promise>` is output, the hook re-injects the prompt (max 5 retries, same context). **Outside** a session, `scripts/ship.sh` is a bash loop that spawns fresh Claude processes — each iteration gets a clean 200K context window, and state persists via git. The external loop is inspired by [Ralph](https://github.com/snarktank/ralph)'s approach to long-running agent loops.
 </details>
 
 <details>
