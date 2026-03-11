@@ -659,6 +659,484 @@
     color: #475569;
     font-style: italic;
   }
+
+  /* ── STANDALONE SWARM DIAGRAMS ──────────────── */
+  .sw-controller {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .sw-controller-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #0f172a;
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .sw-controller-icon {
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .sw-command {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 6px;
+    margin-top: 10px;
+  }
+
+  .sw-parallel-label {
+    text-align: center;
+    margin: 16px 0 12px;
+    color: #94a3b8;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  .sw-parallel-label::before,
+  .sw-parallel-label::after {
+    content: '';
+    display: inline-block;
+    width: 60px;
+    height: 1px;
+    background: #e2e8f0;
+    vertical-align: middle;
+    margin: 0 12px;
+  }
+
+  .sw-agents {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1.5px dashed;
+  }
+
+  .sw-agent {
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1.5px solid;
+    white-space: nowrap;
+  }
+
+  .sw-agent-conditional {
+    opacity: 0.55;
+    font-weight: 500;
+  }
+
+  .sw-conditional-label {
+    width: 100%;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    text-align: left;
+    padding-top: 6px;
+    margin-top: 4px;
+    border-top: 1px dashed;
+  }
+
+  .sw-flow-arrow {
+    text-align: center;
+    margin: 16px 0;
+    font-size: 24px;
+    color: #94a3b8;
+    line-height: 1;
+  }
+
+  .sw-synthesizer {
+    text-align: center;
+  }
+
+  .sw-synthesizer-card {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 28px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    border: 2.5px solid;
+  }
+
+  .sw-synthesizer-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #fff;
+  }
+
+  .sw-output-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #94a3b8;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  /* Review Swarm colors — green */
+  .sw-review .sw-controller-icon { background: linear-gradient(135deg, #10b981, #059669); }
+  .sw-review .sw-command { background: #d1fae5; color: #065f46; }
+  .sw-review .sw-agents { background: #f0fdf4; border-color: #86efac; }
+  .sw-review .sw-agent { background: #ecfdf5; border-color: #6ee7b7; color: #065f46; }
+  .sw-review .sw-conditional-label { color: #059669; border-color: #86efac; }
+  .sw-review .sw-synthesizer-card { background: #ecfdf5; border-color: #059669; color: #065f46; }
+  .sw-review .sw-synthesizer-icon { background: linear-gradient(135deg, #10b981, #059669); }
+
+  /* Research Swarm colors — purple */
+  .sw-research .sw-controller-icon { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+  .sw-research .sw-command { background: #ede9fe; color: #5b21b6; }
+  .sw-research .sw-agents { background: #faf5ff; border-color: #d8b4fe; }
+  .sw-research .sw-agent { background: #f5f3ff; border-color: #c4b5fd; color: #5b21b6; }
+  .sw-research .sw-synthesizer-card { background: #f5f3ff; border-color: #7c3aed; color: #5b21b6; }
+  .sw-research .sw-synthesizer-icon { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+
+  /* ── WAVE ORCHESTRATION ─────────────────────── */
+  #wave-orchestration { }
+
+  .wo-wave {
+    margin-bottom: 6px;
+  }
+
+  .wo-wave-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .wo-wave-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 80px;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .wo-wave-desc {
+    font-size: 12px;
+    color: #94a3b8;
+    font-weight: 500;
+    font-style: italic;
+  }
+
+  .wo-tasks {
+    display: flex;
+    gap: 10px;
+    padding-left: 10px;
+  }
+
+  .wo-task {
+    flex: 1;
+    padding: 16px 12px;
+    border-radius: 10px;
+    text-align: center;
+    border: 1.5px solid;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .wo-task-sub {
+    font-size: 11px;
+    font-weight: 400;
+    opacity: 0.6;
+    margin-top: 3px;
+  }
+
+  .wo-verifier {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 14px 0;
+    padding: 10px 0;
+  }
+
+  .wo-verifier-line {
+    flex: 1;
+    height: 1.5px;
+    background: repeating-linear-gradient(90deg, #94a3b8 0, #94a3b8 6px, transparent 6px, transparent 10px);
+  }
+
+  .wo-verifier-card {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+    border: 2px solid;
+  }
+
+  .wo-verifier-icon {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #fff;
+  }
+
+  /* Wave colors */
+  .wo-wave-1 .wo-wave-badge { background: linear-gradient(135deg, #f59e0b, #d97706); }
+  .wo-wave-1 .wo-task { background: #fffbeb; border-color: #fde68a; color: #92400e; }
+  .wo-wave-2 .wo-wave-badge { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+  .wo-wave-2 .wo-task { background: #eff6ff; border-color: #93c5fd; color: #1e40af; }
+  .wo-wave-3 .wo-wave-badge { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+  .wo-wave-3 .wo-task { background: #f5f3ff; border-color: #c4b5fd; color: #5b21b6; }
+
+  .wo-verifier-card { background: #f0fdf4; border-color: #059669; color: #065f46; }
+  .wo-verifier-icon { background: linear-gradient(135deg, #10b981, #059669); }
+
+  /* ── AGENT TEAMS ────────────────────────────── */
+  #agent-teams { }
+
+  .at-lead {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .at-lead-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #0f172a;
+    color: #fff;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  .at-lead-badge {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #06b6d4, #0284c7);
+  }
+
+  .at-dispatch {
+    text-align: center;
+    margin-bottom: 16px;
+    color: #94a3b8;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  .at-dispatch::before,
+  .at-dispatch::after {
+    content: '';
+    display: inline-block;
+    width: 40px;
+    height: 1px;
+    background: #e2e8f0;
+    vertical-align: middle;
+    margin: 0 12px;
+  }
+
+  .at-teammates {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .at-teammate {
+    flex: 1;
+    border-radius: 12px;
+    padding: 18px 16px;
+    border: 1.5px solid;
+    text-align: center;
+  }
+
+  .at-teammate-name {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .at-teammate-owns {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 5px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+
+  .at-teammate-desc {
+    font-size: 11px;
+    color: #64748b;
+    line-height: 1.4;
+  }
+
+  /* Teammate colors */
+  .at-backend { background: #eff6ff; border-color: #93c5fd; }
+  .at-backend .at-teammate-name { color: #1e40af; }
+  .at-backend .at-teammate-owns { background: #dbeafe; color: #1e40af; }
+
+  .at-frontend { background: #fdf2f8; border-color: #f9a8d4; }
+  .at-frontend .at-teammate-name { color: #9d174d; }
+  .at-frontend .at-teammate-owns { background: #fce7f3; color: #9d174d; }
+
+  .at-tests { background: #ecfdf5; border-color: #86efac; }
+  .at-tests .at-teammate-name { color: #065f46; }
+  .at-tests .at-teammate-owns { background: #d1fae5; color: #065f46; }
+
+  .at-shared {
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .at-shared-bar {
+    display: inline-flex;
+    align-items: center;
+    gap: 24px;
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 10px 28px;
+  }
+
+  .at-shared-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #475569;
+  }
+
+  .at-shared-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: #fff;
+  }
+
+  .at-hooks {
+    text-align: center;
+  }
+
+  .at-hook-label {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: #64748b;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 5px 16px;
+  }
+
+  /* ── KNOWLEDGE LOOP ─────────────────────────── */
+  #knowledge-loop { }
+
+  .kl-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: wrap;
+  }
+
+  .kl-step {
+    text-align: center;
+    padding: 14px 16px;
+    border-radius: 10px;
+    border: 1.5px solid;
+    min-width: 130px;
+  }
+
+  .kl-step-name {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 3px;
+  }
+
+  .kl-step-desc {
+    font-size: 10.5px;
+    font-weight: 500;
+    opacity: 0.7;
+  }
+
+  .kl-arrow {
+    font-size: 20px;
+    color: #94a3b8;
+    padding: 0 8px;
+    flex-shrink: 0;
+  }
+
+  /* Knowledge loop colors */
+  .kl-solve { background: #eff6ff; border-color: #93c5fd; }
+  .kl-solve .kl-step-name { color: #1e40af; }
+  .kl-compound { background: #fef3c7; border-color: #fde68a; }
+  .kl-compound .kl-step-name { color: #92400e; }
+  .kl-solutions { background: #d1fae5; border-color: #a7f3d0; }
+  .kl-solutions .kl-step-name { color: #065f46; }
+  .kl-learnings { background: #faf5ff; border-color: #d8b4fe; }
+  .kl-learnings .kl-step-name { color: #5b21b6; }
+  .kl-plan { background: #fdf2f8; border-color: #f9a8d4; }
+  .kl-plan .kl-step-name { color: #9d174d; }
+
+  .kl-loop-back {
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .kl-loop-back svg {
+    width: 100%;
+    height: 40px;
+  }
 </style>
 </head>
 <body>
@@ -1144,6 +1622,228 @@
     <span style="display: inline-block; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 6px; padding: 4px 14px; font-size: 11px; color: #64748b; font-family: 'JetBrains Mono', monospace; font-weight: 500;">
       ship-loop.sh (Stop hook) — blocks premature exit within session
     </span>
+  </div>
+</div>
+
+<!-- ════════════ REVIEW SWARM ════════════ -->
+<div class="diagram sw-review" id="review-swarm">
+  <div class="sw-controller">
+    <div class="sw-controller-label">
+      <div class="sw-controller-icon">&#x2726;</div>
+      Review Swarm
+    </div>
+    <br>
+    <div class="sw-command">/review-swarm</div>
+  </div>
+
+  <div class="sw-parallel-label">dispatches 6–10 reviewers in parallel</div>
+
+  <div class="sw-agents">
+    <div class="sw-agent">Code Reviewer</div>
+    <div class="sw-agent">Security Sentinel</div>
+    <div class="sw-agent">Performance Oracle</div>
+    <div class="sw-agent">Simplicity Reviewer</div>
+    <div class="sw-agent">Convention Enforcer</div>
+    <div class="sw-agent">Test Coverage</div>
+    <div class="sw-conditional-label">conditional — enabled via blueprint.local.md</div>
+    <div class="sw-agent sw-agent-conditional">Architecture Strategist</div>
+    <div class="sw-agent sw-agent-conditional">Frontend Reviewer</div>
+    <div class="sw-agent sw-agent-conditional">Data Integrity</div>
+    <div class="sw-agent sw-agent-conditional">Schema Drift</div>
+  </div>
+
+  <div class="sw-flow-arrow">↓</div>
+
+  <div class="sw-synthesizer">
+    <div class="sw-output-label">merges all outputs</div>
+    <div class="sw-synthesizer-card">
+      <div class="sw-synthesizer-icon">&#x2728;</div>
+      Findings Synthesizer
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ RESEARCH SWARM ════════════ -->
+<div class="diagram sw-research" id="research-swarm">
+  <div class="sw-controller">
+    <div class="sw-controller-label">
+      <div class="sw-controller-icon">&#x2726;</div>
+      Research Swarm
+    </div>
+    <br>
+    <div class="sw-command">/deep-research</div>
+  </div>
+
+  <div class="sw-parallel-label">spawns 5 research agents in parallel</div>
+
+  <div class="sw-agents">
+    <div class="sw-agent">Learnings Researcher</div>
+    <div class="sw-agent">Framework Docs</div>
+    <div class="sw-agent">Best Practices</div>
+    <div class="sw-agent">Git History Analyzer</div>
+    <div class="sw-agent">Context Mapper</div>
+  </div>
+
+  <div class="sw-flow-arrow">↓</div>
+
+  <div class="sw-synthesizer">
+    <div class="sw-output-label">merges all outputs</div>
+    <div class="sw-synthesizer-card">
+      <div class="sw-synthesizer-icon">&#x2728;</div>
+      Research Synthesizer
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ WAVE ORCHESTRATION ════════════ -->
+<div class="diagram" id="wave-orchestration">
+  <!-- Wave 1 -->
+  <div class="wo-wave wo-wave-1">
+    <div class="wo-wave-header">
+      <div class="wo-wave-badge">Wave 1</div>
+      <div class="wo-wave-desc">independent — run in parallel</div>
+    </div>
+    <div class="wo-tasks">
+      <div class="wo-task">Task A<div class="wo-task-sub">worktree-isolated</div></div>
+      <div class="wo-task">Task B<div class="wo-task-sub">worktree-isolated</div></div>
+      <div class="wo-task">Task C<div class="wo-task-sub">worktree-isolated</div></div>
+    </div>
+  </div>
+
+  <!-- Verifier 1 -->
+  <div class="wo-verifier">
+    <div class="wo-verifier-line"></div>
+    <div class="wo-verifier-card">
+      <div class="wo-verifier-icon">&#x2713;</div>
+      Integration Verifier
+    </div>
+    <div class="wo-verifier-line"></div>
+  </div>
+
+  <!-- Wave 2 -->
+  <div class="wo-wave wo-wave-2">
+    <div class="wo-wave-header">
+      <div class="wo-wave-badge">Wave 2</div>
+      <div class="wo-wave-desc">depends on Wave 1</div>
+    </div>
+    <div class="wo-tasks">
+      <div class="wo-task">Task D<div class="wo-task-sub">worktree-isolated</div></div>
+      <div class="wo-task">Task E<div class="wo-task-sub">worktree-isolated</div></div>
+    </div>
+  </div>
+
+  <!-- Verifier 2 -->
+  <div class="wo-verifier">
+    <div class="wo-verifier-line"></div>
+    <div class="wo-verifier-card">
+      <div class="wo-verifier-icon">&#x2713;</div>
+      Integration Verifier
+    </div>
+    <div class="wo-verifier-line"></div>
+  </div>
+
+  <!-- Wave 3 -->
+  <div class="wo-wave wo-wave-3">
+    <div class="wo-wave-header">
+      <div class="wo-wave-badge">Wave 3</div>
+      <div class="wo-wave-desc">depends on Wave 2</div>
+    </div>
+    <div class="wo-tasks">
+      <div class="wo-task">Task F<div class="wo-task-sub">final integration</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ AGENT TEAMS ════════════ -->
+<div class="diagram" id="agent-teams">
+  <div class="at-lead">
+    <div class="at-lead-label">
+      <div class="at-lead-badge">Experimental</div>
+      Team Lead
+    </div>
+  </div>
+
+  <div class="at-dispatch">spawns teammates with file ownership</div>
+
+  <div class="at-teammates">
+    <div class="at-teammate at-backend">
+      <div class="at-teammate-name">Backend</div>
+      <div class="at-teammate-owns">src/api/*, src/services/*</div>
+      <div class="at-teammate-desc">API routes, business logic, database</div>
+    </div>
+    <div class="at-teammate at-frontend">
+      <div class="at-teammate-name">Frontend</div>
+      <div class="at-teammate-owns">src/components/*, src/pages/*</div>
+      <div class="at-teammate-desc">UI components, pages, styling</div>
+    </div>
+    <div class="at-teammate at-tests">
+      <div class="at-teammate-name">Tests</div>
+      <div class="at-teammate-owns">tests/*, __mocks__/*</div>
+      <div class="at-teammate-desc">Unit, integration, e2e tests</div>
+    </div>
+  </div>
+
+  <div class="at-shared">
+    <div class="at-shared-bar">
+      <div class="at-shared-item">
+        <div class="at-shared-icon" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">&#x2630;</div>
+        Shared Task List
+      </div>
+      <div class="at-shared-item">
+        <div class="at-shared-icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">&#x2709;</div>
+        Inter-Teammate Messaging
+      </div>
+      <div class="at-shared-item">
+        <div class="at-shared-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">&#x2699;</div>
+        Plan Approval Gate
+      </div>
+    </div>
+  </div>
+
+  <div class="at-hooks">
+    <div class="at-hook-label">Quality gates: TeammateIdle + TaskCompleted hooks</div>
+  </div>
+</div>
+
+<!-- ════════════ KNOWLEDGE LOOP ════════════ -->
+<div class="diagram" id="knowledge-loop">
+  <div class="kl-flow">
+    <div class="kl-step kl-solve">
+      <div class="kl-step-name">Solve Problem</div>
+      <div class="kl-step-desc">Fix bug, build feature</div>
+    </div>
+    <div class="kl-arrow">→</div>
+    <div class="kl-step kl-compound">
+      <div class="kl-step-name">/compound</div>
+      <div class="kl-step-desc">Document the solution</div>
+    </div>
+    <div class="kl-arrow">→</div>
+    <div class="kl-step kl-solutions">
+      <div class="kl-step-name">docs/solutions/</div>
+      <div class="kl-step-desc">Institutional knowledge</div>
+    </div>
+    <div class="kl-arrow">→</div>
+    <div class="kl-step kl-learnings">
+      <div class="kl-step-name">learnings-researcher</div>
+      <div class="kl-step-desc">Searches past solutions</div>
+    </div>
+    <div class="kl-arrow">→</div>
+    <div class="kl-step kl-plan">
+      <div class="kl-step-name">/plan</div>
+      <div class="kl-step-desc">Informed by history</div>
+    </div>
+  </div>
+  <div class="kl-loop-back">
+    <svg viewBox="0 0 820 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M 740 4 C 785 4, 800 16, 800 24 C 800 34, 785 40, 740 40 L 80 40 C 35 40, 20 34, 20 24 C 20 16, 35 4, 80 4" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="6 4" fill="none" marker-start="url(#klArrow)"/>
+      <defs>
+        <marker id="klArrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto-start-reverse">
+          <path d="M 8 0 L 0 4 L 8 8" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+        </marker>
+      </defs>
+      <rect x="320" y="12" width="180" height="22" rx="11" fill="#f1f5f9"/>
+      <text x="410" y="27" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="500" fill="#64748b">compounds over time</text>
+    </svg>
   </div>
 </div>
 

@@ -216,65 +216,33 @@ Agents are organized into coordinated teams for multi-agent workflows. Four orch
 
 Dispatches 6-10 specialized reviewers in parallel, each analyzing the same code from a different angle. A findings-synthesizer merges all results into one prioritized report (P1/P2/P3).
 
-```
-Controller
-├── code-reviewer          ─┐
-├── security-sentinel       │
-├── performance-oracle      ├── All run in parallel
-├── code-simplicity-reviewer│
-├── convention-enforcer     │
-├── test-coverage-reviewer ─┘
-│   + conditional: architecture-strategist, frontend-reviewer,
-│     data-integrity-guardian, schema-drift-detector
-│
-└── → findings-synthesizer (merges all outputs)
-```
+<p align="center">
+  <img src="docs/images/review-swarm.png" alt="Review Swarm — 6-10 parallel reviewers → findings synthesizer" width="90%">
+</p>
 
 ### Research Swarm (`/deep-research`)
 
 Spawns 5 research agents in parallel before planning, then synthesizes findings into a unified research brief.
 
-```
-Controller
-├── learnings-researcher       ─┐
-├── framework-docs-researcher   │
-├── best-practices-researcher   ├── All run in parallel
-├── git-history-analyzer        │
-├── codebase-context-mapper    ─┘
-│
-└── → research-synthesizer (merges all outputs)
-```
+<p align="center">
+  <img src="docs/images/research-swarm.png" alt="Research Swarm — 5 parallel researchers → research synthesizer" width="90%">
+</p>
 
 ### Wave Orchestration (`/orchestrate`)
 
 Groups plan tasks by dependency into waves. Independent tasks within each wave run in parallel; an integration-verifier validates between waves.
 
-```
-Wave 1: [Task A, Task B, Task C]  ← independent, run in parallel
-         │         │         │
-    ┌────┴─────────┴─────────┴────┐
-    │     Integration Verifier     │
-    └──────────────┬──────────────┘
-Wave 2: [Task D, Task E]          ← depend on Wave 1
-         │         │
-    ┌────┴─────────┴──────────────┐
-    │     Integration Verifier     │
-    └──────────────┬──────────────┘
-Wave 3: [Task F]                   ← depends on Wave 2
-```
+<p align="center">
+  <img src="docs/images/wave-orchestration.png" alt="Wave Orchestration — dependency-ordered waves with integration verification" width="90%">
+</p>
 
 ### Agent Teams (`/team`) — Experimental
 
 For complex multi-file implementations where teammates need to discuss and coordinate, Agent Teams spawns fully independent Claude Code instances with a shared task list and messaging system.
 
-```
-Team Lead (your session)
-├── Teammate: backend (owns src/api/*, src/services/*)    ─┐
-├── Teammate: frontend (owns src/components/*, src/pages/)  ├── shared task list
-├── Teammate: tests (owns tests/*, __mocks__/*)            ─┘
-│
-└── Quality gates: TeammateIdle + TaskCompleted hooks
-```
+<p align="center">
+  <img src="docs/images/agent-teams.png" alt="Agent Teams — collaborative instances with shared task list and messaging" width="90%">
+</p>
 
 **When to use which:**
 
@@ -290,11 +258,9 @@ Agent Teams is an experimental Claude Code feature. Enable it with `CLAUDE_CODE_
 
 Each solved problem becomes searchable institutional knowledge. Future `/plan` and `/deep-research` commands automatically consult past solutions.
 
-```
-Solve problem → /compound → docs/solutions/
-                                    ↓
-              /plan ← learnings-researcher ← searches solutions
-```
+<p align="center">
+  <img src="docs/images/knowledge-loop.png" alt="Knowledge Loop — solve → compound → search → plan → repeat" width="90%">
+</p>
 
 ### Per-Project Configuration
 
