@@ -13,20 +13,18 @@ Quality over speed. Small steps compound into big progress. The patterns you est
 **Last session:** 2026-03-11
 
 **What was done:**
-- Fixed `/ship` pipeline's context exhaustion recovery — added missing Stage 0 (state file creation)
-- New `scripts/ship.sh` — Ralph-style external bash loop (fresh 200K context per iteration, `--max N`)
-- Dual-loop architecture: outer loop (`ship.sh`) for context exhaustion, inner guard (`ship-loop.sh`) for premature exit
-- Added `--external` flag to `/ship` — skips Stop hook activation when managed by outer loop
-- Added continuation detection to `/ship` Stage 0 — checks git log, plan files, progress file to resume mid-pipeline
-- Updated README.md with `/ship` pipeline section, diagram (`ship-pipeline.png`), context management table, pipeline comparison, new commands/skills/agents, updated component counts (24/34/26/5), new FAQ entries
-- Re-rendered `project-structure.png` and `agents-ecosystem.png` with updated counts
-- Fixed markdownlint MD049 — asterisk emphasis → underscore in CLAUDE.md
+- Replaced all 10 remaining ASCII art diagrams in README.md with HTML/CSS rendered PNG diagrams via Playwright
+- Added 10 new diagram sections to `docs/images/render-diagrams.html` (+1,248 lines CSS/HTML)
+- 5 standalone diagrams: review-swarm, research-swarm, wave-orchestration, agent-teams, knowledge-loop
+- 2 inline diagrams: dev-loop (Orient→Ship loop), lightweight-workflow (test→fix→verify→commit)
+- 3 dispatch pattern diagrams: dispatch-swarm, dispatch-wave, dispatch-team
+- All diagrams use consistent design system (Inter/JetBrains Mono fonts, semantic color palette)
 
 **What's remaining:**
-- No immediate work remaining — v2.3.0 is fully documented and CI is green
+- No immediate work remaining — all README diagrams are rendered PNGs, CI is green
 - GOALS.md still has placeholder templates (P3 — filled by `/init` on install)
 
-**Start here:** All v2.3.0 work is complete. Next feature or improvement can be started fresh.
+**Start here:** All diagram work is complete. README has zero ASCII art remaining. Next feature or improvement can be started fresh.
 
 **Current state of the code:**
 - Build: n/a (template repo, no build step)
@@ -491,3 +489,6 @@ Researching GSD, Ralph, and CE revealed that validating plans _before_ execution
 
 ### 2026-03-11: Stop hook "decision: block" does NOT reset context — use external bash loop for that
 Ralph (`ralph.sh`) spawns a fresh `claude --print` process per iteration in a bash for-loop — each gets clean 200K context. Our `ship-loop.sh` Stop hook uses `"decision": "block"` which prevents exit but continues the same session (context keeps growing). These solve different problems: the Stop hook catches premature exit (Claude gives up too early), while the external loop handles genuine context exhaustion. The `--external` flag in `/ship` disables the Stop hook when the outer loop manages restarts, preventing conflict between the two mechanisms.
+
+### 2026-03-11: All README diagrams now rendered via HTML/CSS + Playwright — zero ASCII art remaining
+Added 10 new diagram sections to `docs/images/render-diagrams.html` covering every ASCII block in the README: standalone swarm diagrams (review-swarm, research-swarm), orchestration patterns (wave-orchestration, agent-teams, knowledge-loop), compact inline flows (dev-loop, lightweight-workflow), and dispatch patterns (dispatch-swarm, dispatch-wave, dispatch-team). Consistent design system: semantic colors (green=review, purple=research, amber=waves, blue=planning), Inter + JetBrains Mono fonts, 880px canvas width. To re-render: `python3 -m http.server 8765` in `docs/images/`, then Playwright `element.screenshot()` each `#id`.
