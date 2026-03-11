@@ -129,12 +129,9 @@ your-project/
 
 Every feature follows this flow:
 
-```
- ┌──────────────────────────────────────────────┐
- │                                              │
- ▼                                              │
-Orient ──▶ Design ──▶ Plan ──▶ Build ──▶ Ship ──┘
-```
+<p align="center">
+  <img src="docs/images/dev-loop.png" alt="Orient → Design → Plan → Build → Ship → next feature" width="90%">
+</p>
 
 **1. Orient** — Load context with `/status` or set up with `/init`
 
@@ -150,9 +147,9 @@ Orient ──▶ Design ──▶ Plan ──▶ Build ──▶ Ship ──┘
 
 Not everything needs the full 5-step flow. Bug fixes with obvious root causes, typo fixes, config changes, and adding tests for existing behavior can use a shortcut:
 
-```
-Write failing test → Fix it → Verify → Commit
-```
+<p align="center">
+  <img src="docs/images/lightweight-workflow.png" alt="Write failing test → Fix it → Verify → Commit" width="80%">
+</p>
 
 The boundary is clear: if you're touching 4+ files, adding a new API, or unsure of the approach, use the full workflow. See CLAUDE.md for the complete criteria.
 

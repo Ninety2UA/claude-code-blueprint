@@ -1137,6 +1137,83 @@
     width: 100%;
     height: 40px;
   }
+
+  /* ── DEV LOOP (compact) ─────────────────────── */
+  #dev-loop {
+    padding: 36px 44px 48px;
+  }
+
+  .dl-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+  }
+
+  .dl-step {
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    border: 2px solid;
+    text-align: center;
+    letter-spacing: -0.2px;
+  }
+
+  .dl-arrow {
+    font-size: 20px;
+    color: #94a3b8;
+    padding: 0 10px;
+    flex-shrink: 0;
+  }
+
+  .dl-orient { background: #ecfdf5; border-color: #6ee7b7; color: #065f46; }
+  .dl-design { background: #eff6ff; border-color: #93c5fd; color: #1e40af; }
+  .dl-plan   { background: #fffbeb; border-color: #fde68a; color: #92400e; }
+  .dl-build  { background: #fdf2f8; border-color: #f9a8d4; color: #9d174d; }
+  .dl-ship   { background: #f5f3ff; border-color: #c4b5fd; color: #5b21b6; }
+
+  .dl-loop-back {
+    margin-top: 8px;
+  }
+
+  .dl-loop-back svg {
+    width: 100%;
+    height: 40px;
+  }
+
+  /* ── LIGHTWEIGHT WORKFLOW (compact) ─────────── */
+  #lightweight-workflow {
+    padding: 32px 44px;
+  }
+
+  .lw-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+  }
+
+  .lw-step {
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .lw-arrow {
+    font-size: 18px;
+    color: #94a3b8;
+    padding: 0 10px;
+    flex-shrink: 0;
+  }
+
+  .lw-test   { background: #fee2e2; color: #991b1b; border: 2px solid #fca5a5; }
+  .lw-fix    { background: #d1fae5; color: #065f46; border: 2px solid #6ee7b7; }
+  .lw-verify { background: #dbeafe; color: #1e40af; border: 2px solid #93c5fd; }
+  .lw-commit { background: #f3e8ff; color: #6b21a8; border: 2px solid #c4b5fd; }
 </style>
 </head>
 <body>
@@ -1622,6 +1699,46 @@
     <span style="display: inline-block; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 6px; padding: 4px 14px; font-size: 11px; color: #64748b; font-family: 'JetBrains Mono', monospace; font-weight: 500;">
       ship-loop.sh (Stop hook) — blocks premature exit within session
     </span>
+  </div>
+</div>
+
+<!-- ════════════ DEV LOOP ════════════ -->
+<div class="diagram" id="dev-loop">
+  <div class="dl-flow">
+    <div class="dl-step dl-orient">Orient</div>
+    <div class="dl-arrow">→</div>
+    <div class="dl-step dl-design">Design</div>
+    <div class="dl-arrow">→</div>
+    <div class="dl-step dl-plan">Plan</div>
+    <div class="dl-arrow">→</div>
+    <div class="dl-step dl-build">Build</div>
+    <div class="dl-arrow">→</div>
+    <div class="dl-step dl-ship">Ship</div>
+  </div>
+  <div class="dl-loop-back">
+    <svg viewBox="0 0 820 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M 700 4 C 745 4, 760 16, 760 24 C 760 34, 745 40, 700 40 L 120 40 C 75 40, 60 34, 60 24 C 60 16, 75 4, 120 4" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="6 4" fill="none" marker-start="url(#dlArrow)"/>
+      <defs>
+        <marker id="dlArrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto-start-reverse">
+          <path d="M 8 0 L 0 4 L 8 8" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+        </marker>
+      </defs>
+      <rect x="340" y="12" width="140" height="22" rx="11" fill="#f1f5f9"/>
+      <text x="410" y="27" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="500" fill="#64748b">next feature</text>
+    </svg>
+  </div>
+</div>
+
+<!-- ════════════ LIGHTWEIGHT WORKFLOW ════════════ -->
+<div class="diagram" id="lightweight-workflow">
+  <div class="lw-flow">
+    <div class="lw-step lw-test">Write failing test</div>
+    <div class="lw-arrow">→</div>
+    <div class="lw-step lw-fix">Fix it</div>
+    <div class="lw-arrow">→</div>
+    <div class="lw-step lw-verify">Verify</div>
+    <div class="lw-arrow">→</div>
+    <div class="lw-step lw-commit">Commit</div>
   </div>
 </div>
 
