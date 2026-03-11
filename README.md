@@ -23,7 +23,7 @@
 ---
 
 <p align="center">
-  <video src="docs/images/overview.mp4" width="90%" controls autoplay muted loop></video>
+  <img src="docs/images/overview.gif" alt="Claude Code Blueprint overview — 7 scenes showing skills, agents, pipelines, and multi-agent orchestration" width="90%">
 </p>
 
 ## Why This Template?
