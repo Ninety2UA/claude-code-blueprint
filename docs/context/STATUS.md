@@ -7,7 +7,7 @@ Last updated: 2026-03-12
 - **Build:** n/a (template repo, no build step)
 - **Tests:** CI passing (4/4 jobs green — install ubuntu, install macos, shellcheck, markdownlint)
 - **Lint:** markdownlint clean, shellcheck clean
-- **Last verified:** 2026-03-12 (CI run after commit `0808b6f`)
+- **Last verified:** 2026-03-12 (CI run after commit `c5b512e`)
 - **Version:** 2.3.0 (34 skills, 26 agents, 24 commands, 5 hooks)
 
 ## In Flight
@@ -26,6 +26,7 @@ Last updated: 2026-03-12
 
 | Date | Commit | Description |
 |------|--------|-------------|
+| 2026-03-12 | `c5b512e` | Fix: install script image exclusion — use directory wildcard instead of extension denylist (`.mp4`/`.gif` leaked) |
 | 2026-03-12 | `0808b6f` | Fix: use animated GIF for README video — GitHub strips `<video>` tags |
 | 2026-03-12 | `7e07266` | Feat: add 7-scene animated promo video (HTML/CSS + Playwright screenshots + ffmpeg) |
 | 2026-03-12 | `9063694` | Docs: hyperlink all 34 skill names and 26 agent names in README reference tables |

@@ -13,20 +13,19 @@ Quality over speed. Small steps compound into big progress. The patterns you est
 **Last session:** 2026-03-12
 
 **What was done:**
-- Hyperlinked all 34 skill names and 26 agent names in README reference tables (`9063694`)
-- Created 7-scene animated promo video: HTML source (`docs/images/promo-video.html`), recording script (`scripts/record-promo.js`), output video (`docs/images/overview.mp4`, 597 KB, 30.7s) (`7e07266`)
-- Converted to animated GIF (`docs/images/overview.gif`, 1.7 MB) after discovering GitHub strips `<video>` tags (`0808b6f`)
-- Scenes: Title, Stats (34/26/24/5), Workflow (Plan→Build→Review→Ship), Pipelines (/build /ship /quick), Multi-Agent (Swarm/Waves/Teams), Install terminal, CTA
+- Fixed CI regression: install script leaked `.mp4`/`.gif` promo video files into installations (`c5b512e`)
+- Root cause: `install.sh` exclusion filter listed specific extensions but missed new file types added by promo video commits
+- Fix: changed from extension denylist to directory-level wildcard (`docs/images/*`)
 
 **What's remaining:**
-- No immediate work remaining — promo video embedded, README hyperlinks done, CI green
+- No immediate work remaining — CI green (4/4 jobs), all features complete
 - GOALS.md still has placeholder templates (P3 — filled by `/init` on install)
 
-**Start here:** All README polish is complete. Promo video, hyperlinked reference tables, and rendered PNG diagrams are all in place. Next feature or improvement can be started fresh.
+**Start here:** CI is green, working tree clean. No in-flight work. Next feature or improvement can be started fresh.
 
 **Current state of the code:**
 - Build: n/a (template repo, no build step)
-- Tests: CI passing (4/4 jobs green — install ubuntu, install macos, shellcheck, markdownlint)
+- Tests: CI passing (4/4 jobs green on `c5b512e` — install ubuntu, install macos, shellcheck, markdownlint)
 - Lint: markdownlint clean, shellcheck clean
 - Uncommitted changes: none (working tree clean)
 
@@ -490,6 +489,9 @@ Ralph (`ralph.sh`) spawns a fresh `claude --print` process per iteration in a ba
 
 ### 2026-03-12: Playwright recordVideo misses DOM mutations — use screenshot + ffmpeg instead
 Playwright's `recordVideo` API captures compositor output in headless Chromium, which can miss DOM changes between render frames. Individual `page.screenshot()` calls force a render and reliably capture DOM state. For animated HTML recording: take PNG screenshots at 25fps with `page.waitForTimeout(40)` between frames, then stitch with ffmpeg (`-framerate 25 -i frame_%05d.png -c:v libx264 -pix_fmt yuv420p -crf 20`). Source: `docs/images/promo-video.html`, script: `scripts/record-promo.js`. Also: GitHub strips `<video>` tags from README markdown — use animated GIF instead (800px, 10fps, 128-color palette keeps 30s under 2 MB). When verifying H.264 with ffmpeg, put `-ss` AFTER `-i` for accurate seeking; before `-i` jumps to nearest keyframe.
+
+### 2026-03-12: Install script exclusion filters should use directory wildcards, not extension denylists
+The `install.sh` image exclusion filter listed specific extensions (`.svg/.mmd/.png/.html`) which missed `.mp4` and `.gif` files added by the promo video. Changed to `docs/images/*` directory-level wildcard so any future file additions are automatically excluded. Lesson: denylist-by-extension is fragile for asset directories — use directory-level patterns instead. Also: GitHub Actions matrix `fail-fast: true` (default) cancels sibling jobs when one fails, which is why macOS showed "Cancelled" rather than its own failure.
 
 ### 2026-03-11: All README diagrams now rendered via HTML/CSS + Playwright — zero ASCII art remaining
 Added 10 new diagram sections to `docs/images/render-diagrams.html` covering every ASCII block in the README: standalone swarm diagrams (review-swarm, research-swarm), orchestration patterns (wave-orchestration, agent-teams, knowledge-loop), compact inline flows (dev-loop, lightweight-workflow), and dispatch patterns (dispatch-swarm, dispatch-wave, dispatch-team). Consistent design system: semantic colors (green=review, purple=research, amber=waves, blue=planning), Inter + JetBrains Mono fonts, 880px canvas width. To re-render: `python3 -m http.server 8765` in `docs/images/`, then Playwright `element.screenshot()` each `#id`.
