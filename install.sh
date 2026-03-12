@@ -188,10 +188,9 @@ if [ "$CLAUDE_ONLY" = false ]; then
         find "$SOURCE_DIR/docs" -type f | while read -r file; do
             rel="${file#"$SOURCE_DIR"/}"
 
-            # Skip README diagram images (only needed for GitHub display)
+            # Skip all docs/images/ content (only needed for GitHub display)
             case "$rel" in
-                docs/images/*.svg|docs/images/*.mmd|docs/images/*.png|docs/images/*.html)
-                    continue ;;
+                docs/images/*) continue ;;
             esac
 
             copy_item "$file" "$TARGET_DIR/$rel"
