@@ -10,21 +10,19 @@ Quality over speed. Small steps compound into big progress. The patterns you est
 
 <!-- Updated by /wrap at end of each work session. Read this FIRST when starting a new session. -->
 
-**Last session:** 2026-03-11
+**Last session:** 2026-03-12
 
 **What was done:**
-- Replaced all 10 remaining ASCII art diagrams in README.md with HTML/CSS rendered PNG diagrams via Playwright
-- Added 10 new diagram sections to `docs/images/render-diagrams.html` (+1,248 lines CSS/HTML)
-- 5 standalone diagrams: review-swarm, research-swarm, wave-orchestration, agent-teams, knowledge-loop
-- 2 inline diagrams: dev-loop (Orient→Ship loop), lightweight-workflow (test→fix→verify→commit)
-- 3 dispatch pattern diagrams: dispatch-swarm, dispatch-wave, dispatch-team
-- All diagrams use consistent design system (Inter/JetBrains Mono fonts, semantic color palette)
+- Hyperlinked all 34 skill names and 26 agent names in README reference tables (`9063694`)
+- Created 7-scene animated promo video: HTML source (`docs/images/promo-video.html`), recording script (`scripts/record-promo.js`), output video (`docs/images/overview.mp4`, 597 KB, 30.7s) (`7e07266`)
+- Converted to animated GIF (`docs/images/overview.gif`, 1.7 MB) after discovering GitHub strips `<video>` tags (`0808b6f`)
+- Scenes: Title, Stats (34/26/24/5), Workflow (Plan→Build→Review→Ship), Pipelines (/build /ship /quick), Multi-Agent (Swarm/Waves/Teams), Install terminal, CTA
 
 **What's remaining:**
-- No immediate work remaining — all README diagrams are rendered PNGs, CI is green
+- No immediate work remaining — promo video embedded, README hyperlinks done, CI green
 - GOALS.md still has placeholder templates (P3 — filled by `/init` on install)
 
-**Start here:** All diagram work is complete. README has zero ASCII art remaining. Next feature or improvement can be started fresh.
+**Start here:** All README polish is complete. Promo video, hyperlinked reference tables, and rendered PNG diagrams are all in place. Next feature or improvement can be started fresh.
 
 **Current state of the code:**
 - Build: n/a (template repo, no build step)
@@ -489,6 +487,9 @@ Researching GSD, Ralph, and CE revealed that validating plans _before_ execution
 
 ### 2026-03-11: Stop hook "decision: block" does NOT reset context — use external bash loop for that
 Ralph (`ralph.sh`) spawns a fresh `claude --print` process per iteration in a bash for-loop — each gets clean 200K context. Our `ship-loop.sh` Stop hook uses `"decision": "block"` which prevents exit but continues the same session (context keeps growing). These solve different problems: the Stop hook catches premature exit (Claude gives up too early), while the external loop handles genuine context exhaustion. The `--external` flag in `/ship` disables the Stop hook when the outer loop manages restarts, preventing conflict between the two mechanisms.
+
+### 2026-03-12: Playwright recordVideo misses DOM mutations — use screenshot + ffmpeg instead
+Playwright's `recordVideo` API captures compositor output in headless Chromium, which can miss DOM changes between render frames. Individual `page.screenshot()` calls force a render and reliably capture DOM state. For animated HTML recording: take PNG screenshots at 25fps with `page.waitForTimeout(40)` between frames, then stitch with ffmpeg (`-framerate 25 -i frame_%05d.png -c:v libx264 -pix_fmt yuv420p -crf 20`). Source: `docs/images/promo-video.html`, script: `scripts/record-promo.js`. Also: GitHub strips `<video>` tags from README markdown — use animated GIF instead (800px, 10fps, 128-color palette keeps 30s under 2 MB). When verifying H.264 with ffmpeg, put `-ss` AFTER `-i` for accurate seeking; before `-i` jumps to nearest keyframe.
 
 ### 2026-03-11: All README diagrams now rendered via HTML/CSS + Playwright — zero ASCII art remaining
 Added 10 new diagram sections to `docs/images/render-diagrams.html` covering every ASCII block in the README: standalone swarm diagrams (review-swarm, research-swarm), orchestration patterns (wave-orchestration, agent-teams, knowledge-loop), compact inline flows (dev-loop, lightweight-workflow), and dispatch patterns (dispatch-swarm, dispatch-wave, dispatch-team). Consistent design system: semantic colors (green=review, purple=research, amber=waves, blue=planning), Inter + JetBrains Mono fonts, 880px canvas width. To re-render: `python3 -m http.server 8765` in `docs/images/`, then Playwright `element.screenshot()` each `#id`.

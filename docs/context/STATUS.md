@@ -1,13 +1,13 @@
 # Project Status
 
-Last updated: 2026-03-11
+Last updated: 2026-03-12
 
 ## Current State of the Code
 
 - **Build:** n/a (template repo, no build step)
 - **Tests:** CI passing (4/4 jobs green — install ubuntu, install macos, shellcheck, markdownlint)
 - **Lint:** markdownlint clean, shellcheck clean
-- **Last verified:** 2026-03-11 (CI run after commit `4dc5408`)
+- **Last verified:** 2026-03-12 (CI run after commit `0808b6f`)
 - **Version:** 2.3.0 (34 skills, 26 agents, 24 commands, 5 hooks)
 
 ## In Flight
@@ -26,6 +26,9 @@ Last updated: 2026-03-11
 
 | Date | Commit | Description |
 |------|--------|-------------|
+| 2026-03-12 | `0808b6f` | Fix: use animated GIF for README video — GitHub strips `<video>` tags |
+| 2026-03-12 | `7e07266` | Feat: add 7-scene animated promo video (HTML/CSS + Playwright screenshots + ffmpeg) |
+| 2026-03-12 | `9063694` | Docs: hyperlink all 34 skill names and 26 agent names in README reference tables |
 | 2026-03-11 | `28af7a2` | Docs: add dispatch pattern diagrams (swarm, wave, agent team) — replace ASCII art in "How agents work" section |
 | 2026-03-11 | `be9aa01` | Docs: add dev-loop and lightweight-workflow diagrams — replace ASCII art in workflow section |
 | 2026-03-11 | `eba4393` | Docs: add 5 standalone diagrams (review-swarm, research-swarm, wave-orchestration, agent-teams, knowledge-loop) — replace ASCII art in "Agent Teams & Swarms" section |
@@ -56,6 +59,8 @@ Last updated: 2026-03-11
 | 2026-03-11 | v2.3.0: `/ship` as autonomous pipeline name, team-lead as dedicated agent (not skill), `--no-review` composability pattern, 3 iteration layers (task/quality/session), plan-checker verify loop before execution | — |
 | 2026-03-09 | v2.2.0: Add tool restrictions (least privilege), Agent Teams integration, worktree isolation, quality gate hooks | — |
 | 2026-03-09 | v2.0.0: Organize agents into swarm/wave/loop teams; add per-project config; add knowledge compounding | — |
+| 2026-03-12 | Animated GIF over `<video>` tag for GitHub README — GitHub sanitizer strips `<video>` elements | — |
+| 2026-03-12 | Screenshot-based recording (PNG + ffmpeg) over Playwright recordVideo — recordVideo misses DOM mutations in headless mode | — |
 | 2026-03-11 | All README ASCII art replaced with rendered PNG diagrams — 10 new sections in render-diagrams.html, zero ASCII remaining | — |
 | 2026-03-09 | Switch diagram rendering from Mermaid to HTML/CSS + Playwright screenshots for better quality | — |
 | 2026-03-05 | Adopt ralphy autonomous retry loop pattern as autonomous-loop skill | — |
