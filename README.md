@@ -8,6 +8,7 @@
 
 <p align="center">
   <a href="#how-does-this-compare">Compare</a> ·
+  <a href="#latest-gsd-2-integration">What's New</a> ·
   <a href="#quick-start">Quick Start</a> ·
   <a href="#what-you-get">What You Get</a> ·
   <a href="#workflow">Workflow</a> ·
@@ -44,9 +45,22 @@ Before committing to any tool, it helps to understand the landscape. We evaluate
   <img src="docs/images/ecosystem-guide.png" alt="Claude Code Tools Guide — 8 tools evaluated side by side" width="90%">
 </p>
 
-**[Download the free guide (PDF)](ebook/claude-code-tools-guide.pdf)** — covers tool profiles, a classification matrix, scenario-based recommendations, combination safety, and a confidence-scored final ranking.
+**[Download the free guide (PDF)](ebook/claude-code-tools-guide.pdf)** — covers tool profiles, a classification matrix, scenario-based recommendations, combination safety, a confidence-scored final ranking, and the GSD-2 ecosystem.
 
 > *The best tool is the one that matches your actual workflow, not the one with the most stars.*
+
+## Latest: GSD-2 Integration
+
+Six agent-building patterns from the GSD-2 knowledge base ("Building Coding Agents") have been incorporated into existing skills and agents:
+
+- **Error classification with fast-path debugging** — syntax errors skip the full 4-phase debugging process; flaky tests are quarantined to stop autonomous loops from burning iterations
+- **Degradation detection** — rising difficulty and hot-file signals catch soft deterioration that hard-stall circuit breakers miss
+- **Structured escalation format** — 4-part escalation output (what failed, what was tried, what's suspected, what's needed) replaces ad-hoc "I'm stuck" messages
+- **Assumption tracking** — `### Assumptions` convention with `[cascading]` flags surfaces invisible interpretive decisions at plan checkpoints
+- **False-positive filtering** — review synthesis now includes a verification step and "Discarded" section so noisy findings don't waste developer time
+- **"Never summarize summaries"** — session wraps regenerate from source of truth (git log, test results, file system) instead of copying previous summaries, preventing multi-session drift
+
+These patterns are woven into existing skills ([systematic-debugging](.claude/skills/systematic-debugging/), [autonomous-loop](.claude/skills/autonomous-loop/), [executing-plans](.claude/skills/executing-plans/), [session-wrap](.claude/skills/session-wrap/)) and agents ([plan-checker](.claude/agents/plan-checker.md), [findings-synthesizer](.claude/agents/findings-synthesizer.md)) — no new files were added.
 
 ## Quick Start
 
@@ -288,7 +302,7 @@ Skills are workflow modules that activate at specific development phases. They c
 
 | Skill | What it does | Trigger |
 |-------|-------------|---------|
-| [**executing-plans**](.claude/skills/executing-plans/) | Executes plans in batches with review checkpoints | Separate session from planning |
+| [**executing-plans**](.claude/skills/executing-plans/) | Executes plans in batches with review checkpoints. Tracks assumptions with `[cascading]` impact flags | Separate session from planning |
 | [**test-driven-development**](.claude/skills/test-driven-development/) | Enforces red-green-refactor for all code changes | Before any code implementation |
 | [**subagent-driven-development**](.claude/skills/subagent-driven-development/) | Dispatches fresh subagent per task with two-stage review | In-session plan execution |
 | [**dispatching-parallel-agents**](.claude/skills/dispatching-parallel-agents/) | Runs independent investigations concurrently | 2+ independent failure domains |
@@ -298,7 +312,7 @@ Skills are workflow modules that activate at specific development phases. They c
 
 | Skill | What it does | Trigger |
 |-------|-------------|---------|
-| [**systematic-debugging**](.claude/skills/systematic-debugging/) | Root cause investigation before any fix is attempted | Any bug or test failure |
+| [**systematic-debugging**](.claude/skills/systematic-debugging/) | Root cause investigation before any fix is attempted. Step 0 error classification fast-paths syntax errors and quarantines flaky tests | Any bug or test failure |
 | [**verification-before-completion**](.claude/skills/verification-before-completion/) | Requires fresh evidence before claiming work is done | Before any success claim |
 | [**requesting-code-review**](.claude/skills/requesting-code-review/) | Dispatches code-reviewer agent for automated review | After completing a task |
 | [**receiving-code-review**](.claude/skills/receiving-code-review/) | Evaluates review feedback technically, not defensively | When review feedback arrives |
@@ -308,7 +322,7 @@ Skills are workflow modules that activate at specific development phases. They c
 | Skill | What it does | Trigger |
 |-------|-------------|---------|
 | [**finishing-a-development-branch**](.claude/skills/finishing-a-development-branch/) | Structured merge workflow with options for squash, rebase, or merge | After all tests pass |
-| [**session-wrap**](.claude/skills/session-wrap/) | Documents work done, updates all project docs, captures learnings | `/wrap` or end of session |
+| [**session-wrap**](.claude/skills/session-wrap/) | Documents work done, updates all project docs, captures learnings. Regenerates from source of truth — never summarizes previous summaries | `/wrap` or end of session |
 
 ### Operations phase
 
@@ -324,7 +338,7 @@ Skills are workflow modules that activate at specific development phases. They c
 | [**migration-planning**](.claude/skills/migration-planning/) | Safe migration plans with rollback procedures | Database/API/dependency migrations |
 | [**performance-profiling**](.claude/skills/performance-profiling/) | Profile-driven investigation — measure before optimizing | When something is "slow" |
 | [**browser-testing**](.claude/skills/browser-testing/) | Verify UI changes via Playwright MCP browser tools | After UI changes need visual verification |
-| [**autonomous-loop**](.claude/skills/autonomous-loop/) | Iterate through plan tasks with retry, backoff, circuit breaker (3 no-progress / 5 same-error) | Autonomous plan execution — "just do it all" |
+| [**autonomous-loop**](.claude/skills/autonomous-loop/) | Iterate through plan tasks with retry, backoff, circuit breaker (3 no-progress / 5 same-error), and degradation detection (rising difficulty, hot-file signals) | Autonomous plan execution — "just do it all" |
 | [**iterative-refinement**](.claude/skills/iterative-refinement/) | Review→fix→review cycles with 3 convergence modes (fast/deep/perfect), early exit on convergence | `/ship` Stage 5, `/build --iterate N` |
 | [**dependency-management**](.claude/skills/dependency-management/) | Evaluates, adds, upgrades, and removes dependencies with safety gates | Adding, upgrading, or auditing dependencies |
 
@@ -587,7 +601,7 @@ Large features can exhaust Claude's context window. The template has layered def
 | **Detection** | `context-monitor.js` (PostToolUse hook) | Warns at 150 tool calls, escalates at 200, detects analysis paralysis at 8+ consecutive reads |
 | **Inner guard** | `ship-loop.sh` (Stop hook) | Blocks premature exit within a session — re-injects the prompt (max 5 retries) |
 | **Outer loop** | `scripts/ship.sh` (bash) | Spawns fresh Claude process per iteration — true context reset (max 10, configurable) |
-| **Circuit breakers** | `autonomous-loop` skill | Stops after 3 no-progress iterations or 5 identical errors |
+| **Circuit breakers** | `autonomous-loop` skill | Stops after 3 no-progress iterations or 5 identical errors. Degradation detection catches rising difficulty and hot-file churn before hard stalls |
 
 The inner guard and outer loop solve different problems: the Stop hook catches Claude quitting early (same session, growing context), while the external bash loop handles genuine context exhaustion (fresh 200K per iteration, state persists via git).
 
