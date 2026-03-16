@@ -1,13 +1,13 @@
 # Project Status
 
-Last updated: 2026-03-12
+Last updated: 2026-03-16
 
 ## Current State of the Code
 
 - **Build:** n/a (template repo, no build step)
 - **Tests:** CI passing (4/4 jobs green — install ubuntu, install macos, shellcheck, markdownlint)
 - **Lint:** markdownlint clean, shellcheck clean
-- **Last verified:** 2026-03-12 (CI run after commit `c5b512e`)
+- **Last verified:** 2026-03-16 (markdownlint on 6 modified files; CI last full green on `c5b512e`)
 - **Version:** 2.3.0 (34 skills, 26 agents, 24 commands, 5 hooks)
 
 ## In Flight
@@ -26,6 +26,7 @@ Last updated: 2026-03-12
 
 | Date | Commit | Description |
 |------|--------|-------------|
+| 2026-03-16 | (uncommitted) | Feat: incorporate GSD-2 mechanisms — error taxonomy, degradation detection, structured escalation, assumption tracking, contradiction detection, summary reconciliation. 6 files, +97/-10. |
 | 2026-03-12 | `c5b512e` | Fix: install script image exclusion — use directory wildcard instead of extension denylist (`.mp4`/`.gif` leaked) |
 | 2026-03-12 | `0808b6f` | Fix: use animated GIF for README video — GitHub strips `<video>` tags |
 | 2026-03-12 | `7e07266` | Feat: add 7-scene animated promo video (HTML/CSS + Playwright screenshots + ffmpeg) |
@@ -60,6 +61,7 @@ Last updated: 2026-03-12
 | 2026-03-11 | v2.3.0: `/ship` as autonomous pipeline name, team-lead as dedicated agent (not skill), `--no-review` composability pattern, 3 iteration layers (task/quality/session), plan-checker verify loop before execution | — |
 | 2026-03-09 | v2.2.0: Add tool restrictions (least privilege), Agent Teams integration, worktree isolation, quality gate hooks | — |
 | 2026-03-09 | v2.0.0: Organize agents into swarm/wave/loop teams; add per-project config; add knowledge compounding | — |
+| 2026-03-16 | Incorporate GSD-2 error taxonomy (classify before debugging), flaky test quarantine, degradation signals, assumption ledger, contradiction detection, "never summarize summaries" | — |
 | 2026-03-12 | Animated GIF over `<video>` tag for GitHub README — GitHub sanitizer strips `<video>` elements | — |
 | 2026-03-12 | Screenshot-based recording (PNG + ffmpeg) over Playwright recordVideo — recordVideo misses DOM mutations in headless mode | — |
 | 2026-03-11 | All README ASCII art replaced with rendered PNG diagrams — 10 new sections in render-diagrams.html, zero ASCII remaining | — |

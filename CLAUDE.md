@@ -10,24 +10,28 @@ Quality over speed. Small steps compound into big progress. The patterns you est
 
 <!-- Updated by /wrap at end of each work session. Read this FIRST when starting a new session. -->
 
-**Last session:** 2026-03-12
+**Last session:** 2026-03-16
 
 **What was done:**
-- Fixed CI regression: install script leaked `.mp4`/`.gif` promo video files into installations (`c5b512e`)
-- Root cause: `install.sh` exclusion filter listed specific extensions but missed new file types added by promo video commits
-- Fix: changed from extension denylist to directory-level wildcard (`docs/images/*`)
+- Analyzed GSD-2 repo and incorporated 6 mechanisms into blueprint skills/agents
+- `findings-synthesizer.md`: added false-positive skepticism — verification step, "Discarded" output section, updated rules
+- `systematic-debugging/SKILL.md`: added Step 0 error classification — fast-path syntax errors, quarantine flaky tests
+- `autonomous-loop/SKILL.md`: added degradation detection (rising difficulty, hot file) + structured 4-part escalation format
+- `executing-plans/SKILL.md`: added Assumption Tracking section with `### Assumptions` convention
+- `plan-checker.md`: added Section 5 Contradiction & Ambiguity Checks
+- `session-wrap/SKILL.md`: added "never summarize summaries" reconciliation rule
 
 **What's remaining:**
-- No immediate work remaining — CI green (4/4 jobs), all features complete
+- Commit the 6 modified files
 - GOALS.md still has placeholder templates (P3 — filled by `/init` on install)
 
-**Start here:** CI is green, working tree clean. No in-flight work. Next feature or improvement can be started fresh.
+**Start here:** Commit the uncommitted changes to the 6 modified files, then CI is green and no in-flight work remains.
 
 **Current state of the code:**
 - Build: n/a (template repo, no build step)
-- Tests: CI passing (4/4 jobs green on `c5b512e` — install ubuntu, install macos, shellcheck, markdownlint)
+- Tests: CI last green on `c5b512e`; markdownlint verified clean on all 6 modified files this session
 - Lint: markdownlint clean, shellcheck clean
-- Uncommitted changes: none (working tree clean)
+- Uncommitted changes: 6 files (findings-synthesizer, plan-checker, autonomous-loop, executing-plans, session-wrap, systematic-debugging)
 
 ## Behavioral Rules
 
@@ -495,3 +499,9 @@ The `install.sh` image exclusion filter listed specific extensions (`.svg/.mmd/.
 
 ### 2026-03-11: All README diagrams now rendered via HTML/CSS + Playwright — zero ASCII art remaining
 Added 10 new diagram sections to `docs/images/render-diagrams.html` covering every ASCII block in the README: standalone swarm diagrams (review-swarm, research-swarm), orchestration patterns (wave-orchestration, agent-teams, knowledge-loop), compact inline flows (dev-loop, lightweight-workflow), and dispatch patterns (dispatch-swarm, dispatch-wave, dispatch-team). Consistent design system: semantic colors (green=review, purple=research, amber=waves, blue=planning), Inter + JetBrains Mono fonts, 880px canvas width. To re-render: `python3 -m http.server 8765` in `docs/images/`, then Playwright `element.screenshot()` each `#id`.
+
+### 2026-03-16: GSD-2 analysis — error taxonomy and flaky test quarantine are highest-ROI imports
+Analyzed GSD-2's 27-doc "Building Coding Agents" knowledge base (synthesized from Claude, GPT, Gemini, Grok). ~50% of GSD-2's value is in runtime infrastructure (model routing, TUI, session branching) that doesn't apply to a prompt template. The portable mechanisms: (1) error classification before debugging saves time on syntax errors (deterministic fast path, skip full 4-phase process); (2) flaky test quarantine prevents autonomous loops from burning iterations on non-deterministic failures; (3) trending degradation signals (rising difficulty, hot file) catch soft deterioration that hard-stall circuit breakers miss; (4) assumption ledgers surface invisible interpretive decisions for batch review at checkpoints.
+
+### 2026-03-16: "Never summarize summaries" prevents multi-session drift
+GSD-2's principle: summaries drift from reality "like a photocopy of a photocopy." Each `/wrap` should regenerate Session Continuity from actual project state (git log, test results, file system), not from the previous Session Continuity content. The codebase and git history are the lossless source of truth — summaries are lossy caches that must be reconciled against them.

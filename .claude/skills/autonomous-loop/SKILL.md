@@ -187,6 +187,8 @@ In addition to per-task retry limits, track global loop health to detect stalls:
 consecutive_no_progress = 0    # increments when no task completes in a full loop pass
 consecutive_same_error = 0     # increments when the same error message appears
 last_error_signature = ""      # normalized error message for comparison
+attempts_per_task = []         # track retry count for each completed task (for trend detection)
+files_modified_count = {}      # track how many tasks touch each file path
 ```
 
 **Thresholds (configurable):**
@@ -195,6 +197,8 @@ last_error_signature = ""      # normalized error message for comparison
 |-----------|---------|-----------------|
 | `NO_PROGRESS_THRESHOLD` | 3 | Loop is spinning without completing any task |
 | `SAME_ERROR_THRESHOLD` | 5 | Same error repeating — root cause needs human input |
+| `RISING_DIFFICULTY_THRESHOLD` | 3 consecutive tasks with increasing retry count | Complexity compounding — approach is degrading |
+| `HOT_FILE_THRESHOLD` | Same file modified by 4+ different tasks | God object emerging — one file absorbing too much responsibility |
 
 **After each loop iteration:**
 
@@ -208,14 +212,36 @@ last_error_signature = ""      # normalized error message for comparison
 ```
 if consecutive_no_progress >= NO_PROGRESS_THRESHOLD:
     STOP — "Circuit breaker: No progress in [N] consecutive iterations."
-    Report: tasks completed so far, current blocked task, last error, suggested intervention
 
 if consecutive_same_error >= SAME_ERROR_THRESHOLD:
     STOP — "Circuit breaker: Same error repeated [N] times."
-    Report: the repeating error, all attempted fixes, suggested root cause investigation
+
+if last 3 tasks each required more retries than the previous:
+    STOP — "Circuit breaker: Rising difficulty — tasks are getting harder, not easier."
+
+if any file has been modified by 4+ different tasks:
+    STOP — "Circuit breaker: Hot file detected — [file] modified by [N] tasks."
 ```
 
-When the circuit breaker triggers, do NOT retry. Stop immediately and report the full state so the user can diagnose and intervene.
+When the circuit breaker triggers, do NOT retry. Stop immediately and report using this format:
+
+```markdown
+## Circuit Breaker — [trigger type]
+
+### What I was trying to do
+[Current task and its goal]
+
+### What I've tried
+[List of approaches attempted, with outcomes]
+
+### What I think the issue is
+[Root cause hypothesis — be specific]
+
+### What I need from you
+[Specific question or decision needed to unblock]
+```
+
+This structured escalation ensures the user gets actionable information, not a wall of debug output.
 
 **Error signature normalization:** Strip line numbers, timestamps, and variable values from error messages before comparison. Compare the structural pattern, not the exact string. Example: `"TypeError: Cannot read property 'foo' of undefined at line 42"` → `"TypeError: Cannot read property of undefined"`.
 
@@ -226,9 +252,9 @@ The loop ends when one of these conditions is met:
 | Condition | Action |
 |-----------|--------|
 | **All tasks complete** | Report success, run final verification |
-| **Fatal error** | Stop, report what's done and what's blocked |
-| **Max retries exhausted** on a blocking task | Stop, report the blocker |
-| **Circuit breaker triggered** | Stop, report stall diagnosis |
+| **Fatal error** | Stop, report using structured escalation format (trying/tried/think/need) |
+| **Max retries exhausted** on a blocking task | Stop, report using structured escalation format |
+| **Circuit breaker triggered** | Stop, report using structured escalation format |
 | **User interrupts** | Stop, save progress, report current state |
 
 ### Step 7: Final Verification
@@ -281,6 +307,8 @@ Report the final state:
 | Max retries per task | 3 | User can specify |
 | No-progress circuit breaker | 3 iterations | User can specify |
 | Same-error circuit breaker | 5 occurrences | User can specify |
+| Rising difficulty circuit breaker | 3 consecutive tasks with increasing retries | User can specify |
+| Hot file circuit breaker | 4+ tasks touching same file | User can specify |
 | Batch size before checkpoint | All (autonomous) | User can request checkpoints every N tasks |
 | Backoff timing | 5s → 15s → 45s | Adjust for rate limits |
 | Parallelizable tasks | Sequential | Dispatch via resolve-in-parallel |

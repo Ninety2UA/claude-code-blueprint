@@ -27,13 +27,15 @@ Read the output from every review agent. For each finding, note:
 - The issue description
 - The recommended fix
 
-### Step 2: De-duplicate
+### Step 2: De-duplicate and Verify
 
 Many review agents will flag the same issue from different angles:
 - Security sentinel flags "SQL injection" + Performance oracle flags "raw query"  → Same issue, one entry
 - Code reviewer flags "no error handling" + Security sentinel flags "uncaught exception" → Same root cause
 
 Merge duplicates, keeping the most specific description and the highest severity.
+
+**False-positive filtering:** Review agents operate on diffs with limited architectural context. They will flag issues that don't actually exist — theoretical vulnerabilities where input is already validated upstream, performance concerns for code that runs once at startup, missing error handling where the caller already catches. For any finding that seems questionable, use your tools (Read, Grep) to spot-check the surrounding code. Downgrade or discard findings you cannot verify in the actual codebase. A shorter report with only real issues is far more valuable than a comprehensive one padded with false positives.
 
 ### Step 3: Prioritize
 
@@ -81,6 +83,9 @@ Organize findings by what needs to happen, not by which agent found them:
 1. **[Issue title]** — `file:line`
    - Fix: [recommendation]
 
+### Discarded (false positives)
+- **[Finding]** — reported by [agent], discarded because [brief reason]
+
 ### Contradictions
 | Topic | Agent A | Agent B | Resolution |
 |-------|---------|---------|------------|
@@ -102,5 +107,5 @@ Organize findings by what needs to happen, not by which agent found them:
 - If agents contradict each other (one says "add X", another says "remove X"), present both and recommend
 - Group fixes by file when possible — makes resolution easier
 - The recommended fix order should account for dependencies between fixes
-- Never lose a unique finding — even if only one agent caught it, it may be the most important issue
+- Never lose a unique *verified* finding — even if only one agent caught it, it may be the most important issue. But if spot-checking shows the finding is wrong, discard it rather than passing noise downstream
 - Credit the discovering agent(s) for each finding so the user knows which reviewers are most valuable

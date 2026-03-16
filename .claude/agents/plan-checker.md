@@ -39,7 +39,14 @@ Given an implementation plan, verify that it will actually work. Check assumptio
 - Are error handling paths covered?
 - Are edge cases addressed?
 
-### 5. Convention Checks
+### 5. Contradiction & Ambiguity Checks
+- Do any acceptance criteria conflict with each other? (e.g., "RESTful API" + "real-time push updates")
+- Do any tasks make assumptions that contradict another task's assumptions?
+- Are there requirements that are genuinely ambiguous — where two reasonable engineers would implement them differently? Flag these explicitly.
+- If the plan references external specs or requirements docs, check those for internal contradictions too.
+- Classify each ambiguous requirement: **decidable** (proceed with sensible default + document assumption) vs **unclear** (block and escalate — wrong interpretation cascades into wasted work)
+
+### 6. Convention Checks
 - Read docs/context/CONVENTIONS.md — does the plan follow project conventions?
 - Read docs/context/DECISIONS.md — does it honor locked decisions?
 - Does the naming match existing patterns in the codebase?

@@ -43,9 +43,35 @@ Use for ANY technical issue:
 - You're in a hurry (rushing guarantees rework)
 - Manager wants it fixed NOW (systematic is faster than thrashing)
 
+## Step 0: Classify the Error
+
+Before entering the full process, classify the error. Different error types need different depths of investigation — don't run the full 4-phase process on a missing import.
+
+| Error Class | Examples | Fast Path | Full Process? |
+|-------------|----------|-----------|---------------|
+| **Syntax/Type** | Missing import, type mismatch, parse error | Search codebase for the export, fix mechanically | No — deterministic fix, skip to Phase 4 |
+| **Logic** | Test expects A, gets B; wrong output; off-by-one | Focus on failing test + implementation + spec | Yes — Phase 1-4 with medium context |
+| **Design** | Wrong architecture, interface mismatch, coupling issues | Needs broad context: spec + architecture + interfaces | Yes — Phase 1-4, likely needs human input |
+| **Performance** | Slow queries, memory leaks, scaling bottlenecks | Needs profiling data + benchmarks | Yes — but consider specialist agent |
+| **Environment** | Build fails locally but not CI, wrong Node version, missing env var | Check env config + recent dep changes | Phase 1 only — usually config, not code |
+| **Flaky test** | Test passes sometimes, fails sometimes, non-deterministic | Run test 3 times to confirm flakiness | **QUARANTINE — do not fix.** Mark as flaky, skip, continue. Flaky tests are infrastructure problems, not code bugs. Fixing them burns iterations with no convergence. |
+
+**How to classify:**
+- Error in build/compile step → likely **Syntax/Type** or **Environment**
+- Error in test with clear expected-vs-actual → likely **Logic**
+- Error appears intermittently → likely **Flaky test** (confirm by re-running)
+- Error mentions missing module/file/package → likely **Syntax/Type** or **Environment**
+- Error only after refactoring, no behavior change intended → likely **Design**
+
+**After classification:**
+- **Syntax/Type**: Skip directly to Phase 4 (fix mechanistically — no investigation needed)
+- **Environment**: Run Phase 1 only (gather evidence about the environment), then fix
+- **Flaky test**: Do NOT enter the process. Quarantine and move on.
+- **All others**: Proceed to Phase 1 below
+
 ## The Four Phases
 
-You MUST complete each phase before proceeding to the next.
+You MUST complete each phase before proceeding to the next (unless Step 0 authorized a fast path).
 
 ### Phase 1: Root Cause Investigation
 

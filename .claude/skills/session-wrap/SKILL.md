@@ -159,6 +159,7 @@ Update the **Session Continuity** section at the top of CLAUDE.md. This is what 
 - Include file paths and test names
 - If there are failing tests, list them by name
 - "Start here" should be a single actionable instruction, not a list
+- **Never summarize summaries.** Regenerate this section from actual project state (git log, test results, file system), not from the previous Session Continuity content. Summaries drift from reality like a photocopy of a photocopy — each compression loses information. The codebase and git history are the lossless source of truth; always reconcile against them.
 
 ## Step 5: Update CLAUDE.md — Key Learnings
 
