@@ -23,6 +23,30 @@ If a change qualifies under the **Lightweight Workflow** defined in CLAUDE.md (b
 
 For changes that DON'T qualify as lightweight: every project goes through this process. A todo list, a single-function utility, a config change — all of them. "Simple" projects are where unexamined assumptions cause the most wasted work. The design can be short (a few sentences for truly simple projects), but you MUST present it and get approval.
 
+## Premise Challenge
+
+Before diving into design options, challenge the premise of the request itself:
+
+1. **Is this the right problem to solve?** Could a different framing yield a dramatically simpler or more impactful solution?
+2. **What is the actual user/business outcome?** Is the request the most direct path to that outcome, or is it solving a proxy problem?
+3. **What would happen if we did nothing?** Is this a real pain point or a hypothetical one?
+4. **What existing code already partially solves this?** Map every sub-problem to existing code before proposing new code.
+
+If the premise challenge reveals a better framing, present it to the user before proceeding to design options.
+
+## Scope Modes
+
+When presenting design options, the user can choose a scope posture. Default based on context:
+
+| Mode | Default For | Posture |
+|------|------------|---------|
+| **Expansion** | Greenfield features | Propose the ambitious version. What's the 10x better product for 2x the effort? |
+| **Selective Expansion** | Feature enhancements | Hold scope as baseline, but surface opportunities individually for cherry-picking |
+| **Hold Scope** | Bug fixes, refactors | Maximum rigor on existing scope. No expansions surfaced. |
+| **Reduction** | Overbuilt plans, tight deadlines | Cut to minimum viable. Be ruthless. |
+
+If the user doesn't specify, infer from context and state your assumption. Once a mode is selected, **commit fully — do not silently drift toward a different mode.**
+
 ## Checklist
 
 You MUST create a task for each of these items and complete them in order:

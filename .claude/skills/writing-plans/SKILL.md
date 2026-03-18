@@ -87,6 +87,33 @@ git commit -m "feat: add specific feature"
 ```
 ````
 
+## Shadow Path Tracing
+
+For every new data flow in the plan, trace four paths — not just the happy path:
+
+```
+INPUT ──► VALIDATION ──► TRANSFORM ──► PERSIST ──► OUTPUT
+  │            │              │            │           │
+  ▼            ▼              ▼            ▼           ▼
+[nil?]    [invalid?]    [exception?]  [conflict?]  [stale?]
+[empty?]  [too long?]   [timeout?]    [dup key?]   [partial?]
+```
+
+For each node: document what happens on each shadow path in the task description. If a shadow path is unhandled, add a task to handle it.
+
+## Error/Rescue Map
+
+For tasks that introduce new service calls, external APIs, or database operations, include an error map in the task description:
+
+```
+METHOD/CODEPATH       | WHAT CAN GO WRONG    | HANDLED? | USER SEES
+Service#call          | API timeout          | ?        | ?
+                      | Malformed response   | ?        | ?
+                      | Rate limited (429)   | ?        | ?
+```
+
+Any "?" in the HANDLED column becomes a sub-task. Every external call must have its failure mode explicitly addressed in the plan.
+
 ## Remember
 - Exact file paths always
 - Complete code in plan (not "add validation")

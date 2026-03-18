@@ -245,6 +245,30 @@ This structured escalation ensures the user gets actionable information, not a w
 
 **Error signature normalization:** Strip line numbers, timestamps, and variable values from error messages before comparison. Compare the structural pattern, not the exact string. Example: `"TypeError: Cannot read property 'foo' of undefined at line 42"` → `"TypeError: Cannot read property of undefined"`.
 
+### Step 5.5: WTF-Likelihood Risk Scoring
+
+In addition to the circuit breaker thresholds above, maintain an additive risk score that accumulates across the entire loop run. This catches gradual degradation that individual circuit breaker thresholds might miss.
+
+**Tracking (maintained across all iterations):**
+```
+wtf_score = 0%
+```
+
+**Risk accumulation:**
+
+| Event | Score Added | Rationale |
+|-------|-----------|-----------|
+| Each revert (`git revert`) | +15% | Reverts mean changes made things worse |
+| Each fix touching >3 files | +5% | Multi-file changes are riskier |
+| After fix 15 | +1% per additional fix | Volume itself is a risk signal |
+| Touching files unrelated to the current task | +20% | Scope creep is the biggest risk |
+
+**Threshold:** If `wtf_score > 20%`, STOP immediately. Show the user what you've done so far and ask whether to continue.
+
+**Hard cap:** 50 total changes across the entire loop run, regardless of wtf_score.
+
+**Note:** Test commits (regression tests, new test files) do NOT count toward wtf_score. Only production code changes accumulate risk.
+
 ### Step 6: Loop Termination
 
 The loop ends when one of these conditions is met:

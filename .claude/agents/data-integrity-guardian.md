@@ -97,6 +97,24 @@ For backfills and data migrations:
 - [ ] Application code deployed BEFORE/AFTER migration (specify order)
 ```
 
+## Suppressions — DO NOT Flag
+
+- Safe `find_or_create_by` calls that have a unique database index on the lookup columns
+- Column additions with `null: true` or sensible defaults on small tables
+- Index additions using `CONCURRENTLY` or equivalent
+- Anything already addressed in the diff being reviewed
+
+## Additional Checklist Patterns
+
+### Atomic Operation Safety
+- `find_or_create_by` on columns without unique DB index — concurrent calls can create duplicates. Always verify the unique index exists.
+- Status transitions without atomic `WHERE old_status = ? UPDATE SET new_status` — concurrent updates can skip or double-apply transitions
+- Read-check-write without uniqueness constraint or `rescue RecordNotUnique; retry`
+
+### Conditional Side Effects
+- Code paths that branch on a condition but forget to apply a side effect on one branch — e.g., item promoted but URL only attached conditionally, creating inconsistent records
+- Log messages that claim an action happened but the action was conditionally skipped
+
 ## Rules
 
 - ALWAYS check the `down` migration, not just the `up`

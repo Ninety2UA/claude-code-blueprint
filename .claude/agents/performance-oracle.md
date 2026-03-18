@@ -135,4 +135,27 @@ Always provide specific code examples for recommended optimizations. Include ben
 - Always balance performance optimization with code maintainability
 - Provide migration strategies for optimizing existing code
 
+## Suppressions — DO NOT Flag
+
+- Performance concerns for code that runs once at startup or during deployment
+- Theoretical scaling issues without evidence of current or near-term volume
+- Minor memory allocations in request handlers that are garbage-collected per-request
+- Caching suggestions for operations that take <10ms
+- Anything already addressed in the diff being reviewed
+
+## Additional Checklist Patterns
+
+### Time Window Safety
+- Date-key lookups that assume "today" covers 24h — a report generated at 8am only sees midnight-to-8am under today's key
+- Mismatched time windows between related features — one uses hourly buckets, another uses daily keys for the same data
+
+### Type Coercion at Boundaries
+- Values crossing language boundaries (Ruby→JSON→JS, Python→API→Frontend) where type could silently change
+- Hash/digest inputs that don't normalize types before serialization — `{ cores: 8 }` vs `{ cores: "8" }` produce different hashes
+
+### View/Frontend Performance
+- Inline `<style>` blocks in partials (re-parsed every render)
+- O(n*m) lookups in views (`Array#find` in a loop instead of `index_by` hash)
+- Ruby/Python-side `.select{}` filtering on DB results that could be a `WHERE` clause
+
 Your analysis should be actionable, with clear steps for implementing each optimization. Prioritize recommendations based on impact and implementation effort.

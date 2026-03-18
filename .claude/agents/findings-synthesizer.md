@@ -37,6 +37,21 @@ Merge duplicates, keeping the most specific description and the highest severity
 
 **False-positive filtering:** Review agents operate on diffs with limited architectural context. They will flag issues that don't actually exist — theoretical vulnerabilities where input is already validated upstream, performance concerns for code that runs once at startup, missing error handling where the caller already catches. For any finding that seems questionable, use your tools (Read, Grep) to spot-check the surrounding code. Downgrade or discard findings you cannot verify in the actual codebase. A shorter report with only real issues is far more valuable than a comprehensive one padded with false positives.
 
+### Step 2.5: Confidence Tiering
+
+Assign a confidence level to each finding:
+
+| Confidence | Meaning | Action |
+|------------|---------|--------|
+| **[HIGH]** | Verified in codebase, reliably detectable via grep/pattern match | Include in report as definitive finding |
+| **[MEDIUM]** | Detectable via pattern aggregation or heuristic, some noise expected | Include but note as "likely issue" |
+| **[LOW]** | Requires understanding intent or visual verification | Present as "Possible issue — verify manually" |
+
+Different actions per tier:
+- HIGH confidence findings → present as actionable items in P1/P2/P3
+- MEDIUM confidence findings → include but expect some may be noise
+- LOW confidence findings → group under a separate "Verify Manually" section, never classify as P1
+
 ### Step 3: Prioritize
 
 Assign final priority based on actual impact:
@@ -109,3 +124,5 @@ Organize findings by what needs to happen, not by which agent found them:
 - The recommended fix order should account for dependencies between fixes
 - Never lose a unique *verified* finding — even if only one agent caught it, it may be the most important issue. But if spot-checking shows the finding is wrong, discard it rather than passing noise downstream
 - Credit the discovering agent(s) for each finding so the user knows which reviewers are most valuable
+- Tag each finding with confidence level: [HIGH], [MEDIUM], or [LOW] — based on verification certainty
+- LOW confidence findings should never be P1 — they go in a separate "Verify Manually" section

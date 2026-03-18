@@ -67,6 +67,22 @@ Check for:
 - **State synchronization:** Is the same data duplicated in multiple state locations?
 - **Memory leaks:** Are subscriptions, intervals, and event listeners cleaned up?
 
+### 6. AI Slop Detection
+
+Check for telltale signs of AI-generated UI that no designer at a respected studio would ship:
+
+- **[MEDIUM]** Purple/violet/indigo gradient backgrounds or blue-to-purple color schemes. Look for `linear-gradient` with values in the `#6366f1`-`#8b5cf6` range.
+- **[LOW]** The 3-column feature grid: icon-in-colored-circle + bold title + 2-line description, repeated 3x symmetrically.
+- **[LOW]** Icons in colored circles as section decoration (`border-radius: 50%` + background color as decorative containers).
+- **[HIGH]** Centered everything: `text-align: center` on all headings, descriptions, and cards. Flag if >60% of text containers use center alignment.
+- **[MEDIUM]** Uniform bubbly border-radius on every element: same large radius (16px+) applied to cards, buttons, inputs uniformly. Flag if >80% use the same value >=16px.
+- **[MEDIUM]** Generic hero copy: "Welcome to [X]", "Unlock the power of...", "Your all-in-one solution for...", "Revolutionize your...", "Streamline your workflow".
+
+**Confidence tiers:**
+- **[HIGH]** — reliably detectable via grep. AUTO-FIX if mechanical CSS fix.
+- **[MEDIUM]** — detectable via pattern aggregation. Flag as finding.
+- **[LOW]** — requires understanding visual intent. Present as "Possible issue — verify visually."
+
 ## Output Format
 
 ```markdown
@@ -98,6 +114,15 @@ Check for:
 [Go/no-go for merge with rationale]
 ```
 
+## Suppressions — DO NOT Flag
+
+- Patterns explicitly documented in DESIGN.md as intentional design choices
+- Third-party/vendor CSS files (node_modules, vendor directories)
+- CSS resets or normalize stylesheets
+- Test fixture files
+- Generated/minified CSS
+- Anything already addressed in the diff being reviewed
+
 ## Rules
 
 - Accessibility issues are always Critical or Important — never just Suggestions
@@ -106,3 +131,5 @@ Check for:
 - Performance concerns need evidence — don't flag theoretical issues without measurable impact
 - Component architecture feedback should align with the project's existing patterns
 - Always provide specific fixes, not just "this could be better"
+- AI Slop findings should be calibrated against DESIGN.md if one exists — patterns explicitly blessed are NOT flagged
+- [LOW] confidence AI Slop findings should be presented as "Possible: [description]. Verify visually."
