@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="#how-does-this-compare">Compare</a> ·
-  <a href="#latest-gsd-2-integration">What's New</a> ·
+  <a href="#latest-gstack-analysis-integration">What's New</a> ·
   <a href="#quick-start">Quick Start</a> ·
   <a href="#what-you-get">What You Get</a> ·
   <a href="#workflow">Workflow</a> ·
@@ -39,28 +39,54 @@ It gives Claude Code a **structured operating system** — a set of skills, agen
 
 ## How Does This Compare?
 
-Before committing to any tool, it helps to understand the landscape. We evaluated the 8 most popular Claude Code plugins, frameworks, and orchestration tools — through direct repository inspection, not marketing claims.
+Before committing to any tool, it helps to understand the landscape. We evaluated the 9 most popular Claude Code plugins, frameworks, and orchestration tools — through direct repository inspection, not marketing claims.
 
 <p align="center">
   <img src="docs/images/ecosystem-guide.png" alt="Claude Code Tools Guide — 8 tools evaluated side by side" width="90%">
 </p>
 
-**[Download the free guide (PDF)](ebook/claude-code-tools-guide.pdf)** — covers tool profiles, a classification matrix, scenario-based recommendations, combination safety, a confidence-scored final ranking, and the GSD-2 ecosystem.
+**[Download the free guide (PDF)](ebook/claude-code-tools-guide.pdf)** — covers tool profiles, a classification matrix, scenario-based recommendations, combination safety, a confidence-scored final ranking, and the latest ecosystem additions including gstack and GSD-2.
 
 > *The best tool is the one that matches your actual workflow, not the one with the most stars.*
 
-## Latest: GSD-2 Integration
+## Latest: gstack Analysis Integration
 
-Six agent-building patterns from the GSD-2 knowledge base ("Building Coding Agents") have been incorporated into existing skills and agents:
+Fifteen patterns from [gstack](https://github.com/garrytan/gstack) (Garry Tan's 22K-star "software factory" — 13 role-based skills turning Claude Code into a virtual engineering team) have been analyzed and the most valuable mechanisms incorporated into existing skills and agents:
 
-- **Error classification with fast-path debugging** — syntax errors skip the full 4-phase debugging process; flaky tests are quarantined to stop autonomous loops from burning iterations
-- **Degradation detection** — rising difficulty and hot-file signals catch soft deterioration that hard-stall circuit breakers miss
-- **Structured escalation format** — 4-part escalation output (what failed, what was tried, what's suspected, what's needed) replaces ad-hoc "I'm stuck" messages
-- **Assumption tracking** — `### Assumptions` convention with `[cascading]` flags surfaces invisible interpretive decisions at plan checkpoints
-- **False-positive filtering** — review synthesis now includes a verification step and "Discarded" section so noisy findings don't waste developer time
-- **"Never summarize summaries"** — session wraps regenerate from source of truth (git log, test results, file system) instead of copying previous summaries, preventing multi-session drift
+### High Priority — Applied
 
-These patterns are woven into existing skills ([systematic-debugging](.claude/skills/systematic-debugging/), [autonomous-loop](.claude/skills/autonomous-loop/), [executing-plans](.claude/skills/executing-plans/), [session-wrap](.claude/skills/session-wrap/)) and agents ([plan-checker](.claude/agents/plan-checker.md), [findings-synthesizer](.claude/agents/findings-synthesizer.md)) — no new files were added.
+- **Suppressions lists for all reviewer agents** — explicit "DO NOT flag" sections prevent false positives that erode trust. Each reviewer agent now has a calibrated suppressions list (redundancy that aids readability, thresholds that rot as comments, assertions already sufficient, anything already fixed in the diff)
+- **Review checklist patterns** — production-battle-tested detection patterns absorbed into relevant agents: TOCTOU races, `find_or_create_by` without unique index, LLM output trust boundaries, enum completeness traced through ALL consumers (reading code outside the diff), time window mismatches, type coercion at serialization boundaries, crypto entropy issues
+- **Completeness Principle ("Boil the Lake")** — AI compresses implementation time 10-100x, so the marginal cost of completeness is near-zero. Always prefer the complete implementation. Dual-scale effort estimation (human time vs AI time) embedded in team-lead agent decisions
+- **AskUserQuestion format standardization** — consistent 4-step format across agents: re-ground (project + branch), simplify (plain language), recommend with WHY, lettered options with dual effort scales
+- **WTF-Likelihood risk scoring** — additive risk score complementing circuit breakers: reverts (+15%), multi-file fixes (+5%), volume after 15 fixes (+1% each), touching unrelated files (+20%). Stops at 20% threshold with 50-change hard cap
+- **Premise Challenge + Scope Modes** — brainstorming skill now challenges WHAT to build before planning HOW. Four scope modes: Expansion (dream big), Selective Expansion (cherry-pick additions), Hold Scope (maximum rigor), Reduction (cut to minimum)
+- **AI Slop detection patterns** — frontend-reviewer now detects telltale AI-generated UI: purple gradients, 3-column icon grids, center-aligned everything, uniform border-radius, generic hero copy. Each pattern has confidence tiers (HIGH/MEDIUM/LOW) with different actions
+- **Confidence tiering in findings synthesis** — findings-synthesizer now tags each finding as [HIGH], [MEDIUM], or [LOW] confidence. LOW-confidence findings never reach P1 — they go in a separate "Verify Manually" section
+- **Shadow path tracing** — writing-plans skill now requires tracing four paths for every data flow: happy, nil, empty, and error. Unhandled paths become explicit plan tasks
+- **Error/Rescue Map** — writing-plans skill now requires failure mode tables for every external call, mapping what can go wrong, whether it's handled, and what the user sees
+- **Test Coverage Audit patterns** — codepath tracing with quality stars (★★★/★★/★), user flow coverage alongside code path coverage, gap identification with auto-generation caps
+
+### Prompt Techniques Adopted
+
+- **Mode commitment** — "Once selected, commit fully. Do not silently drift."
+- **Explicit anti-patterns** — negative examples steer model behavior more effectively than positive instructions alone
+- **"Never stop for X, only stop for Y"** — explicit lists eliminate ambiguity in autonomous workflows
+- **Diagram forcing** — mandatory ASCII diagrams for non-trivial data flows and architectures
+- **Dual-scale effort** — every effort estimate shows both human team time and AI-assisted time
+
+These patterns are woven into existing agents ([security-sentinel](.claude/agents/security-sentinel.md), [performance-oracle](.claude/agents/performance-oracle.md), [data-integrity-guardian](.claude/agents/data-integrity-guardian.md), [code-reviewer](.claude/agents/code-reviewer.md), [frontend-reviewer](.claude/agents/frontend-reviewer.md), [findings-synthesizer](.claude/agents/findings-synthesizer.md), [team-lead](.claude/agents/team-lead.md)) and skills ([autonomous-loop](.claude/skills/autonomous-loop/), [brainstorming](.claude/skills/brainstorming/), [writing-plans](.claude/skills/writing-plans/)) — no new files were added.
+
+### Previous: GSD-2 Integration
+
+Six agent-building patterns from the GSD-2 knowledge base ("Building Coding Agents") were previously incorporated:
+
+- **Error classification with fast-path debugging** — syntax errors skip the full 4-phase debugging process; flaky tests are quarantined
+- **Degradation detection** — rising difficulty and hot-file signals catch soft deterioration
+- **Structured escalation format** — 4-part escalation output (what failed, tried, suspected, needed)
+- **Assumption tracking** — `### Assumptions` convention with `[cascading]` flags
+- **False-positive filtering** — review synthesis includes verification step and "Discarded" section
+- **"Never summarize summaries"** — session wraps regenerate from source of truth, preventing drift
 
 ## Quick Start
 

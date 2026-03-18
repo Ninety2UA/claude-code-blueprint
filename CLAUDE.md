@@ -10,28 +10,28 @@ Quality over speed. Small steps compound into big progress. The patterns you est
 
 <!-- Updated by /wrap at end of each work session. Read this FIRST when starting a new session. -->
 
-**Last session:** 2026-03-16
+**Last session:** 2026-03-18
 
 **What was done:**
-- Analyzed GSD-2 repo and incorporated 6 mechanisms into blueprint skills/agents
-- `findings-synthesizer.md`: added false-positive skepticism — verification step, "Discarded" output section, updated rules
-- `systematic-debugging/SKILL.md`: added Step 0 error classification — fast-path syntax errors, quarantine flaky tests
-- `autonomous-loop/SKILL.md`: added degradation detection (rising difficulty, hot file) + structured 4-part escalation format
-- `executing-plans/SKILL.md`: added Assumption Tracking section with `### Assumptions` convention
-- `plan-checker.md`: added Section 5 Contradiction & Ambiguity Checks
-- `session-wrap/SKILL.md`: added "never summarize summaries" reconciliation rule
+- Analyzed gstack repo (garrytan/gstack, 22K stars) — 13 role-based skills for Claude Code
+- Incorporated 15 patterns from gstack into existing blueprint agents and skills
+- 7 agents updated: security-sentinel, performance-oracle, data-integrity-guardian, code-reviewer, frontend-reviewer, findings-synthesizer, team-lead
+- 3 skills updated: autonomous-loop (WTF-likelihood risk scoring), brainstorming (premise challenge + scope modes), writing-plans (shadow path tracing + error/rescue maps)
+- README.md updated with "Latest: gstack Analysis Integration" section
+- Ebook PDF regenerated with gstack as 9th tool (was 8 tools)
+- New ebook HTML source created at docs/images/ebook-source.html
 
 **What's remaining:**
-- Commit the 6 modified files
+- Commit the modified files
 - GOALS.md still has placeholder templates (P3 — filled by `/init` on install)
 
-**Start here:** Commit the uncommitted changes to the 6 modified files, then CI is green and no in-flight work remains.
+**Start here:** Commit the uncommitted changes, then CI is green and no in-flight work remains.
 
 **Current state of the code:**
 - Build: n/a (template repo, no build step)
-- Tests: CI last green on `c5b512e`; markdownlint verified clean on all 6 modified files this session
-- Lint: markdownlint clean, shellcheck clean
-- Uncommitted changes: 6 files (findings-synthesizer, plan-checker, autonomous-loop, executing-plans, session-wrap, systematic-debugging)
+- Tests: CI not yet run on this batch
+- Lint: not yet run on modified files
+- Uncommitted changes: 12 files (7 agents, 3 skills, README.md, ebook PDF, ebook HTML source)
 
 ## Behavioral Rules
 
@@ -505,3 +505,9 @@ Analyzed GSD-2's 27-doc "Building Coding Agents" knowledge base (synthesized fro
 
 ### 2026-03-16: "Never summarize summaries" prevents multi-session drift
 GSD-2's principle: summaries drift from reality "like a photocopy of a photocopy." Each `/wrap` should regenerate Session Continuity from actual project state (git log, test results, file system), not from the previous Session Continuity content. The codebase and git history are the lossless source of truth — summaries are lossy caches that must be reconciled against them.
+
+### 2026-03-18: gstack analysis — suppressions lists and premise challenge are highest-ROI imports
+Analyzed gstack (garrytan/gstack, 22K stars) — 13 role-based skills turning Claude Code into a virtual engineering team (CEO, Eng Manager, Designer, QA, etc.). Key architectural difference: gstack uses single-skill monoliths (500-2000 line prompts running sequentially in one session), while our blueprint uses agent swarms with orchestration. gstack's strength is prompt quality per-skill; ours is coordination and automation. Highest-ROI imports: (1) suppressions lists for reviewer agents prevent false positives that erode trust — simple to add, immediate quality improvement; (2) premise challenge before design challenges WHAT to build, not just HOW; (3) WTF-likelihood additive risk scoring complements our binary circuit breakers; (4) AI slop detection patterns are unique — grepable frontend patterns (purple gradients, 3-column grids, centered everything) with confidence tiers; (5) completeness principle ("boil the lake") with dual-scale effort estimation changes scoping decisions. Fix-First methodology was evaluated but our orchestration layer already handles the findings→action gap differently through team-lead delegation.
+
+### 2026-03-18: gstack's role-based vs blueprint's orchestration-based architectures are complementary
+gstack optimizes for one person running 10 sessions manually — each skill is a complete workflow. Blueprint optimizes for one session orchestrating many agents automatically. The ideal system takes gstack's prompt quality (opinionated checklists, specific detection patterns, suppressions) and puts it inside blueprint's orchestration framework (swarms, waves, team-lead delegation). This is exactly what we did: absorbed gstack's prompt patterns into our existing agents rather than adopting its architectural model.
