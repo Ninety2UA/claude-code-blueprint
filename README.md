@@ -57,20 +57,31 @@ Every component in Blueprint is informed by what works (and what doesn't) across
 |---|---|---|---|
 | [**gstack**](https://github.com/garrytan/gstack) | 22K | **15 patterns** | Suppressions lists, premise challenge, AI slop detection, confidence tiering, WTF-likelihood scoring |
 | [**GSD**](https://github.com/glittercowboy/get-shit-done) | 24.7K | **4 patterns** | Interface context in plans, prompt injection guard hook, stub tracking, verification commands |
-| **GSD-2** | KB | **6 patterns** | Error classification fast-path, degradation detection, structured escalation, assumption tracking |
-| **Anthropic skill-creator** | Official | **3 concepts** | Description trigger testing, structured assertions, iteration strategy by skill type |
+| [**GSD-2**](https://github.com/glittercowboy/get-shit-done) | KB | **6 patterns** | Error classification fast-path, degradation detection, structured escalation, assumption tracking |
+| [**Anthropic skill-creator**](https://github.com/anthropics/skills) | Official | **3 concepts** | Description trigger testing, structured assertions, iteration strategy by skill type |
 | [**Superpowers**](https://github.com/NickHeap2/claude-code-superpowers) | 71K | Patterns adopted | Anti-rationalization guards, TDD quality gates |
 | [**Compound Eng.**](https://github.com/anthropics/claude-code-plugins) | 9.9K | Patterns adopted | Parallel review swarm architecture, agent tool restrictions |
 | [**Ralphy**](https://github.com/snarktank/ralph) | 2.5K | Pattern adopted | External bash loop for context-exhaustion recovery |
 | [**claude-mem**](https://github.com/anthropics/claude-code-memory) | 39.7K | **Import nothing** | Exhaustive capture conflicts with selective curation philosophy |
 | [**claude-squad**](https://github.com/smtg-ai/claude-squad) | 6.5K | **Import nothing** | External process manager — our internal agent approach is strictly more powerful |
-| **OpenCLI** | v1.3 | **Import nothing** | Browser automation tool — completely different problem domain |
-| Everything CC | 50K+ | Reference | Security-first approach, 992 tests |
-| UI/UX Pro Max | 37K | Reference | 100+ reasoning rules |
-| Claude Skills | 4.9K | Reference | Progressive disclosure |
-| Plugins+Skills | 1.5K | Reference | Community patterns |
+| [**OpenCLI**](https://github.com/jackwener/opencli) | v1.3 | **Import nothing** | Browser automation tool — completely different problem domain |
+| [**Everything CC**](https://github.com/affaan-m/everything-claude-code) | 50K+ | Reference | Security-first approach, 992 tests |
+| [**UI/UX Pro Max**](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | 37K | Reference | 100+ reasoning rules |
+| [**Claude Skills**](https://github.com/alirezarezvani/claude-skills) | 4.9K | Reference | Progressive disclosure |
+| [**Plugins+Skills**](https://github.com/jeremylongshore/claude-code-plugins-plus-skills) | 1.5K | Reference | Community patterns |
 
 > **"Import nothing" is a feature, not a failure.** The gravitational pull to adopt *something* from impressive repos is a real bias. Sometimes the right answer after deep analysis is to change nothing — and documenting why is just as valuable as documenting what you imported.
+
+### What's New in v2.3
+
+The latest round of deep dives added **4 new repos** to the analysis and incorporated patterns from two previously-analyzed ones:
+
+- **GSD** (24.7K ★) — 82K-line meta-prompting framework. Imported interface context extraction for plans, a prompt injection guard hook, stub tracking, and verification command guidelines. Rejected the Node.js CLI layer and milestone lifecycle.
+- **Anthropic skill-creator** (Official) — Anthropic's own skill factory. Imported description trigger testing, structured assertions, and iteration strategy by skill type. Rejected the blind-comparison eval agents and Python scripting layer.
+- **claude-mem** (39.7K ★) — Automatic memory via observer agent + SQLite + ChromaDB. Analyzed in depth, deliberately rejected — exhaustive capture conflicts with Blueprint's selective curation philosophy.
+- **claude-squad** (6.5K ★) — Go tmux multiplexer for parallel agents. Analyzed in depth, deliberately rejected — external process manager at the wrong abstraction layer.
+- **OpenCLI** (v1.3) — Browser automation CLI via Chrome session reuse. Analyzed in depth, deliberately rejected — completely different problem domain (web scraping, not agent orchestration).
+- **gstack** (22K ★) — 15 patterns absorbed including suppressions lists, premise challenge, AI slop detection, and WTF-likelihood risk scoring. See details below.
 
 <details>
 <summary><strong>gstack (22K ★) — 15 patterns absorbed</strong></summary>
