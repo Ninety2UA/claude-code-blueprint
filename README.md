@@ -56,12 +56,12 @@ Every component in Blueprint is informed by what works (and what doesn't) across
 | Repo / Tool | Stars | Verdict | What We Took |
 |---|---|---|---|
 | [**gstack**](https://github.com/garrytan/gstack) | 22K | **15 patterns** | Suppressions lists, premise challenge, AI slop detection, confidence tiering, WTF-likelihood scoring |
-| [**GSD**](https://github.com/glittercowboy/get-shit-done) | 24.7K | **4 patterns** | Interface context in plans, prompt injection guard hook, stub tracking, verification commands |
-| [**GSD-2**](https://github.com/glittercowboy/get-shit-done) | KB | **6 patterns** | Error classification fast-path, degradation detection, structured escalation, assumption tracking |
+| [**GSD**](https://github.com/gsd-build/get-shit-done) | 24.7K | **4 patterns** | Interface context in plans, prompt injection guard hook, stub tracking, verification commands |
+| [**GSD-2**](https://github.com/gsd-build/gsd-2) | KB | **6 patterns** | Error classification fast-path, degradation detection, structured escalation, assumption tracking |
 | [**Anthropic skill-creator**](https://github.com/anthropics/skills) | Official | **3 concepts** | Description trigger testing, structured assertions, iteration strategy by skill type |
 | [**Superpowers**](https://github.com/obra/superpowers) | 71K | Patterns adopted | Anti-rationalization guards, TDD quality gates |
 | [**Compound Eng.**](https://github.com/EveryInc/compound-engineering-plugin) | 9.9K | Patterns adopted | Parallel review swarm architecture, agent tool restrictions |
-| [**Ralphy**](https://github.com/snarktank/ralph) | 2.5K | Pattern adopted | External bash loop for context-exhaustion recovery |
+| [**Ralphy**](https://github.com/michaelshimeles/ralphy) | 2.5K | Pattern adopted | External bash loop for context-exhaustion recovery |
 | [**claude-mem**](https://github.com/thedotmack/claude-mem) | 39.7K | **Import nothing** | Exhaustive capture conflicts with selective curation philosophy |
 | [**claude-squad**](https://github.com/smtg-ai/claude-squad) | 6.5K | **Import nothing** | External process manager — our internal agent approach is strictly more powerful |
 | [**OpenCLI**](https://github.com/jackwener/opencli) | v1.3 | **Import nothing** | Browser automation tool — completely different problem domain |
@@ -117,7 +117,7 @@ All patterns woven into existing agents ([security-sentinel](.claude/agents/secu
 <details>
 <summary><strong>GSD (24.7K ★) — 4 patterns absorbed</strong></summary>
 
-Analyzed [GSD](https://github.com/glittercowboy/get-shit-done) — an 82K-line meta-prompting framework with milestone lifecycle, 44 commands, 46 workflows, 16 agents, and a Node.js CLI layer. Key architectural difference: GSD invests in runtime tooling (state management, config, frontmatter CRUD); Blueprint stays zero-dependency markdown-only.
+Analyzed [GSD](https://github.com/gsd-build/get-shit-done) — an 82K-line meta-prompting framework with milestone lifecycle, 44 commands, 46 workflows, 16 agents, and a Node.js CLI layer. Key architectural difference: GSD invests in runtime tooling (state management, config, frontmatter CRUD); Blueprint stays zero-dependency markdown-only.
 
 **Imported:**
 
@@ -304,7 +304,7 @@ For well-defined features you want to fire and forget, `/ship` runs the entire d
 | **`ship-loop.sh`** (Stop hook) | Inside Claude session | No (same session) | Blocks premature exit — Claude gives up too early |
 | **`scripts/ship.sh`** (bash loop) | Outside, in terminal | Yes (fresh process) | Handles context exhaustion — spawns fresh 200K per iteration |
 
-The external loop (`ship.sh`) is inspired by [Ralph](https://github.com/snarktank/ralph) — each iteration is a brand new Claude process with clean context. State persists via git commits, plan files, and progress tracking. The inner Stop hook guards against Claude stopping before `<promise>DONE</promise>` is output within a single session.
+The external loop (`ship.sh`) is inspired by [Ralph](https://github.com/michaelshimeles/ralphy) — each iteration is a brand new Claude process with clean context. State persists via git commits, plan files, and progress tracking. The inner Stop hook guards against Claude stopping before `<promise>DONE</promise>` is output within a single session.
 
 **Pipeline comparison:**
 
@@ -839,7 +839,7 @@ Agent Teams (`/team`) spawn fully independent Claude Code instances that collabo
 <details>
 <summary><strong>How does context exhaustion recovery work?</strong></summary>
 
-Two mechanisms work at different layers. **Inside** a session, the `ship-loop.sh` Stop hook blocks premature exit — if Claude tries to stop before `<promise>DONE</promise>` is output, the hook re-injects the prompt (max 5 retries, same context). **Outside** a session, `scripts/ship.sh` is a bash loop that spawns fresh Claude processes — each iteration gets a clean 200K context window, and state persists via git. The external loop is inspired by [Ralph](https://github.com/snarktank/ralph)'s approach to long-running agent loops.
+Two mechanisms work at different layers. **Inside** a session, the `ship-loop.sh` Stop hook blocks premature exit — if Claude tries to stop before `<promise>DONE</promise>` is output, the hook re-injects the prompt (max 5 retries, same context). **Outside** a session, `scripts/ship.sh` is a bash loop that spawns fresh Claude processes — each iteration gets a clean 200K context window, and state persists via git. The external loop is inspired by [Ralph](https://github.com/michaelshimeles/ralphy)'s approach to long-running agent loops.
 </details>
 
 <details>
