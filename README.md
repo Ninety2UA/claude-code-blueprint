@@ -57,11 +57,11 @@ Every component in Blueprint is informed by what works (and what doesn't) across
 |---|---|---|---|
 | [**gstack**](https://github.com/garrytan/gstack) | 22K | **15 patterns** | Suppressions lists, premise challenge, AI slop detection, confidence tiering, WTF-likelihood scoring |
 | [**GSD**](https://github.com/glittercowboy/get-shit-done) | 24.7K | **4 patterns** | Interface context in plans, prompt injection guard hook, stub tracking, verification commands |
-| **GSD-2** | KB | **6 patterns** | Error classification fast-path, degradation detection, structured escalation, assumption tracking |
+| [**GSD-2**](https://github.com/glittercowboy/get-shit-done) | KB | **6 patterns** | Error classification fast-path, degradation detection, structured escalation, assumption tracking |
 | [**Anthropic skill-creator**](https://github.com/anthropics/skills) | Official | **3 concepts** | Description trigger testing, structured assertions, iteration strategy by skill type |
 | [**Superpowers**](https://github.com/obra/superpowers) | 71K | Patterns adopted | Anti-rationalization guards, TDD quality gates |
 | [**Compound Eng.**](https://github.com/EveryInc/compound-engineering-plugin) | 9.9K | Patterns adopted | Parallel review swarm architecture, agent tool restrictions |
-| [**Ralph**](https://github.com/snarktank/ralph) | 2.5K | Pattern adopted | External bash loop for context-exhaustion recovery |
+| [**Ralphy**](https://github.com/snarktank/ralph) | 2.5K | Pattern adopted | External bash loop for context-exhaustion recovery |
 | [**claude-mem**](https://github.com/thedotmack/claude-mem) | 39.7K | **Import nothing** | Exhaustive capture conflicts with selective curation philosophy |
 | [**claude-squad**](https://github.com/smtg-ai/claude-squad) | 6.5K | **Import nothing** | External process manager — our internal agent approach is strictly more powerful |
 | [**OpenCLI**](https://github.com/jackwener/opencli) | v1.3 | **Import nothing** | Browser automation tool — completely different problem domain |
