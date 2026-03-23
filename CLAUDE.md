@@ -10,28 +10,24 @@ Quality over speed. Small steps compound into big progress. The patterns you est
 
 <!-- Updated by /wrap at end of each work session. Read this FIRST when starting a new session. -->
 
-**Last session:** 2026-03-18
+**Last session:** 2026-03-23
 
 **What was done:**
-- Analyzed gstack repo (garrytan/gstack, 22K stars) — 13 role-based skills for Claude Code
-- Incorporated 15 patterns from gstack into existing blueprint agents and skills
-- 7 agents updated: security-sentinel, performance-oracle, data-integrity-guardian, code-reviewer, frontend-reviewer, findings-synthesizer, team-lead
-- 3 skills updated: autonomous-loop (WTF-likelihood risk scoring), brainstorming (premise challenge + scope modes), writing-plans (shadow path tracing + error/rescue maps)
-- README.md updated with "Latest: gstack Analysis Integration" section
-- Ebook PDF regenerated with gstack as 9th tool (was 8 tools)
-- New ebook HTML source created at docs/images/ebook-source.html
+- Analyzed Anthropic's official skill-creator (`github.com/anthropics/skills/tree/main/skills/skill-creator`) against our `writing-skills/` system
+- Added "Structured Assertions" to `testing-skills-with-subagents.md` — assertion types, grading table, pass rate tracking across TDD iterations
+- Added "Description Trigger Testing" to `testing-skills-with-subagents.md` — 20-query eval set methodology from Anthropic's approach
+- Added "Iteration Strategy by Skill Type" to `SKILL.md` — three strategies: loophole-closing (discipline), metaphor generalization (technique), organization iteration (reference)
+- Decided to cherry-pick concepts (description testing, structured assertions) over wholesale adopting Anthropic's factory tooling (3 eval agents, Python scripts, JSON schemas)
 
 **What's remaining:**
-- Commit the modified files
 - GOALS.md still has placeholder templates (P3 — filled by `/init` on install)
 
-**Start here:** Commit the uncommitted changes, then CI is green and no in-flight work remains.
+**Start here:** No in-flight work. Template is ready for next feature or external contribution.
 
 **Current state of the code:**
 - Build: n/a (template repo, no build step)
-- Tests: CI not yet run on this batch
-- Lint: not yet run on modified files
-- Uncommitted changes: 12 files (7 agents, 3 skills, README.md, ebook PDF, ebook HTML source)
+- Tests: CI pending on recent commits
+- Uncommitted changes: none (after wrap-up commit)
 
 ## Behavioral Rules
 
@@ -511,3 +507,6 @@ Analyzed gstack (garrytan/gstack, 22K stars) — 13 role-based skills turning Cl
 
 ### 2026-03-18: gstack's role-based vs blueprint's orchestration-based architectures are complementary
 gstack optimizes for one person running 10 sessions manually — each skill is a complete workflow. Blueprint optimizes for one session orchestrating many agents automatically. The ideal system takes gstack's prompt quality (opinionated checklists, specific detection patterns, suppressions) and puts it inside blueprint's orchestration framework (swarms, waves, team-lead delegation). This is exactly what we did: absorbed gstack's prompt patterns into our existing agents rather than adopting its architectural model.
+
+### 2026-03-23: Anthropic's skill-creator — cherry-pick concepts, not factory tooling
+Analyzed Anthropic's official skill-creator (`github.com/anthropics/skills`). It's a skill factory: 3 blind-comparison eval agents (analyzer, comparator, grader), 8 Python scripts, 7 JSON schemas, HTML eval viewers. Our system is a skill workshop: TDD-driven, pressure-tested, rationalization-resistant. The factory tooling (blind comparison, benchmark aggregation) adds marginal value over our TDD comparison for template-scale development, and brings Python dependencies. What IS valuable: (1) description trigger testing — generate 20 should/shouldn't-trigger queries and iterate on the description string, filling a gap in our CSO methodology; (2) structured assertions — define specific pass/fail criteria per test instead of freeform "document behavior", making testing quantitative; (3) iteration strategy by skill type — discipline skills need loophole-closing, technique skills need metaphor reframing, reference skills need organization iteration. All three adopted as sections in existing skill files, no new agents or scripts.

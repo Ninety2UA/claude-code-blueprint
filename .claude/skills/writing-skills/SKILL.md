@@ -559,6 +559,49 @@ Agent found new rationalization? Add explicit counter. Re-test until bulletproof
 - Plugging holes systematically
 - Meta-testing techniques
 
+## Iteration Strategy by Skill Type
+
+Different skill types need different iteration approaches. Using the wrong strategy produces either brittle skills or vague ones.
+
+### Discipline-Enforcing Skills (TDD, verification, coding standards)
+
+**Strategy: Close every loophole explicitly.**
+
+These skills have a compliance cost — agents are incentivized to skip them. Iteration means finding specific rationalizations and adding specific counters.
+
+- Each test failure reveals a specific excuse → add explicit negation
+- Build rationalization table from all observed excuses
+- Fiddly, targeted changes work because you're plugging specific holes
+- "Violating the letter IS violating the spirit" cuts off an entire rationalization class
+
+**When it's working:** Agent follows rule under maximum pressure and cites specific skill sections.
+
+### Technique/Pattern Skills (debugging methods, design patterns, mental models)
+
+**Strategy: Generalize with different metaphors, don't make fiddly adjustments.**
+
+If a technique skill isn't working, the problem is usually that the agent doesn't *understand* — not that it's trying to cheat. Adding more rules makes it worse.
+
+- Reframe using a different analogy or metaphor
+- Transmit *understanding* into instructions, not rigid ALL-CAPS directives
+- If one explanation doesn't land, try a completely different angle
+- Explain the WHY behind each step — agents that understand comply naturally
+
+**When it's working:** Agent applies technique correctly to novel scenarios not covered by examples.
+
+### Reference Skills (API docs, syntax guides, tool documentation)
+
+**Strategy: Iterate on organization, not content.**
+
+If Claude can't find information in a reference skill, the problem is structure — not missing text.
+
+- Restructure sections so Claude's natural search patterns hit the right content
+- Add a table of contents for files over 100 lines
+- Keep references one level deep from SKILL.md
+- If Claude repeatedly reads the wrong file, your navigation cues are misleading
+
+**When it's working:** Agent finds and correctly applies reference information on first attempt.
+
 ## Anti-Patterns
 
 ### ❌ Narrative Example

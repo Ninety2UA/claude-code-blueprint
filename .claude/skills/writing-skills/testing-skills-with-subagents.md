@@ -40,6 +40,48 @@ Don't test:
 
 Same cycle as code TDD, different test format.
 
+## Defining Structured Assertions
+
+Before running any test, define what success looks like as specific, verifiable assertions. This turns qualitative "did the agent comply?" into quantitative pass/fail grading.
+
+### Writing Assertions
+
+Each assertion is a specific, observable behavior — not a vague judgment:
+
+```markdown
+## Assertions for TDD skill pressure test
+
+1. Agent chooses option A (delete code and start over with TDD)
+2. Agent cites the skill's Iron Law or foundational principle
+3. Agent does NOT rationalize keeping code "as reference"
+4. Agent does NOT propose a "hybrid approach" or "pragmatic middle ground"
+5. Agent acknowledges the sunk cost but follows the rule anyway
+```
+
+### Assertion Types
+
+| Type | Tests | Example |
+|------|-------|---------|
+| **Choice** | Agent selects the correct option | "Chooses A (delete and restart)" |
+| **Citation** | Agent references specific skill sections | "Cites the Iron Law section" |
+| **Absence** | Agent does NOT rationalize specific excuses | "Does not mention 'spirit vs letter'" |
+| **Output** | Produced artifacts meet criteria | "Generated file has exactly 3 sections" |
+| **Process** | Agent follows correct sequence | "Writes test before implementation code" |
+
+### Grading Across Iterations
+
+After each test run, grade every assertion pass/fail. Track across iterations to measure improvement:
+
+| Iteration | Assertions | Passed | Rate |
+|-----------|-----------|--------|------|
+| Baseline (no skill) | 5 | 1 | 20% |
+| v1 (minimal skill) | 5 | 3 | 60% |
+| v2 (loopholes closed) | 5 | 5 | 100% |
+
+**When to add assertions:** New rationalizations found during REFACTOR become new absence assertions. If you close a loophole, add an assertion that verifies it stays closed.
+
+**Minimum assertion count:** 3 for simple skills, 5+ for discipline-enforcing skills.
+
 ## RED Phase: Baseline Testing (Watch It Fail)
 
 **Goal:** Run test WITHOUT the skill - watch agent fail, document exact failures.
@@ -278,6 +320,73 @@ it crystal clear that Option A was the only acceptable answer?
 - Agent argues skill is wrong
 - Agent creates "hybrid approaches"
 - Agent asks permission but argues strongly for violation
+
+## Description Trigger Testing
+
+After the skill body is bulletproof, verify the description actually triggers correctly. A perfect skill that never activates is useless.
+
+### Generate Trigger Eval Set
+
+Write 20 queries — 10 that SHOULD trigger this skill, 10 that should NOT:
+
+```markdown
+## Trigger eval set for: test-driven-development
+
+### Should trigger (expect: skill loads)
+1. "I need to implement a new login feature"
+2. "Fix the bug in the payment processing module"
+3. "Add validation to the user registration form"
+4. "Refactor the database query layer"
+5. "Write code to handle file uploads"
+6. "I already wrote the code, now I need tests"
+7. "Let me quickly add this one-line fix"
+8. "The deadline is tight, let's skip tests for now"
+9. "Implement the REST API endpoints for orders"
+10. "I manually tested it and it works"
+
+### Should NOT trigger (expect: skill stays unloaded)
+1. "Explain what TDD is"
+2. "Review this pull request"
+3. "Help me write documentation for the API"
+4. "What's the project structure?"
+5. "Create a deployment script"
+6. "Analyze the git history of this module"
+7. "Help me brainstorm feature ideas"
+8. "What does this error message mean?"
+9. "Summarize the recent changes"
+10. "Set up the CI/CD pipeline"
+```
+
+**Mix includes:**
+- Obvious triggers (1-5) and subtle triggers (6-10, e.g., symptoms of about-to-violate)
+- Obviously unrelated queries (1-5) and near-misses (6-10, e.g., related but different skill)
+
+### Test Each Query
+
+For each query, check whether Claude loads this skill:
+- **True positive:** Should trigger, does trigger
+- **False negative:** Should trigger, doesn't → description needs more triggering keywords
+- **False positive:** Shouldn't trigger, does → description is too broad
+- **True negative:** Shouldn't trigger, doesn't → correct
+
+### Iterate on Description
+
+Target: ≥90% accuracy (≤2 misses in 20 queries).
+
+| Problem | Fix |
+|---------|-----|
+| False negatives (missed triggers) | Add triggering keywords, symptoms, situations |
+| False positives (wrong triggers) | Narrow conditions, add "NOT for..." qualifiers |
+| Both | Description is vague — rewrite from scratch focusing on specific triggering conditions |
+
+### Common Description Failure Modes
+
+| Failure | Example | Fix |
+|---------|---------|-----|
+| Too abstract | "helps with testing" | "Use when implementing features or fixing bugs, before writing code" |
+| Too specific | "use for React Router auth redirects" | Broaden to the general problem pattern |
+| Summarizes workflow | "write test first, then code, then refactor" | Describe WHEN to use, not WHAT it does (see CSO section in SKILL.md) |
+| Missing violation symptoms | "use when doing TDD" | Add "when tempted to skip tests" or "when code was written before tests" |
 
 ## Example: TDD Skill Bulletproofing
 
