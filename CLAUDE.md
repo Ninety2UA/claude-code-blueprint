@@ -13,21 +13,20 @@ Quality over speed. Small steps compound into big progress. The patterns you est
 **Last session:** 2026-03-23
 
 **What was done:**
-- Analyzed Anthropic's official skill-creator (`github.com/anthropics/skills/tree/main/skills/skill-creator`) against our `writing-skills/` system
-- Added "Structured Assertions" to `testing-skills-with-subagents.md` — assertion types, grading table, pass rate tracking across TDD iterations
-- Added "Description Trigger Testing" to `testing-skills-with-subagents.md` — 20-query eval set methodology from Anthropic's approach
-- Added "Iteration Strategy by Skill Type" to `SKILL.md` — three strategies: loophole-closing (discipline), metaphor generalization (technique), organization iteration (reference)
-- Decided to cherry-pick concepts (description testing, structured assertions) over wholesale adopting Anthropic's factory tooling (3 eval agents, Python scripts, JSON schemas)
+- Deep compatibility analysis of claude-squad (smtg-ai/claude-squad, 6.5K stars) — external tmux-based parallel agent manager. Verdict: import nothing — operates at a different abstraction layer (external process manager vs internal plugin)
+- Deep compatibility analysis of claude-mem (thedotmack/claude-mem, 39.7K stars) — automatic persistent memory via observer agent + SQLite + ChromaDB. Verdict: import nothing — different philosophy (exhaustive capture vs selective curation); three proposed improvements collapsed under critical re-evaluation
+- Created `/analyze` command at workspace level (`/Users/dbenger/projects/claude-eng/.claude/commands/analyze.md`) — reusable slash command for future repo compatibility analyses
 
 **What's remaining:**
 - GOALS.md still has placeholder templates (P3 — filled by `/init` on install)
+- Push commit `4584357` to origin (prior session's wrap-up)
 
 **Start here:** No in-flight work. Template is ready for next feature or external contribution.
 
 **Current state of the code:**
 - Build: n/a (template repo, no build step)
-- Tests: CI pending on recent commits
-- Uncommitted changes: none (after wrap-up commit)
+- Tests: CI pending — last full green on `c5b512e`
+- Uncommitted changes: none (working tree clean, `main` 1 ahead of `origin/main`)
 
 ## Behavioral Rules
 
@@ -510,3 +509,6 @@ gstack optimizes for one person running 10 sessions manually — each skill is a
 
 ### 2026-03-23: Anthropic's skill-creator — cherry-pick concepts, not factory tooling
 Analyzed Anthropic's official skill-creator (`github.com/anthropics/skills`). It's a skill factory: 3 blind-comparison eval agents (analyzer, comparator, grader), 8 Python scripts, 7 JSON schemas, HTML eval viewers. Our system is a skill workshop: TDD-driven, pressure-tested, rationalization-resistant. The factory tooling (blind comparison, benchmark aggregation) adds marginal value over our TDD comparison for template-scale development, and brings Python dependencies. What IS valuable: (1) description trigger testing — generate 20 should/shouldn't-trigger queries and iterate on the description string, filling a gap in our CSO methodology; (2) structured assertions — define specific pass/fail criteria per test instead of freeform "document behavior", making testing quantitative; (3) iteration strategy by skill type — discipline skills need loophole-closing, technique skills need metaphor reframing, reference skills need organization iteration. All three adopted as sections in existing skill files, no new agents or scripts.
+
+### 2026-03-23: claude-squad and claude-mem — exhaustive analysis, import nothing
+Analyzed two high-profile repos: claude-squad (6.5K stars, Go tmux multiplexer for parallel agents) and claude-mem (39.7K stars, automatic memory via observer agent + SQLite + ChromaDB). claude-squad operates at a fundamentally different abstraction layer (external process manager treating agents as black boxes via terminal scraping) — blueprint's internal approach with native tool access is strictly more powerful. claude-mem uses exhaustive capture + AI compression vs blueprint's selective curation — different philosophies for different goals. Three initially-proposed improvements (session-end memory prompt, richer MEMORY.md descriptions, self-documenting header) all collapsed under scrutiny: the session prompt risks over-saving, richer descriptions conflict with the 200-line cap, and the header duplicates system prompt instructions. Key meta-lesson: the gravitational pull to import *something* from impressive repos is a real bias — sometimes the right answer is "nothing."

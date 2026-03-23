@@ -5,9 +5,9 @@ Last updated: 2026-03-23
 ## Current State of the Code
 
 - **Build:** n/a (template repo, no build step)
-- **Tests:** CI passing (4/4 jobs green — install ubuntu, install macos, shellcheck, markdownlint)
+- **Tests:** CI pending — last full green on `c5b512e`; 1 unpushed commit `4584357`
 - **Lint:** markdownlint clean, shellcheck clean
-- **Last verified:** 2026-03-23 (CI not yet run on latest; CI last full green on `c5b512e`)
+- **Last verified:** 2026-03-23 (CI last full green on `c5b512e`)
 - **Version:** 2.3.0 (34 skills, 26 agents, 24 commands, 5 hooks)
 
 ## In Flight
@@ -20,13 +20,15 @@ Last updated: 2026-03-23
 
 | Task | Status | Blockers | Notes |
 |------|--------|----------|-------|
-| (no immediate work) | — | — | v2.3.0 is fully documented and CI is green |
+| Push `4584357` to origin | Ready | — | Prior session's wrap-up commit, still local |
+| (no feature work) | — | — | v2.3.0 in maintenance mode |
 
 ## What's Done
 
 | Date | Commit | Description |
 |------|--------|-------------|
-| 2026-03-23 | (pending) | Feat: integrate Anthropic skill-creator insights — structured assertions, description trigger testing, iteration strategy by skill type. 2 files, +152. |
+| 2026-03-23 | `4584357` | Docs: session wrap-up — Anthropic skill-creator insights integration |
+| 2026-03-23 | (no commit) | Analysis: claude-squad (6.5K stars) and claude-mem (39.7K stars) — deep compatibility analysis, verdict: import nothing from either |
 | 2026-03-18 | `b28a03f` | Docs: update README (gstack integration section), ebook PDF (9 tools), ebook HTML source, session continuity and key learnings. |
 | 2026-03-18 | `1d1ed2e` | Feat: incorporate 15 gstack patterns — suppressions lists for 5 reviewer agents, AI Slop detection, confidence tiering, WTF-likelihood risk scoring, premise challenge + scope modes, shadow path tracing, error/rescue maps, completeness principle, AskUserQuestion format. 10 files, +233. |
 | 2026-03-16 | `da101c2` | Docs: update README and ebook PDF with GSD-2 integration |
@@ -61,6 +63,7 @@ Last updated: 2026-03-23
 
 | Date | Decision | ADR |
 |------|----------|-----|
+| 2026-03-23 | Don't import patterns from claude-squad (external process manager) or claude-mem (exhaustive memory capture) — blueprint's internal approach and selective curation are superior for our use case | — |
 | 2026-03-23 | Cherry-pick Anthropic skill-creator concepts (description testing, structured assertions, iteration-by-type) into existing writing-skills docs. Reject blind comparison agents, Python scripts, JSON schemas as factory-scale tooling. | — |
 | 2026-03-11 | Dual-loop context management: external bash loop (`ship.sh`) for context exhaustion, Stop hook (`ship-loop.sh`) for premature exit, `--external` flag to avoid conflict | — |
 | 2026-03-11 | v2.3.0: `/ship` as autonomous pipeline name, team-lead as dedicated agent (not skill), `--no-review` composability pattern, 3 iteration layers (task/quality/session), plan-checker verify loop before execution | — |
