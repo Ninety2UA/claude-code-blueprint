@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="#how-does-this-compare">Compare</a> ·
-  <a href="#latest-gstack-analysis-integration">What's New</a> ·
+  <a href="#latest-ecosystem-wide-analysis">What's New</a> ·
   <a href="#quick-start">Quick Start</a> ·
   <a href="#what-you-get">What You Get</a> ·
   <a href="#workflow">Workflow</a> ·
@@ -39,54 +39,127 @@ It gives Claude Code a **structured operating system** — a set of skills, agen
 
 ## How Does This Compare?
 
-Before committing to any tool, it helps to understand the landscape. We evaluated the 9 most popular Claude Code plugins, frameworks, and orchestration tools — through direct repository inspection, not marketing claims.
+Before committing to any tool, it helps to understand the landscape. We've analyzed **14 repos and frameworks** across the Claude Code ecosystem — over 300K combined GitHub stars — through direct source code inspection, not marketing claims.
 
 <p align="center">
-  <img src="docs/images/ecosystem-guide.png" alt="Claude Code Tools Guide — 8 tools evaluated side by side" width="90%">
+  <img src="docs/images/ecosystem-guide.png" alt="Claude Code Tools Guide — 14 tools evaluated" width="90%">
 </p>
 
-**[Download the free guide (PDF)](ebook/claude-code-tools-guide.pdf)** — covers tool profiles, a classification matrix, scenario-based recommendations, combination safety, a confidence-scored final ranking, and the latest ecosystem additions including gstack and GSD-2.
+**[Download the free ecosystem guide (PDF)](ebook/claude-code-tools-guide.pdf)** — covers tool profiles, classification matrices, scenario-based recommendations, combination safety, and confidence-scored final rankings.
 
 > *The best tool is the one that matches your actual workflow, not the one with the most stars.*
 
-## Latest: gstack Analysis Integration
+## Latest: Ecosystem-Wide Analysis
 
-Fifteen patterns from [gstack](https://github.com/garrytan/gstack) (Garry Tan's 22K-star "software factory" — 13 role-based skills turning Claude Code into a virtual engineering team) have been analyzed and the most valuable mechanisms incorporated into existing skills and agents:
+Every component in Blueprint is informed by what works (and what doesn't) across the broader ecosystem. We analyze repos at the source code level — reading implementation, not just READMEs — and either absorb the best patterns into existing skills and agents, or document exactly why we rejected them.
 
-### High Priority — Applied
+| Repo / Tool | Stars | Verdict | What We Took |
+|---|---|---|---|
+| [**gstack**](https://github.com/garrytan/gstack) | 22K | **15 patterns** | Suppressions lists, premise challenge, AI slop detection, confidence tiering, WTF-likelihood scoring |
+| [**GSD**](https://github.com/glittercowboy/get-shit-done) | 24.7K | **4 patterns** | Interface context in plans, prompt injection guard hook, stub tracking, verification commands |
+| **GSD-2** | KB | **6 patterns** | Error classification fast-path, degradation detection, structured escalation, assumption tracking |
+| **Anthropic skill-creator** | Official | **3 concepts** | Description trigger testing, structured assertions, iteration strategy by skill type |
+| [**Superpowers**](https://github.com/NickHeap2/claude-code-superpowers) | 71K | Patterns adopted | Anti-rationalization guards, TDD quality gates |
+| [**Compound Eng.**](https://github.com/anthropics/claude-code-plugins) | 9.9K | Patterns adopted | Parallel review swarm architecture, agent tool restrictions |
+| [**Ralphy**](https://github.com/snarktank/ralph) | 2.5K | Pattern adopted | External bash loop for context-exhaustion recovery |
+| [**claude-mem**](https://github.com/anthropics/claude-code-memory) | 39.7K | **Import nothing** | Exhaustive capture conflicts with selective curation philosophy |
+| [**claude-squad**](https://github.com/smtg-ai/claude-squad) | 6.5K | **Import nothing** | External process manager — our internal agent approach is strictly more powerful |
+| **OpenCLI** | v1.3 | **Import nothing** | Browser automation tool — completely different problem domain |
+| Everything CC | 50K+ | Reference | Security-first approach, 992 tests |
+| UI/UX Pro Max | 37K | Reference | 100+ reasoning rules |
+| Claude Skills | 4.9K | Reference | Progressive disclosure |
+| Plugins+Skills | 1.5K | Reference | Community patterns |
+
+> **"Import nothing" is a feature, not a failure.** The gravitational pull to adopt *something* from impressive repos is a real bias. Sometimes the right answer after deep analysis is to change nothing — and documenting why is just as valuable as documenting what you imported.
+
+<details>
+<summary><strong>gstack (22K ★) — 15 patterns absorbed</strong></summary>
+
+Fifteen patterns from [gstack](https://github.com/garrytan/gstack) (Garry Tan's "software factory" — 13 role-based skills turning Claude Code into a virtual engineering team) incorporated into existing skills and agents:
+
+**Applied:**
 
 - **Suppressions lists for all reviewer agents** — explicit "DO NOT flag" sections prevent false positives that erode trust. Each reviewer agent now has a calibrated suppressions list (redundancy that aids readability, thresholds that rot as comments, assertions already sufficient, anything already fixed in the diff)
 - **Review checklist patterns** — production-battle-tested detection patterns absorbed into relevant agents: TOCTOU races, `find_or_create_by` without unique index, LLM output trust boundaries, enum completeness traced through ALL consumers (reading code outside the diff), time window mismatches, type coercion at serialization boundaries, crypto entropy issues
 - **Completeness Principle ("Boil the Lake")** — AI compresses implementation time 10-100x, so the marginal cost of completeness is near-zero. Always prefer the complete implementation. Dual-scale effort estimation (human time vs AI time) embedded in team-lead agent decisions
 - **AskUserQuestion format standardization** — consistent 4-step format across agents: re-ground (project + branch), simplify (plain language), recommend with WHY, lettered options with dual effort scales
 - **WTF-Likelihood risk scoring** — additive risk score complementing circuit breakers: reverts (+15%), multi-file fixes (+5%), volume after 15 fixes (+1% each), touching unrelated files (+20%). Stops at 20% threshold with 50-change hard cap
-- **Premise Challenge + Scope Modes** — brainstorming skill now challenges WHAT to build before planning HOW. Four scope modes: Expansion (dream big), Selective Expansion (cherry-pick additions), Hold Scope (maximum rigor), Reduction (cut to minimum)
-- **AI Slop detection patterns** — frontend-reviewer now detects telltale AI-generated UI: purple gradients, 3-column icon grids, center-aligned everything, uniform border-radius, generic hero copy. Each pattern has confidence tiers (HIGH/MEDIUM/LOW) with different actions
-- **Confidence tiering in findings synthesis** — findings-synthesizer now tags each finding as [HIGH], [MEDIUM], or [LOW] confidence. LOW-confidence findings never reach P1 — they go in a separate "Verify Manually" section
-- **Shadow path tracing** — writing-plans skill now requires tracing four paths for every data flow: happy, nil, empty, and error. Unhandled paths become explicit plan tasks
-- **Error/Rescue Map** — writing-plans skill now requires failure mode tables for every external call, mapping what can go wrong, whether it's handled, and what the user sees
-- **Test Coverage Audit patterns** — codepath tracing with quality stars (★★★/★★/★), user flow coverage alongside code path coverage, gap identification with auto-generation caps
+- **Premise Challenge + Scope Modes** — brainstorming skill now challenges WHAT to build before planning HOW. Four scope modes: Expansion, Selective Expansion, Hold Scope, Reduction
+- **AI Slop detection patterns** — frontend-reviewer now detects telltale AI-generated UI: purple gradients, 3-column icon grids, center-aligned everything, uniform border-radius, generic hero copy. Confidence tiers (HIGH/MEDIUM/LOW) with different actions
+- **Confidence tiering in findings synthesis** — findings-synthesizer tags each finding as [HIGH], [MEDIUM], or [LOW] confidence. LOW-confidence findings go in a separate "Verify Manually" section
+- **Shadow path tracing** — writing-plans skill traces four paths for every data flow: happy, nil, empty, and error. Unhandled paths become explicit plan tasks
+- **Error/Rescue Map** — writing-plans skill requires failure mode tables for every external call
+- **Test Coverage Audit patterns** — codepath tracing with quality stars (★★★/★★/★), user flow coverage alongside code path coverage
 
-### Prompt Techniques Adopted
+**Prompt techniques:**
 
 - **Mode commitment** — "Once selected, commit fully. Do not silently drift."
 - **Explicit anti-patterns** — negative examples steer model behavior more effectively than positive instructions alone
 - **"Never stop for X, only stop for Y"** — explicit lists eliminate ambiguity in autonomous workflows
-- **Diagram forcing** — mandatory ASCII diagrams for non-trivial data flows and architectures
+- **Diagram forcing** — mandatory ASCII diagrams for non-trivial data flows
 - **Dual-scale effort** — every effort estimate shows both human team time and AI-assisted time
 
-These patterns are woven into existing agents ([security-sentinel](.claude/agents/security-sentinel.md), [performance-oracle](.claude/agents/performance-oracle.md), [data-integrity-guardian](.claude/agents/data-integrity-guardian.md), [code-reviewer](.claude/agents/code-reviewer.md), [frontend-reviewer](.claude/agents/frontend-reviewer.md), [findings-synthesizer](.claude/agents/findings-synthesizer.md), [team-lead](.claude/agents/team-lead.md)) and skills ([autonomous-loop](.claude/skills/autonomous-loop/), [brainstorming](.claude/skills/brainstorming/), [writing-plans](.claude/skills/writing-plans/)) — no new files were added.
+All patterns woven into existing agents ([security-sentinel](.claude/agents/security-sentinel.md), [performance-oracle](.claude/agents/performance-oracle.md), [data-integrity-guardian](.claude/agents/data-integrity-guardian.md), [code-reviewer](.claude/agents/code-reviewer.md), [frontend-reviewer](.claude/agents/frontend-reviewer.md), [findings-synthesizer](.claude/agents/findings-synthesizer.md), [team-lead](.claude/agents/team-lead.md)) and skills ([autonomous-loop](.claude/skills/autonomous-loop/), [brainstorming](.claude/skills/brainstorming/), [writing-plans](.claude/skills/writing-plans/)) — no new files were added.
 
-### Previous: GSD-2 Integration
+</details>
 
-Six agent-building patterns from the GSD-2 knowledge base ("Building Coding Agents") were previously incorporated:
+<details>
+<summary><strong>GSD (24.7K ★) — 4 patterns absorbed</strong></summary>
+
+Analyzed [GSD](https://github.com/glittercowboy/get-shit-done) — an 82K-line meta-prompting framework with milestone lifecycle, 44 commands, 46 workflows, 16 agents, and a Node.js CLI layer. Key architectural difference: GSD invests in runtime tooling (state management, config, frontmatter CRUD); Blueprint stays zero-dependency markdown-only.
+
+**Imported:**
+
+- **Interface context extraction in plans** — embed types/interfaces from the codebase directly into plans so parallel executors don't waste context exploring the codebase. Highest-value single import — plans are prompts, not documents that become prompts
+- **Prompt injection guard hook** — PreToolUse advisory scan for injection patterns and invisible Unicode in docs/ writes ([prompt-guard.js](.claude/hooks/prompt-guard.js))
+- **Deviation scope boundary + stub tracking** — only auto-fix issues caused by the current task (3-attempt limit); post-execution scan for hardcoded empty values and placeholder text
+- **Verification command guideline** — every plan step includes a runnable verification command, not "it works"
+
+**Rejected:** Multi-runtime support (wrong layer), Node.js CLI layer (different architecture), milestone lifecycle (our pipelines suffice), model profiles (per-agent frontmatter is enough), file locking (not needed for our model).
+
+</details>
+
+<details>
+<summary><strong>Anthropic Skill-Creator — 3 concepts absorbed</strong></summary>
+
+Analyzed Anthropic's official skill-creator (`github.com/anthropics/skills`) — a skill factory with 3 blind-comparison eval agents, 8 Python scripts, 7 JSON schemas, and HTML eval viewers. Our system is a skill workshop: TDD-driven, pressure-tested, rationalization-resistant.
+
+**Imported:**
+
+- **Description trigger testing** — generate 20 should/shouldn't-trigger queries and iterate on the description string. Fills a gap in our testing methodology
+- **Structured assertions** — define specific pass/fail criteria per test instead of freeform "document behavior", making testing quantitative
+- **Iteration strategy by skill type** — discipline skills need loophole-closing, technique skills need metaphor reframing, reference skills need organization iteration
+
+**Rejected:** Blind comparison agents, Python scripts, JSON benchmark schemas — factory tooling that adds marginal value over our TDD approach and brings Python dependencies.
+
+</details>
+
+<details>
+<summary><strong>GSD-2 Knowledge Base — 6 patterns absorbed</strong></summary>
+
+Six agent-building patterns from the GSD-2 knowledge base ("Building Coding Agents" — synthesized from Claude, GPT, Gemini, Grok):
 
 - **Error classification with fast-path debugging** — syntax errors skip the full 4-phase debugging process; flaky tests are quarantined
-- **Degradation detection** — rising difficulty and hot-file signals catch soft deterioration
+- **Degradation detection** — rising difficulty and hot-file signals catch soft deterioration that hard-stall circuit breakers miss
 - **Structured escalation format** — 4-part escalation output (what failed, tried, suspected, needed)
 - **Assumption tracking** — `### Assumptions` convention with `[cascading]` flags
 - **False-positive filtering** — review synthesis includes verification step and "Discarded" section
 - **"Never summarize summaries"** — session wraps regenerate from source of truth, preventing drift
+
+</details>
+
+<details>
+<summary><strong>Analyzed & Deliberately Rejected — claude-mem, claude-squad, OpenCLI</strong></summary>
+
+Not every analysis leads to adoption. These three repos were analyzed in depth and rejected with documented rationale:
+
+- **claude-mem** (39.7K ★) — Automatic memory via observer agent + SQLite + ChromaDB. Uses exhaustive capture + AI compression. Blueprint uses selective curation — different philosophies for different goals. Three initially-proposed improvements all collapsed under scrutiny: session-end memory prompt risks over-saving, richer descriptions conflict with the 200-line cap, self-documenting headers duplicate system prompt instructions.
+
+- **claude-squad** (6.5K ★) — Go tmux multiplexer for parallel Claude Code instances. Operates at a fundamentally different abstraction layer — an external process manager that treats agents as black boxes via terminal scraping. Blueprint's internal approach with native tool access is strictly more powerful.
+
+- **OpenCLI** (v1.3, TypeScript) — Turns websites into CLI commands via browser automation and Chrome session reuse. Well-engineered but solves a completely different problem at a completely different layer. Zero architectural overlap with agent orchestration.
+
+</details>
 
 ## Quick Start
 
@@ -133,7 +206,7 @@ your-project/
 │   ├── commands/       # 24 slash commands (/plan, /ship, /review-swarm, /orchestrate, /team, ...)
 │   ├── skills/         # 34 workflow skills (TDD, wave-orchestration, swarms, iterative-refinement, ...)
 │   ├── agents/         # 26 specialized agents (team-lead, reviewer, security, perf, ...)
-│   └── hooks/          # 5 lifecycle hooks (session-start, context-monitor, ship-loop, quality gates)
+│   └── hooks/          # 6 lifecycle hooks (session-start, context-monitor, prompt-guard, ship-loop, quality gates)
 ├── docs/
 │   ├── context/        # GOALS.md · STATUS.md · CONVENTIONS.md · STATE.md
 │   ├── plans/          # Implementation plans
