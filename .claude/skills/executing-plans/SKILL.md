@@ -49,6 +49,44 @@ After all tasks complete and verified:
 - **REQUIRED SUB-SKILL:** Use finishing-a-development-branch
 - Follow that skill to verify tests, present options, execute choice
 
+## Deviation Scope Boundary
+
+When executing, you will discover issues not in the plan. Apply these rules:
+
+**Auto-fix (no permission needed):**
+- Bugs directly caused by the current task's changes (wrong logic, type errors, broken imports)
+- Missing critical functionality for correctness/security (null checks, input validation, error handling)
+- Blocking issues preventing task completion (missing dependency, wrong path)
+
+**Scope boundary:** Only fix issues DIRECTLY caused by the current task's changes. Pre-existing warnings, linting errors in unrelated files, or tech debt you notice → add to BACKLOG.md, don't fix inline.
+
+**Fix attempt limit:** After 3 auto-fix attempts on a single issue within a task, STOP trying. Document it under `### Deferred Issues` in the batch report and move to the next task. Don't burn context retrying what isn't working.
+
+**Must ask the user FIRST:**
+- New database tables or major schema changes
+- Switching frameworks or libraries
+- Changing public API contracts
+- Modifying auth logic
+- Adding new environment variables
+
+## Stub Tracking
+
+After completing each batch, scan created/modified files for stub patterns before reporting:
+
+- Hardcoded empty values flowing to rendering: `= []`, `= {}`, `= null`, `= ""`
+- Placeholder text: "not available", "coming soon", "placeholder", "TODO", "FIXME"
+- Components with no data source wired (props always receiving empty/mock data)
+
+If stubs are found, include a `### Known Stubs` section in the batch report:
+
+```markdown
+### Known Stubs
+- `src/components/Dashboard.tsx:45` — `items = []` hardcoded, API not wired yet (Task 5 will resolve)
+- `src/api/users.ts:23` — `// TODO: add pagination` (out of scope for this plan, added to BACKLOG)
+```
+
+Don't mark a batch as fully complete if stubs prevent the planned feature from working end-to-end. Either wire the data or document which future task resolves it.
+
 ## When to Stop and Ask for Help
 
 **STOP executing immediately when:**
@@ -56,6 +94,7 @@ After all tasks complete and verified:
 - Plan has critical gaps preventing starting
 - You don't understand an instruction
 - Verification fails repeatedly
+- 3 auto-fix attempts on the same issue haven't resolved it (see Deviation Scope Boundary)
 
 **Ask for clarification rather than guessing.**
 

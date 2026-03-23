@@ -5,10 +5,10 @@ Last updated: 2026-03-23
 ## Current State of the Code
 
 - **Build:** n/a (template repo, no build step)
-- **Tests:** CI pending — last full green on `c5b512e`; 1 unpushed commit `4584357`
+- **Tests:** CI pending — last full green on `c5b512e`; multiple unpushed commits
 - **Lint:** markdownlint clean, shellcheck clean
 - **Last verified:** 2026-03-23 (CI last full green on `c5b512e`)
-- **Version:** 2.3.0 (34 skills, 26 agents, 24 commands, 5 hooks)
+- **Version:** 2.3.0 (34 skills, 26 agents, 24 commands, 6 hooks)
 
 ## In Flight
 
@@ -20,15 +20,16 @@ Last updated: 2026-03-23
 
 | Task | Status | Blockers | Notes |
 |------|--------|----------|-------|
-| Push `4584357` to origin | Ready | — | Prior session's wrap-up commit, still local |
+| Push all local commits to origin | Ready | — | `4584357`, `2526608`, + GSD session wrap-up — all still local |
 | (no feature work) | — | — | v2.3.0 in maintenance mode |
 
 ## What's Done
 
 | Date | Commit | Description |
 |------|--------|-------------|
+| 2026-03-23 | (uncommitted) | Feat: GSD imports — interface context extraction (writing-plans), deviation scope boundary + stub tracking (executing-plans), prompt injection guard hook (new), verification command guideline (writing-plans). 4 modified, 1 new file, +114 lines. |
+| 2026-03-23 | `2526608` | Docs: session wrap-up — claude-squad and claude-mem compatibility analyses (verdict: import nothing from either) |
 | 2026-03-23 | `4584357` | Docs: session wrap-up — Anthropic skill-creator insights integration |
-| 2026-03-23 | (no commit) | Analysis: claude-squad (6.5K stars) and claude-mem (39.7K stars) — deep compatibility analysis, verdict: import nothing from either |
 | 2026-03-18 | `b28a03f` | Docs: update README (gstack integration section), ebook PDF (9 tools), ebook HTML source, session continuity and key learnings. |
 | 2026-03-18 | `1d1ed2e` | Feat: incorporate 15 gstack patterns — suppressions lists for 5 reviewer agents, AI Slop detection, confidence tiering, WTF-likelihood risk scoring, premise challenge + scope modes, shadow path tracing, error/rescue maps, completeness principle, AskUserQuestion format. 10 files, +233. |
 | 2026-03-16 | `da101c2` | Docs: update README and ebook PDF with GSD-2 integration |
@@ -63,6 +64,7 @@ Last updated: 2026-03-23
 
 | Date | Decision | ADR |
 |------|----------|-----|
+| 2026-03-23 | Import 4 GSD patterns (interface context, deviation scope boundary, prompt guard hook, stub tracking). Reject: multi-runtime, CLI layer, milestone lifecycle, model profiles, file locking, workflow guard. Principle: import the judgment, not the machinery. | — |
 | 2026-03-23 | Don't import patterns from claude-squad (external process manager) or claude-mem (exhaustive memory capture) — blueprint's internal approach and selective curation are superior for our use case | — |
 | 2026-03-23 | Cherry-pick Anthropic skill-creator concepts (description testing, structured assertions, iteration-by-type) into existing writing-skills docs. Reject blind comparison agents, Python scripts, JSON schemas as factory-scale tooling. | — |
 | 2026-03-11 | Dual-loop context management: external bash loop (`ship.sh`) for context exhaustion, Stop hook (`ship-loop.sh`) for premature exit, `--external` flag to avoid conflict | — |

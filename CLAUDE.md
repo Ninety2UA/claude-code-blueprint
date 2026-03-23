@@ -13,20 +13,20 @@ Quality over speed. Small steps compound into big progress. The patterns you est
 **Last session:** 2026-03-23
 
 **What was done:**
-- Deep compatibility analysis of claude-squad (smtg-ai/claude-squad, 6.5K stars) — external tmux-based parallel agent manager. Verdict: import nothing — operates at a different abstraction layer (external process manager vs internal plugin)
-- Deep compatibility analysis of claude-mem (thedotmack/claude-mem, 39.7K stars) — automatic persistent memory via observer agent + SQLite + ChromaDB. Verdict: import nothing — different philosophy (exhaustive capture vs selective curation); three proposed improvements collapsed under critical re-evaluation
-- Created `/analyze` command at workspace level (`/Users/dbenger/projects/claude-eng/.claude/commands/analyze.md`) — reusable slash command for future repo compatibility analyses
+- Deep compatibility analysis of GSD (glittercowboy/get-shit-done, 82K lines) — meta-prompting framework with milestone lifecycle, 44 commands, 46 workflows, 16 agents, Node.js CLI layer
+- Implemented 4 GSD patterns: interface context extraction in plans (`writing-plans/SKILL.md`), deviation scope boundary + stub tracking (`executing-plans/SKILL.md`), prompt injection guard hook (`.claude/hooks/prompt-guard.js`), verification command guideline (`writing-plans/SKILL.md`)
+- Rejected: multi-runtime support, Node.js CLI layer, milestone lifecycle, model profiles, file locking, workflow guard hook
 
 **What's remaining:**
 - GOALS.md still has placeholder templates (P3 — filled by `/init` on install)
-- Push commit `4584357` to origin (prior session's wrap-up)
+- Push commits to origin (`4584357` + `2526608` + GSD session wrap-up)
 
 **Start here:** No in-flight work. Template is ready for next feature or external contribution.
 
 **Current state of the code:**
 - Build: n/a (template repo, no build step)
 - Tests: CI pending — last full green on `c5b512e`
-- Uncommitted changes: none (working tree clean, `main` 1 ahead of `origin/main`)
+- Uncommitted changes: none (after session wrap-up commit)
 
 ## Behavioral Rules
 
@@ -160,6 +160,7 @@ project/
 │   ├── hooks/             # Lifecycle hooks
 │   │   ├── session-start.js   # Bootstrap context on session start
 │   │   ├── context-monitor.js # Track context usage + analysis paralysis guard
+│   │   ├── prompt-guard.js    # PreToolUse: scan docs/ writes for prompt injection
 │   │   ├── teammate-idle.js   # Agent Teams: quality gate when teammate finishes
 │   │   ├── task-completed.js  # Agent Teams: quality gate on task completion
 │   │   └── ship-loop.sh       # Stop hook: Ralph-style session iteration for /ship
@@ -512,3 +513,6 @@ Analyzed Anthropic's official skill-creator (`github.com/anthropics/skills`). It
 
 ### 2026-03-23: claude-squad and claude-mem — exhaustive analysis, import nothing
 Analyzed two high-profile repos: claude-squad (6.5K stars, Go tmux multiplexer for parallel agents) and claude-mem (39.7K stars, automatic memory via observer agent + SQLite + ChromaDB). claude-squad operates at a fundamentally different abstraction layer (external process manager treating agents as black boxes via terminal scraping) — blueprint's internal approach with native tool access is strictly more powerful. claude-mem uses exhaustive capture + AI compression vs blueprint's selective curation — different philosophies for different goals. Three initially-proposed improvements (session-end memory prompt, richer MEMORY.md descriptions, self-documenting header) all collapsed under scrutiny: the session prompt risks over-saving, richer descriptions conflict with the 200-line cap, and the header duplicates system prompt instructions. Key meta-lesson: the gravitational pull to import *something* from impressive repos is a real bias — sometimes the right answer is "nothing."
+
+### 2026-03-23: GSD (get-shit-done) — selective imports from 82K-line codebase
+Analyzed GSD (glittercowboy/get-shit-done) — meta-prompting framework with milestone lifecycle, 44 commands, 46 workflows, 16 agents, and a Node.js CLI layer (`gsd-tools.cjs`). Key architectural difference: GSD invests in runtime tooling (state management, config, frontmatter CRUD); blueprint stays zero-dependency markdown-only. Rejected: multi-runtime support (wrong layer), Node.js CLI layer (different architecture), milestone lifecycle (our pipelines suffice), model profiles (per-agent frontmatter is enough). Imported 4 patterns: (1) interface context extraction in plans — embed types/interfaces from codebase so parallel executors don't waste context exploring; highest-value single import; (2) deviation scope boundary — only auto-fix issues caused by current task, 3-attempt limit per issue, log pre-existing debt to BACKLOG not inline; extends GSD-2 error classification; (3) prompt injection guard hook — PreToolUse advisory scanning docs/ writes for injection patterns + invisible Unicode; (4) stub tracking — post-execution scan for hardcoded empty values and placeholder text that make features look done without working. Also added verification command guideline to writing-plans (every step should include runnable verification, not "it works"). GSD's deepest principle — "plans are prompts, not documents that become prompts" — reinforces embedding enough context that executors don't need to explore.

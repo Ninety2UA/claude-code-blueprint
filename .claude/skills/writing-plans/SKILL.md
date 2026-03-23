@@ -114,6 +114,65 @@ Service#call          | API timeout          | ?        | ?
 
 Any "?" in the HANDLED column becomes a sub-task. Every external call must have its failure mode explicitly addressed in the plan.
 
+## Interface Context for Parallel Executors
+
+When creating plans that will run in parallel (wave execution via `/orchestrate`), embed key types/interfaces/exports from the codebase directly in the plan. This prevents executors from wasting context exploring the codebase to discover contracts.
+
+**When a plan USES existing code:**
+
+After determining which files the task touches, extract the key interfaces from source files it depends on:
+
+```markdown
+### Interface Context
+<!-- Extracted from codebase — executor should use directly, no exploration needed -->
+
+From `src/types/user.ts`:
+```typescript
+export interface User {
+  id: string;
+  email: string;
+  role: 'admin' | 'member';
+}
+```
+
+From `src/api/auth.ts`:
+```typescript
+export function validateToken(token: string): Promise<User | null>;
+```
+```
+
+**When a plan CREATES new interfaces consumed by later tasks:**
+
+Add a "Task 0: Define contracts" step that creates type files before implementation:
+
+```markdown
+### Task 0: Define interface contracts
+
+**Files:**
+- Create: `src/types/newFeature.ts`
+
+**Step 1:** Create type definitions that downstream tasks will implement against.
+These are the contracts — implementation comes in later tasks.
+
+**Step 2:** Commit: `chore: define newFeature type contracts`
+```
+
+**When to include:** Plan touches files that import from other modules, creates a new API endpoint, modifies a component's props, or depends on a previous wave's output.
+
+**When to skip:** Plan is self-contained (creates everything from scratch), pure configuration, or all patterns are already established.
+
+## Verification Commands
+
+Every task step that produces a testable result should include a **runnable verification command** — not just "verify it works."
+
+| Bad | Good |
+|-----|------|
+| "Verify it works" | `Run: pytest tests/auth.py -v` → Expected: PASS |
+| "Check the endpoint" | `Run: curl -s localhost:3000/api/health \| jq .status` → Expected: `"ok"` |
+| "Make sure it builds" | `Run: npm run build` → Expected: exit 0, no errors |
+
+If no automated verification exists yet, say so explicitly: `No automated verification available — requires manual browser check at /dashboard`. This honesty prevents executors from inventing fake checks.
+
 ## Remember
 - Exact file paths always
 - Complete code in plan (not "add validation")
