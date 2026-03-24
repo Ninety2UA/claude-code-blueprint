@@ -148,7 +148,7 @@ copy_item() {
             case "$rel_path" in
                 CLAUDE.md|BACKLOG.md|docs/context/*)
                     warn "$rel_path already exists"
-                    read -p "    Overwrite? [y/N] " -n 1 -r
+                    read -p "    Overwrite? [y/N] " -n 1 -r </dev/tty
                     echo
                     if [[ ! $REPLY =~ ^[Yy]$ ]]; then
                         echo -e "  ${DIM}  skip  $rel_path${NC}"
