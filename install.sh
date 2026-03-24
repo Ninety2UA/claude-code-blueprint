@@ -208,6 +208,26 @@ if [ "$CLAUDE_ONLY" = false ]; then
         success ".claude-plugin/ installed (plugin manifest)"
     fi
 
+    # Scripts
+    if [ -d "$SOURCE_DIR/scripts" ]; then
+        info "Installing scripts/..."
+        find "$SOURCE_DIR/scripts" -type f | while read -r file; do
+            rel="${file#"$SOURCE_DIR"/}"
+
+            # Skip template-only scripts (not useful in user projects)
+            case "$rel" in
+                scripts/record-promo.js|scripts/.gitkeep) continue ;;
+            esac
+
+            copy_item "$file" "$TARGET_DIR/$rel"
+        done
+        # Make scripts executable
+        if [ "$DRY_RUN" = false ]; then
+            find "$TARGET_DIR/scripts" -name "*.sh" -type f -exec chmod +x {} \;
+        fi
+        success "scripts/ installed"
+    fi
+
     # Core files
     for file in CLAUDE.md BACKLOG.md blueprint.local.md .gitignore; do
         if [ -f "$SOURCE_DIR/$file" ]; then
@@ -219,7 +239,7 @@ fi
 
 # Create placeholder directories
 if [ "$CLAUDE_ONLY" = false ] && [ "$DRY_RUN" = false ]; then
-    for dir in src tests scripts infra; do
+    for dir in src tests infra; do
         mkdir -p "$TARGET_DIR/$dir"
         if [ ! -f "$TARGET_DIR/$dir/.gitkeep" ]; then
             touch "$TARGET_DIR/$dir/.gitkeep"

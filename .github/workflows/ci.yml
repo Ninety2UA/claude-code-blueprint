@@ -79,10 +79,13 @@ jobs:
           IMAGES=$(find /tmp/blueprint-test/docs/images -type f 2>/dev/null | wc -l | tr -d ' ')
           test "$IMAGES" -eq 0 || { echo "Image files leaked: $IMAGES files"; exit 1; }
 
+          echo "Checking scripts..."
+          test -f /tmp/blueprint-test/scripts/ship.sh
+          test -x /tmp/blueprint-test/scripts/ship.sh
+
           echo "Checking placeholder dirs..."
           test -d /tmp/blueprint-test/src
           test -d /tmp/blueprint-test/tests
-          test -d /tmp/blueprint-test/scripts
           test -d /tmp/blueprint-test/infra
 
           echo "All checks passed!"
