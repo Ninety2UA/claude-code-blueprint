@@ -39,7 +39,7 @@ It gives Claude Code a **structured operating system** — a set of skills, agen
 
 ## How Does This Compare?
 
-Before committing to any tool, it helps to understand the landscape. We've analyzed **14 repos and frameworks** across the Claude Code ecosystem — over 300K combined GitHub stars — through direct source code inspection, not marketing claims.
+Before committing to any tool, it helps to understand the landscape. We've analyzed **15 repos and frameworks** across the Claude Code ecosystem — over 300K combined GitHub stars — through direct source code inspection, not marketing claims.
 
 <p align="center">
   <img src="docs/images/ecosystem-guide.png" alt="Claude Code Tools Guide — 14 tools evaluated" width="90%">
@@ -70,18 +70,20 @@ Every component in Blueprint is informed by what works (and what doesn't) across
 | [**UI/UX Pro Max**](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | 37K | Reference | 100+ reasoning rules |
 | [**Claude Skills**](https://github.com/alirezarezvani/claude-skills) | 4.9K | Reference | Progressive disclosure |
 | [**Plugins+Skills**](https://github.com/jeremylongshore/claude-code-plugins-plus-skills) | 1.5K | Reference | Community patterns |
+| **Multi-Agent Framework** | Doc | **3 patterns** | Worker failure protocol, contradiction resolution, structured escalation |
 
 > **"Import nothing" is a feature, not a failure.** The gravitational pull to adopt *something* from impressive repos is a real bias. Sometimes the right answer after deep analysis is to change nothing — and documenting why is just as valuable as documenting what you imported.
 
 ### What's New in v2.3
 
-The latest round of deep dives added **4 new repos** to the analysis and incorporated patterns from two previously-analyzed ones:
+The latest round of deep dives added **5 new repos** to the analysis and incorporated patterns from two previously-analyzed ones:
 
 - **GSD** (24.7K ★) — 82K-line meta-prompting framework. Imported interface context extraction for plans, a prompt injection guard hook, stub tracking, and verification command guidelines. Rejected the Node.js CLI layer and milestone lifecycle.
 - **Anthropic skill-creator** (Official) — Anthropic's own skill factory. Imported description trigger testing, structured assertions, and iteration strategy by skill type. Rejected the blind-comparison eval agents and Python scripting layer.
 - **claude-mem** (39.7K ★) — Automatic memory via observer agent + SQLite + ChromaDB. Analyzed in depth, deliberately rejected — exhaustive capture conflicts with Blueprint's selective curation philosophy.
 - **claude-squad** (6.5K ★) — Go tmux multiplexer for parallel agents. Analyzed in depth, deliberately rejected — external process manager at the wrong abstraction layer.
 - **OpenCLI** (v1.3) — Browser automation CLI via Chrome session reuse. Analyzed in depth, deliberately rejected — completely different problem domain (web scraping, not agent orchestration).
+- **Multi-Agent Framework** (conceptual doc) — Hybrid multi-model coordination (Claude + Gemini + Codex). Absorbed worker failure protocol for team-lead, contradiction resolution for synthesizer, and structured escalation format. Rejected multi-model delegation and file-based coordination.
 - **gstack** (22K ★) — 15 patterns absorbed including suppressions lists, premise challenge, AI slop detection, and WTF-likelihood risk scoring. See details below.
 
 <details>
@@ -157,6 +159,21 @@ Six agent-building patterns from the GSD-2 knowledge base ("Building Coding Agen
 - **Assumption tracking** — `### Assumptions` convention with `[cascading]` flags
 - **False-positive filtering** — review synthesis includes verification step and "Discarded" section
 - **"Never summarize summaries"** — session wraps regenerate from source of truth, preventing drift
+
+</details>
+
+<details>
+<summary><strong>Multi-Agent Framework — 3 patterns absorbed</strong></summary>
+
+Analyzed a hybrid multi-model coordination framework (Claude Code as lead + Gemini CLI + Codex CLI). File-based shared state, phased waterfall lifecycle, parallel review with complementary focus split. Key architectural difference: framework optimizes for model diversity (heterogeneous agents via CLI); Blueprint optimizes for prompt diversity (homogeneous agents via native subagents).
+
+**Imported:**
+
+- **Worker failure protocol for team-lead** — retry once with reduced scope → skip and continue → report all skipped tasks. Prevents a single worker failure from stalling the entire pipeline
+- **Contradiction resolution rules for findings-synthesizer** — 4-step protocol: same problem → more specific fix; different problems → address both; genuine contradiction → conservative position wins + log reasoning; one approves one flags → flag wins
+- **Structured escalation format for iterative-refinement** — when convergence fails, present "both perspectives + my recommendation" with lettered options instead of a flat findings list
+
+**Rejected:** Multi-model delegation via CLI (fragile, adds dependencies, loses native tool access), file-based coordination protocol (I/O overhead unnecessary for same-model systems), assignment heuristic matrix (designed for heterogeneous agents), Phase 0 whole-repo analysis (our 5-agent research swarm is more thorough), CONTRACTS.md (GSD import of interface context extraction is fresher), attribution changelog (git blame already handles this), research skip conditions (already covered by `/quick` and session awareness).
 
 </details>
 

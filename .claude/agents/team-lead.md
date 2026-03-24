@@ -143,6 +143,16 @@ If a worker is stuck (3+ minutes with no progress):
 2. Provide additional context or guidance
 3. If still stuck, reassign the task to a different worker
 
+### Worker Failure Protocol
+
+When a worker returns without completing its task (incomplete output, wrong files modified, or returns errors):
+
+1. **Retry once with reduced scope.** Simplify the task: narrow the file list, break it into a smaller piece, add more explicit context about what went wrong.
+2. **If retry fails, skip and continue.** Mark the task as `blocked: worker failure` and proceed with remaining tasks. Do NOT attempt a third time — two failures indicate the task needs human input or a different approach.
+3. **Report all skipped tasks.** In the Phase 5 report, list every skipped task with: what was attempted, what the worker returned, and your recommendation for how to resolve it manually.
+
+Never let a single worker failure stall the entire pipeline. The other workers' completed work is still valuable.
+
 ## Phase 3: Integration Verification
 
 After all workers complete:

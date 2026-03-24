@@ -10,23 +10,23 @@ Quality over speed. Small steps compound into big progress. The patterns you est
 
 <!-- Updated by /wrap at end of each work session. Read this FIRST when starting a new session. -->
 
-**Last session:** 2026-03-23
+**Last session:** 2026-03-24
 
 **What was done:**
-- Deep compatibility analysis of GSD (glittercowboy/get-shit-done, 82K lines) — meta-prompting framework with milestone lifecycle, 44 commands, 46 workflows, 16 agents, Node.js CLI layer
-- Implemented 4 GSD patterns: interface context extraction in plans (`writing-plans/SKILL.md`), deviation scope boundary + stub tracking (`executing-plans/SKILL.md`), prompt injection guard hook (`.claude/hooks/prompt-guard.js`), verification command guideline (`writing-plans/SKILL.md`)
-- Rejected: multi-runtime support, Node.js CLI layer, milestone lifecycle, model profiles, file locking, workflow guard hook
+- Deep compatibility analysis of Multi-Agent Coordination Framework (hybrid Claude + Gemini + Codex pattern)
+- Implemented 3 patterns: worker failure protocol (`team-lead.md`), contradiction resolution rules (`findings-synthesizer.md`), structured escalation format (`iterative-refinement/SKILL.md`)
+- Rejected: multi-model delegation, file-based coordination protocol, assignment heuristic matrix, Phase 0 whole-repo analysis, CONTRACTS.md, attribution changelog, research skip conditions
+- Updated README with 15th repo analysis entry
 
 **What's remaining:**
 - GOALS.md still has placeholder templates (P3 — filled by `/init` on install)
-- Push commits to origin (`4584357` + `2526608` + GSD session wrap-up)
 
 **Start here:** No in-flight work. Template is ready for next feature or external contribution.
 
 **Current state of the code:**
 - Build: n/a (template repo, no build step)
 - Tests: CI pending — last full green on `c5b512e`
-- Uncommitted changes: none (after session wrap-up commit)
+- Uncommitted changes: none
 
 ## Behavioral Rules
 
@@ -513,6 +513,9 @@ Analyzed Anthropic's official skill-creator (`github.com/anthropics/skills`). It
 
 ### 2026-03-23: claude-squad and claude-mem — exhaustive analysis, import nothing
 Analyzed two high-profile repos: claude-squad (6.5K stars, Go tmux multiplexer for parallel agents) and claude-mem (39.7K stars, automatic memory via observer agent + SQLite + ChromaDB). claude-squad operates at a fundamentally different abstraction layer (external process manager treating agents as black boxes via terminal scraping) — blueprint's internal approach with native tool access is strictly more powerful. claude-mem uses exhaustive capture + AI compression vs blueprint's selective curation — different philosophies for different goals. Three initially-proposed improvements (session-end memory prompt, richer MEMORY.md descriptions, self-documenting header) all collapsed under scrutiny: the session prompt risks over-saving, richer descriptions conflict with the 200-line cap, and the header duplicates system prompt instructions. Key meta-lesson: the gravitational pull to import _something_ from impressive repos is a real bias — sometimes the right answer is "nothing."
+
+### 2026-03-24: Multi-Agent Framework — 3 patterns from hybrid multi-model coordination
+Analyzed a hybrid multi-model framework (Claude Code lead + Gemini CLI + Codex CLI). Architecture uses file-based shared state (`ops/` directory with TASKS.md, MEMORY.md, CHANGELOG.md, CONTRACTS.md) and direct bash invocation for real-time orchestration. Key insight: framework optimizes for model diversity (heterogeneous agents with different capabilities — Gemini's 1M context, Codex's sandbox); blueprint optimizes for prompt diversity (homogeneous Claude agents with different system prompts). File-based coordination solves cross-model communication; prompt-based specialization is better when agents share a process. Imported 3 patterns: (1) worker failure protocol for team-lead — retry once with reduced scope, then skip and continue, report all skipped tasks; prevents single worker failure from stalling pipeline; (2) contradiction resolution rules for findings-synthesizer — 4-step protocol (same problem → specific fix; different problems → both; contradiction → conservative wins + log; one flags → flag wins); (3) structured escalation format for iterative-refinement — present reviewer perspectives + recommendation with options, not just a flat findings list. Rejected everything else: multi-model delegation (fragile CLI invocation), file-based protocol (I/O overhead), assignment matrix (designed for heterogeneous agents), Phase 0 analysis (our research swarm is deeper), CONTRACTS.md (GSD's interface extraction is fresher), attribution changelog (git blame suffices). Meta-lesson reinforced: "well-written ≠ applicable" — same conclusion as claude-squad and claude-mem analyses.
 
 ### 2026-03-23: GSD (get-shit-done) — selective imports from 82K-line codebase
 Analyzed GSD (glittercowboy/get-shit-done) — meta-prompting framework with milestone lifecycle, 44 commands, 46 workflows, 16 agents, and a Node.js CLI layer (`gsd-tools.cjs`). Key architectural difference: GSD invests in runtime tooling (state management, config, frontmatter CRUD); blueprint stays zero-dependency markdown-only. Rejected: multi-runtime support (wrong layer), Node.js CLI layer (different architecture), milestone lifecycle (our pipelines suffice), model profiles (per-agent frontmatter is enough). Imported 4 patterns: (1) interface context extraction in plans — embed types/interfaces from codebase so parallel executors don't waste context exploring; highest-value single import; (2) deviation scope boundary — only auto-fix issues caused by current task, 3-attempt limit per issue, log pre-existing debt to BACKLOG not inline; extends GSD-2 error classification; (3) prompt injection guard hook — PreToolUse advisory scanning docs/ writes for injection patterns + invisible Unicode; (4) stub tracking — post-execution scan for hardcoded empty values and placeholder text that make features look done without working. Also added verification command guideline to writing-plans (every step should include runnable verification, not "it works"). GSD's deepest principle — "plans are prompts, not documents that become prompts" — reinforces embedding enough context that executors don't need to explore.

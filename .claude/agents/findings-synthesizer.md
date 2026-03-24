@@ -119,7 +119,11 @@ Organize findings by what needs to happen, not by which agent found them:
 
 - De-duplicate aggressively — the user should see each issue ONCE, with the best description
 - If agents disagree on severity, default to the higher severity and note the disagreement
-- If agents contradict each other (one says "add X", another says "remove X"), present both and recommend
+- **Contradiction resolution:** When reviewers contradict each other (one says "add X", another says "remove X"), apply these rules in order:
+  1. Both agree on the problem but differ on the fix → take the more specific recommendation
+  2. Different problems on the same code → address both
+  3. Genuinely contradictory recommendations → default to the more conservative position (the one that changes less or adds more safety), log reasoning in the Contradictions table
+  4. One reviewer approves, another flags → the flag wins — address the concern
 - Group fixes by file when possible — makes resolution easier
 - The recommended fix order should account for dependencies between fixes
 - Never lose a unique *verified* finding — even if only one agent caught it, it may be the most important issue. But if spot-checking shows the finding is wrong, discard it rather than passing noise downstream

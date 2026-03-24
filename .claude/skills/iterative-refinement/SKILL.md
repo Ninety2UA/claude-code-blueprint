@@ -209,7 +209,29 @@ When the loop exits (either converged or max reached):
 - [list any findings that were reverted]
 ```
 
-If max iterations reached with P1 > 0, this is a **warning** — critical issues remain unresolved. The calling workflow should stop and escalate to the user.
+If max iterations reached with P1 > 0, this is a **warning** — critical issues remain unresolved. The calling workflow should stop and escalate to the user with a structured report:
+
+```markdown
+## Escalation — Refinement Did Not Converge
+
+### Unresolved Issues
+- [list each remaining P1/P2 with file:line and description]
+
+### Reviewer Perspectives
+- **[Agent A]** recommends: [approach]
+- **[Agent B]** recommends: [approach]
+- [Include all reviewers who weighed in on the unresolved issues]
+
+### My Recommendation
+[Which approach to take and why, based on project conventions and architectural context]
+
+### Options
+A. [Fix approach 1] — [tradeoff]
+B. [Fix approach 2] — [tradeoff]
+C. Merge as-is with known issues tracked in BACKLOG.md
+```
+
+Present both the reviewers' perspectives AND your recommendation — don't just dump a findings list.
 
 ## Integration with Other Skills
 
