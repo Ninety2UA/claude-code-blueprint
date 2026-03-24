@@ -93,6 +93,9 @@ echo "║  Max iterations: ${MAX_ITERATIONS}                                    
 echo "╚═══════════════════════════════════════════════════════════╝"
 echo ""
 
+OUTFILE=$(mktemp)
+trap 'rm -f "$OUTFILE"; cleanup' EXIT
+
 for i in $(seq 1 "$MAX_ITERATIONS"); do
   echo ""
   echo "═══════════════════════════════════════════════════════════"
@@ -101,12 +104,38 @@ for i in $(seq 1 "$MAX_ITERATIONS"); do
   echo ""
 
   # Spawn fresh Claude with clean 200K context
-  # --print: non-interactive, prints output and exits
+  # --output-format stream-json: streams each message as JSON for live progress
   # --dangerously-skip-permissions: autonomous operation (no permission prompts)
-  OUTPUT=$(claude --print --dangerously-skip-permissions "$SHIP_CMD" 2>&1 | tee /dev/stderr) || true
+  # Stream JSON, extract assistant text live, and save full output for completion check
+  : > "$OUTFILE"
+  claude --print --dangerously-skip-permissions --output-format stream-json "$SHIP_CMD" 2>/dev/null \
+    | tee "$OUTFILE" \
+    | while IFS= read -r line; do
+        # Extract text content from assistant messages for live display
+        if echo "$line" | grep -q '"type":"assistant"'; then
+          TEXT=$(echo "$line" | sed -n 's/.*"content":"\([^"]*\)".*/\1/p' 2>/dev/null || true)
+          if [[ -n "$TEXT" ]]; then
+            # Unescape JSON string (newlines, tabs)
+            echo -e "$TEXT"
+          fi
+        # Show tool use activity as progress indicators
+        elif echo "$line" | grep -q '"type":"tool_use"'; then
+          TOOL=$(echo "$line" | sed -n 's/.*"name":"\([^"]*\)".*/\1/p' 2>/dev/null || true)
+          if [[ -n "$TOOL" ]]; then
+            echo -e "\033[2m  ▸ $TOOL\033[0m"
+          fi
+        # Show result messages (completion reports, errors)
+        elif echo "$line" | grep -q '"type":"result"'; then
+          RESULT=$(echo "$line" | sed -n 's/.*"result":"\([^"]*\)".*/\1/p' 2>/dev/null || true)
+          if [[ -n "$RESULT" ]]; then
+            echo ""
+            echo -e "$RESULT"
+          fi
+        fi
+      done || true
 
-  # Check for completion signal
-  if echo "$OUTPUT" | grep -q "<promise>DONE</promise>"; then
+  # Check for completion signal in the full output
+  if grep -q "DONE" "$OUTFILE"; then
     echo ""
     echo "═══════════════════════════════════════════════════════════"
     echo "  Ship complete! Finished at iteration $i of $MAX_ITERATIONS"
