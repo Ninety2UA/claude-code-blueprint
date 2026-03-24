@@ -108,7 +108,7 @@ for i in $(seq 1 "$MAX_ITERATIONS"); do
   # --dangerously-skip-permissions: autonomous operation (no permission prompts)
   # Stream JSON, extract assistant text live, and save full output for completion check
   : > "$OUTFILE"
-  claude --print --dangerously-skip-permissions --output-format stream-json "$SHIP_CMD" \
+  claude --print --dangerously-skip-permissions --output-format stream-json --verbose "$SHIP_CMD" \
     | tee "$OUTFILE" \
     | while IFS= read -r line; do
         # Extract text content from assistant messages for live display
