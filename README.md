@@ -213,6 +213,14 @@ rm -rf .git && git init
 curl -fsSL https://raw.githubusercontent.com/Ninety2UA/claude-code-blueprint/main/install.sh | bash -s -- --claude-only .
 ```
 
+### Update to latest version
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Ninety2UA/claude-code-blueprint/main/install.sh | bash -s -- --update /path/to/your/project
+```
+
+Updates all template files (commands, skills, agents, hooks, scripts) while preserving your customizations (CLAUDE.md, docs/context/, BACKLOG.md, blueprint.local.md).
+
 ### First session
 
 ```bash
@@ -678,6 +686,9 @@ If you only want specific components:
 
 # Preview what would be installed
 ./install.sh --dry-run
+
+# Update to latest version (preserves your customizations)
+./install.sh --update
 ```
 
 ## Documentation structure
@@ -809,7 +820,13 @@ Yes. The template works identically in VS Code, JetBrains, and the CLI. Slash co
 <details>
 <summary><strong>How do I update the template after installation?</strong></summary>
 
-Re-run the install script with `--no-overwrite` to get new skills and agents without overwriting your customizations. Or cherry-pick specific files from the repository.
+Run the install script with `--update` to refresh all template files while preserving your customizations:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Ninety2UA/claude-code-blueprint/main/install.sh | bash -s -- --update /path/to/your/project
+```
+
+This updates `.claude/` (commands, skills, agents, hooks), `scripts/`, `.claude-plugin/`, and `hooks/` while keeping your `CLAUDE.md`, `docs/context/`, `BACKLOG.md`, and `blueprint.local.md` untouched.
 </details>
 
 <details>
