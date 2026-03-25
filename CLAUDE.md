@@ -4,30 +4,51 @@
 
 **Each unit of engineering work should make subsequent units easier — not harder.**
 
-Quality over speed. Small steps compound into big progress. The patterns you establish will be copied. The corners you cut will be cut again. Fight entropy. Leave the codebase better than you found it.
+Quality over speed. Small steps compound. The patterns you establish will be copied. The corners you cut will be cut again.
 
 ## Session Continuity
 
-<!-- Updated by /wrap at end of each work session. Read this FIRST when starting a new session. -->
+<!-- Updated by /wrap. For full state: read docs/context/STATUS.md -->
 
-**Last session:** 2026-03-25
+See `docs/context/STATUS.md` for current project state, recent commits, and what to work on next. If empty, run `/init` to set up or `/status` to orient.
 
-**What was done:**
-- Fixed PostToolUse hook errors caused by relative path resolution in `.claude/settings.json`
-- Created `hooks/hooks.json` with `${CLAUDE_PLUGIN_ROOT}` paths — proper plugin hook mechanism for SessionStart, PreToolUse, PostToolUse, Stop
-- Removed hook definitions from `.claude/settings.json` (kept permissions only)
-- Updated `install.sh` to copy `hooks/` directory to target projects
-- Updated CLAUDE.md workspace structure to include `hooks/hooks.json`
+## Commands
 
-**What's remaining:**
-- GOALS.md still has placeholder templates (P3 — filled by `/init` on install)
+No build step (template repo). Key commands for installed projects:
 
-**Start here:** No in-flight work. Commit and push the hook migration, then restart Claude Code to verify PostToolUse errors are gone.
+| Command | Purpose |
+|---------|---------|
+| `/build` | Supervised pipeline — checkpoints between every stage |
+| `/ship` | Autonomous pipeline — zero checkpoints, fire-and-forget |
+| `/quick` | Fast-track small changes (< 3 files) with TDD |
+| `/plan` | Brainstorm before building |
+| `/review-swarm` | Multi-agent parallel code review |
+| `/deep-research` | Multi-agent parallel research |
+| `/orchestrate` | Wave-based parallel execution (dependency-ordered) |
+| `/team` | Collaborative agent team (shared task list + messaging) |
+| `./scripts/ship.sh "feature"` | External loop — fresh context per iteration |
 
-**Current state of the code:**
-- Build: n/a (template repo, no build step)
-- Tests: CI pending — last full green on `c5b512e`
-- Uncommitted changes: `.claude/settings.json`, `CLAUDE.md`, `install.sh` (modified), `hooks/` (new directory)
+Run `/init` after install to configure `docs/context/CONVENTIONS.md` with actual lint/test/dev commands.
+
+## Architecture
+
+```
+.claude/commands/    # 24 slash commands (each has description frontmatter)
+.claude/skills/      # 34 workflow skills (triggered contextually)
+.claude/agents/      # 26 specialized subagents (dispatched via Task tool)
+.claude/hooks/       # Lifecycle hooks (session-start, context-monitor, prompt-guard, ship-loop)
+hooks/hooks.json     # Plugin hook definitions (uses ${CLAUDE_PLUGIN_ROOT})
+.claude-plugin/      # Plugin manifest
+docs/context/        # GOALS.md, STATUS.md, CONVENTIONS.md, DECISIONS.md
+docs/plans/          # Implementation plans (YYYY-MM-DD-topic.md)
+docs/solutions/      # Institutional knowledge (created by /compound)
+docs/specs/          # Feature specs and requirements
+scripts/ship.sh      # Ralph-style external loop for /ship
+blueprint.local.md   # Per-project agent config (gitignored)
+BACKLOG.md           # Quick capture inbox
+```
+
+Skills, agents, and commands are self-describing via frontmatter — read their files for when/how to use them.
 
 ## Behavioral Rules
 
@@ -42,392 +63,61 @@ Quality over speed. Small steps compound into big progress. The patterns you est
 - If you break something while fixing something else, stop and fix the regression first
 - Commit working code frequently — don't accumulate large uncommitted changesets
 
-## Error Handling Philosophy
+## Deviation Rules
+
+When executing a plan or working autonomously:
+
+**Auto-fix (no permission needed):** logic errors, type errors, missing imports, broken paths, missing error handling, lint issues, typos
+
+**Must ask the user FIRST:** new database tables/migrations, switching frameworks, changing public API contracts, modifying auth logic, adding env vars or external service dependencies, architectural decisions not in ADRs
+
+**Scope boundary:** Only fix issues caused by the current task. Pre-existing issues go in BACKLOG.md.
+
+## Error Handling
 
 - Fail loudly at system boundaries; recover gracefully inside
-- Log the context needed to reproduce, not just the error message
-- Never swallow errors silently — at minimum, log them
-- User-facing errors should be helpful; internal errors should be detailed
-- If an operation can partially succeed, decide up front: all-or-nothing or best-effort
-- Validate inputs at the edges; trust data that's already inside the system
-
-## Task Prioritization
-
-When choosing what to work on next:
-
-1. **Architectural decisions and core abstractions** — get the foundation right
-2. **Integration points between modules** — ensure components connect
-3. **Unknown unknowns and spike work** — de-risk early
-4. **Standard features and implementation** — build on solid foundations
-5. **Polish, cleanup, and quick wins** — save easy wins for later
-
-Use micro tasks — smaller the task, better the code. Each task should be completable in one focused session with a clean commit at the end.
-
-## Lightweight Workflow for Small Changes
-
-Not everything needs the full brainstorm → plan → execute flow. Use this shortcut for small, well-understood changes:
-
-**Qualifies as small change:**
-- Bug fix with obvious root cause (< 3 files touched)
-- Typo, copy, or config fix
-- Adding a test for existing behavior
-- Renaming or minor refactor within a single module
-
-**Lightweight flow:**
-1. Write a failing test (TDD still applies)
-2. Fix the issue
-3. Verify (run tests, check build)
-4. Commit
-
-**Does NOT qualify — use full workflow:**
-- Touching 4+ files
-- Adding new public API or endpoint
-- Changing data models or schemas
-- Anything where you're unsure of the approach
-
-When in doubt, use the full workflow. The cost of over-planning is low; the cost of under-planning is rework.
-
-## Deviation Rules — What You Can Auto-Fix vs. Must Ask About
-
-When executing a plan or working autonomously, use these rules to decide whether to fix inline or stop and ask:
-
-**Auto-fix (no permission needed):**
-- Wrong queries, logic errors, type errors — fix inline
-- Missing error handling, input validation, null checks — add inline
-- Missing imports, broken dependencies, incorrect paths — fix inline
-- Linting or formatting issues — fix inline
-- Typos in code or strings — fix inline
-
-**Must ask the user FIRST:**
-- Adding new database tables, columns, or migrations
-- Switching frameworks, libraries, or core technologies
-- Changing public API contracts or interfaces
-- Modifying authentication/authorization logic
-- Adding new environment variables or external service dependencies
-- Architectural decisions not covered by existing ADRs
-
-**Scope boundary:** Only fix issues directly caused by the current task's changes. Pre-existing issues go in BACKLOG.md, not inline fixes.
-
-## Analysis Paralysis Guard
-
-If you make 5+ consecutive read-only operations (Read, Glob, Grep) without any Edit, Write, or Bash action that modifies state, STOP and either:
-1. **Write code** — you have enough information
-2. **Report a blocker** — explain what's preventing progress
-3. **Ask for help** — the requirements are unclear
-
-Reading is preparation. Writing is progress. Don't confuse the two.
+- Log context needed to reproduce, not just the error message
+- Never swallow errors silently
+- Validate inputs at the edges; trust data already inside the system
 
 ## Error Recovery
 
-When things go wrong during a session:
+- **Failed test:** Use systematic-debugging skill — gather evidence, form hypothesis, test it
+- **Merge conflict:** Read both sides, understand intent before resolving
+- **Broken build after dep update:** Pin previous version, add BACKLOG item
+- **Corrupted worktree:** Fresh worktree from main, cherry-pick completed commits
+- **Agent unexpected results:** Verify findings manually before acting
+- **Lost work:** Check `git stash list`, `git reflog`, `git fsck --lost-found`
 
-- **Failed test after code change:** Don't iterate blindly. Use systematic-debugging skill — gather evidence, form hypothesis, test it.
-- **Merge conflict:** Read both sides carefully. Understand intent of both changes before resolving. If unclear, ask.
-- **Broken build after dependency update:** Pin the previous working version, create a BACKLOG item for the upgrade, and continue with the current task.
-- **Corrupted worktree:** Create a fresh worktree from main. Cherry-pick completed commits from the broken one. Don't try to repair in-place.
-- **Agent returns unexpected results:** Verify findings manually before acting on them. Agents can hallucinate file paths or misread code.
-- **Lost work (uncommitted changes):** Check `git stash list`, `git reflog`, and `git fsck --lost-found` before assuming it's gone.
+## Analysis Paralysis Guard
 
-## Workspace Structure
+5+ consecutive read-only operations without writing code → STOP. Either write code, report a blocker, or ask for help.
 
-```
-project/
-├── .claude/
-│   ├── commands/          # Slash commands (24 commands)
-│   │   ├── init.md        # /init — interactive project setup
-│   │   ├── plan.md        # /plan — brainstorm before building
-│   │   ├── build.md       # /build — full-cycle supervised pipeline (with checkpoints)
-│   │   ├── ship.md        # /ship — fully autonomous pipeline (zero checkpoints, fire-and-forget)
-│   │   ├── deepen.md      # /deepen — enrich a plan with parallel research agents
-│   │   ├── discuss.md     # /discuss — capture decisions before planning
-│   │   ├── review.md      # /review — code review against standards
-│   │   ├── review-swarm.md # /review-swarm — multi-agent parallel review
-│   │   ├── deep-research.md # /deep-research — multi-agent parallel research
-│   │   ├── compound.md    # /compound — document solved problem for reuse
-│   │   ├── orchestrate.md # /orchestrate — wave-based parallel execution
-│   │   ├── team.md        # /team — collaborative agent team (experimental)
-│   │   ├── status.md      # /status — project state + goal alignment
-│   │   ├── debug.md       # /debug [issue] — root cause investigation
-│   │   ├── backlog.md     # /backlog — triage capture inbox
-│   │   ├── wrap.md        # /wrap — end-of-session documentation
-│   │   ├── pr.md          # /pr — create/manage pull requests
-│   │   ├── map.md         # /map — analyze unfamiliar codebase
-│   │   ├── resume.md      # /resume — reload context from last session
-│   │   ├── pause.md       # /pause — mid-session checkpoint
-│   │   ├── quick.md       # /quick — fast-track small changes with TDD
-│   │   ├── changelog.md   # /changelog — generate release notes
-│   │   ├── add-tests.md   # /add-tests — find and fill test gaps
-│   │   └── health.md      # /health — comprehensive project health check
-│   ├── hooks/             # Lifecycle hooks
-│   │   ├── session-start.js   # Bootstrap context on session start
-│   │   ├── context-monitor.js # Track context usage + analysis paralysis guard
-│   │   ├── prompt-guard.js    # PreToolUse: scan docs/ writes for prompt injection
-│   │   ├── teammate-idle.js   # Agent Teams: quality gate when teammate finishes
-│   │   ├── task-completed.js  # Agent Teams: quality gate on task completion
-│   │   └── ship-loop.sh       # Stop hook: Ralph-style session iteration for /ship
-│   ├── skills/            # Workflow skills (34 skills)
-│   │   ├── brainstorming/
-│   │   ├── writing-plans/
-│   │   ├── executing-plans/
-│   │   ├── test-driven-development/
-│   │   ├── systematic-debugging/
-│   │   ├── verification-before-completion/
-│   │   ├── requesting-code-review/
-│   │   ├── receiving-code-review/
-│   │   ├── subagent-driven-development/
-│   │   ├── dispatching-parallel-agents/
-│   │   ├── finishing-a-development-branch/
-│   │   ├── using-git-worktrees/
-│   │   ├── writing-skills/
-│   │   ├── session-wrap/
-│   │   ├── codebase-mapping/
-│   │   ├── context-checkpoint/
-│   │   ├── pr-workflow/
-│   │   ├── resolve-in-parallel/
-│   │   ├── deployment-verification/
-│   │   ├── document-review/
-│   │   ├── changelog-generation/
-│   │   ├── migration-planning/
-│   │   ├── performance-profiling/
-│   │   ├── browser-testing/
-│   │   ├── autonomous-loop/
-│   │   ├── iterative-refinement/
-│   │   ├── wave-orchestration/
-│   │   ├── swarm-orchestration/
-│   │   ├── agent-teams/
-│   │   ├── knowledge-compounding/
-│   │   ├── session-continuity/
-│   │   ├── dependency-management/
-│   │   ├── spike-exploration/
-│   │   └── scope-cutting/
-│   └── agents/            # Specialized subagents (26 agents, dispatched via Task tool)
-│       ├── code-reviewer.md
-│       ├── architecture-strategist.md
-│       ├── security-sentinel.md
-│       ├── code-simplicity-reviewer.md
-│       ├── performance-oracle.md
-│       ├── best-practices-researcher.md
-│       ├── git-history-analyzer.md
-│       ├── learnings-researcher.md
-│       ├── plan-checker.md
-│       ├── integration-checker.md
-│       ├── bug-reproduction-validator.md
-│       ├── codebase-mapper.md
-│       ├── pr-comment-resolver.md
-│       ├── test-gap-analyzer.md
-│       ├── research-synthesizer.md
-│       ├── deployment-verifier.md
-│       ├── schema-drift-detector.md
-│       ├── frontend-reviewer.md
-│       ├── convention-enforcer.md
-│       ├── data-integrity-guardian.md
-│       ├── test-coverage-reviewer.md
-│       ├── framework-docs-researcher.md
-│       ├── codebase-context-mapper.md
-│       ├── integration-verifier.md
-│       ├── findings-synthesizer.md
-│       └── team-lead.md
-├── .claude-plugin/
-│   └── plugin.json        # Plugin manifest for marketplace distribution
-├── hooks/
-│   └── hooks.json         # Plugin hook definitions (uses ${CLAUDE_PLUGIN_ROOT})
-├── blueprint.local.md    # Per-project agent config (gitignored)
-├── docs/
-│   ├── decisions/         # Architecture Decision Records (ADRs)
-│   ├── plans/             # Implementation plans (YYYY-MM-DD-topic.md)
-│   ├── specs/             # Feature specs and requirements
-│   ├── research/          # Domain research and analysis
-│   ├── solutions/         # Solved problems — institutional knowledge (created by /compound)
-│   └── context/           # Project goals, status, conventions
-│       ├── GOALS.md       # Objectives + priority framework
-│       ├── STATUS.md      # Commit log, current state, known issues
-│       ├── CONVENTIONS.md # Tech stack, coding standards, boundaries
-│       └── DECISIONS.md   # Locked decisions from /discuss (created on demand)
-├── src/                   # Application source code
-├── tests/                 # Test suite
-├── infra/                 # Docker, CI/CD, deployment configs
-├── scripts/               # Automation and utility scripts
-├── BACKLOG.md             # Quick capture inbox
-├── CLAUDE.md              # This file — agent instructions
-└── README.md              # Project README
-```
+## Lightweight Workflow
 
-## Code Quality Standards
+For small, well-understood changes (< 3 files, obvious root cause):
+1. Write failing test → 2. Fix → 3. Verify → 4. Commit
 
-- Keep files under 500 lines — split if longer
-- Use typed interfaces for all public APIs
-- Write tests FIRST — follow the test-driven-development skill (red-green-refactor)
-- DRY, YAGNI — remove dead code, don't add features beyond what's asked
-- Run linter and tests before every commit — never commit red
-- One logical change per commit — if you need "and" to describe it, split it
-- No TODO comments without a corresponding BACKLOG.md entry
-- No commented-out code — delete it, git remembers
+If touching 4+ files, adding new API, or changing data models → use full workflow (`/plan` → `/build`).
 
-## Context Loading
+## Code Quality
 
-When starting a session, context loads in this order:
+- Files under 500 lines — split if longer
+- Typed interfaces for public APIs
+- Write tests FIRST (red-green-refactor)
+- DRY, YAGNI — no dead code, no features beyond what's asked
+- Run linter and tests before every commit
+- One logical change per commit
+- No TODO comments without BACKLOG.md entry
+- No commented-out code — git remembers
 
-1. **SessionStart hook** — bootstraps project state summary automatically
-2. **CLAUDE.md** (this file) — always loaded, includes Session Continuity
-3. **docs/context/STATUS.md** — read for full project state, commit history, known issues
-4. **docs/context/GOALS.md** — read when prioritizing work or triaging backlog
-5. **docs/context/CONVENTIONS.md** — read before writing code (tech stack, naming, patterns)
-6. **docs/context/DECISIONS.md** — locked decisions that MUST be honored (created by `/discuss`)
-7. **BACKLOG.md** — read when looking for what to work on next
-8. **docs/solutions/** — searched by learnings-researcher before planning (institutional knowledge)
-9. **blueprint.local.md** — per-project agent configuration (which reviewers/researchers to use)
-10. **.claude/skills/** — triggered contextually or invoked via commands
-11. **.claude/agents/** — dispatched via Task tool for isolated 200K-context work
+## Commit Conventions
 
-The Session Continuity section above tells you where to start. If it's empty, run `/init` to set up the project or `/status` to orient.
+Format: `type(scope): brief description`
 
-## Skills — When They Trigger
+Types: `feat`, `fix`, `refactor`, `docs`, `test`, `chore`, `style`, `perf`
 
-| Situation | Skill | Command |
-|-----------|-------|---------|
-| Full-cycle supervised development | (chains all below) | `/build` |
-| Full-cycle autonomous development | (chains all below, zero checkpoints) | `/ship` |
-| Enrich a plan with parallel research | (plan deepening) | `/deepen` |
-| Capture decisions before planning | (discuss process) | `/discuss` |
-| Before building anything new | brainstorming | `/plan` |
-| Have approved design, need steps | writing-plans | — |
-| Executing a multi-step plan | executing-plans | — |
-| Writing any new code or fixing bugs | test-driven-development | — |
-| Encountering a bug or test failure | systematic-debugging | `/debug` |
-| About to claim work is done | verification-before-completion | — |
-| Completing a task, before merging | requesting-code-review | `/review` |
-| Receiving review feedback | receiving-code-review | — |
-| Multiple independent tasks | dispatching-parallel-agents | — |
-| Executing plan tasks in session | subagent-driven-development | — |
-| Need isolated workspace | using-git-worktrees | — |
-| Implementation complete, integrate | finishing-a-development-branch | — |
-| Creating or editing skills | writing-skills | — |
-| End of work session | session-wrap | `/wrap` |
-| Small bug fix or config change | (lightweight flow — see above) | `/quick` |
-| Exploratory spike or research | spike-exploration | — |
-| Onboarding to unfamiliar codebase | codebase-mapping | `/map` |
-| Mid-session state capture | context-checkpoint | `/pause` |
-| Creating or managing pull requests | pr-workflow | `/pr` |
-| Batch-resolving independent items | resolve-in-parallel | — |
-| Pre-production deployment check | deployment-verification | — |
-| Reviewing specs, plans, or docs | document-review | — |
-| Generating release notes | changelog-generation | `/changelog` |
-| Planning database or API migrations | migration-planning | — |
-| Investigating performance issues | performance-profiling | — |
-| Verifying UI in a real browser | browser-testing | — |
-| Autonomous plan execution with retry | autonomous-loop (with circuit breaker) | — |
-| Iterative review→fix→review cycles | iterative-refinement | — |
-| Plan with mixed dependencies, parallel+serial | wave-orchestration | `/orchestrate` |
-| Dispatching multiple agents on same problem | swarm-orchestration | `/review-swarm`, `/deep-research` |
-| Collaborative multi-file implementation | agent-teams | `/team` |
-| Documenting a solved problem for reuse | knowledge-compounding | `/compound` |
-| Tracking state across session boundaries | session-continuity | `/pause`, `/resume` |
-| Adding, upgrading, or removing dependencies | dependency-management | — |
-| Feature too large, need to reduce scope | scope-cutting | — |
-
-## Agents — When to Dispatch
-
-Use Task tool to dispatch agents when you need isolated 200K context for a specific job:
-
-| Agent | When to Use |
-|-------|-------------|
-| code-reviewer | After completing a major step — reviews diff against plan and standards |
-| architecture-strategist | Reviewing structural changes, adding services, evaluating refactors |
-| security-sentinel | Before deployment, after implementing auth/payment/API endpoints |
-| code-simplicity-reviewer | After implementation — identifies YAGNI violations and over-engineering |
-| performance-oracle | After features are built — finds bottlenecks, N+1 queries, scaling issues |
-| best-practices-researcher | Need industry standards or implementation guidance for a technology |
-| git-history-analyzer | Need to understand why code evolved to its current state |
-| learnings-researcher | Before planning — searches docs/ for past solutions, decisions, and patterns |
-| plan-checker | After writing a plan — verifies it will work before execution begins |
-| integration-checker | After implementation — verifies components are wired together correctly |
-| bug-reproduction-validator | When debugging — validates reproduction steps and verifies fixes work |
-| codebase-mapper | Onboarding to unfamiliar code — maps architecture, conventions, stack, concerns |
-| pr-comment-resolver | Processing PR feedback — resolves a single review comment with minimal change |
-| test-gap-analyzer | Improving coverage — finds untested paths and generates behavioral tests |
-| research-synthesizer | After parallel research — consolidates multiple agent outputs into unified summary |
-| deployment-verifier | Before deploying — verifies build, tests, security, migrations, rollback plan |
-| schema-drift-detector | Reviewing PRs — catches unrelated schema/migration changes in diffs |
-| frontend-reviewer | Reviewing UI code — checks a11y, responsive, CSS perf, component architecture |
-| convention-enforcer | Reviewing code — validates changes against CONVENTIONS.md rules |
-| data-integrity-guardian | PRs with migrations, schema changes, or data transformations |
-| test-coverage-reviewer | After implementation — verifies test quality, not just line coverage |
-| framework-docs-researcher | Before planning — gathers current docs for frameworks used in project |
-| codebase-context-mapper | Before planning — maps files and dependencies affected by a specific change |
-| integration-verifier | After wave completion — verifies parallel implementations work together |
-| findings-synthesizer | After review/research swarm — de-duplicates and prioritizes all findings |
-| team-lead | Orchestrates /orchestrate and /team — delegates to workers, monitors, reviews, signs off |
-
-## Multi-Agent Patterns
-
-Four orchestration patterns for coordinated multi-agent workflows:
-
-```
-Controller (main Claude session)
-│
-├── Research Swarm (/deep-research) ── all run in parallel
-│   ├── best-practices-researcher
-│   ├── framework-docs-researcher
-│   ├── learnings-researcher
-│   ├── git-history-analyzer
-│   ├── codebase-context-mapper
-│   └── → research-synthesizer (sequential, after all above)
-│
-├── Planning Pipeline (sequential)
-│   ├── plan-checker (loop: verify → fix → re-verify, max 3 passes)
-│   ├── /deepen (parallel research enrichment)
-│   └── integration-checker
-│
-├── Execution — team-lead agent orchestrates (choose one mode):
-│   │
-│   ├── team-lead (dedicated 200K context, delegates all work)
-│   │   ├── Designs execution strategy
-│   │   ├── Dispatches and monitors workers
-│   │   ├── Runs integration verification
-│   │   ├── Reviews + signs off (standalone) or reports (pipeline --no-review)
-│   │   │
-│   │   ├── Wave Mode (/orchestrate)
-│   │   │   ├── Wave 1: [implementer-A, implementer-B] (parallel, worktree-isolated)
-│   │   │   ├── integration-verifier (between each wave)
-│   │   │   └── Wave 2: [implementer-C] (depends on Wave 1)
-│   │   │
-│   │   └── Team Mode (/team)
-│   │       ├── Plan approval gate (each teammate submits plan before coding)
-│   │       ├── Teammate A (owns src/api/*) ──┐
-│   │       ├── Teammate B (owns src/ui/*)    ├── shared task list + messaging
-│   │       ├── Teammate C (owns tests/*)   ──┘
-│   │       └── Quality gates: TeammateIdle + TaskCompleted hooks
-│
-├── Iterative Review (/ship, /build --iterate N)
-│   ├── iteration 1: /review-swarm → findings → resolve-in-parallel → test
-│   ├── iteration 2: /review-swarm → findings → resolve-in-parallel → test
-│   ├── ... (converges when P1 = 0 or max iterations reached)
-│   └── Circuit breaker: stops on no-progress or repeated errors
-│
-├── Review Swarm (/review-swarm) ── all run in parallel
-│   ├── code-reviewer
-│   ├── security-sentinel
-│   ├── performance-oracle
-│   ├── code-simplicity-reviewer
-│   ├── convention-enforcer
-│   ├── test-coverage-reviewer
-│   ├── + conditional: architecture-strategist, frontend-reviewer,
-│   │     data-integrity-guardian, schema-drift-detector
-│   └── → findings-synthesizer (sequential, after all above)
-│
-└── Knowledge Loop
-    └── /compound → docs/solutions/ → learnings-researcher → /plan
-```
-
-**Choosing an execution pattern:**
-
-| Pattern | Use When | Key Feature |
-|---------|----------|-------------|
-| **Waves** (`/orchestrate`) | Tasks have dependency ordering | Worktree isolation + integration verification |
-| **Agent Teams** (`/team`) | Teammates need to discuss and coordinate | Shared task list + messaging + plan approval gate |
-| **Sequential** | All tasks are dependent | Autonomous loop (with circuit breaker) |
-
-**Choosing a pipeline:**
+## Pipelines
 
 | Pipeline | Checkpoints | Review | Best For |
 |----------|-------------|--------|----------|
@@ -435,93 +125,25 @@ Controller (main Claude session)
 | `/ship` | None (fully autonomous) | Iterative (default 3 cycles) | Well-defined features, fire-and-forget |
 | `/quick` | None | None | Trivial changes (< 3 files) |
 
-**Per-project config:** Edit `blueprint.local.md` to enable/disable agents for your stack.
+## Context Loading Order
 
-## Commit Conventions
+1. **SessionStart hook** — auto-bootstraps project state
+2. **CLAUDE.md** (this file)
+3. **docs/context/STATUS.md** — current state, commit history, known issues
+4. **docs/context/CONVENTIONS.md** — tech stack, naming, patterns (read before writing code)
+5. **docs/context/DECISIONS.md** — locked decisions that MUST be honored
+6. **docs/context/GOALS.md** — when prioritizing work
+7. **BACKLOG.md** — when looking for what to work on next
+8. **blueprint.local.md** — which agents are active for this project's stack
 
-One logical change per commit. Format: `type(scope): brief description`
+## Gotchas
 
-Types:
-- `feat:` new feature
-- `fix:` bug fix
-- `refactor:` code restructuring (no behavior change)
-- `docs:` documentation changes
-- `test:` test additions/changes
-- `chore:` maintenance tasks (deps, configs, CI)
-- `style:` formatting only (no logic change)
-- `perf:` performance improvement
-
-Scope is optional but encouraged: `feat(auth): add JWT refresh token rotation`
+- Hooks must use `hooks/hooks.json` with `${CLAUDE_PLUGIN_ROOT}` paths, NOT `.claude/settings.json` (fails when template is auto-discovered as plugin from parent directory)
+- Stop hook `"decision": "block"` does NOT reset context — use `scripts/ship.sh` for true context refresh between iterations
+- Each Agent Teams teammate MUST own specific files — concurrent modification causes conflicts
+- Use `execFileSync` not `execSync` in hook scripts to prevent shell injection
+- `docs/images/*` excluded from install — only for template's GitHub README display
 
 ## Key Learnings
 
-_Append dated entries here as the project evolves. This section is the project's institutional memory. Updated by `/wrap`._
-
-### 2026-03-04: Block-beta diagrams — arrows cause phantom rows, use color for hierarchy
-Removing arrows from `block-beta` Mermaid diagrams eliminates the phantom routing rows that made diagrams visually cluttered. Instead, use dark section headers (#2C3E50, white text) paired with light child nodes to create clear visual containment without needing connectors or subgraph nesting. This dark/light contrast pattern should be used for all future block-beta diagrams in the template.
-
-### 2026-03-05: Gap analysis across 5 repos shaped the skill/agent expansion
-Researched ruflo, compound-engineering, superpowers, get-shit-done, and ralphy repos to identify missing capabilities. Key patterns adopted: autonomous retry loop with exponential backoff (ralphy), structured document review with three-pass critique, deployment verification checklists, and parallel resolution of independent items. Multi-engine orchestration (ralphy) was explicitly excluded as out of scope for a Claude-focused template.
-
-### 2026-03-09: HTML/CSS diagrams via Playwright beat Mermaid for quality
-Switching from Mermaid block-beta → HTML/CSS rendered via Playwright `element.screenshot()` produces dramatically better diagrams: proper Inter/JetBrains Mono fonts, flexbox layout, gradient badges, and full color control. Source is `docs/images/render-diagrams.html`. Mermaid `.mmd` files kept for reference but are no longer the primary rendering path. Also: `background-clip: text` CSS gradient breaks in Chromium PDF — use solid color instead.
-
-### 2026-03-09: Agent swarm architecture — three orchestration patterns
-After evaluating 8 Claude Code repos, three multi-agent patterns emerged: (1) **Swarm** — N specialists analyze same input in parallel, synthesizer merges findings (used for review and research); (2) **Wave** — tasks grouped by dependency, parallel within waves, integration-verifier between waves; (3) **Knowledge loop** — `/compound` saves solved problems to `docs/solutions/`, learnings-researcher searches them before future planning. Per-project config (`blueprint.local.md`) prevents irrelevant agents from wasting tokens. Compound Engineering's parallel review was the gold standard; GSD's context monitoring was already in our hooks.
-
-### 2026-03-09: CI install tests should use threshold counts, not exact
-Testing `>=20 commands` instead of `==21` means adding new components doesn't break CI. The install script tests on both ubuntu and macos to catch platform-specific issues (e.g., `find` flag differences, `wc` whitespace handling). ShellCheck SC2295: parameter expansions inside `${..#..}` need inner quotes to prevent glob pattern matching — `"${dest#"$TARGET_DIR"/}"` not `"${dest#$TARGET_DIR/}"`.
-
-### 2026-03-09: Agent tool restrictions — principle of least privilege from official docs
-Official Claude Code docs recommend "grant only necessary permissions" via the `tools` frontmatter field. Three tiers emerged: (1) review/verification agents get `[Read, Glob, Grep, Bash]` — read-only analysis; (2) web researchers add `WebFetch, WebSearch`; (3) only 3 agents that must modify code get `Edit, Write`. Synthesizers need only `[Read, Glob, Grep]` — no Bash, no web. This prevents accidental writes during analysis and makes agent intent explicit in the frontmatter.
-
-### 2026-03-09: Agent Teams complement swarms — don't replace them
-Anthropic's experimental Agent Teams feature (shared task list + messaging between independent Claude instances) serves a different purpose than subagent swarms. Swarms are best for parallel read-only analysis; Agent Teams for collaborative implementation where teammates need to discuss and divide file ownership. The template integrates both: `/deep-research` (swarm) → `/plan` → `/team` OR `/orchestrate` → `/review-swarm` (swarm). Key requirement: each teammate MUST own specific files — concurrent modification causes conflicts. Quality gate hooks (`TeammateIdle`, `TaskCompleted`) enforce standards. Use `execFileSync` not `execSync` in template hooks to prevent shell injection.
-
-### 2026-03-11: Three iteration layers compose naturally — task, quality, session
-The template now has three distinct iteration mechanisms at different granularities: (1) **Task-level** (`autonomous-loop` + circuit breaker) — retry individual tasks with exponential backoff, stop on stalls; (2) **Quality-level** (`iterative-refinement`) — review→fix→review N times, converge on P1=0; (3) **Session-level** (`ship-loop.sh` Stop hook) — Ralph-style re-feed of prompt when context exhausts. They compose within `/ship`: autonomous loop executes tasks, iterative refinement polishes output, Stop hook restarts if the session runs out of context before `<promise>DONE</promise>`.
-
-### 2026-03-11: Team-lead agent + --no-review flag enables composable execution
-Dedicating a team-lead agent (fresh 200K context) to coordinate `/orchestrate` and `/team` solves two problems: (1) the main session's context isn't consumed by coordination overhead, and (2) standalone execution commands self-review and sign off, while pipeline commands (`/ship`, `/build`) pass `--no-review` to avoid double review. This composability pattern — inner components controllable by outer pipelines — is how CE's `disable-model-invocation` works, adapted for project-level commands without plugin infrastructure.
-
-### 2026-03-11: GSD's plan-checker verify loop is the highest-ROI quality gate
-Researching GSD, Ralph, and CE revealed that validating plans _before_ execution catches the most expensive mistakes earliest. `/ship` now runs a plan-checker → fix → re-check loop (max 3 passes) before committing to execution. Fixing a wrong approach in a markdown plan costs seconds; fixing it after implementation costs minutes of rework + debugging + re-review. This is combined with `/deepen` (parallel research enrichment) to produce plans that are both validated and deeply informed.
-
-### 2026-03-11: Stop hook "decision: block" does NOT reset context — use external bash loop for that
-Ralph (`ralph.sh`) spawns a fresh `claude --print` process per iteration in a bash for-loop — each gets clean 200K context. Our `ship-loop.sh` Stop hook uses `"decision": "block"` which prevents exit but continues the same session (context keeps growing). These solve different problems: the Stop hook catches premature exit (Claude gives up too early), while the external loop handles genuine context exhaustion. The `--external` flag in `/ship` disables the Stop hook when the outer loop manages restarts, preventing conflict between the two mechanisms.
-
-### 2026-03-12: Playwright recordVideo misses DOM mutations — use screenshot + ffmpeg instead
-Playwright's `recordVideo` API captures compositor output in headless Chromium, which can miss DOM changes between render frames. Individual `page.screenshot()` calls force a render and reliably capture DOM state. For animated HTML recording: take PNG screenshots at 25fps with `page.waitForTimeout(40)` between frames, then stitch with ffmpeg (`-framerate 25 -i frame_%05d.png -c:v libx264 -pix_fmt yuv420p -crf 20`). Source: `docs/images/promo-video.html`, script: `scripts/record-promo.js`. Also: GitHub strips `<video>` tags from README markdown — use animated GIF instead (800px, 10fps, 128-color palette keeps 30s under 2 MB). When verifying H.264 with ffmpeg, put `-ss` AFTER `-i` for accurate seeking; before `-i` jumps to nearest keyframe.
-
-### 2026-03-12: Install script exclusion filters should use directory wildcards, not extension denylists
-The `install.sh` image exclusion filter listed specific extensions (`.svg/.mmd/.png/.html`) which missed `.mp4` and `.gif` files added by the promo video. Changed to `docs/images/*` directory-level wildcard so any future file additions are automatically excluded. Lesson: denylist-by-extension is fragile for asset directories — use directory-level patterns instead. Also: GitHub Actions matrix `fail-fast: true` (default) cancels sibling jobs when one fails, which is why macOS showed "Cancelled" rather than its own failure.
-
-### 2026-03-11: All README diagrams now rendered via HTML/CSS + Playwright — zero ASCII art remaining
-Added 10 new diagram sections to `docs/images/render-diagrams.html` covering every ASCII block in the README: standalone swarm diagrams (review-swarm, research-swarm), orchestration patterns (wave-orchestration, agent-teams, knowledge-loop), compact inline flows (dev-loop, lightweight-workflow), and dispatch patterns (dispatch-swarm, dispatch-wave, dispatch-team). Consistent design system: semantic colors (green=review, purple=research, amber=waves, blue=planning), Inter + JetBrains Mono fonts, 880px canvas width. To re-render: `python3 -m http.server 8765` in `docs/images/`, then Playwright `element.screenshot()` each `#id`.
-
-### 2026-03-16: GSD-2 analysis — error taxonomy and flaky test quarantine are highest-ROI imports
-Analyzed GSD-2's 27-doc "Building Coding Agents" knowledge base (synthesized from Claude, GPT, Gemini, Grok). ~50% of GSD-2's value is in runtime infrastructure (model routing, TUI, session branching) that doesn't apply to a prompt template. The portable mechanisms: (1) error classification before debugging saves time on syntax errors (deterministic fast path, skip full 4-phase process); (2) flaky test quarantine prevents autonomous loops from burning iterations on non-deterministic failures; (3) trending degradation signals (rising difficulty, hot file) catch soft deterioration that hard-stall circuit breakers miss; (4) assumption ledgers surface invisible interpretive decisions for batch review at checkpoints.
-
-### 2026-03-16: "Never summarize summaries" prevents multi-session drift
-GSD-2's principle: summaries drift from reality "like a photocopy of a photocopy." Each `/wrap` should regenerate Session Continuity from actual project state (git log, test results, file system), not from the previous Session Continuity content. The codebase and git history are the lossless source of truth — summaries are lossy caches that must be reconciled against them.
-
-### 2026-03-18: gstack analysis — suppressions lists and premise challenge are highest-ROI imports
-Analyzed gstack (garrytan/gstack, 22K stars) — 13 role-based skills turning Claude Code into a virtual engineering team (CEO, Eng Manager, Designer, QA, etc.). Key architectural difference: gstack uses single-skill monoliths (500-2000 line prompts running sequentially in one session), while our blueprint uses agent swarms with orchestration. gstack's strength is prompt quality per-skill; ours is coordination and automation. Highest-ROI imports: (1) suppressions lists for reviewer agents prevent false positives that erode trust — simple to add, immediate quality improvement; (2) premise challenge before design challenges WHAT to build, not just HOW; (3) WTF-likelihood additive risk scoring complements our binary circuit breakers; (4) AI slop detection patterns are unique — grepable frontend patterns (purple gradients, 3-column grids, centered everything) with confidence tiers; (5) completeness principle ("boil the lake") with dual-scale effort estimation changes scoping decisions. Fix-First methodology was evaluated but our orchestration layer already handles the findings→action gap differently through team-lead delegation.
-
-### 2026-03-18: gstack's role-based vs blueprint's orchestration-based architectures are complementary
-gstack optimizes for one person running 10 sessions manually — each skill is a complete workflow. Blueprint optimizes for one session orchestrating many agents automatically. The ideal system takes gstack's prompt quality (opinionated checklists, specific detection patterns, suppressions) and puts it inside blueprint's orchestration framework (swarms, waves, team-lead delegation). This is exactly what we did: absorbed gstack's prompt patterns into our existing agents rather than adopting its architectural model.
-
-### 2026-03-23: Anthropic's skill-creator — cherry-pick concepts, not factory tooling
-Analyzed Anthropic's official skill-creator (`github.com/anthropics/skills`). It's a skill factory: 3 blind-comparison eval agents (analyzer, comparator, grader), 8 Python scripts, 7 JSON schemas, HTML eval viewers. Our system is a skill workshop: TDD-driven, pressure-tested, rationalization-resistant. The factory tooling (blind comparison, benchmark aggregation) adds marginal value over our TDD comparison for template-scale development, and brings Python dependencies. What IS valuable: (1) description trigger testing — generate 20 should/shouldn't-trigger queries and iterate on the description string, filling a gap in our CSO methodology; (2) structured assertions — define specific pass/fail criteria per test instead of freeform "document behavior", making testing quantitative; (3) iteration strategy by skill type — discipline skills need loophole-closing, technique skills need metaphor reframing, reference skills need organization iteration. All three adopted as sections in existing skill files, no new agents or scripts.
-
-### 2026-03-23: claude-squad and claude-mem — exhaustive analysis, import nothing
-Analyzed two high-profile repos: claude-squad (6.5K stars, Go tmux multiplexer for parallel agents) and claude-mem (39.7K stars, automatic memory via observer agent + SQLite + ChromaDB). claude-squad operates at a fundamentally different abstraction layer (external process manager treating agents as black boxes via terminal scraping) — blueprint's internal approach with native tool access is strictly more powerful. claude-mem uses exhaustive capture + AI compression vs blueprint's selective curation — different philosophies for different goals. Three initially-proposed improvements (session-end memory prompt, richer MEMORY.md descriptions, self-documenting header) all collapsed under scrutiny: the session prompt risks over-saving, richer descriptions conflict with the 200-line cap, and the header duplicates system prompt instructions. Key meta-lesson: the gravitational pull to import _something_ from impressive repos is a real bias — sometimes the right answer is "nothing."
-
-### 2026-03-25: Plugin hooks must use `hooks/hooks.json` + `${CLAUDE_PLUGIN_ROOT}`, not `settings.json`
-Hooks defined in `.claude/settings.json` use relative paths that resolve from the user's CWD. When the template is auto-discovered as a plugin from a parent directory, those paths fail (`MODULE_NOT_FOUND`) because the hook scripts don't exist relative to the parent CWD. The fix: define hooks in `hooks/hooks.json` (the plugin hook mechanism) using `${CLAUDE_PLUGIN_ROOT}` which resolves to the plugin's own directory. This works for both plugin auto-discovery and installed projects (since `install.sh` copies `.claude-plugin/`, making installed projects plugins too). Rule: always use `hooks/hooks.json` for plugins; reserve `settings.json` hooks only for non-plugin projects where CWD is guaranteed.
-
-### 2026-03-24: Multi-Agent Framework — 3 patterns from hybrid multi-model coordination
-Analyzed a hybrid multi-model framework (Claude Code lead + Gemini CLI + Codex CLI). Architecture uses file-based shared state (`ops/` directory with TASKS.md, MEMORY.md, CHANGELOG.md, CONTRACTS.md) and direct bash invocation for real-time orchestration. Key insight: framework optimizes for model diversity (heterogeneous agents with different capabilities — Gemini's 1M context, Codex's sandbox); blueprint optimizes for prompt diversity (homogeneous Claude agents with different system prompts). File-based coordination solves cross-model communication; prompt-based specialization is better when agents share a process. Imported 3 patterns: (1) worker failure protocol for team-lead — retry once with reduced scope, then skip and continue, report all skipped tasks; prevents single worker failure from stalling pipeline; (2) contradiction resolution rules for findings-synthesizer — 4-step protocol (same problem → specific fix; different problems → both; contradiction → conservative wins + log; one flags → flag wins); (3) structured escalation format for iterative-refinement — present reviewer perspectives + recommendation with options, not just a flat findings list. Rejected everything else: multi-model delegation (fragile CLI invocation), file-based protocol (I/O overhead), assignment matrix (designed for heterogeneous agents), Phase 0 analysis (our research swarm is deeper), CONTRACTS.md (GSD's interface extraction is fresher), attribution changelog (git blame suffices). Meta-lesson reinforced: "well-written ≠ applicable" — same conclusion as claude-squad and claude-mem analyses.
-
-### 2026-03-23: GSD (get-shit-done) — selective imports from 82K-line codebase
-Analyzed GSD (glittercowboy/get-shit-done) — meta-prompting framework with milestone lifecycle, 44 commands, 46 workflows, 16 agents, and a Node.js CLI layer (`gsd-tools.cjs`). Key architectural difference: GSD invests in runtime tooling (state management, config, frontmatter CRUD); blueprint stays zero-dependency markdown-only. Rejected: multi-runtime support (wrong layer), Node.js CLI layer (different architecture), milestone lifecycle (our pipelines suffice), model profiles (per-agent frontmatter is enough). Imported 4 patterns: (1) interface context extraction in plans — embed types/interfaces from codebase so parallel executors don't waste context exploring; highest-value single import; (2) deviation scope boundary — only auto-fix issues caused by current task, 3-attempt limit per issue, log pre-existing debt to BACKLOG not inline; extends GSD-2 error classification; (3) prompt injection guard hook — PreToolUse advisory scanning docs/ writes for injection patterns + invisible Unicode; (4) stub tracking — post-execution scan for hardcoded empty values and placeholder text that make features look done without working. Also added verification command guideline to writing-plans (every step should include runnable verification, not "it works"). GSD's deepest principle — "plans are prompts, not documents that become prompts" — reinforces embedding enough context that executors don't need to explore.
+<!-- Append dated entries here. Updated by /wrap. Keep only actionable patterns, not analysis history. -->
