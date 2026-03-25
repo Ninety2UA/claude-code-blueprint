@@ -8,7 +8,7 @@ set -euo pipefail
 
 REPO_URL="https://github.com/Ninety2UA/claude-code-blueprint"
 TEMP_DIR=""
-VERSION="2.2.0"
+VERSION="2.3.0"
 
 # Colors
 RED='\033[0;31m'
@@ -288,8 +288,8 @@ if [ "$DRY_RUN" = true ]; then
 elif [ "$UPDATE" = true ]; then
     echo -e "  ${GREEN}${BOLD}Update complete!${NC} ${DIM}v${VERSION}${NC}"
     echo ""
-    echo -e "  ${DIM}Updated:${NC}  .claude/ (commands, skills, agents, hooks), scripts/, .claude-plugin/"
-    echo -e "  ${DIM}Kept:${NC}     CLAUDE.md, docs/context/, BACKLOG.md, blueprint.local.md"
+    echo -e "  ${DIM}Updated:${NC}  .claude/ (commands, skills, agents, hooks), scripts/, hooks/, .claude-plugin/"
+    echo -e "  ${DIM}Kept:${NC}     CLAUDE.md, BACKLOG.md, blueprint.local.md, .gitignore, all docs/ subdirectories"
     echo ""
     echo -e "  ${DIM}Check the changelog: https://github.com/Ninety2UA/claude-code-blueprint/releases${NC}"
 else
