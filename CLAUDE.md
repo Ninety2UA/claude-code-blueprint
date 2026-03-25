@@ -10,24 +10,24 @@ Quality over speed. Small steps compound into big progress. The patterns you est
 
 <!-- Updated by /wrap at end of each work session. Read this FIRST when starting a new session. -->
 
-**Last session:** 2026-03-24
+**Last session:** 2026-03-25
 
 **What was done:**
-- Deep compatibility analysis of hybrid multi-model coordination framework (Claude + Gemini CLI + Codex CLI)
-- Imported 3 patterns into existing files: worker failure protocol (`.claude/agents/team-lead.md`), contradiction resolution rules (`.claude/agents/findings-synthesizer.md`), structured escalation format (`.claude/skills/iterative-refinement/SKILL.md`)
-- Rejected 7 patterns: multi-model delegation, file-based coordination protocol, assignment heuristic matrix, Phase 0 whole-repo analysis, CONTRACTS.md, attribution changelog, research skip conditions
-- Updated README.md with 15th repo in ecosystem table + details section
-- All changes committed (`c6a1cb4`) and pushed to origin
+- Fixed PostToolUse hook errors caused by relative path resolution in `.claude/settings.json`
+- Created `hooks/hooks.json` with `${CLAUDE_PLUGIN_ROOT}` paths — proper plugin hook mechanism for SessionStart, PreToolUse, PostToolUse, Stop
+- Removed hook definitions from `.claude/settings.json` (kept permissions only)
+- Updated `install.sh` to copy `hooks/` directory to target projects
+- Updated CLAUDE.md workspace structure to include `hooks/hooks.json`
 
 **What's remaining:**
 - GOALS.md still has placeholder templates (P3 — filled by `/init` on install)
 
-**Start here:** No in-flight work. Template is ready for next feature or external contribution.
+**Start here:** No in-flight work. Commit and push the hook migration, then restart Claude Code to verify PostToolUse errors are gone.
 
 **Current state of the code:**
 - Build: n/a (template repo, no build step)
-- Tests: CI pending on `c6a1cb4` — last full green on `c5b512e`
-- Uncommitted changes: none (working tree clean)
+- Tests: CI pending — last full green on `c5b512e`
+- Uncommitted changes: `.claude/settings.json`, `CLAUDE.md`, `install.sh` (modified), `hooks/` (new directory)
 
 ## Behavioral Rules
 
@@ -229,6 +229,8 @@ project/
 │       └── team-lead.md
 ├── .claude-plugin/
 │   └── plugin.json        # Plugin manifest for marketplace distribution
+├── hooks/
+│   └── hooks.json         # Plugin hook definitions (uses ${CLAUDE_PLUGIN_ROOT})
 ├── blueprint.local.md    # Per-project agent config (gitignored)
 ├── docs/
 │   ├── decisions/         # Architecture Decision Records (ADRs)
@@ -514,6 +516,9 @@ Analyzed Anthropic's official skill-creator (`github.com/anthropics/skills`). It
 
 ### 2026-03-23: claude-squad and claude-mem — exhaustive analysis, import nothing
 Analyzed two high-profile repos: claude-squad (6.5K stars, Go tmux multiplexer for parallel agents) and claude-mem (39.7K stars, automatic memory via observer agent + SQLite + ChromaDB). claude-squad operates at a fundamentally different abstraction layer (external process manager treating agents as black boxes via terminal scraping) — blueprint's internal approach with native tool access is strictly more powerful. claude-mem uses exhaustive capture + AI compression vs blueprint's selective curation — different philosophies for different goals. Three initially-proposed improvements (session-end memory prompt, richer MEMORY.md descriptions, self-documenting header) all collapsed under scrutiny: the session prompt risks over-saving, richer descriptions conflict with the 200-line cap, and the header duplicates system prompt instructions. Key meta-lesson: the gravitational pull to import _something_ from impressive repos is a real bias — sometimes the right answer is "nothing."
+
+### 2026-03-25: Plugin hooks must use `hooks/hooks.json` + `${CLAUDE_PLUGIN_ROOT}`, not `settings.json`
+Hooks defined in `.claude/settings.json` use relative paths that resolve from the user's CWD. When the template is auto-discovered as a plugin from a parent directory, those paths fail (`MODULE_NOT_FOUND`) because the hook scripts don't exist relative to the parent CWD. The fix: define hooks in `hooks/hooks.json` (the plugin hook mechanism) using `${CLAUDE_PLUGIN_ROOT}` which resolves to the plugin's own directory. This works for both plugin auto-discovery and installed projects (since `install.sh` copies `.claude-plugin/`, making installed projects plugins too). Rule: always use `hooks/hooks.json` for plugins; reserve `settings.json` hooks only for non-plugin projects where CWD is guaranteed.
 
 ### 2026-03-24: Multi-Agent Framework — 3 patterns from hybrid multi-model coordination
 Analyzed a hybrid multi-model framework (Claude Code lead + Gemini CLI + Codex CLI). Architecture uses file-based shared state (`ops/` directory with TASKS.md, MEMORY.md, CHANGELOG.md, CONTRACTS.md) and direct bash invocation for real-time orchestration. Key insight: framework optimizes for model diversity (heterogeneous agents with different capabilities — Gemini's 1M context, Codex's sandbox); blueprint optimizes for prompt diversity (homogeneous Claude agents with different system prompts). File-based coordination solves cross-model communication; prompt-based specialization is better when agents share a process. Imported 3 patterns: (1) worker failure protocol for team-lead — retry once with reduced scope, then skip and continue, report all skipped tasks; prevents single worker failure from stalling pipeline; (2) contradiction resolution rules for findings-synthesizer — 4-step protocol (same problem → specific fix; different problems → both; contradiction → conservative wins + log; one flags → flag wins); (3) structured escalation format for iterative-refinement — present reviewer perspectives + recommendation with options, not just a flat findings list. Rejected everything else: multi-model delegation (fragile CLI invocation), file-based protocol (I/O overhead), assignment matrix (designed for heterogeneous agents), Phase 0 analysis (our research swarm is deeper), CONTRACTS.md (GSD's interface extraction is fresher), attribution changelog (git blame suffices). Meta-lesson reinforced: "well-written ≠ applicable" — same conclusion as claude-squad and claude-mem analyses.

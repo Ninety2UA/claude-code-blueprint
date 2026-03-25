@@ -208,6 +208,15 @@ if [ "$CLAUDE_ONLY" = false ]; then
         success ".claude-plugin/ installed (plugin manifest)"
     fi
 
+    # Plugin hooks (lifecycle hooks using ${CLAUDE_PLUGIN_ROOT} paths)
+    if [ -d "$SOURCE_DIR/hooks" ]; then
+        find "$SOURCE_DIR/hooks" -type f | while read -r file; do
+            rel="${file#"$SOURCE_DIR"/}"
+            copy_item "$file" "$TARGET_DIR/$rel"
+        done
+        success "hooks/ installed (lifecycle hooks)"
+    fi
+
     # Scripts
     if [ -d "$SOURCE_DIR/scripts" ]; then
         info "Installing scripts/..."

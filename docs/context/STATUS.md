@@ -1,13 +1,13 @@
 # Project Status
 
-Last updated: 2026-03-24
+Last updated: 2026-03-25
 
 ## Current State of the Code
 
 - **Build:** n/a (template repo, no build step)
-- **Tests:** CI pending on `c6a1cb4` — last full green on `c5b512e`
+- **Tests:** CI pending — last full green on `c5b512e`
 - **Lint:** markdownlint clean, shellcheck clean
-- **Last verified:** 2026-03-24 (CI last full green on `c5b512e`)
+- **Last verified:** 2026-03-25
 - **Version:** 2.3.0 (34 skills, 26 agents, 24 commands, 6 hooks)
 
 ## In Flight
@@ -26,6 +26,7 @@ Last updated: 2026-03-24
 
 | Date | Commit | Description |
 |------|--------|-------------|
+| 2026-03-25 | (pending) | Fix: migrate hook definitions from `.claude/settings.json` to `hooks/hooks.json` with `${CLAUDE_PLUGIN_ROOT}` paths — fixes PostToolUse errors when template auto-discovered as plugin from parent directory. 3 modified, 1 new file. |
 | 2026-03-24 | `c6a1cb4` | Feat: absorb 3 patterns from multi-agent framework analysis — worker failure protocol (team-lead), contradiction resolution (findings-synthesizer), structured escalation (iterative-refinement). README updated with 15th repo entry. 5 files, +66/-10. |
 | 2026-03-23 | `0a7a0c4` | Feat: GSD imports — interface context extraction (writing-plans), deviation scope boundary + stub tracking (executing-plans), prompt injection guard hook (new), verification command guideline (writing-plans). 4 modified, 1 new file, +114 lines. |
 | 2026-03-23 | `2526608` | Docs: session wrap-up — claude-squad and claude-mem compatibility analyses (verdict: import nothing from either) |
@@ -64,6 +65,7 @@ Last updated: 2026-03-24
 
 | Date | Decision | ADR |
 |------|----------|-----|
+| 2026-03-25 | Hooks belong in `hooks/hooks.json` (plugin mechanism with `${CLAUDE_PLUGIN_ROOT}`), not `settings.json` (project mechanism with relative paths). Fixes auto-discovery path resolution. | — |
 | 2026-03-24 | Import 3 patterns from multi-agent coordination framework (worker failure protocol, contradiction resolution, structured escalation). Reject 7: multi-model delegation, file-based coordination, assignment matrix, Phase 0 analysis, CONTRACTS.md, attribution changelog, skip conditions. | — |
 | 2026-03-23 | Import 4 GSD patterns (interface context, deviation scope boundary, prompt guard hook, stub tracking). Reject: multi-runtime, CLI layer, milestone lifecycle, model profiles, file locking, workflow guard. Principle: import the judgment, not the machinery. | — |
 | 2026-03-23 | Don't import patterns from claude-squad (external process manager) or claude-mem (exhaustive memory capture) — blueprint's internal approach and selective curation are superior for our use case | — |
