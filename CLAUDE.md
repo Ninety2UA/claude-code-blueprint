@@ -42,6 +42,7 @@ hooks/hooks.json     # Plugin hook definitions (uses ${CLAUDE_PLUGIN_ROOT})
 docs/context/        # GOALS.md, STATUS.md, CONVENTIONS.md, DECISIONS.md
 docs/plans/          # Implementation plans (YYYY-MM-DD-topic.md)
 docs/solutions/      # Institutional knowledge (created by /compound)
+docs/learnings/      # Key learnings and gotchas (updated by /wrap)
 docs/specs/          # Feature specs and requirements
 scripts/ship.sh      # Ralph-style external loop for /ship
 blueprint.local.md   # Per-project agent config (gitignored)
@@ -146,4 +147,4 @@ Types: `feat`, `fix`, `refactor`, `docs`, `test`, `chore`, `style`, `perf`
 
 ## Key Learnings
 
-<!-- Append dated entries here. Updated by /wrap. Keep only actionable patterns, not analysis history. -->
+See `docs/learnings/LEARNINGS.md` for project-specific patterns, gotchas, and insights. Updated by `/wrap`.

@@ -158,7 +158,7 @@ copy_item() {
         # In update mode, never overwrite user-customized files
         if [ "$UPDATE" = true ]; then
             case "$rel_path" in
-                CLAUDE.md|BACKLOG.md|blueprint.local.md|.gitignore|docs/context/*|docs/plans/*|docs/specs/*|docs/decisions/*|docs/solutions/*|docs/research/*)
+                CLAUDE.md|BACKLOG.md|blueprint.local.md|.gitignore|docs/context/*|docs/plans/*|docs/specs/*|docs/decisions/*|docs/solutions/*|docs/research/*|docs/learnings/*)
                     echo -e "  ${DIM}  keep  $rel_path (yours)${NC}"
                     return
                     ;;

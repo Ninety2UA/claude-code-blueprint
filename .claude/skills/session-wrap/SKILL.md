@@ -16,7 +16,8 @@ Do NOT modify source code, tests, or infrastructure files. This is a documentati
 Read ALL of these before writing anything. Do as many in parallel as possible.
 
 **Project state files (read all):**
-- `CLAUDE.md` — Session Continuity section, Key Learnings, behavioral rules
+- `CLAUDE.md` — Session Continuity section, behavioral rules
+- `docs/learnings/LEARNINGS.md` — key learnings and gotchas
 - `docs/context/STATUS.md` — in flight, up next, what's done, known issues
 - `docs/context/GOALS.md` — current objectives, milestones, non-goals
 - `docs/context/CONVENTIONS.md` — tech stack, patterns, boundaries (check if new patterns emerged)
@@ -161,9 +162,9 @@ Update the **Session Continuity** section at the top of CLAUDE.md. This is what 
 - "Start here" should be a single actionable instruction, not a list
 - **Never summarize summaries.** Regenerate this section from actual project state (git log, test results, file system), not from the previous Session Continuity content. Summaries drift from reality like a photocopy of a photocopy — each compression loses information. The codebase and git history are the lossless source of truth; always reconcile against them.
 
-## Step 5: Update CLAUDE.md — Key Learnings
+## Step 5: Update docs/learnings/LEARNINGS.md
 
-Append new entries to the **Key Learnings** section at the bottom of CLAUDE.md:
+Append new entries to `docs/learnings/LEARNINGS.md` (create the file if it doesn't exist):
 
 ```markdown
 ### YYYY-MM-DD: [Brief title of learning]
@@ -383,7 +384,7 @@ Present final confirmation to the user:
 - [ ] User received clear, accurate summary of session work with file paths and commit hashes
 - [ ] User confirmed summary before docs were updated
 - [ ] CLAUDE.md Session Continuity section has specific "start here" instruction
-- [ ] CLAUDE.md Key Learnings has new entries (if learnings exist)
+- [ ] docs/learnings/LEARNINGS.md has new entries (if learnings exist)
 - [ ] docs/context/STATUS.md reflects actual current state with updated tables
 - [ ] docs/context/STATUS.md commit log has new entries with real commit hashes
 - [ ] docs/context/GOALS.md updated only if goals/milestones were affected
