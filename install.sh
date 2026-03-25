@@ -47,6 +47,7 @@ usage() {
     echo "  TARGET_DIR          Target directory (default: current directory)"
     echo ""
     echo "Options:"
+    echo "  --update            Update template files only (preserves your customizations)"
     echo "  --claude-only       Only install .claude/ directory (skills, agents, commands)"
     echo "  --docs-only         Only install docs/ structure and CLAUDE.md"
     echo "  --no-overwrite      Skip files that already exist"
@@ -58,6 +59,8 @@ usage() {
     echo "Examples:"
     echo "  $0                              # Install to current directory"
     echo "  $0 ~/projects/my-app            # Install to specific project"
+    echo "  $0 --update                     # Update template to latest version"
+    echo "  $0 --update ~/projects/my-app   # Update specific project"
     echo "  $0 --claude-only                # Only add .claude/ configuration"
     echo "  $0 --no-overwrite .             # Install without overwriting"
     echo ""
@@ -67,12 +70,14 @@ usage() {
 TARGET_DIR="."
 CLAUDE_ONLY=false
 DOCS_ONLY=false
+UPDATE=false
 NO_OVERWRITE=false
 FORCE=false
 DRY_RUN=false
 
 while [[ $# -gt 0 ]]; do
     case $1 in
+        --update)       UPDATE=true; shift ;;
         --claude-only)  CLAUDE_ONLY=true; shift ;;
         --docs-only)    DOCS_ONLY=true; shift ;;
         --no-overwrite) NO_OVERWRITE=true; shift ;;
@@ -94,6 +99,17 @@ print_banner
 if [ "$CLAUDE_ONLY" = true ] && [ "$DOCS_ONLY" = true ]; then
     error "--claude-only and --docs-only are mutually exclusive"
     exit 1
+fi
+
+if [ "$UPDATE" = true ] && { [ "$CLAUDE_ONLY" = true ] || [ "$DOCS_ONLY" = true ]; }; then
+    error "--update cannot be combined with --claude-only or --docs-only"
+    exit 1
+fi
+
+# Update mode implies force on template files (skip user files entirely)
+if [ "$UPDATE" = true ]; then
+    FORCE=true
+    info "Update mode — refreshing template files, preserving your customizations"
 fi
 
 # Check if target exists
@@ -139,6 +155,15 @@ copy_item() {
     fi
 
     if [ -f "$dest" ]; then
+        # In update mode, never overwrite user-customized files
+        if [ "$UPDATE" = true ]; then
+            case "$rel_path" in
+                CLAUDE.md|BACKLOG.md|blueprint.local.md|.gitignore|docs/context/*|docs/plans/*|docs/specs/*|docs/decisions/*|docs/solutions/*|docs/research/*)
+                    echo -e "  ${DIM}  keep  $rel_path (yours)${NC}"
+                    return
+                    ;;
+            esac
+        fi
         if [ "$NO_OVERWRITE" = true ]; then
             echo -e "  ${DIM}  skip  $rel_path (exists)${NC}"
             return
@@ -246,8 +271,8 @@ if [ "$CLAUDE_ONLY" = false ]; then
     success "Core files installed"
 fi
 
-# Create placeholder directories
-if [ "$CLAUDE_ONLY" = false ] && [ "$DRY_RUN" = false ]; then
+# Create placeholder directories (skip in update mode — project already has structure)
+if [ "$CLAUDE_ONLY" = false ] && [ "$DRY_RUN" = false ] && [ "$UPDATE" = false ]; then
     for dir in src tests infra; do
         mkdir -p "$TARGET_DIR/$dir"
         if [ ! -f "$TARGET_DIR/$dir/.gitkeep" ]; then
@@ -260,6 +285,13 @@ echo ""
 
 if [ "$DRY_RUN" = true ]; then
     info "Dry run complete. No files were modified."
+elif [ "$UPDATE" = true ]; then
+    echo -e "  ${GREEN}${BOLD}Update complete!${NC} ${DIM}v${VERSION}${NC}"
+    echo ""
+    echo -e "  ${DIM}Updated:${NC}  .claude/ (commands, skills, agents, hooks), scripts/, .claude-plugin/"
+    echo -e "  ${DIM}Kept:${NC}     CLAUDE.md, docs/context/, BACKLOG.md, blueprint.local.md"
+    echo ""
+    echo -e "  ${DIM}Check the changelog: https://github.com/Ninety2UA/claude-code-blueprint/releases${NC}"
 else
     echo -e "  ${GREEN}${BOLD}Installation complete!${NC}"
     echo ""
