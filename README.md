@@ -3,12 +3,12 @@
 </p>
 
 <p align="center">
-  <strong>Production-grade scaffolding for AI-assisted software development with Claude Code</strong>
+  <strong>Production-grade Claude Code plugin for AI-assisted software development</strong>
 </p>
 
 <p align="center">
   <a href="#how-does-this-compare">Compare</a> ·
-  <a href="#latest-ecosystem-wide-analysis">What's New</a> ·
+  <a href="#whats-new-in-v30--plugin-mode">What's New</a> ·
   <a href="#quick-start">Quick Start</a> ·
   <a href="#what-you-get">What You Get</a> ·
   <a href="#workflow">Workflow</a> ·
@@ -74,9 +74,25 @@ Every component in Blueprint is informed by what works (and what doesn't) across
 
 > **"Import nothing" is a feature, not a failure.** The gravitational pull to adopt *something* from impressive repos is a real bias. Sometimes the right answer after deep analysis is to change nothing — and documenting why is just as valuable as documenting what you imported.
 
-### What's New in v2.3
+### What's New in v3.0 — Plugin Mode
 
-The latest round of deep dives added **5 new repos** to the analysis and incorporated patterns from two previously-analyzed ones:
+**Blueprint is now a native Claude Code plugin.** Install once, available in every project — zero engine files in your git history.
+
+```
+/plugin marketplace add Ninety2UA/claude-code-blueprint
+/plugin install claude-code-blueprint
+```
+
+**Key changes:**
+- **Plugin architecture** — 25 commands, 34 skills, 26 agents, 6 hooks provided by the plugin, not copied into your project
+- **`/init` scaffolding** — project files (CLAUDE.md, docs/, BACKLOG.md) created on demand per project
+- **`/migrate-to-plugin`** — new command to transition v2.x projects to plugin mode
+- **Cross-references use Skill tool** — commands invoke skills by name instead of reading file paths (required by Claude Code's sandbox)
+- **Legacy mode preserved** — `--legacy` flag in install.sh for users who prefer in-project files
+
+### What was new in v2.3
+
+The v2.3 release added **5 new repos** to the analysis and incorporated patterns from two previously-analyzed ones:
 
 - **GSD** (24.7K ★) — 82K-line meta-prompting framework. Imported interface context extraction for plans, a prompt injection guard hook, stub tracking, and verification command guidelines. Rejected the Node.js CLI layer and milestone lifecycle.
 - **Anthropic skill-creator** (Official) — Anthropic's own skill factory. Imported description trigger testing, structured assertions, and iteration strategy by skill type. Rejected the blind-comparison eval agents and Python scripting layer.
@@ -113,7 +129,7 @@ Fifteen patterns from [gstack](https://github.com/garrytan/gstack) (Garry Tan's 
 - **Diagram forcing** — mandatory ASCII diagrams for non-trivial data flows
 - **Dual-scale effort** — every effort estimate shows both human team time and AI-assisted time
 
-All patterns woven into existing agents ([security-sentinel](.claude/agents/security-sentinel.md), [performance-oracle](.claude/agents/performance-oracle.md), [data-integrity-guardian](.claude/agents/data-integrity-guardian.md), [code-reviewer](.claude/agents/code-reviewer.md), [frontend-reviewer](.claude/agents/frontend-reviewer.md), [findings-synthesizer](.claude/agents/findings-synthesizer.md), [team-lead](.claude/agents/team-lead.md)) and skills ([autonomous-loop](.claude/skills/autonomous-loop/), [brainstorming](.claude/skills/brainstorming/), [writing-plans](.claude/skills/writing-plans/)) — no new files were added.
+All patterns woven into existing agents ([security-sentinel](plugins/claude-code-blueprint/agents/security-sentinel.md), [performance-oracle](plugins/claude-code-blueprint/agents/performance-oracle.md), [data-integrity-guardian](plugins/claude-code-blueprint/agents/data-integrity-guardian.md), [code-reviewer](plugins/claude-code-blueprint/agents/code-reviewer.md), [frontend-reviewer](plugins/claude-code-blueprint/agents/frontend-reviewer.md), [findings-synthesizer](plugins/claude-code-blueprint/agents/findings-synthesizer.md), [team-lead](plugins/claude-code-blueprint/agents/team-lead.md)) and skills ([autonomous-loop](plugins/claude-code-blueprint/skills/autonomous-loop/), [brainstorming](plugins/claude-code-blueprint/skills/brainstorming/), [writing-plans](plugins/claude-code-blueprint/skills/writing-plans/)) — no new files were added.
 
 </details>
 
@@ -125,7 +141,7 @@ Analyzed [GSD](https://github.com/gsd-build/get-shit-done) — an 82K-line meta-
 **Imported:**
 
 - **Interface context extraction in plans** — embed types/interfaces from the codebase directly into plans so parallel executors don't waste context exploring the codebase. Highest-value single import — plans are prompts, not documents that become prompts
-- **Prompt injection guard hook** — PreToolUse advisory scan for injection patterns and invisible Unicode in docs/ writes ([prompt-guard.js](.claude/hooks/prompt-guard.js))
+- **Prompt injection guard hook** — PreToolUse advisory scan for injection patterns and invisible Unicode in docs/ writes ([prompt-guard.js](plugins/claude-code-blueprint/hooks/handlers/prompt-guard.js))
 - **Deviation scope boundary + stub tracking** — only auto-fix issues caused by the current task (3-attempt limit); post-execution scan for hardcoded empty values and placeholder text
 - **Verification command guideline** — every plan step includes a runnable verification command, not "it works"
 
@@ -236,14 +252,15 @@ Already using the blueprint with in-project files? Install the plugin, then run 
 ### Project structure
 
 ```
-your-project/
-├── .claude/
-│   ├── commands/       # 24 slash commands (/plan, /ship, /review-swarm, /orchestrate, /team, ...)
-│   ├── skills/         # 34 workflow skills (TDD, wave-orchestration, swarms, iterative-refinement, ...)
-│   ├── agents/         # 26 specialized agents (team-lead, reviewer, security, perf, ...)
-│   └── hooks/          # 6 lifecycle hooks (session-start, context-monitor, prompt-guard, ship-loop, quality gates)
+Plugin (installed globally, zero files in your project)
+├── 25 commands          /plan, /ship, /build, /review-swarm, /orchestrate, /team, ...
+├── 34 skills            TDD, wave-orchestration, swarms, iterative-refinement, ...
+├── 26 agents            team-lead, reviewer, security, perf, ...
+└── 6 hooks              session-start, context-monitor, prompt-guard, ship-loop
+
+your-project/ (scaffolded by /init)
 ├── docs/
-│   ├── context/        # GOALS.md · STATUS.md · CONVENTIONS.md · STATE.md
+│   ├── context/        # GOALS.md · STATUS.md · CONVENTIONS.md
 │   ├── plans/          # Implementation plans
 │   ├── specs/          # Feature specifications
 │   ├── decisions/      # Architecture Decision Records
@@ -251,7 +268,6 @@ your-project/
 │   └── solutions/      # Institutional knowledge (created by /compound)
 ├── src/                # Your application code
 ├── tests/              # Your test suite
-├── scripts/            # Automation & utility scripts
 ├── infra/              # Deployment & infrastructure
 ├── CLAUDE.md           # Master orchestration — Claude reads this first
 ├── BACKLOG.md          # Idea & bug capture inbox
@@ -427,70 +443,70 @@ Skills are workflow modules that activate at specific development phases. They c
 
 | Skill | What it does | Trigger |
 |-------|-------------|---------|
-| [**brainstorming**](.claude/skills/brainstorming/) | Explores 3+ design options with tradeoff analysis before any creative work | `/plan` or before any new feature |
-| [**writing-plans**](.claude/skills/writing-plans/) | Converts approved design into implementation plan with bite-sized tasks | After design approval |
-| [**spike-exploration**](.claude/skills/spike-exploration/) | Timeboxed investigation to answer a specific technical question before committing to an approach | Significant technical uncertainty |
-| [**scope-cutting**](.claude/skills/scope-cutting/) | Systematically separates must-haves from nice-to-haves using MoSCoW classification | Feature too large or deadline at risk |
+| [**brainstorming**](plugins/claude-code-blueprint/skills/brainstorming/) | Explores 3+ design options with tradeoff analysis before any creative work | `/plan` or before any new feature |
+| [**writing-plans**](plugins/claude-code-blueprint/skills/writing-plans/) | Converts approved design into implementation plan with bite-sized tasks | After design approval |
+| [**spike-exploration**](plugins/claude-code-blueprint/skills/spike-exploration/) | Timeboxed investigation to answer a specific technical question before committing to an approach | Significant technical uncertainty |
+| [**scope-cutting**](plugins/claude-code-blueprint/skills/scope-cutting/) | Systematically separates must-haves from nice-to-haves using MoSCoW classification | Feature too large or deadline at risk |
 
 ### Execution phase
 
 | Skill | What it does | Trigger |
 |-------|-------------|---------|
-| [**executing-plans**](.claude/skills/executing-plans/) | Executes plans in batches with review checkpoints. Tracks assumptions with `[cascading]` impact flags | Separate session from planning |
-| [**test-driven-development**](.claude/skills/test-driven-development/) | Enforces red-green-refactor for all code changes | Before any code implementation |
-| [**subagent-driven-development**](.claude/skills/subagent-driven-development/) | Dispatches fresh subagent per task with two-stage review | In-session plan execution |
-| [**dispatching-parallel-agents**](.claude/skills/dispatching-parallel-agents/) | Runs independent investigations concurrently | 2+ independent failure domains |
-| [**using-git-worktrees**](.claude/skills/using-git-worktrees/) | Creates isolated git workspace for feature work | Before major features |
+| [**executing-plans**](plugins/claude-code-blueprint/skills/executing-plans/) | Executes plans in batches with review checkpoints. Tracks assumptions with `[cascading]` impact flags | Separate session from planning |
+| [**test-driven-development**](plugins/claude-code-blueprint/skills/test-driven-development/) | Enforces red-green-refactor for all code changes | Before any code implementation |
+| [**subagent-driven-development**](plugins/claude-code-blueprint/skills/subagent-driven-development/) | Dispatches fresh subagent per task with two-stage review | In-session plan execution |
+| [**dispatching-parallel-agents**](plugins/claude-code-blueprint/skills/dispatching-parallel-agents/) | Runs independent investigations concurrently | 2+ independent failure domains |
+| [**using-git-worktrees**](plugins/claude-code-blueprint/skills/using-git-worktrees/) | Creates isolated git workspace for feature work | Before major features |
 
 ### Quality phase
 
 | Skill | What it does | Trigger |
 |-------|-------------|---------|
-| [**systematic-debugging**](.claude/skills/systematic-debugging/) | Root cause investigation before any fix is attempted. Step 0 error classification fast-paths syntax errors and quarantines flaky tests | Any bug or test failure |
-| [**verification-before-completion**](.claude/skills/verification-before-completion/) | Requires fresh evidence before claiming work is done | Before any success claim |
-| [**requesting-code-review**](.claude/skills/requesting-code-review/) | Dispatches code-reviewer agent for automated review | After completing a task |
-| [**receiving-code-review**](.claude/skills/receiving-code-review/) | Evaluates review feedback technically, not defensively | When review feedback arrives |
+| [**systematic-debugging**](plugins/claude-code-blueprint/skills/systematic-debugging/) | Root cause investigation before any fix is attempted. Step 0 error classification fast-paths syntax errors and quarantines flaky tests | Any bug or test failure |
+| [**verification-before-completion**](plugins/claude-code-blueprint/skills/verification-before-completion/) | Requires fresh evidence before claiming work is done | Before any success claim |
+| [**requesting-code-review**](plugins/claude-code-blueprint/skills/requesting-code-review/) | Dispatches code-reviewer agent for automated review | After completing a task |
+| [**receiving-code-review**](plugins/claude-code-blueprint/skills/receiving-code-review/) | Evaluates review feedback technically, not defensively | When review feedback arrives |
 
 ### Completion phase
 
 | Skill | What it does | Trigger |
 |-------|-------------|---------|
-| [**finishing-a-development-branch**](.claude/skills/finishing-a-development-branch/) | Structured merge workflow with options for squash, rebase, or merge | After all tests pass |
-| [**session-wrap**](.claude/skills/session-wrap/) | Documents work done, updates all project docs, captures learnings. Regenerates from source of truth — never summarizes previous summaries | `/wrap` or end of session |
+| [**finishing-a-development-branch**](plugins/claude-code-blueprint/skills/finishing-a-development-branch/) | Structured merge workflow with options for squash, rebase, or merge | After all tests pass |
+| [**session-wrap**](plugins/claude-code-blueprint/skills/session-wrap/) | Documents work done, updates all project docs, captures learnings. Regenerates from source of truth — never summarizes previous summaries | `/wrap` or end of session |
 
 ### Operations phase
 
 | Skill | What it does | Trigger |
 |-------|-------------|---------|
-| [**codebase-mapping**](.claude/skills/codebase-mapping/) | Maps unfamiliar codebase into structured documentation | `/map` or before modifying unfamiliar code |
-| [**context-checkpoint**](.claude/skills/context-checkpoint/) | Mid-session state capture — lighter than `/wrap` | `/pause` or before risky operations |
-| [**pr-workflow**](.claude/skills/pr-workflow/) | End-to-end PR lifecycle — create, self-review, handle feedback | `/pr` or when creating pull requests |
-| [**resolve-in-parallel**](.claude/skills/resolve-in-parallel/) | Batch-resolves independent items concurrently | 2+ independent items to fix |
-| [**deployment-verification**](.claude/skills/deployment-verification/) | Go/no-go pre-deploy checklist across 8 areas | Before any production deployment |
-| [**document-review**](.claude/skills/document-review/) | Structured three-pass critique (accuracy, clarity, completeness) | When reviewing specs, plans, or docs |
-| [**changelog-generation**](.claude/skills/changelog-generation/) | Release notes from git history in Keep a Changelog format | `/changelog` or preparing a release |
-| [**migration-planning**](.claude/skills/migration-planning/) | Safe migration plans with rollback procedures | Database/API/dependency migrations |
-| [**performance-profiling**](.claude/skills/performance-profiling/) | Profile-driven investigation — measure before optimizing | When something is "slow" |
-| [**browser-testing**](.claude/skills/browser-testing/) | Verify UI changes via Playwright MCP browser tools | After UI changes need visual verification |
-| [**autonomous-loop**](.claude/skills/autonomous-loop/) | Iterate through plan tasks with retry, backoff, circuit breaker (3 no-progress / 5 same-error), and degradation detection (rising difficulty, hot-file signals) | Autonomous plan execution — "just do it all" |
-| [**iterative-refinement**](.claude/skills/iterative-refinement/) | Review→fix→review cycles with 3 convergence modes (fast/deep/perfect), early exit on convergence | `/ship` Stage 5, `/build --iterate N` |
-| [**dependency-management**](.claude/skills/dependency-management/) | Evaluates, adds, upgrades, and removes dependencies with safety gates | Adding, upgrading, or auditing dependencies |
+| [**codebase-mapping**](plugins/claude-code-blueprint/skills/codebase-mapping/) | Maps unfamiliar codebase into structured documentation | `/map` or before modifying unfamiliar code |
+| [**context-checkpoint**](plugins/claude-code-blueprint/skills/context-checkpoint/) | Mid-session state capture — lighter than `/wrap` | `/pause` or before risky operations |
+| [**pr-workflow**](plugins/claude-code-blueprint/skills/pr-workflow/) | End-to-end PR lifecycle — create, self-review, handle feedback | `/pr` or when creating pull requests |
+| [**resolve-in-parallel**](plugins/claude-code-blueprint/skills/resolve-in-parallel/) | Batch-resolves independent items concurrently | 2+ independent items to fix |
+| [**deployment-verification**](plugins/claude-code-blueprint/skills/deployment-verification/) | Go/no-go pre-deploy checklist across 8 areas | Before any production deployment |
+| [**document-review**](plugins/claude-code-blueprint/skills/document-review/) | Structured three-pass critique (accuracy, clarity, completeness) | When reviewing specs, plans, or docs |
+| [**changelog-generation**](plugins/claude-code-blueprint/skills/changelog-generation/) | Release notes from git history in Keep a Changelog format | `/changelog` or preparing a release |
+| [**migration-planning**](plugins/claude-code-blueprint/skills/migration-planning/) | Safe migration plans with rollback procedures | Database/API/dependency migrations |
+| [**performance-profiling**](plugins/claude-code-blueprint/skills/performance-profiling/) | Profile-driven investigation — measure before optimizing | When something is "slow" |
+| [**browser-testing**](plugins/claude-code-blueprint/skills/browser-testing/) | Verify UI changes via Playwright MCP browser tools | After UI changes need visual verification |
+| [**autonomous-loop**](plugins/claude-code-blueprint/skills/autonomous-loop/) | Iterate through plan tasks with retry, backoff, circuit breaker (3 no-progress / 5 same-error), and degradation detection (rising difficulty, hot-file signals) | Autonomous plan execution — "just do it all" |
+| [**iterative-refinement**](plugins/claude-code-blueprint/skills/iterative-refinement/) | Review→fix→review cycles with 3 convergence modes (fast/deep/perfect), early exit on convergence | `/ship` Stage 5, `/build --iterate N` |
+| [**dependency-management**](plugins/claude-code-blueprint/skills/dependency-management/) | Evaluates, adds, upgrades, and removes dependencies with safety gates | Adding, upgrading, or auditing dependencies |
 
 ### Orchestration phase
 
 | Skill | What it does | Trigger |
 |-------|-------------|---------|
-| [**wave-orchestration**](.claude/skills/wave-orchestration/) | Groups tasks by dependency into waves, parallel within waves, integration verification between | `/orchestrate` or plans with mixed dependencies |
-| [**swarm-orchestration**](.claude/skills/swarm-orchestration/) | Coordinates multiple specialized agents analyzing the same input in parallel | `/review-swarm`, `/deep-research`, or custom swarms |
-| [**agent-teams**](.claude/skills/agent-teams/) | Collaborative multi-file implementation with shared task list and messaging (experimental) | `/team` or complex cross-layer features |
-| [**knowledge-compounding**](.claude/skills/knowledge-compounding/) | Documents solved problems as searchable institutional knowledge in docs/solutions/ | `/compound` or after solving non-trivial problems |
-| [**session-continuity**](.claude/skills/session-continuity/) | Manages STATE.md for execution tracking across session boundaries | `/pause`, `/resume`, or during wave orchestration |
+| [**wave-orchestration**](plugins/claude-code-blueprint/skills/wave-orchestration/) | Groups tasks by dependency into waves, parallel within waves, integration verification between | `/orchestrate` or plans with mixed dependencies |
+| [**swarm-orchestration**](plugins/claude-code-blueprint/skills/swarm-orchestration/) | Coordinates multiple specialized agents analyzing the same input in parallel | `/review-swarm`, `/deep-research`, or custom swarms |
+| [**agent-teams**](plugins/claude-code-blueprint/skills/agent-teams/) | Collaborative multi-file implementation with shared task list and messaging (experimental) | `/team` or complex cross-layer features |
+| [**knowledge-compounding**](plugins/claude-code-blueprint/skills/knowledge-compounding/) | Documents solved problems as searchable institutional knowledge in docs/solutions/ | `/compound` or after solving non-trivial problems |
+| [**session-continuity**](plugins/claude-code-blueprint/skills/session-continuity/) | Manages STATE.md for execution tracking across session boundaries | `/pause`, `/resume`, or during wave orchestration |
 
 ### Meta
 
 | Skill | What it does | Trigger |
 |-------|-------------|---------|
-| [**writing-skills**](.claude/skills/writing-skills/) | Creates and tests new skills using TDD for documentation | When creating new skills |
+| [**writing-skills**](plugins/claude-code-blueprint/skills/writing-skills/) | Creates and tests new skills using TDD for documentation | When creating new skills |
 
 ## Agents Reference
 
@@ -502,32 +518,32 @@ Agents are specialized subprocesses dispatched via Claude's Task tool. Each agen
 
 | Agent | Domain | When to dispatch |
 |-------|--------|-----------------|
-| [**code-reviewer**](.claude/agents/code-reviewer.md) | Standards, correctness, plan compliance | After completing a major step or before merge |
-| [**architecture-strategist**](.claude/agents/architecture-strategist.md) | Structural patterns, service boundaries | When reviewing PRs, adding services, refactoring |
-| [**security-sentinel**](.claude/agents/security-sentinel.md) | OWASP, auth flows, vulnerability scanning | Before deployment, after auth/payment/API work |
-| [**code-simplicity-reviewer**](.claude/agents/code-simplicity-reviewer.md) | YAGNI violations, over-engineering | After implementation is complete |
-| [**performance-oracle**](.claude/agents/performance-oracle.md) | Bottlenecks, N+1 queries, algorithmic complexity | After features are built, on performance concerns |
-| [**best-practices-researcher**](.claude/agents/best-practices-researcher.md) | Industry standards, library documentation | When needing external guidance |
-| [**git-history-analyzer**](.claude/agents/git-history-analyzer.md) | Code evolution, pattern archaeology | When understanding why code is the way it is |
-| [**learnings-researcher**](.claude/agents/learnings-researcher.md) | Past solutions, decisions, patterns | Before planning — searches docs/ for prior art |
-| [**plan-checker**](.claude/agents/plan-checker.md) | Plan validation, gap detection | After writing a plan, before execution |
-| [**integration-checker**](.claude/agents/integration-checker.md) | Component wiring, connection validation | After implementation — verifies components connect |
-| [**bug-reproduction-validator**](.claude/agents/bug-reproduction-validator.md) | Bug reproduction, fix verification | When debugging — validates repro steps and fixes |
-| [**codebase-mapper**](.claude/agents/codebase-mapper.md) | Architecture, conventions, stack analysis | Onboarding to unfamiliar code or before modifying it |
-| [**pr-comment-resolver**](.claude/agents/pr-comment-resolver.md) | Targeted PR comment resolution | Processing review feedback — one comment per agent |
-| [**test-gap-analyzer**](.claude/agents/test-gap-analyzer.md) | Coverage gaps, test generation | Improving coverage or before major refactors |
-| [**research-synthesizer**](.claude/agents/research-synthesizer.md) | Multi-agent output consolidation | After parallel research — unifies findings |
-| [**deployment-verifier**](.claude/agents/deployment-verifier.md) | Deployment readiness verification | Before deploying — checks 8 critical areas |
-| [**schema-drift-detector**](.claude/agents/schema-drift-detector.md) | Unrelated schema/migration changes | Reviewing PRs — catches scope creep in data layer |
-| [**frontend-reviewer**](.claude/agents/frontend-reviewer.md) | UI/UX code quality review | Reviewing frontend code — a11y, responsive, perf |
-| [**convention-enforcer**](.claude/agents/convention-enforcer.md) | CONVENTIONS.md compliance checking | Reviewing code against project standards |
-| [**data-integrity-guardian**](.claude/agents/data-integrity-guardian.md) | Migration safety, transactions, rollback plans | PRs with migrations, schema changes, data transforms |
-| [**test-coverage-reviewer**](.claude/agents/test-coverage-reviewer.md) | Test quality, assertion meaningfulness, edge cases | After implementation — verifies tests actually validate behavior |
-| [**framework-docs-researcher**](.claude/agents/framework-docs-researcher.md) | Current framework docs for installed versions | Before planning features that use specific framework APIs |
-| [**codebase-context-mapper**](.claude/agents/codebase-context-mapper.md) | Focused impact map for a specific change | Before planning — maps files and dependencies a change will touch |
-| [**integration-verifier**](.claude/agents/integration-verifier.md) | Cross-task integration verification | After wave completion — ensures parallel implementations work together |
-| [**findings-synthesizer**](.claude/agents/findings-synthesizer.md) | Review swarm output consolidation | After `/review-swarm` — de-duplicates and prioritizes all findings |
-| [**team-lead**](.claude/agents/team-lead.md) | Dedicated orchestrator (200K fresh context) | Coordinates `/orchestrate` and `/team` — delegates to workers, monitors progress, reviews, signs off |
+| [**code-reviewer**](plugins/claude-code-blueprint/agents/code-reviewer.md) | Standards, correctness, plan compliance | After completing a major step or before merge |
+| [**architecture-strategist**](plugins/claude-code-blueprint/agents/architecture-strategist.md) | Structural patterns, service boundaries | When reviewing PRs, adding services, refactoring |
+| [**security-sentinel**](plugins/claude-code-blueprint/agents/security-sentinel.md) | OWASP, auth flows, vulnerability scanning | Before deployment, after auth/payment/API work |
+| [**code-simplicity-reviewer**](plugins/claude-code-blueprint/agents/code-simplicity-reviewer.md) | YAGNI violations, over-engineering | After implementation is complete |
+| [**performance-oracle**](plugins/claude-code-blueprint/agents/performance-oracle.md) | Bottlenecks, N+1 queries, algorithmic complexity | After features are built, on performance concerns |
+| [**best-practices-researcher**](plugins/claude-code-blueprint/agents/best-practices-researcher.md) | Industry standards, library documentation | When needing external guidance |
+| [**git-history-analyzer**](plugins/claude-code-blueprint/agents/git-history-analyzer.md) | Code evolution, pattern archaeology | When understanding why code is the way it is |
+| [**learnings-researcher**](plugins/claude-code-blueprint/agents/learnings-researcher.md) | Past solutions, decisions, patterns | Before planning — searches docs/ for prior art |
+| [**plan-checker**](plugins/claude-code-blueprint/agents/plan-checker.md) | Plan validation, gap detection | After writing a plan, before execution |
+| [**integration-checker**](plugins/claude-code-blueprint/agents/integration-checker.md) | Component wiring, connection validation | After implementation — verifies components connect |
+| [**bug-reproduction-validator**](plugins/claude-code-blueprint/agents/bug-reproduction-validator.md) | Bug reproduction, fix verification | When debugging — validates repro steps and fixes |
+| [**codebase-mapper**](plugins/claude-code-blueprint/agents/codebase-mapper.md) | Architecture, conventions, stack analysis | Onboarding to unfamiliar code or before modifying it |
+| [**pr-comment-resolver**](plugins/claude-code-blueprint/agents/pr-comment-resolver.md) | Targeted PR comment resolution | Processing review feedback — one comment per agent |
+| [**test-gap-analyzer**](plugins/claude-code-blueprint/agents/test-gap-analyzer.md) | Coverage gaps, test generation | Improving coverage or before major refactors |
+| [**research-synthesizer**](plugins/claude-code-blueprint/agents/research-synthesizer.md) | Multi-agent output consolidation | After parallel research — unifies findings |
+| [**deployment-verifier**](plugins/claude-code-blueprint/agents/deployment-verifier.md) | Deployment readiness verification | Before deploying — checks 8 critical areas |
+| [**schema-drift-detector**](plugins/claude-code-blueprint/agents/schema-drift-detector.md) | Unrelated schema/migration changes | Reviewing PRs — catches scope creep in data layer |
+| [**frontend-reviewer**](plugins/claude-code-blueprint/agents/frontend-reviewer.md) | UI/UX code quality review | Reviewing frontend code — a11y, responsive, perf |
+| [**convention-enforcer**](plugins/claude-code-blueprint/agents/convention-enforcer.md) | CONVENTIONS.md compliance checking | Reviewing code against project standards |
+| [**data-integrity-guardian**](plugins/claude-code-blueprint/agents/data-integrity-guardian.md) | Migration safety, transactions, rollback plans | PRs with migrations, schema changes, data transforms |
+| [**test-coverage-reviewer**](plugins/claude-code-blueprint/agents/test-coverage-reviewer.md) | Test quality, assertion meaningfulness, edge cases | After implementation — verifies tests actually validate behavior |
+| [**framework-docs-researcher**](plugins/claude-code-blueprint/agents/framework-docs-researcher.md) | Current framework docs for installed versions | Before planning features that use specific framework APIs |
+| [**codebase-context-mapper**](plugins/claude-code-blueprint/agents/codebase-context-mapper.md) | Focused impact map for a specific change | Before planning — maps files and dependencies a change will touch |
+| [**integration-verifier**](plugins/claude-code-blueprint/agents/integration-verifier.md) | Cross-task integration verification | After wave completion — ensures parallel implementations work together |
+| [**findings-synthesizer**](plugins/claude-code-blueprint/agents/findings-synthesizer.md) | Review swarm output consolidation | After `/review-swarm` — de-duplicates and prioritizes all findings |
+| [**team-lead**](plugins/claude-code-blueprint/agents/team-lead.md) | Dedicated orchestrator (200K fresh context) | Coordinates `/orchestrate` and `/team` — delegates to workers, monitors progress, reviews, signs off |
 
 ### How agents work
 
@@ -623,7 +639,7 @@ After installation, run `/init` to configure:
 
 ### Adding your own skills
 
-Skills live in `.claude/skills/your-skill-name/SKILL.md`. The template includes a `writing-skills` skill that uses TDD to create and test new skills:
+In plugin mode, skills are provided by the plugin. To add project-specific skills, create them in your project's `.claude/skills/your-skill-name/SKILL.md` (local overrides take precedence). The plugin includes a `writing-skills` skill that uses TDD to create and test new skills:
 
 ```bash
 claude
@@ -636,7 +652,7 @@ claude
 
 ### Adding your own agents
 
-Agents live in `.claude/agents/your-agent-name.md`. Create a markdown file with YAML frontmatter and a system prompt:
+In plugin mode, agents are provided by the plugin. To add project-specific agents, create them in your project's `.claude/agents/your-agent-name.md`. Create a markdown file with YAML frontmatter and a system prompt:
 
 ```markdown
 ---
@@ -789,7 +805,7 @@ CLAUDE.md includes built-in guidance for common failure scenarios:
 <details>
 <summary><strong>Can I use this with an existing project?</strong></summary>
 
-Yes. In plugin mode (default), the blueprint installs as a plugin — it adds zero files to your project. Just run `curl ... | bash` to install the plugin, then `/init` in your project to scaffold the docs structure. Your existing code is never touched.
+Yes. In plugin mode (default), the blueprint installs as a plugin — it adds zero files to your project. Run `/plugin marketplace add Ninety2UA/claude-code-blueprint` then `/plugin install claude-code-blueprint`, then `/init` in your project to scaffold the docs structure. Your existing code is never touched.
 </details>
 
 <details>
