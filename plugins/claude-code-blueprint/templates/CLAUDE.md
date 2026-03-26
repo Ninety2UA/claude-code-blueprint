@@ -52,19 +52,22 @@ Run `/init` after install to configure `docs/context/CONVENTIONS.md` with actual
 ## Architecture
 
 ```
-.claude-plugin/                          # Marketplace manifest (marketplace.json)
-plugins/claude-code-blueprint/           # Plugin root
-  commands/                              # 24 slash commands (description frontmatter)
-  skills/                                # 34 workflow skills (triggered contextually)
-  agents/                                # 26 specialized subagents
-  hooks/hooks.json                       # Hook definitions (${CLAUDE_PLUGIN_ROOT})
-  hooks/handlers/                        # Hook scripts (session-start, context-monitor, etc.)
-  templates/                             # Project scaffolding source (copied by /init)
-    CLAUDE.md, BACKLOG.md, docs/...      # Template files for new projects
-  scripts/ship.sh                        # Ralph-style external loop for /ship
-  .claude-plugin/plugin.json             # Plugin manifest
-docs/images/                             # README images (repo-only)
-install.sh                               # Plugin installer + legacy mode
+.claude/commands/    # 24 slash commands (each has description frontmatter)
+.claude/skills/      # 34 workflow skills (triggered contextually)
+.claude/agents/      # 26 specialized subagents (dispatched via Task tool)
+.claude/hooks/       # Lifecycle hooks (session-start, context-monitor, prompt-guard, ship-loop)
+hooks/hooks.json     # Plugin hook definitions (uses ${CLAUDE_PLUGIN_ROOT})
+.claude-plugin/      # Plugin manifest
+docs/context/        # GOALS.md, STATUS.md, CONVENTIONS.md, DECISIONS.md
+docs/plans/          # Implementation plans (YYYY-MM-DD-topic.md)
+docs/solutions/      # Institutional knowledge (created by /compound)
+docs/learnings/      # Key learnings and gotchas (updated by /wrap)
+docs/decisions/      # Architecture decision records (ADRs)
+docs/research/       # Research findings and exploration notes
+docs/specs/          # Feature specs and requirements
+scripts/ship.sh      # Ralph-style external loop for /ship
+blueprint.local.md   # Per-project agent config (gitignored)
+BACKLOG.md           # Quick capture inbox
 ```
 
 Skills, agents, and commands are self-describing via frontmatter — read their files for when/how to use them.
@@ -157,9 +160,7 @@ Types: `feat`, `fix`, `refactor`, `docs`, `test`, `chore`, `style`, `perf`
 
 ## Gotchas
 
-- Plugin hook scripts live at `hooks/handlers/` (referenced via `${CLAUDE_PLUGIN_ROOT}` in hooks.json)
-- Hook definitions use nested format: `"hooks": [{"hooks": [...]}]` — missing the inner array silently fails
-- The Read tool cannot access plugin files (sandbox restriction) — skills must be invoked by name, not file path
+- Hooks must use `hooks/hooks.json` with `${CLAUDE_PLUGIN_ROOT}` paths, NOT `.claude/settings.json` (fails when template is auto-discovered as plugin from parent directory)
 - Stop hook `"decision": "block"` does NOT reset context — use `scripts/ship.sh` for true context refresh between iterations
 - Each Agent Teams teammate MUST own specific files — concurrent modification causes conflicts
 - Use `execFileSync` not `execSync` in hook scripts to prevent shell injection

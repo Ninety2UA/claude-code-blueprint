@@ -2,13 +2,13 @@
 set -euo pipefail
 
 # ╔══════════════════════════════════════════════════════════════╗
-# ║  Claude Code Project Template — Installer                   ║
-# ║  Deploys skills, agents, commands, and docs to your project ║
+# ║  Claude Code Blueprint — Plugin Installer                    ║
+# ║  Installs the blueprint as a Claude Code plugin              ║
 # ╚══════════════════════════════════════════════════════════════╝
 
 REPO_URL="https://github.com/Ninety2UA/claude-code-blueprint"
 TEMP_DIR=""
-VERSION="2.3.0"
+VERSION="3.0.0"
 
 # Colors
 RED='\033[0;31m'
@@ -21,8 +21,8 @@ NC='\033[0m'
 
 print_banner() {
     echo ""
-    echo -e "${BOLD}  Claude Code Project Template${NC} ${DIM}v${VERSION}${NC}"
-    echo -e "${DIM}  Production-grade scaffolding for AI-assisted development${NC}"
+    echo -e "${BOLD}  Claude Code Blueprint${NC} ${DIM}v${VERSION}${NC}"
+    echo -e "${DIM}  Production-grade AI-assisted development toolkit${NC}"
     echo ""
 }
 
@@ -41,15 +41,14 @@ trap cleanup EXIT
 usage() {
     echo "Usage: $0 [OPTIONS] [TARGET_DIR]"
     echo ""
-    echo "Deploy the Claude Code project template to your project."
+    echo "Install the Claude Code Blueprint plugin and optionally scaffold a project."
     echo ""
     echo "Arguments:"
-    echo "  TARGET_DIR          Target directory (default: current directory)"
+    echo "  TARGET_DIR          Project directory to scaffold (optional)"
     echo ""
     echo "Options:"
-    echo "  --update            Update template files only (preserves your customizations)"
-    echo "  --claude-only       Only install .claude/ directory (skills, agents, commands)"
-    echo "  --docs-only         Only install docs/ structure and CLAUDE.md"
+    echo "  --scaffold          Scaffold project files only (plugin already installed)"
+    echo "  --legacy            Legacy mode: copy all files into project (no plugin)"
     echo "  --no-overwrite      Skip files that already exist"
     echo "  --force             Overwrite all existing files without prompting"
     echo "  --dry-run           Show what would be installed without making changes"
@@ -57,29 +56,27 @@ usage() {
     echo "  -h, --help          Show this help message"
     echo ""
     echo "Examples:"
-    echo "  $0                              # Install to current directory"
-    echo "  $0 ~/projects/my-app            # Install to specific project"
-    echo "  $0 --update                     # Update template to latest version"
-    echo "  $0 --update ~/projects/my-app   # Update specific project"
-    echo "  $0 --claude-only                # Only add .claude/ configuration"
-    echo "  $0 --no-overwrite .             # Install without overwriting"
+    echo "  $0                              # Install plugin (user-wide)"
+    echo "  $0 ~/projects/my-app            # Install plugin + scaffold project"
+    echo "  $0 --scaffold ~/projects/my-app # Scaffold only (plugin already installed)"
+    echo "  $0 --legacy ~/projects/my-app   # Legacy: copy everything into project"
     echo ""
 }
 
 # Parse arguments
-TARGET_DIR="."
-CLAUDE_ONLY=false
-DOCS_ONLY=false
-UPDATE=false
+TARGET_DIR=""
+SCAFFOLD_ONLY=false
+LEGACY=false
+LOCAL_SOURCE=false
 NO_OVERWRITE=false
 FORCE=false
 DRY_RUN=false
 
 while [[ $# -gt 0 ]]; do
     case $1 in
-        --update)       UPDATE=true; shift ;;
-        --claude-only)  CLAUDE_ONLY=true; shift ;;
-        --docs-only)    DOCS_ONLY=true; shift ;;
+        --scaffold)     SCAFFOLD_ONLY=true; shift ;;
+        --legacy)       LEGACY=true; shift ;;
+        --local)        LOCAL_SOURCE=true; shift ;;
         --no-overwrite) NO_OVERWRITE=true; shift ;;
         --force)        FORCE=true; shift ;;
         --dry-run)      DRY_RUN=true; shift ;;
@@ -90,56 +87,40 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-# Resolve target directory
-TARGET_DIR="$(cd "$TARGET_DIR" 2>/dev/null && pwd || echo "$TARGET_DIR")"
-
 print_banner
 
 # Validate
-if [ "$CLAUDE_ONLY" = true ] && [ "$DOCS_ONLY" = true ]; then
-    error "--claude-only and --docs-only are mutually exclusive"
+if [ "$SCAFFOLD_ONLY" = true ] && [ "$LEGACY" = true ]; then
+    error "--scaffold and --legacy are mutually exclusive"
     exit 1
 fi
 
-if [ "$UPDATE" = true ] && { [ "$CLAUDE_ONLY" = true ] || [ "$DOCS_ONLY" = true ]; }; then
-    error "--update cannot be combined with --claude-only or --docs-only"
-    exit 1
-fi
-
-# Update mode implies force on template files (skip user files entirely)
-if [ "$UPDATE" = true ]; then
-    FORCE=true
-    info "Update mode — refreshing template files, preserving your customizations"
-fi
-
-# Check if target exists
-if [ ! -d "$TARGET_DIR" ]; then
-    info "Creating target directory: $TARGET_DIR"
-    if [ "$DRY_RUN" = false ]; then
-        mkdir -p "$TARGET_DIR"
-    fi
-fi
-
-info "Target: ${BOLD}$TARGET_DIR${NC}"
-echo ""
-
-# Download template
-info "Downloading template..."
-TEMP_DIR=$(mktemp -d)
-
-if command -v git &>/dev/null; then
-    git clone --depth 1 --quiet "$REPO_URL" "$TEMP_DIR/template" 2>/dev/null || {
-        error "Failed to clone repository. Check your internet connection."
-        exit 1
-    }
+# Resolve source
+if [ "$LOCAL_SOURCE" = true ]; then
+    # Use the directory containing this script as the source
+    SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+    SOURCE_DIR="$SCRIPT_DIR"
+    info "Using local source: $SOURCE_DIR"
 else
-    error "git is required. Please install git and try again."
-    exit 1
+    info "Downloading blueprint..."
+    TEMP_DIR=$(mktemp -d)
+
+    if command -v git &>/dev/null; then
+        git clone --depth 1 --quiet "$REPO_URL" "$TEMP_DIR/template" 2>/dev/null || {
+            error "Failed to clone repository. Check your internet connection."
+            exit 1
+        }
+    else
+        error "git is required. Please install git and try again."
+        exit 1
+    fi
+
+    SOURCE_DIR="$TEMP_DIR/template"
 fi
 
-SOURCE_DIR="$TEMP_DIR/template"
+PLUGIN_DIR="$SOURCE_DIR/plugins/claude-code-blueprint"
 
-# Copy function with conflict handling
+# ─── Copy function with conflict handling ─────────────────────
 copy_item() {
     local src="$1"
     local dest="$2"
@@ -155,21 +136,11 @@ copy_item() {
     fi
 
     if [ -f "$dest" ]; then
-        # In update mode, never overwrite user-customized files
-        if [ "$UPDATE" = true ]; then
-            case "$rel_path" in
-                CLAUDE.md|BACKLOG.md|blueprint.local.md|.gitignore|docs/context/*|docs/plans/*|docs/specs/*|docs/decisions/*|docs/solutions/*|docs/research/*|docs/learnings/*)
-                    echo -e "  ${DIM}  keep  $rel_path (yours)${NC}"
-                    return
-                    ;;
-            esac
-        fi
         if [ "$NO_OVERWRITE" = true ]; then
             echo -e "  ${DIM}  skip  $rel_path (exists)${NC}"
             return
         fi
         if [ "$FORCE" = false ] && [ "$DRY_RUN" = false ]; then
-            # Only prompt for important files
             case "$rel_path" in
                 CLAUDE.md|BACKLOG.md|docs/context/*)
                     warn "$rel_path already exists"
@@ -192,115 +163,271 @@ copy_item() {
     fi
 }
 
-# Determine what to install
-INSTALLED=0
-
-if [ "$DOCS_ONLY" = false ]; then
-    info "Installing .claude/ (skills, agents, commands)..."
-    if [ -d "$SOURCE_DIR/.claude" ]; then
-        find "$SOURCE_DIR/.claude" -type f | while read -r file; do
-            rel="${file#"$SOURCE_DIR"/}"
-            copy_item "$file" "$TARGET_DIR/$rel"
-        done
-        INSTALLED=$((INSTALLED + 1))
-        success ".claude/ installed"
+# ─── Legacy mode: copy everything into the project ───────────
+if [ "$LEGACY" = true ]; then
+    if [ -z "$TARGET_DIR" ]; then
+        TARGET_DIR="."
     fi
-fi
+    TARGET_DIR="$(cd "$TARGET_DIR" 2>/dev/null && pwd || echo "$TARGET_DIR")"
 
-if [ "$CLAUDE_ONLY" = false ]; then
-    info "Installing docs/ structure..."
-    if [ -d "$SOURCE_DIR/docs" ]; then
-        find "$SOURCE_DIR/docs" -type f | while read -r file; do
-            rel="${file#"$SOURCE_DIR"/}"
-
-            # Skip all docs/images/ content (only needed for GitHub display)
-            case "$rel" in
-                docs/images/*) continue ;;
-            esac
-
-            copy_item "$file" "$TARGET_DIR/$rel"
-        done
-        INSTALLED=$((INSTALLED + 1))
-        success "docs/ installed (examples included — delete when ready)"
-    fi
-
-    # Plugin manifest
-    if [ -d "$SOURCE_DIR/.claude-plugin" ]; then
-        find "$SOURCE_DIR/.claude-plugin" -type f | while read -r file; do
-            rel="${file#"$SOURCE_DIR"/}"
-            copy_item "$file" "$TARGET_DIR/$rel"
-        done
-        success ".claude-plugin/ installed (plugin manifest)"
-    fi
-
-    # Plugin hooks (lifecycle hooks using ${CLAUDE_PLUGIN_ROOT} paths)
-    if [ -d "$SOURCE_DIR/hooks" ]; then
-        find "$SOURCE_DIR/hooks" -type f | while read -r file; do
-            rel="${file#"$SOURCE_DIR"/}"
-            copy_item "$file" "$TARGET_DIR/$rel"
-        done
-        success "hooks/ installed (lifecycle hooks)"
-    fi
-
-    # Scripts
-    if [ -d "$SOURCE_DIR/scripts" ]; then
-        info "Installing scripts/..."
-        find "$SOURCE_DIR/scripts" -type f | while read -r file; do
-            rel="${file#"$SOURCE_DIR"/}"
-
-            # Skip template-only scripts (not useful in user projects)
-            case "$rel" in
-                scripts/record-promo.js|scripts/.gitkeep) continue ;;
-            esac
-
-            copy_item "$file" "$TARGET_DIR/$rel"
-        done
-        # Make scripts executable
+    if [ ! -d "$TARGET_DIR" ]; then
+        info "Creating target directory: $TARGET_DIR"
         if [ "$DRY_RUN" = false ]; then
-            find "$TARGET_DIR/scripts" -name "*.sh" -type f -exec chmod +x {} \;
+            mkdir -p "$TARGET_DIR"
+        fi
+    fi
+
+    info "Legacy mode — installing all files into ${BOLD}$TARGET_DIR${NC}"
+    echo ""
+
+    # Install engine files (commands, skills, agents, hooks)
+    for dir in commands skills agents; do
+        if [ -d "$PLUGIN_DIR/$dir" ]; then
+            find "$PLUGIN_DIR/$dir" -type f | while read -r file; do
+                rel="${file#"$PLUGIN_DIR"/}"
+                copy_item "$file" "$TARGET_DIR/.claude/$rel"
+            done
+            success ".claude/$dir/ installed"
+        fi
+    done
+
+    # Hook handlers
+    if [ -d "$PLUGIN_DIR/hooks/handlers" ]; then
+        find "$PLUGIN_DIR/hooks/handlers" -type f | while read -r file; do
+            rel="${file#"$PLUGIN_DIR/hooks/handlers"/}"
+            copy_item "$file" "$TARGET_DIR/.claude/hooks/$rel"
+        done
+        success ".claude/hooks/ installed"
+    fi
+
+    # hooks.json, plugin manifest, scripts
+    if [ -d "$PLUGIN_DIR/hooks" ]; then
+        copy_item "$PLUGIN_DIR/hooks/hooks.json" "$TARGET_DIR/hooks/hooks.json"
+        success "hooks/ installed"
+    fi
+    if [ -d "$PLUGIN_DIR/.claude-plugin" ]; then
+        find "$PLUGIN_DIR/.claude-plugin" -type f | while read -r file; do
+            rel="${file#"$PLUGIN_DIR"/}"
+            copy_item "$file" "$TARGET_DIR/$rel"
+        done
+        success ".claude-plugin/ installed"
+    fi
+    if [ -d "$PLUGIN_DIR/scripts" ]; then
+        find "$PLUGIN_DIR/scripts" -type f | while read -r file; do
+            rel="${file#"$PLUGIN_DIR"/}"
+            case "$rel" in scripts/record-promo.js) continue ;; esac
+            copy_item "$file" "$TARGET_DIR/$rel"
+        done
+        if [ "$DRY_RUN" = false ]; then
+            find "$TARGET_DIR/scripts" -name "*.sh" -type f -exec chmod +x {} \; 2>/dev/null || true
         fi
         success "scripts/ installed"
     fi
 
-    # Core files
-    for file in CLAUDE.md BACKLOG.md blueprint.local.md .gitignore; do
-        if [ -f "$SOURCE_DIR/$file" ]; then
-            copy_item "$SOURCE_DIR/$file" "$TARGET_DIR/$file"
-        fi
-    done
-    success "Core files installed"
+    # Template/project files
+    if [ -d "$PLUGIN_DIR/templates" ]; then
+        find "$PLUGIN_DIR/templates" -type f | while read -r file; do
+            rel="${file#"$PLUGIN_DIR/templates"/}"
+            copy_item "$file" "$TARGET_DIR/$rel"
+        done
+        success "Project files installed (CLAUDE.md, docs/, etc.)"
+    fi
+
+    # Settings
+    if [ -f "$PLUGIN_DIR/.claude/settings.json" ]; then
+        copy_item "$PLUGIN_DIR/.claude/settings.json" "$TARGET_DIR/.claude/settings.json"
+    fi
+
+    # Placeholder directories
+    if [ "$DRY_RUN" = false ]; then
+        for dir in src tests infra; do
+            mkdir -p "$TARGET_DIR/$dir"
+            if [ ! -f "$TARGET_DIR/$dir/.gitkeep" ]; then
+                touch "$TARGET_DIR/$dir/.gitkeep"
+            fi
+        done
+    fi
+
+    echo ""
+    if [ "$DRY_RUN" = true ]; then
+        info "Dry run complete. No files were modified."
+    else
+        echo -e "  ${GREEN}${BOLD}Installation complete!${NC} (legacy mode)"
+        echo ""
+        echo -e "  ${BOLD}Next steps:${NC}"
+        echo -e "  ${DIM}1.${NC} cd $TARGET_DIR"
+        echo -e "  ${DIM}2.${NC} claude"
+        echo -e "  ${DIM}3.${NC} /init ${DIM}← interactive project setup${NC}"
+    fi
+    echo ""
+    exit 0
 fi
 
-# Create placeholder directories (skip in update mode — project already has structure)
-if [ "$CLAUDE_ONLY" = false ] && [ "$DRY_RUN" = false ] && [ "$UPDATE" = false ]; then
-    for dir in src tests infra; do
-        mkdir -p "$TARGET_DIR/$dir"
-        if [ ! -f "$TARGET_DIR/$dir/.gitkeep" ]; then
-            touch "$TARGET_DIR/$dir/.gitkeep"
+# ─── Plugin mode (default) ────────────────────────────────────
+CLAUDE_DIR="$HOME/.claude"
+SETTINGS_FILE="$CLAUDE_DIR/settings.json"
+KNOWN_FILE="$CLAUDE_DIR/plugins/known_marketplaces.json"
+INSTALLED_FILE="$CLAUDE_DIR/plugins/installed_plugins.json"
+MARKETPLACE_NAME="claude-code-blueprint"
+PLUGIN_NAME="claude-code-blueprint"
+
+if [ "$SCAFFOLD_ONLY" = false ]; then
+    info "Installing as Claude Code plugin..."
+
+    # Ensure directories exist
+    mkdir -p "$CLAUDE_DIR/plugins/cache/$MARKETPLACE_NAME/$PLUGIN_NAME"
+
+    # Copy plugin to cache
+    CACHE_DIR="$CLAUDE_DIR/plugins/cache/$MARKETPLACE_NAME/$PLUGIN_NAME/$VERSION"
+    if [ -d "$CACHE_DIR" ]; then
+        rm -rf "$CACHE_DIR"
+    fi
+
+    if [ "$DRY_RUN" = false ]; then
+        mkdir -p "$CACHE_DIR"
+        # Copy plugin engine files from plugins/ subdirectory
+        for dir in commands skills agents hooks .claude-plugin scripts templates .claude; do
+            if [ -d "$PLUGIN_DIR/$dir" ]; then
+                cp -R "$PLUGIN_DIR/$dir" "$CACHE_DIR/$dir"
+            fi
+        done
+        # Make scripts executable
+        find "$CACHE_DIR" -name "*.sh" -type f -exec chmod +x {} \; 2>/dev/null || true
+        success "Plugin cached at $CACHE_DIR"
+    fi
+
+    # Register marketplace in known_marketplaces.json
+    if [ "$DRY_RUN" = false ]; then
+        if [ ! -f "$KNOWN_FILE" ]; then
+            echo '{}' > "$KNOWN_FILE"
         fi
-    done
+
+        # Use Python to safely update JSON
+        python3 -c "
+import json, sys
+with open('$KNOWN_FILE', 'r') as f:
+    data = json.load(f)
+data['$MARKETPLACE_NAME'] = {
+    'source': {'source': 'github', 'repo': 'Ninety2UA/claude-code-blueprint'},
+    'installLocation': '$CACHE_DIR',
+    'lastUpdated': '$(date -u +"%Y-%m-%dT%H:%M:%S.000Z")'
+}
+with open('$KNOWN_FILE', 'w') as f:
+    json.dump(data, f, indent=2)
+    f.write('\n')
+" 2>/dev/null || warn "Could not update known_marketplaces.json — update manually"
+        success "Marketplace registered"
+    fi
+
+    # Register plugin in installed_plugins.json
+    if [ "$DRY_RUN" = false ]; then
+        if [ ! -f "$INSTALLED_FILE" ]; then
+            echo '{"version": 2, "plugins": {}}' > "$INSTALLED_FILE"
+        fi
+
+        python3 -c "
+import json
+with open('$INSTALLED_FILE', 'r') as f:
+    data = json.load(f)
+key = '$PLUGIN_NAME@$MARKETPLACE_NAME'
+data['plugins'][key] = [{
+    'scope': 'user',
+    'installPath': '$CACHE_DIR',
+    'version': '$VERSION',
+    'installedAt': '$(date -u +"%Y-%m-%dT%H:%M:%S.000Z")',
+    'lastUpdated': '$(date -u +"%Y-%m-%dT%H:%M:%S.000Z")'
+}]
+with open('$INSTALLED_FILE', 'w') as f:
+    json.dump(data, f, indent=2)
+    f.write('\n')
+" 2>/dev/null || warn "Could not update installed_plugins.json — update manually"
+        success "Plugin registered"
+    fi
+
+    # Enable plugin in settings.json
+    if [ "$DRY_RUN" = false ]; then
+        if [ ! -f "$SETTINGS_FILE" ]; then
+            echo '{}' > "$SETTINGS_FILE"
+        fi
+
+        python3 -c "
+import json
+with open('$SETTINGS_FILE', 'r') as f:
+    data = json.load(f)
+if 'enabledPlugins' not in data:
+    data['enabledPlugins'] = {}
+data['enabledPlugins']['$PLUGIN_NAME@$MARKETPLACE_NAME'] = True
+with open('$SETTINGS_FILE', 'w') as f:
+    json.dump(data, f, indent=2)
+    f.write('\n')
+" 2>/dev/null || warn "Could not update settings.json — enable plugin manually"
+        success "Plugin enabled"
+    fi
+fi
+
+# ─── Scaffold project (if target dir provided) ────────────────
+if [ -n "$TARGET_DIR" ]; then
+    TARGET_DIR="$(cd "$TARGET_DIR" 2>/dev/null && pwd || echo "$TARGET_DIR")"
+
+    if [ ! -d "$TARGET_DIR" ]; then
+        info "Creating target directory: $TARGET_DIR"
+        if [ "$DRY_RUN" = false ]; then
+            mkdir -p "$TARGET_DIR"
+        fi
+    fi
+
+    info "Scaffolding project at ${BOLD}$TARGET_DIR${NC}..."
+
+    if [ -d "$PLUGIN_DIR/templates" ]; then
+        find "$PLUGIN_DIR/templates" -type f | while read -r file; do
+            rel="${file#"$PLUGIN_DIR/templates"/}"
+            copy_item "$file" "$TARGET_DIR/$rel"
+        done
+        success "Project files scaffolded"
+    fi
+
+    # Placeholder directories
+    if [ "$DRY_RUN" = false ]; then
+        for dir in src tests infra; do
+            mkdir -p "$TARGET_DIR/$dir"
+            if [ ! -f "$TARGET_DIR/$dir/.gitkeep" ]; then
+                touch "$TARGET_DIR/$dir/.gitkeep"
+            fi
+        done
+    fi
 fi
 
 echo ""
 
 if [ "$DRY_RUN" = true ]; then
     info "Dry run complete. No files were modified."
-elif [ "$UPDATE" = true ]; then
-    echo -e "  ${GREEN}${BOLD}Update complete!${NC} ${DIM}v${VERSION}${NC}"
+elif [ "$SCAFFOLD_ONLY" = true ]; then
+    echo -e "  ${GREEN}${BOLD}Project scaffolded!${NC}"
     echo ""
-    echo -e "  ${DIM}Updated:${NC}  .claude/ (commands, skills, agents, hooks), scripts/, hooks/, .claude-plugin/"
-    echo -e "  ${DIM}Kept:${NC}     CLAUDE.md, BACKLOG.md, blueprint.local.md, .gitignore, all docs/ subdirectories"
-    echo ""
-    echo -e "  ${DIM}Check the changelog: https://github.com/Ninety2UA/claude-code-blueprint/releases${NC}"
-else
-    echo -e "  ${GREEN}${BOLD}Installation complete!${NC}"
+    echo -e "  ${BOLD}Next steps:${NC}"
+    echo -e "  ${DIM}1.${NC} cd $TARGET_DIR"
+    echo -e "  ${DIM}2.${NC} claude"
+    echo -e "  ${DIM}3.${NC} /init ${DIM}← interactive project setup${NC}"
+elif [ -n "$TARGET_DIR" ]; then
+    echo -e "  ${GREEN}${BOLD}Plugin installed + project scaffolded!${NC}"
     echo ""
     echo -e "  ${BOLD}Next steps:${NC}"
     echo -e "  ${DIM}1.${NC} cd $TARGET_DIR"
     echo -e "  ${DIM}2.${NC} claude"
     echo -e "  ${DIM}3.${NC} /init ${DIM}← interactive project setup${NC}"
     echo ""
-    echo -e "  ${DIM}Quick commands: /build · /plan · /review-swarm · /deep-research · /orchestrate · /wrap${NC}"
+    echo -e "  ${DIM}Plugin provides: 34 skills · 26 agents · 24 commands · 6 hooks${NC}"
+    echo -e "  ${DIM}Quick commands: /build · /ship · /plan · /review-swarm · /deep-research${NC}"
+else
+    echo -e "  ${GREEN}${BOLD}Plugin installed!${NC}"
+    echo ""
+    echo -e "  ${BOLD}Next steps:${NC}"
+    echo -e "  ${DIM}1.${NC} cd your-project"
+    echo -e "  ${DIM}2.${NC} claude"
+    echo -e "  ${DIM}3.${NC} /init ${DIM}← scaffolds project + interactive setup${NC}"
+    echo ""
+    echo -e "  ${DIM}Plugin provides: 34 skills · 26 agents · 24 commands · 6 hooks${NC}"
+    echo -e "  ${DIM}Available in all projects — no per-project installation needed${NC}"
 fi
 
 echo ""
