@@ -3,7 +3,7 @@ description: "Map an unfamiliar codebase into structured documentation before mo
 argument-hint: "[optional: focus area or module name]"
 ---
 
-Read and invoke the codebase-mapping skill in .claude/skills/codebase-mapping/SKILL.md. Follow it exactly — do NOT modify any source code during mapping. This is a read-only analysis operation.
+Invoke the codebase-mapping skill. Follow it exactly — do NOT modify any source code during mapping. This is a read-only analysis operation.
 
 If the user specified a focus area, scope the mapping to that area: $ARGUMENTS
 

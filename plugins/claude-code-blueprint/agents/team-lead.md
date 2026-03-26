@@ -98,7 +98,7 @@ If in supervised mode, wait for user approval. If autonomous, proceed immediatel
 
 ### Wave Mode
 
-Follow the wave-orchestration skill (`.claude/skills/wave-orchestration/SKILL.md`):
+Follow the wave-orchestration skill:
 
 For each wave:
 1. Dispatch one subagent per task using Task tool with `isolation: worktree`
@@ -114,7 +114,7 @@ For each wave:
 
 ### Team Mode
 
-Follow the agent-teams skill (`.claude/skills/agent-teams/SKILL.md`):
+Follow the agent-teams skill:
 
 1. Create the team
 2. Spawn teammates with detailed prompts (responsibility, file ownership, conventions, coordination instructions)

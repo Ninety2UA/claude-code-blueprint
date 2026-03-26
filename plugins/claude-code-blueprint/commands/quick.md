@@ -23,11 +23,11 @@ Before proceeding, verify this qualifies as a "quick" change:
 - Changing data models or schemas
 - Anything where you're unsure of the approach
 
-If the change does NOT qualify, say: "This looks like it needs the full workflow. Let me switch to /plan." Then read and invoke `.claude/commands/plan.md` instead.
+If the change does NOT qualify, say: "This looks like it needs the full workflow. Let me switch to /plan." Then run the /plan command instead.
 
 ## Step 2: Write a Failing Test
 
-Read the test-driven-development skill in `.claude/skills/test-driven-development/SKILL.md`.
+Invoke the test-driven-development skill.
 
 Write a test that describes the expected behavior BEFORE writing any implementation code. Run it — it should fail (RED).
 

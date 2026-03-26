@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node ${CLAUDE_PLUGIN_ROOT}/.claude/hooks/session-start.js",
+            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/handlers/session-start.js",
             "timeout": 10000
           }
         ]
@@ -18,7 +18,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node ${CLAUDE_PLUGIN_ROOT}/.claude/hooks/prompt-guard.js",
+            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/handlers/prompt-guard.js",
             "timeout": 3000
           }
         ]
@@ -29,7 +29,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node ${CLAUDE_PLUGIN_ROOT}/.claude/hooks/context-monitor.js",
+            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/handlers/context-monitor.js",
             "timeout": 3000
           }
         ]
@@ -40,7 +40,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash ${CLAUDE_PLUGIN_ROOT}/.claude/hooks/ship-loop.sh",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/handlers/ship-loop.sh",
             "timeout": 10000
           }
         ]

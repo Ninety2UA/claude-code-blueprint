@@ -14,13 +14,13 @@ Execute these stages IN ORDER. Do not skip stages. Stop between stages for user 
 
 ### Stage 1: Discuss (Decision Capture)
 
-Read and invoke `.claude/commands/discuss.md`. Capture user decisions BEFORE planning.
+Run the /discuss command. Capture user decisions BEFORE planning.
 
 If the user has already provided clear, unambiguous requirements, summarize them as locked decisions and ask: "These are the locked decisions I'll plan around. Confirm or adjust?"
 
 ### Stage 2: Brainstorm (Design)
 
-Read and invoke the brainstorming skill in `.claude/skills/brainstorming/SKILL.md`. Follow it exactly.
+Invoke the brainstorming skill. Follow it exactly.
 
 Explore 2-3 design alternatives. Present trade-offs. Get user approval before proceeding.
 
@@ -28,7 +28,7 @@ Explore 2-3 design alternatives. Present trade-offs. Get user approval before pr
 
 Before planning, dispatch the **learnings-researcher** agent to search `docs/` for relevant prior work. Incorporate findings into the plan.
 
-Read and invoke the writing-plans skill in `.claude/skills/writing-plans/SKILL.md`. Convert the approved design into actionable steps.
+Invoke the writing-plans skill. Convert the approved design into actionable steps.
 
 After the plan is written, dispatch the **plan-checker** agent to verify the plan will work. Fix any BLOCKING issues before proceeding.
 
@@ -39,13 +39,13 @@ Get user approval of the plan.
 Choose the execution method based on plan complexity:
 
 **Default (< 4 tasks or all sequential):**
-Read and invoke the executing-plans skill in `.claude/skills/executing-plans/SKILL.md`. Execute the plan in batches with checkpoints.
+Invoke the executing-plans skill. Execute the plan in batches with checkpoints.
 
 **For complex plans (4+ tasks with mixed dependencies):**
-Read and invoke `/orchestrate [plan file] --no-review`. This dispatches a team-lead agent that coordinates wave-based parallel execution. Review is handled by Stage 5, not the team-lead.
+Run `/orchestrate [plan file] --no-review`. This dispatches a team-lead agent that coordinates wave-based parallel execution. Review is handled by Stage 5, not the team-lead.
 
 **For collaborative work (user says `/build --team`):**
-Read and invoke `/team [plan file] --no-review`. This dispatches a team-lead agent that spawns teammates for collaborative implementation. Review is handled by Stage 5.
+Run `/team [plan file] --no-review`. This dispatches a team-lead agent that spawns teammates for collaborative implementation. Review is handled by Stage 5.
 
 ### Stage 5: Review (Quality Check)
 
@@ -55,7 +55,7 @@ Address all P1 (critical) and P2 (important) findings before proceeding. Use res
 
 ### Stage 6: Verify (Completion)
 
-Read and invoke the verification-before-completion skill in `.claude/skills/verification-before-completion/SKILL.md`.
+Invoke the verification-before-completion skill.
 
 Run all tests. Verify all acceptance criteria from the plan are met. Confirm no regressions.
 
@@ -63,7 +63,7 @@ Run all tests. Verify all acceptance criteria from the plan are met. Confirm no 
 
 If the user said `/build --deploy` or requests deployment:
 
-Read and invoke the deployment-verification skill in `.claude/skills/deployment-verification/SKILL.md`. Dispatch the **deployment-verifier** agent to check all 8 verification areas.
+Invoke the deployment-verification skill. Dispatch the **deployment-verifier** agent to check all 8 verification areas.
 
 Only proceed with deployment if the verdict is GO or CONDITIONAL GO. If NO-GO, stop and report the blocking issues.
 

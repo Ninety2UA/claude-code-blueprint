@@ -192,40 +192,43 @@ Not every analysis leads to adoption. These three repos were analyzed in depth a
 
 ## Quick Start
 
-### Option 1: One-line install into an existing project
+### Option 1: Install as a Claude Code plugin (recommended)
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Ninety2UA/claude-code-blueprint/main/install.sh | bash
+```
+
+This installs the blueprint as a **plugin** — available in all your projects. No per-project engine files cluttering your git history.
+
+Then in any project:
+
+```bash
+claude          # Start Claude Code
+> /init         # Scaffolds project files + interactive setup
+> /plan         # Brainstorm and plan your first feature
+```
+
+### Option 2: Install plugin + scaffold a specific project
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Ninety2UA/claude-code-blueprint/main/install.sh | bash -s -- /path/to/your/project
 ```
 
-### Option 2: Clone and customize
+### Option 3: Legacy mode (copy all files into project)
 
 ```bash
-git clone https://github.com/Ninety2UA/claude-code-blueprint.git my-project
-cd my-project
-rm -rf .git && git init
+curl -fsSL https://raw.githubusercontent.com/Ninety2UA/claude-code-blueprint/main/install.sh | bash -s -- --legacy /path/to/your/project
 ```
 
-### Option 3: Install only the AI configuration
+### Migrate from v2.x
 
-```bash
-# Add just .claude/ (skills, agents, commands) to an existing project
-curl -fsSL https://raw.githubusercontent.com/Ninety2UA/claude-code-blueprint/main/install.sh | bash -s -- --claude-only .
-```
-
-### Update to latest version
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/Ninety2UA/claude-code-blueprint/main/install.sh | bash -s -- --update /path/to/your/project
-```
-
-Updates all template files (commands, skills, agents, hooks, scripts) while preserving your customizations (CLAUDE.md, docs/context/, BACKLOG.md, blueprint.local.md).
+Already using the blueprint? Install the plugin, then run `/migrate-to-plugin` to remove in-project engine files.
 
 ### First session
 
 ```bash
-claude          # Start Claude Code
-> /init         # Interactive project setup — fills in GOALS, CONVENTIONS, STATUS
+claude          # Start Claude Code — plugin loads automatically
+> /init         # Interactive project setup — scaffolds docs, fills in GOALS, CONVENTIONS, STATUS
 > /plan         # Brainstorm and plan your first feature
 ```
 
@@ -673,22 +676,23 @@ You are a [role] specializing in [domain].
 
 Quality gates are encoded in the skill files. To relax a gate (e.g., skip code review for docs-only changes), edit the corresponding skill's `SKILL.md` and add your exception criteria.
 
-### Slim install
-
-If you only want specific components:
+### Install options
 
 ```bash
-# Only the AI configuration (skills, agents, commands)
-./install.sh --claude-only
+# Plugin mode (default) — installs plugin for all projects
+./install.sh
 
-# Only the documentation structure
-./install.sh --docs-only
+# Plugin + scaffold a specific project
+./install.sh /path/to/project
+
+# Scaffold only (plugin already installed)
+./install.sh --scaffold /path/to/project
+
+# Legacy mode — copy all files into project (v2.x behavior)
+./install.sh --legacy /path/to/project
 
 # Preview what would be installed
 ./install.sh --dry-run
-
-# Update to latest version (preserves your customizations)
-./install.sh --update
 ```
 
 ## Documentation structure
@@ -790,7 +794,7 @@ CLAUDE.md includes built-in guidance for common failure scenarios:
 <details>
 <summary><strong>Can I use this with an existing project?</strong></summary>
 
-Yes. Use `--claude-only` to add just the `.claude/` directory, or the full install and skip files that already exist with `--no-overwrite`. The template is additive — it doesn't modify your existing code.
+Yes. In plugin mode (default), the blueprint installs as a plugin — it adds zero files to your project. Just run `curl ... | bash` to install the plugin, then `/init` in your project to scaffold the docs structure. Your existing code is never touched.
 </details>
 
 <details>
@@ -818,15 +822,17 @@ Yes. The template works identically in VS Code, JetBrains, and the CLI. Slash co
 </details>
 
 <details>
-<summary><strong>How do I update the template after installation?</strong></summary>
+<summary><strong>How do I update the blueprint?</strong></summary>
 
-Run the install script with `--update` to refresh all template files while preserving your customizations:
+**Plugin mode (v3.0+):** Re-run the install script — it updates the cached plugin for all projects:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Ninety2UA/claude-code-blueprint/main/install.sh | bash -s -- --update /path/to/your/project
+curl -fsSL https://raw.githubusercontent.com/Ninety2UA/claude-code-blueprint/main/install.sh | bash
 ```
 
-This updates `.claude/` (commands, skills, agents, hooks), `scripts/`, `.claude-plugin/`, and `hooks/` while keeping your `CLAUDE.md`, `docs/context/`, `BACKLOG.md`, and `blueprint.local.md` untouched.
+**Legacy mode (v2.x):** Use `--legacy` with `--force` to refresh in-project files.
+
+Your project-specific files (CLAUDE.md, docs/, BACKLOG.md) are never touched.
 </details>
 
 <details>

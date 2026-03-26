@@ -1,7 +1,7 @@
 {
   "name": "claude-code-blueprint",
-  "description": "Production-grade project template for AI-assisted development. 34 skills, 26 agents, 24 commands, and 6 hooks covering the full development lifecycle — from brainstorming through verified deployment, with agent swarms, agent teams, wave orchestration, and knowledge compounding.",
-  "version": "2.3.0",
+  "description": "Production-grade development toolkit for AI-assisted engineering. 34 skills, 26 agents, 24 commands, and 6 hooks covering the full development lifecycle — from brainstorming through verified deployment, with agent swarms, agent teams, wave orchestration, and knowledge compounding.",
+  "version": "3.0.0",
   "author": {
     "name": "Ninety2UA"
   },
@@ -14,7 +14,7 @@
     "agent-swarms",
     "agent-teams",
     "wave-orchestration",
-    "project-template",
+    "plugin",
     "tdd",
     "debugging",
     "code-review",

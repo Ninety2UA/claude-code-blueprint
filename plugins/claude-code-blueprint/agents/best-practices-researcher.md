@@ -31,12 +31,11 @@ You are an expert technology researcher specializing in discovering, analyzing, 
 Before going online, check if curated knowledge already exists in skills:
 
 1. **Discover Available Skills**:
-   - Use Glob to find all SKILL.md files: `**/**/SKILL.md` and `~/.claude/skills/**/SKILL.md`
-   - Also check project-level skills: `.claude/skills/**/SKILL.md`
+   - Use Glob to find all SKILL.md files: `**/SKILL.md`
    - Read the skill descriptions to understand what each covers
 
 2. **Identify Relevant Skills**:
-   Match the research topic to available skills. Check `.claude/skills/` for any relevant skills that cover the topic area.
+   Match the research topic to available skills. Check the available skills for any that cover the topic area.
 
 3. **Extract Patterns from Skills**:
    - Read the full content of relevant SKILL.md files

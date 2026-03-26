@@ -33,7 +33,7 @@ Ask: **"Which gaps should I fill? All critical+high, or specific ones?"**
 
 ## Step 3: Generate Tests
 
-For each approved gap, use the test-driven-development skill in `.claude/skills/test-driven-development/SKILL.md` to write behavioral tests:
+For each approved gap, invoke the test-driven-development skill and use it to write behavioral tests:
 - Follow existing test conventions exactly
 - Use Arrange-Act-Assert pattern
 - Include both positive and negative cases

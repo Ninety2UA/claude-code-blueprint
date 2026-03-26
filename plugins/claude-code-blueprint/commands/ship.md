@@ -94,7 +94,7 @@ Collect all research results.
 
 #### 2b. Write Plan
 
-Read and follow the writing-plans skill in `.claude/skills/writing-plans/SKILL.md`. Incorporate all research findings into the plan. Write the plan to `docs/plans/YYYY-MM-DD-<topic>.md`.
+Invoke the writing-plans skill and follow it. Incorporate all research findings into the plan. Write the plan to `docs/plans/YYYY-MM-DD-<topic>.md`.
 
 #### 2c. Plan Verification Loop
 
@@ -113,7 +113,7 @@ If blocking issues persist after 3 passes, STOP the pipeline and report: "Plan v
 
 ### Stage 3: Deepen Plan
 
-Read and invoke `.claude/commands/deepen.md` on the plan file. This enriches the plan with parallel research from all configured research agents.
+Run `/deepen` on the plan file. This enriches the plan with parallel research from all configured research agents.
 
 ---
 
@@ -122,14 +122,14 @@ Read and invoke `.claude/commands/deepen.md` on the plan file. This enriches the
 Both modes dispatch a dedicated **team-lead agent** that coordinates all execution in its own 200K context. The team-lead delegates all implementation to workers, monitors progress, runs integration checks, and reports back. Review is handled by Stage 5 (not the team-lead), so both modes pass `--no-review`.
 
 **Default mode (no `--swarm` flag):**
-Read and invoke `.claude/commands/orchestrate.md` with the plan file and `--no-review` flag. The team-lead agent groups tasks into dependency-ordered waves and dispatches parallel workers with worktree isolation.
+Run `/orchestrate` with the plan file and `--no-review` flag. The team-lead agent groups tasks into dependency-ordered waves and dispatches parallel workers with worktree isolation.
 
 ```
 /orchestrate [plan file path] --no-review
 ```
 
 **Swarm mode (`--swarm` flag):**
-Read and invoke `.claude/commands/team.md` with the plan file and `--no-review` flag. The team-lead agent designs the team structure, spawns teammates, and coordinates execution autonomously (no user approval needed — plan is already verified by plan-checker).
+Run `/team` with the plan file and `--no-review` flag. The team-lead agent designs the team structure, spawns teammates, and coordinates execution autonomously (no user approval needed — plan is already verified by plan-checker).
 
 ```
 /team [plan file path] --no-review
@@ -159,7 +159,7 @@ This parallelization is the key speedup of swarm mode — review and testing run
 
 **Both modes — iterative refinement parameters:**
 
-Read and invoke the iterative-refinement skill in `.claude/skills/iterative-refinement/SKILL.md`.
+Invoke the iterative-refinement skill.
 
 Pass the configured parameters:
 - `max_iterations`: from `--iterations` flag (default 3)
@@ -189,7 +189,7 @@ Skip if the work was straightforward.
    feat(<scope>): <description>
    ```
 
-2. **Create PR** by reading and invoking `.claude/commands/pr.md`. The PR description should include:
+2. **Create PR** by running the /pr command. The PR description should include:
    - Summary of the feature
    - Plan file reference
    - Review iterations completed and convergence status

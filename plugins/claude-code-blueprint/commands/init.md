@@ -7,6 +7,34 @@ argument-hint: "[optional: project name]"
 
 Walk the user through setting up their project documentation interactively. This should feel like a conversation, not a form.
 
+## Step 0: Scaffold Project Files
+
+Check if this is a fresh project that needs scaffolding:
+
+1. Check if `docs/context/` exists. If it does, skip to Step 1.
+2. If it doesn't exist, this project needs scaffolding. Copy the template files from the plugin's `templates/` directory:
+   - Read each template file from the plugin's templates/ directory (use Glob on `templates/**/*` relative to the plugin root)
+   - Write each file to the corresponding location in the current project directory:
+     - `templates/CLAUDE.md` → `./CLAUDE.md`
+     - `templates/BACKLOG.md` → `./BACKLOG.md`
+     - `templates/blueprint.local.md` → `./blueprint.local.md`
+     - `templates/.gitignore` → `./.gitignore` (merge with existing if present)
+     - `templates/docs/**` → `./docs/**`
+   - Create empty directories: `src/`, `tests/`, `infra/` (with `.gitkeep` files)
+   - Skip any files that already exist in the project (no-overwrite)
+3. Create a `scripts/ship.sh` wrapper script that invokes the plugin's `ship.sh`:
+   ```bash
+   #!/bin/bash
+   # Wrapper for blueprint's ship.sh from plugin
+   PLUGIN_SHIP="$(dirname "$(dirname "$(readlink -f "$0")")")/scripts/ship.sh"
+   if [ ! -f "$PLUGIN_SHIP" ]; then
+     echo "Blueprint plugin not found. Install: claude plugin install github:Ninety2UA/claude-code-blueprint"
+     exit 1
+   fi
+   exec "$PLUGIN_SHIP" "$@"
+   ```
+4. Report what was scaffolded: "Created project structure with [N] template files."
+
 ## Step 1: Orient
 
 Check what already exists:

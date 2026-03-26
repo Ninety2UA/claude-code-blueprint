@@ -1,0 +1,18 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "claude-code-blueprint",
+  "description": "Production-grade AI-assisted development toolkit",
+  "owner": {
+    "name": "Ninety2UA",
+    "url": "https://github.com/Ninety2UA"
+  },
+  "plugins": [
+    {
+      "name": "claude-code-blueprint",
+      "description": "34 skills, 26 agents, 24 commands, 6 hooks covering the full development lifecycle",
+      "version": "3.0.0",
+      "source": "./plugins/claude-code-blueprint",
+      "category": "productivity"
+    }
+  ]
+}
