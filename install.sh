@@ -67,6 +67,7 @@ usage() {
 TARGET_DIR=""
 SCAFFOLD_ONLY=false
 LEGACY=false
+LOCAL_SOURCE=false
 NO_OVERWRITE=false
 FORCE=false
 DRY_RUN=false
@@ -75,6 +76,7 @@ while [[ $# -gt 0 ]]; do
     case $1 in
         --scaffold)     SCAFFOLD_ONLY=true; shift ;;
         --legacy)       LEGACY=true; shift ;;
+        --local)        LOCAL_SOURCE=true; shift ;;
         --no-overwrite) NO_OVERWRITE=true; shift ;;
         --force)        FORCE=true; shift ;;
         --dry-run)      DRY_RUN=true; shift ;;
@@ -93,21 +95,29 @@ if [ "$SCAFFOLD_ONLY" = true ] && [ "$LEGACY" = true ]; then
     exit 1
 fi
 
-# Download template
-info "Downloading blueprint..."
-TEMP_DIR=$(mktemp -d)
-
-if command -v git &>/dev/null; then
-    git clone --depth 1 --quiet "$REPO_URL" "$TEMP_DIR/template" 2>/dev/null || {
-        error "Failed to clone repository. Check your internet connection."
-        exit 1
-    }
+# Resolve source
+if [ "$LOCAL_SOURCE" = true ]; then
+    # Use the directory containing this script as the source
+    SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+    SOURCE_DIR="$SCRIPT_DIR"
+    info "Using local source: $SOURCE_DIR"
 else
-    error "git is required. Please install git and try again."
-    exit 1
+    info "Downloading blueprint..."
+    TEMP_DIR=$(mktemp -d)
+
+    if command -v git &>/dev/null; then
+        git clone --depth 1 --quiet "$REPO_URL" "$TEMP_DIR/template" 2>/dev/null || {
+            error "Failed to clone repository. Check your internet connection."
+            exit 1
+        }
+    else
+        error "git is required. Please install git and try again."
+        exit 1
+    fi
+
+    SOURCE_DIR="$TEMP_DIR/template"
 fi
 
-SOURCE_DIR="$TEMP_DIR/template"
 PLUGIN_DIR="$SOURCE_DIR/plugins/claude-code-blueprint"
 
 # ─── Copy function with conflict handling ─────────────────────

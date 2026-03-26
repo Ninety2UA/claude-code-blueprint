@@ -19,18 +19,18 @@ Agent Teams are fully independent Claude Code instances that collaborate through
 | **Swarms** | Parallel analysis of the same code | One-way (agents report back to controller) | None (read-only analysis) |
 | **Waves** | Dependency-ordered implementation | Sequential (controller dispatches, verifier gates) | Isolated per wave via worktrees |
 
-### Use Agent Teams when:
+### Use Agent Teams when
 - 3+ files need coordinated changes across different system layers
 - Teammates would benefit from discussing design decisions mid-implementation
 - Work naturally divides into ownership domains (frontend, backend, tests, infra)
 - The task is large enough that a single session would exhaust its context window
 
-### Use Swarms when:
+### Use Swarms when
 - You need multiple perspectives on the same code (reviews, research)
 - Agents don't need to communicate with each other
 - Output is analysis/reports, not code changes
 
-### Use Waves when:
+### Use Waves when
 - Tasks have strict dependency ordering
 - You need integration verification between groups
 - File isolation is critical (each wave gets a clean state)
