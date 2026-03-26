@@ -40,6 +40,11 @@ jobs:
       - name: Verify installed files exist
         run: |
           set -e
+          echo "=== Debug: listing /tmp/blueprint-test ==="
+          ls -la /tmp/blueprint-test/ || echo "Directory empty or missing"
+          ls -la /tmp/blueprint-test/.claude/ 2>/dev/null || echo "No .claude dir"
+          echo "=== End debug ==="
+
           echo "Checking core files..."
           test -f /tmp/blueprint-test/CLAUDE.md
           test -f /tmp/blueprint-test/BACKLOG.md
