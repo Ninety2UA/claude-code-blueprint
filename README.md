@@ -192,29 +192,32 @@ Not every analysis leads to adoption. These three repos were analyzed in depth a
 
 ## Quick Start
 
-### Option 1: Install as a Claude Code plugin (recommended)
+### Install as a Claude Code plugin
+
+Inside any Claude Code session:
+
+```
+/plugin marketplace add Ninety2UA/claude-code-blueprint
+/plugin install claude-code-blueprint
+```
+
+That's it — the blueprint is now available in **all your projects**. No per-project files cluttering your git history.
+
+### Set up a project
+
+```bash
+claude          # Start Claude Code — plugin loads automatically
+> /init         # Scaffolds project files (CLAUDE.md, docs/) + interactive setup
+> /plan         # Brainstorm and plan your first feature
+```
+
+### Alternative: one-line install via script
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Ninety2UA/claude-code-blueprint/main/install.sh | bash
 ```
 
-This installs the blueprint as a **plugin** — available in all your projects. No per-project engine files cluttering your git history.
-
-Then in any project:
-
-```bash
-claude          # Start Claude Code
-> /init         # Scaffolds project files + interactive setup
-> /plan         # Brainstorm and plan your first feature
-```
-
-### Option 2: Install plugin + scaffold a specific project
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/Ninety2UA/claude-code-blueprint/main/install.sh | bash -s -- /path/to/your/project
-```
-
-### Option 3: Legacy mode (copy all files into project)
+### Legacy mode (copy all files into project)
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Ninety2UA/claude-code-blueprint/main/install.sh | bash -s -- --legacy /path/to/your/project
@@ -222,15 +225,7 @@ curl -fsSL https://raw.githubusercontent.com/Ninety2UA/claude-code-blueprint/mai
 
 ### Migrate from v2.x
 
-Already using the blueprint? Install the plugin, then run `/migrate-to-plugin` to remove in-project engine files.
-
-### First session
-
-```bash
-claude          # Start Claude Code — plugin loads automatically
-> /init         # Interactive project setup — scaffolds docs, fills in GOALS, CONVENTIONS, STATUS
-> /plan         # Brainstorm and plan your first feature
-```
+Already using the blueprint with in-project files? Install the plugin, then run `/migrate-to-plugin` to remove the in-project engine files.
 
 ## What You Get
 
@@ -824,11 +819,7 @@ Yes. The template works identically in VS Code, JetBrains, and the CLI. Slash co
 <details>
 <summary><strong>How do I update the blueprint?</strong></summary>
 
-**Plugin mode (v3.0+):** Re-run the install script — it updates the cached plugin for all projects:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/Ninety2UA/claude-code-blueprint/main/install.sh | bash
-```
+**Plugin mode (v3.0+):** Run `/plugin install claude-code-blueprint` again — it updates the cached plugin for all projects.
 
 **Legacy mode (v2.x):** Use `--legacy` with `--force` to refresh in-project files.
 
