@@ -13,23 +13,26 @@ Quality over speed. Small steps compound. The patterns you establish will be cop
 **Last session:** 2026-03-26
 
 **What was done:**
-- Fixed `install.sh`: include `scripts/ship.sh` (`f492b74`), `/dev/tty` stdin pipe fix (`eaa414a`), added `--update` flag (`be48616`)
-- Rewrote `scripts/ship.sh` with Ralphy-style UI: braille spinner, stage detection, tput colors, iteration logs (`43f9145`)
-- Migrated hooks to `hooks/hooks.json` with `${CLAUDE_PLUGIN_ROOT}` paths (`e3711f5`)
-- Optimized `CLAUDE.md` from 527→149 lines — removed redundant reference tables, historical learnings (`1f15426`)
-- Moved Key Learnings to `docs/learnings/LEARNINGS.md`, updated `/wrap` skill (`b147f0c`)
-- Ran 5-agent comprehensive system audit (24 commands, 34 skills, 26 agents, 6 hooks, all config) — all pass
-- Version bump 2.2.0→2.3.0 in `install.sh` and `plugin.json`, fixed component counts (`5a0c352`)
+- Converted blueprint from install-script model to Claude Code plugin (v3.0.0) (`025e0a8`)
+- Restructured repo: engine files → `plugins/claude-code-blueprint/`, marketplace manifest at root, templates for scaffolding
+- Converted all cross-references from file reads to skill name invocations (sandbox blocks Read of plugin files)
+- Created `/migrate-to-plugin` command for v2.x → v3.0 transition
+- Rewrote `install.sh` for dual-mode: plugin install (default) + `--legacy` flag
+- Comprehensive README rewrite for v3.0 plugin model (`eb1a447`)
+- Updated hero banner SVG + added new logo (SVG + PNG) (`d27ec6a`)
+- Created 171-line template CLAUDE.md for scaffolded projects
+- Updated CI workflow for plugin validation
 
 **What's remaining:**
-- GOALS.md still has placeholder templates (P3 — filled by `/init` on install)
+- Untracked `docs/images/icon.png` — decide whether to commit or remove
+- Plugin conversion plan (`parallel-riding-lamport.md`) can be archived
 
-**Start here:** No in-flight work. Template is at v2.3.0, all audit findings resolved, working tree clean.
+**Start here:** No in-flight work. Template is at v3.0.0, plugin conversion complete, working tree clean.
 
 **Current state of the code:**
 - Build: n/a (template repo, no build step)
-- Tests: CI pending on `5a0c352` — last full green on `c5b512e`
-- Uncommitted changes: none
+- Tests: CI not yet run on latest commits (last green on `c5b512e`)
+- Uncommitted changes: 1 untracked file (`docs/images/icon.png`)
 
 ## Commands
 
