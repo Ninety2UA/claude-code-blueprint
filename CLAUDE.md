@@ -10,7 +10,26 @@ Quality over speed. Small steps compound. The patterns you establish will be cop
 
 <!-- Updated by /wrap. For full state: read docs/context/STATUS.md -->
 
-See `docs/context/STATUS.md` for current project state, recent commits, and what to work on next. If empty, run `/init` to set up or `/status` to orient.
+**Last session:** 2026-03-26
+
+**What was done:**
+- Fixed `install.sh`: include `scripts/ship.sh` (`f492b74`), `/dev/tty` stdin pipe fix (`eaa414a`), added `--update` flag (`be48616`)
+- Rewrote `scripts/ship.sh` with Ralphy-style UI: braille spinner, stage detection, tput colors, iteration logs (`43f9145`)
+- Migrated hooks to `hooks/hooks.json` with `${CLAUDE_PLUGIN_ROOT}` paths (`e3711f5`)
+- Optimized `CLAUDE.md` from 527→149 lines — removed redundant reference tables, historical learnings (`1f15426`)
+- Moved Key Learnings to `docs/learnings/LEARNINGS.md`, updated `/wrap` skill (`b147f0c`)
+- Ran 5-agent comprehensive system audit (24 commands, 34 skills, 26 agents, 6 hooks, all config) — all pass
+- Version bump 2.2.0→2.3.0 in `install.sh` and `plugin.json`, fixed component counts (`5a0c352`)
+
+**What's remaining:**
+- GOALS.md still has placeholder templates (P3 — filled by `/init` on install)
+
+**Start here:** No in-flight work. Template is at v2.3.0, all audit findings resolved, working tree clean.
+
+**Current state of the code:**
+- Build: n/a (template repo, no build step)
+- Tests: CI pending on `5a0c352` — last full green on `c5b512e`
+- Uncommitted changes: none
 
 ## Commands
 

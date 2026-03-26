@@ -1,13 +1,13 @@
 # Project Status
 
-Last updated: 2026-03-25
+Last updated: 2026-03-26
 
 ## Current State of the Code
 
 - **Build:** n/a (template repo, no build step)
-- **Tests:** CI pending — last full green on `c5b512e`
+- **Tests:** CI pending on `5a0c352` — last full green on `c5b512e`
 - **Lint:** markdownlint clean, shellcheck clean
-- **Last verified:** 2026-03-25
+- **Last verified:** 2026-03-26
 - **Version:** 2.3.0 (34 skills, 26 agents, 24 commands, 6 hooks)
 
 ## In Flight
@@ -26,7 +26,13 @@ Last updated: 2026-03-25
 
 | Date | Commit | Description |
 |------|--------|-------------|
-| 2026-03-25 | (pending) | Fix: migrate hook definitions from `.claude/settings.json` to `hooks/hooks.json` with `${CLAUDE_PLUGIN_ROOT}` paths — fixes PostToolUse errors when template auto-discovered as plugin from parent directory. 3 modified, 1 new file. |
+| 2026-03-26 | `5a0c352` | Fix: system audit findings — version bump 2.2.0→2.3.0, plugin.json counts, CLAUDE.md architecture accuracy. |
+| 2026-03-26 | `b147f0c` | Refactor: move Key Learnings from CLAUDE.md to `docs/learnings/LEARNINGS.md`, update `/wrap` skill. |
+| 2026-03-26 | `1f15426` | Refactor: optimize CLAUDE.md from 527→149 lines (72% reduction) — remove redundant tables, historical learnings. |
+| 2026-03-26 | `be48616` | Feat: add `--update` flag to install.sh — refresh template without losing customizations. |
+| 2026-03-26 | `43f9145` | Feat: Ralphy-style UI for `scripts/ship.sh` — braille spinner, stage detection, tput colors, iteration logs. |
+| 2026-03-25 | `e3711f5` | Fix: migrate hooks to `hooks/hooks.json` with `${CLAUDE_PLUGIN_ROOT}` — fixes PostToolUse errors on plugin auto-discovery. |
+| 2026-03-25 | `f492b74` | Fix: include `scripts/ship.sh` in installer + `/dev/tty` stdin pipe fix for overwrite prompt. |
 | 2026-03-24 | `c6a1cb4` | Feat: absorb 3 patterns from multi-agent framework analysis — worker failure protocol (team-lead), contradiction resolution (findings-synthesizer), structured escalation (iterative-refinement). README updated with 15th repo entry. 5 files, +66/-10. |
 | 2026-03-23 | `0a7a0c4` | Feat: GSD imports — interface context extraction (writing-plans), deviation scope boundary + stub tracking (executing-plans), prompt injection guard hook (new), verification command guideline (writing-plans). 4 modified, 1 new file, +114 lines. |
 | 2026-03-23 | `2526608` | Docs: session wrap-up — claude-squad and claude-mem compatibility analyses (verdict: import nothing from either) |
