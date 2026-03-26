@@ -36,27 +36,27 @@
 
   <!-- Main title -->
   <text x="80" y="155" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="46" font-weight="700" fill="#FEFCF9" letter-spacing="-1">
-    Claude Code Project Template
+    Claude Code Blueprint
   </text>
 
   <!-- Subtitle -->
   <text x="80" y="195" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="22" fill="#D4A574" font-weight="400">
-    Production-grade scaffolding for AI-assisted development
+    Production-grade plugin for AI-assisted development
   </text>
 
   <!-- Tags -->
   <g transform="translate(80, 225)">
     <rect width="95" height="30" rx="15" fill="none" stroke="#D4A574" stroke-width="1.5" opacity="0.6"/>
-    <text x="47" y="20" font-family="system-ui, sans-serif" font-size="13" fill="#D4A574" text-anchor="middle">32 Skills</text>
+    <text x="47" y="20" font-family="system-ui, sans-serif" font-size="13" fill="#D4A574" text-anchor="middle">34 Skills</text>
 
-    <rect x="110" width="120" height="30" rx="15" fill="none" stroke="#D4A574" stroke-width="1.5" opacity="0.6"/>
-    <text x="170" y="20" font-family="system-ui, sans-serif" font-size="13" fill="#D4A574" text-anchor="middle">21 Commands</text>
+    <rect x="110" width="130" height="30" rx="15" fill="none" stroke="#D4A574" stroke-width="1.5" opacity="0.6"/>
+    <text x="175" y="20" font-family="system-ui, sans-serif" font-size="13" fill="#D4A574" text-anchor="middle">25 Commands</text>
 
-    <rect x="245" width="100" height="30" rx="15" fill="none" stroke="#D4A574" stroke-width="1.5" opacity="0.6"/>
-    <text x="295" y="20" font-family="system-ui, sans-serif" font-size="13" fill="#D4A574" text-anchor="middle">25 Agents</text>
+    <rect x="255" width="100" height="30" rx="15" fill="none" stroke="#D4A574" stroke-width="1.5" opacity="0.6"/>
+    <text x="305" y="20" font-family="system-ui, sans-serif" font-size="13" fill="#D4A574" text-anchor="middle">26 Agents</text>
 
-    <rect x="360" width="130" height="30" rx="15" fill="none" stroke="#D4A574" stroke-width="1.5" opacity="0.6"/>
-    <text x="425" y="20" font-family="system-ui, sans-serif" font-size="13" fill="#D4A574" text-anchor="middle">5 Quality Gates</text>
+    <rect x="370" width="90" height="30" rx="15" fill="none" stroke="#6366f1" stroke-width="1.5" opacity="0.8"/>
+    <text x="415" y="20" font-family="system-ui, sans-serif" font-size="13" fill="#8b5cf6" text-anchor="middle">Plugin</text>
   </g>
 
   <!-- Terminal illustration -->
