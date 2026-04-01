@@ -98,7 +98,7 @@ try {
 } catch (e) { /* ignore */ }
 
 // Remind about commands
-lines.push('Commands: /plan · /build · /discuss · /review · /review-swarm · /deep-research · /compound · /orchestrate · /team · /status · /debug · /backlog · /wrap');
+lines.push('Commands: /plan · /build · /ship · /quick · /discuss · /review · /review-swarm · /deep-research · /compound · /orchestrate · /team · /status · /debug · /backlog · /wrap');
 
 if (lines.length > 0) {
   console.log(lines.join('\n'));

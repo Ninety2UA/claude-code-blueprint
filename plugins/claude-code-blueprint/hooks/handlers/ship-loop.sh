@@ -45,7 +45,8 @@ fi
 # 4. Session isolation — only block the session that started the loop
 # --------------------------------------------------
 STATE_SESSION=$(echo "$FRONTMATTER" | grep '^session_id:' | sed 's/session_id: *//' | tr -d '"')
-HOOK_SESSION=$(echo "$HOOK_INPUT" | python3 -c "import sys,json; print(json.load(sys.stdin).get('session_id',''))" 2>/dev/null || echo "")
+# Try python3 first, fall back to grep+sed for systems without python3
+HOOK_SESSION=$(echo "$HOOK_INPUT" | python3 -c "import sys,json; print(json.load(sys.stdin).get('session_id',''))" 2>/dev/null || echo "$HOOK_INPUT" | grep -o '"session_id":"[^"]*"' | sed 's/"session_id":"//;s/"//' || echo "")
 
 if [[ -n "$STATE_SESSION" ]] && [[ -n "$HOOK_SESSION" ]] && [[ "$STATE_SESSION" != "$HOOK_SESSION" ]]; then
   exit 0  # Different session — don't interfere
@@ -138,10 +139,14 @@ fi
 # --------------------------------------------------
 # 9. Block exit and re-feed the prompt
 # --------------------------------------------------
+# JSON-escape the prompt text to prevent malformed output from quotes/backslashes/newlines
+ESCAPED_PROMPT=$(printf '%s' "$PROMPT_TEXT" | python3 -c "import sys,json; print(json.dumps(sys.stdin.read())[1:-1])" 2>/dev/null || printf '%s' "$PROMPT_TEXT" | sed 's/\\/\\\\/g; s/"/\\"/g; s/\t/\\t/g' | tr '\n' ' ')
+ESCAPED_SYSTEM="Ship loop iteration $NEXT_ITERATION/$MAX_ITERATIONS | To complete: output <promise>$COMPLETION_PROMISE</promise> (ONLY when ALL work is done and verified)"
+
 cat <<EOF
 {
   "decision": "block",
-  "reason": "$PROMPT_TEXT",
-  "systemMessage": "Ship loop iteration $NEXT_ITERATION/$MAX_ITERATIONS | To complete: output <promise>$COMPLETION_PROMISE</promise> (ONLY when ALL work is done and verified)"
+  "reason": "$ESCAPED_PROMPT",
+  "systemMessage": "$ESCAPED_SYSTEM"
 }
 EOF

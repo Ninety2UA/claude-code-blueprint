@@ -57,7 +57,7 @@ Run `/init` after install to configure `docs/context/CONVENTIONS.md` with actual
 ```
 .claude-plugin/                          # Marketplace manifest (marketplace.json)
 plugins/claude-code-blueprint/           # Plugin root
-  commands/                              # 24 slash commands (description frontmatter)
+  commands/                              # 25 slash commands (description frontmatter)
   skills/                                # 34 workflow skills (triggered contextually)
   agents/                                # 26 specialized subagents
   hooks/hooks.json                       # Hook definitions (${CLAUDE_PLUGIN_ROOT})

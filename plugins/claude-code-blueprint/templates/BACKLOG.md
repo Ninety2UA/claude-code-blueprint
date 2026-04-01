@@ -4,7 +4,7 @@ Dump anything here — ideas, bugs, tasks, notes. No structure required for new 
 
 ## Inbox
 
-<!-- All v2.3.0 items completed in commit 26bd912 and verified by CI (4dc5408) -->
+<!-- Add items here. Run /backlog to triage. -->
 
 ## Triaged
 

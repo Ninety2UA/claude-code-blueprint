@@ -19,15 +19,30 @@ try {
   state = JSON.parse(fs.readFileSync(stateFile, 'utf-8'));
 } catch (e) { /* fresh state */ }
 
-// Parse tool info from stdin
+// Parse tool info from stdin (async with timeout to avoid blocking)
 let toolName = '';
-try {
-  const input = fs.readFileSync(0, 'utf-8').trim();
-  if (input) {
-    const data = JSON.parse(input);
-    toolName = data.tool_name || data.toolName || '';
-  }
-} catch (e) { /* no stdin or not JSON */ }
+const chunks = [];
+const stdinTimeout = setTimeout(() => {
+  process.stdin.destroy();
+}, 2000);
+process.stdin.on('data', (chunk) => chunks.push(chunk));
+process.stdin.on('end', () => {
+  clearTimeout(stdinTimeout);
+  try {
+    const input = Buffer.concat(chunks).toString('utf-8').trim();
+    if (input) {
+      const data = JSON.parse(input);
+      toolName = data.tool_name || data.toolName || '';
+    }
+  } catch (e) { /* no stdin or not JSON */ }
+  processState();
+});
+process.stdin.on('error', () => {
+  clearTimeout(stdinTimeout);
+  processState();
+});
+
+function processState() {
 
 state.calls++;
 
@@ -61,3 +76,4 @@ if (state.calls >= 200) {
 if (warnings.length > 0) {
   console.log(warnings.join('\n'));
 }
+} // end processState

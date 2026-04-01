@@ -107,7 +107,7 @@ Quick verification: invoke the brainstorming skill to confirm the plugin is prov
 Migration complete! v2.x → v3.0 (plugin mode)
 
 Removed:
-  .claude/commands/    (24 files → now from plugin)
+  .claude/commands/    (25 files → now from plugin)
   .claude/skills/      (34 dirs → now from plugin)
   .claude/agents/      (26 files → now from plugin)
   .claude/hooks/       (6 files → now from plugin)

@@ -10,25 +10,19 @@ Quality over speed. Small steps compound. The patterns you establish will be cop
 
 <!-- Updated by /wrap. For full state: read docs/context/STATUS.md -->
 
-**Last session:** 2026-03-26
+**Last session:** Not yet initialized
 
 **What was done:**
-- Fixed `install.sh`: include `scripts/ship.sh` (`f492b74`), `/dev/tty` stdin pipe fix (`eaa414a`), added `--update` flag (`be48616`)
-- Rewrote `scripts/ship.sh` with Ralphy-style UI: braille spinner, stage detection, tput colors, iteration logs (`43f9145`)
-- Migrated hooks to `hooks/hooks.json` with `${CLAUDE_PLUGIN_ROOT}` paths (`e3711f5`)
-- Optimized `CLAUDE.md` from 527→149 lines — removed redundant reference tables, historical learnings (`1f15426`)
-- Moved Key Learnings to `docs/learnings/LEARNINGS.md`, updated `/wrap` skill (`b147f0c`)
-- Ran 5-agent comprehensive system audit (24 commands, 34 skills, 26 agents, 6 hooks, all config) — all pass
-- Version bump 2.2.0→2.3.0 in `install.sh` and `plugin.json`, fixed component counts (`5a0c352`)
+- Project scaffolded with Claude Code Blueprint v3.0 plugin
 
 **What's remaining:**
-- GOALS.md still has placeholder templates (P3 — filled by `/init` on install)
+- Run `/init` to configure conventions, goals, and status
 
-**Start here:** No in-flight work. Template is at v2.3.0, all audit findings resolved, working tree clean.
+**Start here:** Run `/init` to set up your project.
 
 **Current state of the code:**
-- Build: n/a (template repo, no build step)
-- Tests: CI pending on `5a0c352` — last full green on `c5b512e`
+- Build: not configured (run `/init`)
+- Tests: not configured (run `/init`)
 - Uncommitted changes: none
 
 ## Commands
@@ -52,12 +46,10 @@ Run `/init` after install to configure `docs/context/CONVENTIONS.md` with actual
 ## Architecture
 
 ```
-.claude/commands/    # 24 slash commands (each has description frontmatter)
-.claude/skills/      # 34 workflow skills (triggered contextually)
-.claude/agents/      # 26 specialized subagents (dispatched via Task tool)
-.claude/hooks/       # Lifecycle hooks (session-start, context-monitor, prompt-guard, ship-loop)
-hooks/hooks.json     # Plugin hook definitions (uses ${CLAUDE_PLUGIN_ROOT})
-.claude-plugin/      # Plugin manifest
+# Plugin-provided (25 commands, 34 skills, 26 agents, 6 hooks)
+# Available automatically — no per-project files needed
+
+# Project-local (your project state)
 docs/context/        # GOALS.md, STATUS.md, CONVENTIONS.md, DECISIONS.md
 docs/plans/          # Implementation plans (YYYY-MM-DD-topic.md)
 docs/solutions/      # Institutional knowledge (created by /compound)
@@ -65,7 +57,7 @@ docs/learnings/      # Key learnings and gotchas (updated by /wrap)
 docs/decisions/      # Architecture decision records (ADRs)
 docs/research/       # Research findings and exploration notes
 docs/specs/          # Feature specs and requirements
-scripts/ship.sh      # Ralph-style external loop for /ship
+scripts/ship.sh      # Wrapper for plugin's Ralph-style external loop
 blueprint.local.md   # Per-project agent config (gitignored)
 BACKLOG.md           # Quick capture inbox
 ```
@@ -160,7 +152,6 @@ Types: `feat`, `fix`, `refactor`, `docs`, `test`, `chore`, `style`, `perf`
 
 ## Gotchas
 
-- Hooks must use `hooks/hooks.json` with `${CLAUDE_PLUGIN_ROOT}` paths, NOT `.claude/settings.json` (fails when template is auto-discovered as plugin from parent directory)
 - Stop hook `"decision": "block"` does NOT reset context — use `scripts/ship.sh` for true context refresh between iterations
 - Each Agent Teams teammate MUST own specific files — concurrent modification causes conflicts
 - Use `execFileSync` not `execSync` in hook scripts to prevent shell injection

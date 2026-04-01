@@ -1,6 +1,5 @@
 ---
 description: "Initialize project template. Walks you through setting up conventions, goals, and status."
-argument-hint: "[optional: project name]"
 ---
 
 # Project Initialization
@@ -26,8 +25,16 @@ Check if this is a fresh project that needs scaffolding:
    ```bash
    #!/bin/bash
    # Wrapper for blueprint's ship.sh from plugin
-   PLUGIN_SHIP="$(dirname "$(dirname "$(readlink -f "$0")")")/scripts/ship.sh"
-   if [ ! -f "$PLUGIN_SHIP" ]; then
+   # Search common plugin cache locations
+   for CANDIDATE in \
+     "$HOME/.claude/plugins/cache/claude-code-blueprint/claude-code-blueprint"/*/scripts/ship.sh \
+     "$HOME/.claude/plugins/marketplaces/claude-code-blueprint/plugins/claude-code-blueprint/scripts/ship.sh"; do
+     if [ -f "$CANDIDATE" ]; then
+       PLUGIN_SHIP="$CANDIDATE"
+       break
+     fi
+   done
+   if [ -z "${PLUGIN_SHIP:-}" ]; then
      echo "Blueprint plugin not found. Install: claude plugin install github:Ninety2UA/claude-code-blueprint"
      exit 1
    fi

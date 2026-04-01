@@ -256,7 +256,7 @@ Plugin (installed globally, zero files in your project)
 ├── 25 commands          /plan, /ship, /build, /review-swarm, /orchestrate, /team, ...
 ├── 34 skills            TDD, wave-orchestration, swarms, iterative-refinement, ...
 ├── 26 agents            team-lead, reviewer, security, perf, ...
-└── 6 hooks              session-start, context-monitor, prompt-guard, ship-loop
+└── 6 hooks              session-start, context-monitor, prompt-guard, ship-loop + 2 opt-in
 
 your-project/ (scaffolded by /init)
 ├── docs/
@@ -601,6 +601,7 @@ Commands are user-facing shortcuts that invoke the right skills with the right c
 | **`/changelog`** | Generate release notes from git history using Keep a Changelog format. |
 | **`/add-tests`** | Analyze test coverage gaps and generate tests for untested code paths. |
 | **`/health`** | Comprehensive project health check — build, tests, lint, deps, conventions, docs, backlog, git. |
+| **`/migrate-to-plugin`** | Migrate v2.x in-project files to v3.0 plugin mode. Removes engine files, keeps project state. |
 
 ### Typical session flow
 
