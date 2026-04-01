@@ -10,28 +10,26 @@ Quality over speed. Small steps compound. The patterns you establish will be cop
 
 <!-- Updated by /wrap. For full state: read docs/context/STATUS.md -->
 
-**Last session:** 2026-03-26
+**Last session:** 2026-04-01
 
 **What was done:**
-- Converted blueprint from install-script model to Claude Code plugin (v3.0.0) (`025e0a8`)
-- Restructured repo: engine files → `plugins/claude-code-blueprint/`, marketplace manifest at root, templates for scaffolding
-- Converted all cross-references from file reads to skill name invocations (sandbox blocks Read of plugin files)
-- Created `/migrate-to-plugin` command for v2.x → v3.0 transition
-- Rewrote `install.sh` for dual-mode: plugin install (default) + `--legacy` flag
-- Comprehensive README rewrite for v3.0 plugin model (`eb1a447`)
-- Updated hero banner SVG + added new logo (SVG + PNG) (`d27ec6a`)
-- Created 171-line template CLAUDE.md for scaffolded projects
-- Updated CI workflow for plugin validation
+- Comprehensive system audit: 22 fixes across hooks, commands, skills, agents, templates (`549ad9f`)
+- Critical: JSON injection fix in `ship-loop.sh`, python3 fallback for session_id, async stdin in `context-monitor.js`
+- Fixed "24 commands" → "25 commands" in 6 locations (marketplace.json, install.sh, CLAUDE.md, promo-video.html, migrate-to-plugin.md)
+- Cleaned stale v2.x content from template files (`templates/CLAUDE.md`, `templates/STATUS.md`, `templates/BACKLOG.md`)
+- Added `/migrate-to-plugin` to README commands table, added `/ship` + `/quick` to session-start.js
+- Added missing `model: inherit` to `team-lead.md`, fixed broken skill references in brainstorming + writing-skills
+- Fixed `init.md` ship.sh wrapper path resolution, removed `.orphaned_at` artifact
 
 **What's remaining:**
 - Untracked `docs/images/icon.png` — decide whether to commit or remove
-- Plugin conversion plan (`parallel-riding-lamport.md`) can be archived
+- `render-graphs.js` uses `execSync` instead of `execFileSync` — cosmetic inconsistency, low risk (dev utility)
 
-**Start here:** No in-flight work. Template is at v3.0.0, plugin conversion complete, working tree clean.
+**Start here:** No in-flight work. v3.0.0 on `main`, all audit findings resolved, pushed to origin.
 
 **Current state of the code:**
 - Build: n/a (template repo, no build step)
-- Tests: CI not yet run on latest commits (last green on `c5b512e`)
+- Tests: CI not yet run on `549ad9f` (last green on `c5b512e`)
 - Uncommitted changes: 1 untracked file (`docs/images/icon.png`)
 
 ## Commands
