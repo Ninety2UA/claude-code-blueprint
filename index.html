@@ -21,9 +21,9 @@
       --navy-deep: #0f1729;
       --navy-mid: #152038;
       --navy-light: #1a2d5a;
-      --gold: #e8a860;
-      --gold-light: #f0c896;
-      --gold-rgb: 232, 168, 96;
+      --gold: #56b8ff;
+      --gold-light: #93d1ff;
+      --gold-rgb: 86, 184, 255;
       --purple: #7c7ff7;
       --purple-light: #a78bfa;
       --purple-rgb: 124, 127, 247;
@@ -165,7 +165,7 @@
     }
 
     .gradient-text {
-      background: linear-gradient(135deg, var(--gold) 0%, var(--teal) 33%, var(--purple-light) 66%, var(--gold) 100%);
+      background: linear-gradient(135deg, var(--gold) 0%, var(--teal) 35%, var(--purple-light) 70%, var(--gold) 100%);
       background-size: 300% auto;
       -webkit-background-clip: text;
       background-clip: text;
@@ -402,13 +402,14 @@
 
     .btn--primary {
       background: linear-gradient(135deg, var(--gold), var(--gold-light));
-      color: var(--navy-deep);
-      box-shadow: 0 4px 15px rgba(var(--gold-rgb), 0.2);
+      color: #0a1628;
+      font-weight: 700;
+      box-shadow: 0 4px 15px rgba(var(--gold-rgb), 0.25);
     }
 
     .btn--primary:hover {
-      box-shadow: 0 8px 30px rgba(var(--gold-rgb), 0.4), 0 0 60px rgba(var(--gold-rgb), 0.15);
-      color: var(--navy-deep);
+      box-shadow: 0 8px 30px rgba(var(--gold-rgb), 0.45), 0 0 60px rgba(var(--gold-rgb), 0.15);
+      color: #0a1628;
     }
 
     .btn--outline {
@@ -1179,13 +1180,13 @@
       width: 44px;
       height: 44px;
       border-radius: 50%;
-      background: linear-gradient(135deg, var(--gold), var(--teal));
+      background: linear-gradient(135deg, var(--gold), var(--purple-light));
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 800;
       font-size: 1.1rem;
-      color: var(--navy-deep);
+      color: #0a1628;
       margin: 0 auto 1rem;
       position: relative;
       z-index: 1;
@@ -2596,7 +2597,7 @@
           if (p.y < 0 || p.y > h) p.vy *= -1;
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(232, 168, 96, 0.18)';
+          ctx.fillStyle = 'rgba(86, 184, 255, 0.15)';
           ctx.fill();
         });
 
@@ -2610,7 +2611,7 @@
               ctx.beginPath();
               ctx.moveTo(pts[i].x, pts[i].y);
               ctx.lineTo(pts[j].x, pts[j].y);
-              ctx.strokeStyle = `rgba(232, 168, 96, ${0.06 * (1 - dist / 150)})`;
+              ctx.strokeStyle = `rgba(86, 184, 255, ${0.05 * (1 - dist / 150)})`;
               ctx.lineWidth = 0.5;
               ctx.stroke();
             }
