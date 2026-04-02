@@ -52,6 +52,8 @@ Different actions per tier:
 - MEDIUM confidence findings → include but expect some may be noise
 - LOW confidence findings → group under a separate "Verify Manually" section, never classify as P1
 
+**Evidence hierarchy cross-reference:** When assigning confidence, consider the evidence tier backing each finding (Tier 1: direct reproduction, Tier 2: automated test, Tier 3: logs/traces, Tier 4: converging sources, Tier 5: code-path inference, Tier 6: speculation). Findings backed only by Tier 5-6 evidence should be LOW confidence and placed in "Verify Manually" regardless of how plausible they sound.
+
 ### Step 3: Prioritize
 
 Assign final priority based on actual impact:

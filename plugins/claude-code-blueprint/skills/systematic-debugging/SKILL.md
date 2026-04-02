@@ -193,6 +193,19 @@ You MUST complete each phase before proceeding to the next (unless Step 0 author
    - Ask for help
    - Research more
 
+5. **Evidence Hierarchy — rate every hypothesis by its strongest supporting evidence:**
+
+   | Tier | Evidence Type | Reliability |
+   |------|--------------|-------------|
+   | **1** | Direct reproduction — you ran it and saw the failure | Strongest |
+   | **2** | Reproduction script or discriminating test — automated proof | Strong |
+   | **3** | Primary artifacts — timestamped logs, traces, git history, configs | Solid |
+   | **4** | Converging sources — multiple independent code paths point the same way | Moderate |
+   | **5** | Single code-path inference — reading one path and reasoning about behavior | Weak |
+   | **6** | Intuition, analogy, speculation | Weakest |
+
+   Tier 5-6 hypotheses must be verified (promoted to Tier 1-4) before acting on them. Never present Tier 6 evidence as a finding.
+
 ### Phase 4: Implementation
 
 **Fix the root cause, not the symptom:**

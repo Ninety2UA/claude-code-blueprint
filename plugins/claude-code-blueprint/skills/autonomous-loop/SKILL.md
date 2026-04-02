@@ -313,6 +313,8 @@ Report the final state:
 - Commits made: [list]
 ```
 
+**Deslop pass:** Before reporting completion, run a deslop pass on all files modified during this session — remove AI text patterns (over-hedged language, filler transitions, restating-the-obvious comments, redundant type annotations). See iterative-refinement Step 0 for the full checklist. Verify tests still pass after deslop changes.
+
 ## Integration with Other Skills
 
 | Situation | Skill to Use |

@@ -79,6 +79,21 @@ If requirements are ambiguous:
 
 Write locked decisions to `docs/context/DECISIONS.md` (append, don't overwrite).
 
+**Ambiguity Gate — score requirements before proceeding:**
+
+| Dimension | Weight | Question |
+|-----------|--------|----------|
+| **Scope clarity** | 40% | Is it clear what's in and out of scope? Are boundaries explicit? |
+| **Constraint clarity** | 30% | Are technical constraints, dependencies, and limitations stated? |
+| **Success criteria clarity** | 30% | Are acceptance criteria specific and testable? |
+
+Rate each dimension 0.0–1.0. Calculate: `clarity = (scope × 0.4) + (constraints × 0.3) + (criteria × 0.3)`
+
+For **brownfield** tasks (modifying existing code), add a 4th dimension — **Context clarity (15%)**: is existing codebase behavior understood? Adjust weights to 35%/25%/25%/15%.
+
+- If clarity **≥ 0.8** → proceed to Stage 2
+- If clarity **< 0.8** → make reasonable assumptions for the weakest dimension, document them as locked decisions, then re-score. If still < 0.8, proceed anyway with assumptions documented (autonomous mode — no user questions).
+
 ---
 
 ### Stage 2: Plan

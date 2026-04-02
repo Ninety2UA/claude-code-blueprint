@@ -18,6 +18,21 @@ Run the /discuss command. Capture user decisions BEFORE planning.
 
 If the user has already provided clear, unambiguous requirements, summarize them as locked decisions and ask: "These are the locked decisions I'll plan around. Confirm or adjust?"
 
+**Ambiguity Gate — score requirements before proceeding:**
+
+| Dimension | Weight | Question |
+|-----------|--------|----------|
+| **Scope clarity** | 40% | Is it clear what's in and out of scope? Are boundaries explicit? |
+| **Constraint clarity** | 30% | Are technical constraints, dependencies, and limitations stated? |
+| **Success criteria clarity** | 30% | Are acceptance criteria specific and testable? |
+
+Rate each dimension 0.0–1.0. Calculate: `clarity = (scope × 0.4) + (constraints × 0.3) + (criteria × 0.3)`
+
+For **brownfield** tasks, add **Context clarity (15%)** and adjust weights to 35%/25%/25%/15%.
+
+- If clarity **≥ 0.8** → proceed to Stage 2
+- If clarity **< 0.8** → use AskUserQuestion to clarify the weakest dimension before proceeding
+
 ### Stage 2: Brainstorm (Design)
 
 Invoke the brainstorming skill. Follow it exactly.
