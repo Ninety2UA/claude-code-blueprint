@@ -13,7 +13,7 @@ Quality over speed. Small steps compound. The patterns you establish will be cop
 **Last session:** 2026-04-02
 
 **What was done:**
-- Built GitHub Pages marketing website (`index.html`, 2682 lines) with 13 sections, deployed at https://ninety2ua.github.io/claude-code-blueprint/ (`9a151f0`)
+- Built GitHub Pages marketing website (`index.html`, 2682 lines) with 13 sections, deployed at <https://ninety2ua.github.io/claude-code-blueprint/> (`9a151f0`)
 - Fixed hook errors: `context-monitor.js` double processState() race, `ship-loop.sh` set -e + stderr leaks, `prompt-guard.js` timeout race (`9a151f0`)
 - Iterated color palette through 5 variants, settled on peach-amber `#f0a875` (`26fb3be`)
 - Redesigned workflow section into 5 horizontal cards with colored top accents (`01d7d45`)
@@ -31,7 +31,7 @@ Quality over speed. Small steps compound. The patterns you establish will be cop
 **Current state of the code:**
 - Build: n/a (template repo, no build step)
 - Tests: CI not run on latest commits
-- Website: live at https://ninety2ua.github.io/claude-code-blueprint/
+- Website: live at <https://ninety2ua.github.io/claude-code-blueprint/>
 - Uncommitted changes: 1 untracked file (`docs/images/icon.png`)
 
 ## Commands
