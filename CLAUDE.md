@@ -10,26 +10,28 @@ Quality over speed. Small steps compound. The patterns you establish will be cop
 
 <!-- Updated by /wrap. For full state: read docs/context/STATUS.md -->
 
-**Last session:** 2026-04-01
+**Last session:** 2026-04-02
 
 **What was done:**
-- Comprehensive system audit: 22 fixes across hooks, commands, skills, agents, templates (`549ad9f`)
-- Critical: JSON injection fix in `ship-loop.sh`, python3 fallback for session_id, async stdin in `context-monitor.js`
-- Fixed "24 commands" → "25 commands" in 6 locations (marketplace.json, install.sh, CLAUDE.md, promo-video.html, migrate-to-plugin.md)
-- Cleaned stale v2.x content from template files (`templates/CLAUDE.md`, `templates/STATUS.md`, `templates/BACKLOG.md`)
-- Added `/migrate-to-plugin` to README commands table, added `/ship` + `/quick` to session-start.js
-- Added missing `model: inherit` to `team-lead.md`, fixed broken skill references in brainstorming + writing-skills
-- Fixed `init.md` ship.sh wrapper path resolution, removed `.orphaned_at` artifact
+- Built GitHub Pages marketing website (`index.html`, 2682 lines) with 13 sections, deployed at https://ninety2ua.github.io/claude-code-blueprint/ (`9a151f0`)
+- Fixed hook errors: `context-monitor.js` double processState() race, `ship-loop.sh` set -e + stderr leaks, `prompt-guard.js` timeout race (`9a151f0`)
+- Iterated color palette through 5 variants, settled on peach-amber `#f0a875` (`26fb3be`)
+- Redesigned workflow section into 5 horizontal cards with colored top accents (`01d7d45`)
+- Fixed orchestration card images with `aspect-ratio: 16/10` containers for uniform sizing
+- Restructured install section from 2+1 layout to 3-column equal grid with numbered steps
+- Added staggered scroll-reveal animations, enhanced hover effects across all card types
 
 **What's remaining:**
 - Untracked `docs/images/icon.png` — decide whether to commit or remove
-- `render-graphs.js` uses `execSync` instead of `execFileSync` — cosmetic inconsistency, low risk (dev utility)
+- Add OG image (`og-image.png`) for social preview cards when URL is shared
+- `render-graphs.js` uses `execSync` instead of `execFileSync` — cosmetic, low risk
 
-**Start here:** No in-flight work. v3.0.0 on `main`, all audit findings resolved, pushed to origin.
+**Start here:** Website is live. No in-flight work. Consider adding OG image for social sharing or further design refinements.
 
 **Current state of the code:**
 - Build: n/a (template repo, no build step)
-- Tests: CI not yet run on `549ad9f` (last green on `c5b512e`)
+- Tests: CI not run on latest commits
+- Website: live at https://ninety2ua.github.io/claude-code-blueprint/
 - Uncommitted changes: 1 untracked file (`docs/images/icon.png`)
 
 ## Commands
