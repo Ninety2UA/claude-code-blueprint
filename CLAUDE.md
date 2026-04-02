@@ -13,24 +13,25 @@ Quality over speed. Small steps compound. The patterns you establish will be cop
 **Last session:** 2026-04-02
 
 **What was done:**
-- Built GitHub Pages marketing website (`index.html`, 2682 lines) with 13 sections, deployed at <https://ninety2ua.github.io/claude-code-blueprint/> (`9a151f0`)
+- Built GitHub Pages website (`index.html`, ~97KB) — 13 sections, deployed at <https://ninety2ua.github.io/claude-code-blueprint/> (`9a151f0`)
 - Fixed hook errors: `context-monitor.js` double processState() race, `ship-loop.sh` set -e + stderr leaks, `prompt-guard.js` timeout race (`9a151f0`)
-- Iterated color palette through 5 variants, settled on peach-amber `#f0a875` (`26fb3be`)
-- Redesigned workflow section into 5 horizontal cards with colored top accents (`01d7d45`)
-- Fixed orchestration card images with `aspect-ratio: 16/10` containers for uniform sizing
-- Restructured install section from 2+1 layout to 3-column equal grid with numbered steps
-- Added staggered scroll-reveal animations, enhanced hover effects across all card types
+- Design iterations: peach-amber `#f0a875`, workflow cards, orchestration image uniformity, 3-col install grid (`26fb3be`, `01d7d45`)
+- Deep-analyzed oh-my-claudecode (21.9K stars) — imported 3 patterns: evidence hierarchy, ambiguity gating, deslop pass (`316852f`)
+- Full framework audit (5 reviewer agents + team-lead) — 7 findings, 0 critical. Fixed: `/discuss` in README, stage numbering, duplicate step labels (`9b552f1`)
+- Updated README + website with OMC ecosystem entry (16th repo, 320K+ combined stars) (`36bff61`)
+- Fixed CI: bare URLs in CLAUDE.md for markdownlint MD034 (`714157e`)
 
 **What's remaining:**
 - Untracked `docs/images/icon.png` — decide whether to commit or remove
 - Add OG image (`og-image.png`) for social preview cards when URL is shared
 - `render-graphs.js` uses `execSync` instead of `execFileSync` — cosmetic, low risk
+- Reinstall plugin after changes: `/plugin install claude-code-blueprint`
 
-**Start here:** Website is live. No in-flight work. Consider adding OG image for social sharing or further design refinements.
+**Start here:** No in-flight work. v3.0.0 on `main`, CI green, website live. All audit findings resolved.
 
 **Current state of the code:**
 - Build: n/a (template repo, no build step)
-- Tests: CI not run on latest commits
+- Tests: CI green on `714157e` — all 4 jobs passing
 - Website: live at <https://ninety2ua.github.io/claude-code-blueprint/>
 - Uncommitted changes: 1 untracked file (`docs/images/icon.png`)
 
