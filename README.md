@@ -39,7 +39,7 @@ It gives Claude Code a **structured operating system** — a set of skills, agen
 
 ## How Does This Compare?
 
-Before committing to any tool, it helps to understand the landscape. We've analyzed **15 repos and frameworks** across the Claude Code ecosystem — over 300K combined GitHub stars — through direct source code inspection, not marketing claims.
+Before committing to any tool, it helps to understand the landscape. We've analyzed **16 repos and frameworks** across the Claude Code ecosystem — over 320K combined GitHub stars — through direct source code inspection, not marketing claims.
 
 <p align="center">
   <img src="docs/images/ecosystem-guide.png" alt="Claude Code Tools Guide — 14 tools evaluated" width="90%">
@@ -70,6 +70,7 @@ Every component in Blueprint is informed by what works (and what doesn't) across
 | [**UI/UX Pro Max**](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | 37K | Reference | 100+ reasoning rules |
 | [**Claude Skills**](https://github.com/alirezarezvani/claude-skills) | 4.9K | Reference | Progressive disclosure |
 | [**Plugins+Skills**](https://github.com/jeremylongshore/claude-code-plugins-plus-skills) | 1.5K | Reference | Community patterns |
+| [**oh-my-claudecode**](https://github.com/Yeachan-Heo/oh-my-claudecode) | 21.9K | **3 patterns** | Evidence hierarchy for debugging, ambiguity gating for requirements, deslop pass for AI text cleanup |
 | **Multi-Agent Framework** | Doc | **3 patterns** | Worker failure protocol, contradiction resolution, structured escalation |
 
 > **"Import nothing" is a feature, not a failure.** The gravitational pull to adopt *something* from impressive repos is a real bias. Sometimes the right answer after deep analysis is to change nothing — and documenting why is just as valuable as documenting what you imported.
@@ -190,6 +191,21 @@ Analyzed a hybrid multi-model coordination framework (Claude Code as lead + Gemi
 - **Structured escalation format for iterative-refinement** — when convergence fails, present "both perspectives + my recommendation" with lettered options instead of a flat findings list
 
 **Rejected:** Multi-model delegation via CLI (fragile, adds dependencies, loses native tool access), file-based coordination protocol (I/O overhead unnecessary for same-model systems), assignment heuristic matrix (designed for heterogeneous agents), Phase 0 whole-repo analysis (our 5-agent research swarm is more thorough), CONTRACTS.md (GSD import of interface context extraction is fresher), attribution changelog (git blame already handles this), research skip conditions (already covered by `/quick` and session awareness).
+
+</details>
+
+<details>
+<summary><strong>oh-my-claudecode (21.9K ★) — 3 patterns absorbed</strong></summary>
+
+Analyzed [oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode) — a multi-agent orchestration plugin with 20 agents, 38+ skills, magic keyword triggers, multi-AI routing (Claude + Gemini + Codex), and MCP bridge infrastructure. Key architectural difference: OMC is feature-maximalist with heavy tooling dependencies (TypeScript, npm, tmux); Blueprint is rigor-maximalist with zero dependencies. 17 OMC features were already covered by our system, 7 were interesting but not needed, 2 were rejected.
+
+**Imported:**
+
+- **Evidence hierarchy for systematic-debugging** — 6-tier credibility ranking (direct reproduction > reproduction script > logs/traces > converging sources > code-path inference > speculation). Prevents treating speculation as fact. Cross-referenced in findings-synthesizer confidence tiering
+- **Ambiguity gating for pipeline entry** — dimension-weighted requirement scoring (scope 40%, constraints 30%, criteria 30%) with 0.8 clarity threshold. Gates `/ship` Stage 1 and `/build` Stage 1. Brownfield variant adds context clarity at 15%
+- **Deslop pass for iterative-refinement** — pre-review cleaning step targeting AI text patterns (over-hedged language, filler transitions, restating-the-obvious comments, redundant type annotations). Step 0.5 in iterative-refinement, referenced from autonomous-loop Step 7
+
+**Rejected:** Multi-AI routing (unpredictable cross-model behavior, already rejected in multi-agent framework analysis), MCP bridge + LSP + AST integration (environment-level tool, breaks zero-dependency guarantee), magic keywords (semantic landmines that conflict with project names), `.omc/` state directory (fragments state across three locations), Deep Interview mode (target users know what to build), notification routing (infrastructure-layer concern), Ralplan consensus planning (analysis paralysis risk — plan-checker is sufficient).
 
 </details>
 
