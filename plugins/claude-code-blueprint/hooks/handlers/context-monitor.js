@@ -21,59 +21,78 @@ try {
 
 // Parse tool info from stdin (async with timeout to avoid blocking)
 let toolName = '';
+let processed = false;
 const chunks = [];
+
 const stdinTimeout = setTimeout(() => {
-  process.stdin.destroy();
+  // Timeout — process with whatever we have and exit
+  if (!processed) {
+    processed = true;
+    parseAndProcess();
+  }
 }, 2000);
+
+process.stdin.setEncoding('utf-8');
 process.stdin.on('data', (chunk) => chunks.push(chunk));
 process.stdin.on('end', () => {
   clearTimeout(stdinTimeout);
+  if (!processed) {
+    processed = true;
+    parseAndProcess();
+  }
+});
+process.stdin.on('error', () => {
+  clearTimeout(stdinTimeout);
+  if (!processed) {
+    processed = true;
+    parseAndProcess();
+  }
+});
+
+// If stdin is already ended (no piped data), handle immediately
+process.stdin.resume();
+
+function parseAndProcess() {
   try {
-    const input = Buffer.concat(chunks).toString('utf-8').trim();
+    const input = chunks.join('').trim();
     if (input) {
       const data = JSON.parse(input);
       toolName = data.tool_name || data.toolName || '';
     }
   } catch (e) { /* no stdin or not JSON */ }
-  processState();
-});
-process.stdin.on('error', () => {
-  clearTimeout(stdinTimeout);
-  processState();
-});
 
-function processState() {
+  state.calls++;
 
-state.calls++;
+  // Track read-only streaks for analysis paralysis guard
+  const readTools = ['Read', 'Glob', 'Grep', 'WebFetch', 'WebSearch'];
+  if (readTools.includes(toolName)) {
+    state.reads++;
+  } else if (toolName) {
+    state.reads = 0;
+  }
 
-// Track read-only streaks for analysis paralysis guard
-const readTools = ['Read', 'Glob', 'Grep', 'WebFetch', 'WebSearch'];
-if (readTools.includes(toolName)) {
-  state.reads++;
-} else if (toolName) {
-  state.reads = 0;
+  // Save state
+  try {
+    fs.mkdirSync(stateDir, { recursive: true });
+    fs.writeFileSync(stateFile, JSON.stringify(state));
+  } catch (e) { /* ignore */ }
+
+  // Output warnings
+  const warnings = [];
+
+  if (state.reads >= 8) {
+    warnings.push('ANALYSIS PARALYSIS: 8+ consecutive read-only operations without writing code. Either write code now or report what is blocking you.');
+  }
+
+  if (state.calls >= 200) {
+    warnings.push('HIGH CONTEXT USAGE: Consider spawning subagents for remaining work to avoid context degradation.');
+  } else if (state.calls >= 150) {
+    warnings.push('CONTEXT NOTE: Approaching high usage. Plan to delegate to subagents or wrap up current task soon.');
+  }
+
+  if (warnings.length > 0) {
+    console.log(warnings.join('\n'));
+  }
+
+  process.exit(0);
 }
-
-// Save state
-try {
-  fs.mkdirSync(stateDir, { recursive: true });
-  fs.writeFileSync(stateFile, JSON.stringify(state));
-} catch (e) { /* ignore */ }
-
-// Output warnings
-const warnings = [];
-
-if (state.reads >= 8) {
-  warnings.push('ANALYSIS PARALYSIS: 8+ consecutive read-only operations without writing code. Either write code now or report what is blocking you.');
-}
-
-if (state.calls >= 200) {
-  warnings.push('HIGH CONTEXT USAGE: Consider spawning subagents for remaining work to avoid context degradation.');
-} else if (state.calls >= 150) {
-  warnings.push('CONTEXT NOTE: Approaching high usage. Plan to delegate to subagents or wrap up current task soon.');
-}
-
-if (warnings.length > 0) {
-  console.log(warnings.join('\n'));
-}
-} // end processState

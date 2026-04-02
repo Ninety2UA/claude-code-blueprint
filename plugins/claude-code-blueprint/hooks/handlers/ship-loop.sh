@@ -15,14 +15,14 @@
 # This hook is session-isolated — it only blocks exit for the session that started the loop.
 # When --external flag is used, no state file is created, so this hook does nothing.
 
-set -euo pipefail
+set -uo pipefail
 
 SHIP_STATE_FILE=".claude/ship-loop.local.md"
 
 # --------------------------------------------------
 # 1. Read hook input from stdin (JSON from Claude Code)
 # --------------------------------------------------
-HOOK_INPUT=$(cat)
+HOOK_INPUT=$(cat 2>/dev/null || echo "")
 
 # --------------------------------------------------
 # 2. Check if a ship loop is active
@@ -61,13 +61,11 @@ COMPLETION_PROMISE=$(echo "$FRONTMATTER" | grep '^completion_promise:' | sed 's/
 
 # Validate numeric fields
 if ! [[ "$ITERATION" =~ ^[0-9]+$ ]]; then
-  echo "Ship loop: Invalid iteration count. Cleaning up." >&2
   rm -f "$SHIP_STATE_FILE"
   exit 0
 fi
 
 if ! [[ "$MAX_ITERATIONS" =~ ^[0-9]+$ ]]; then
-  echo "Ship loop: Invalid max_iterations. Cleaning up." >&2
   rm -f "$SHIP_STATE_FILE"
   exit 0
 fi
@@ -76,9 +74,8 @@ fi
 # 6. Check max iterations
 # --------------------------------------------------
 if [[ "$MAX_ITERATIONS" -gt 0 ]] && [[ "$ITERATION" -ge "$MAX_ITERATIONS" ]]; then
-  echo "Ship loop: Max iterations ($MAX_ITERATIONS) reached." >&2
   rm -f "$SHIP_STATE_FILE"
-  exit 0  # Allow exit
+  exit 0  # Allow exit — max iterations reached
 fi
 
 # --------------------------------------------------
@@ -110,9 +107,8 @@ print('')
     PROMISE_TEXT=$(echo "$LAST_OUTPUT" | perl -0777 -pe 's/.*?<promise>(.*?)<\/promise>.*/$1/s; s/^\s+|\s+$//g; s/\s+/ /g' 2>/dev/null || echo "")
 
     if [[ "$PROMISE_TEXT" = "$COMPLETION_PROMISE" ]]; then
-      echo "Ship loop: Completion promise fulfilled. Pipeline done." >&2
       rm -f "$SHIP_STATE_FILE"
-      exit 0  # Allow exit — work is done
+      exit 0  # Allow exit — completion promise fulfilled
     fi
   fi
 fi
@@ -131,9 +127,8 @@ mv "$TEMP_FILE" "$SHIP_STATE_FILE"
 PROMPT_TEXT=$(awk '/^---$/{i++; next} i>=2' "$SHIP_STATE_FILE")
 
 if [[ -z "$PROMPT_TEXT" ]]; then
-  echo "Ship loop: No prompt text in state file. Cleaning up." >&2
   rm -f "$SHIP_STATE_FILE"
-  exit 0
+  exit 0  # No prompt text — cleanup and allow exit
 fi
 
 # --------------------------------------------------
