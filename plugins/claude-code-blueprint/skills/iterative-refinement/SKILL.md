@@ -55,7 +55,7 @@ Initialize tracking:
 - Scope: [description]
 ```
 
-### Step 0: Deslop Pass
+### Step 0.5: Deslop Pass
 
 Before dispatching reviewers, scan all changed files for AI-generated text patterns and clean them:
 

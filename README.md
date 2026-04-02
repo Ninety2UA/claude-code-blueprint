@@ -582,6 +582,7 @@ Commands are user-facing shortcuts that invoke the right skills with the right c
 | **`/plan`** | Brainstorming session. Explores design options, presents tradeoffs, gets approval, then creates implementation plan. |
 | **`/build`** | Full-cycle supervised pipeline with checkpoints between every stage. Supports `--iterate N` for iterative review and `--team` for team-lead dispatch. |
 | **`/ship`** | Fully autonomous pipeline — zero checkpoints, fire-and-forget. Plans, executes via team-lead, iteratively reviews (3 cycles), and opens a PR. |
+| **`/discuss`** | Capture decisions before planning. Explores requirements, locks decisions that planners must honor. |
 | **`/deepen`** | Enrich an existing plan with parallel research agents. Dispatches all configured researchers in parallel, then merges findings into the plan. |
 | **`/review`** | Dispatches code-reviewer agent against your current changes. |
 | **`/review-swarm`** | Multi-agent parallel review — dispatches 6-10 specialized reviewers, synthesizes findings into prioritized P1/P2/P3 report. |

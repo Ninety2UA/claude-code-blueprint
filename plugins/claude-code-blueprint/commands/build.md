@@ -74,7 +74,7 @@ Invoke the verification-before-completion skill.
 
 Run all tests. Verify all acceptance criteria from the plan are met. Confirm no regressions.
 
-### Stage 6.5: Deploy Check (Optional)
+### Stage 7: Deploy Check (Optional)
 
 If the user said `/build --deploy` or requests deployment:
 
@@ -82,7 +82,7 @@ Invoke the deployment-verification skill. Dispatch the **deployment-verifier** a
 
 Only proceed with deployment if the verdict is GO or CONDITIONAL GO. If NO-GO, stop and report the blocking issues.
 
-### Stage 7: Compound (Knowledge Capture)
+### Stage 8: Compound (Knowledge Capture)
 
 If the implementation involved solving a non-trivial problem (debugging, framework gotcha, architectural decision), run `/compound` to document it in `docs/solutions/`. This makes the solution searchable for future planning.
 
