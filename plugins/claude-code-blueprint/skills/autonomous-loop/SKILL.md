@@ -131,23 +131,35 @@ Check the specific acceptance criteria for the task too.
 | **Fixable** | Test failure from implementation bug | Debug and fix, then retry |
 | **Fatal** | Missing dependency, wrong architecture, unclear requirement | STOP and report |
 
-#### 3e. Retry Logic
+#### 3e. Reflection Gate (before every retry)
+
+Before retrying, you MUST answer these three questions explicitly in your output:
+
+1. **What failed?** — State the specific error, not just "it didn't work"
+2. **What specific change will I make?** — Name the concrete difference from the last attempt
+3. **Am I repeating the same approach?** — If yes, you MUST switch strategies entirely
+
+<HARD-GATE>
+Do NOT retry without writing out answers to all three questions. If the answer to question 3 is "yes", you must choose a fundamentally different approach before proceeding. Repeating the same strategy with minor tweaks is not allowed after the first retry.
+</HARD-GATE>
+
+#### 3f. Retry Logic
 
 When retrying a failed task:
 
 ```
 Attempt 1: Immediate
-Attempt 2: Wait 5 seconds, try different approach
-Attempt 3: Wait 15 seconds, try with more context
+Attempt 2: Complete Reflection Gate, try different approach
+Attempt 3: Complete Reflection Gate, try fundamentally different strategy
 Attempt 4 (max): STOP — escalate to user
 ```
 
 **Max retries per task: 3** (4 total attempts including the initial one).
 
 Between retries:
+- Complete the Reflection Gate above (mandatory)
 - Re-read the failing test output or error message
-- Adjust the approach (don't just retry the same thing)
-- If the second retry fails, try a fundamentally different approach on the third
+- If the second retry fails, the third MUST use a fundamentally different approach
 - If all retries exhausted, mark the task as blocked and move to the next independent task
 
 **Exponential backoff for transient errors:**
@@ -341,7 +353,7 @@ Report the final state:
 
 ## Common Mistakes
 
-**Retrying the same approach** — If attempt 1 failed, attempt 2 must try something different. Einstein's definition of insanity applies to debugging too.
+**Retrying the same approach** — The Reflection Gate (Step 3e) exists specifically to prevent this. If you can't articulate what's different about your next attempt, you haven't reflected enough. Never skip the gate.
 
 **Skipping verification between tasks** — "I'll verify at the end" means 5 tasks of compounding bugs. Verify after EVERY task.
 
