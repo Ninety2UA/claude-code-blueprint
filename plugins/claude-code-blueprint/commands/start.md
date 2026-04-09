@@ -141,7 +141,7 @@ Present what was set up:
 ✓ Git — [initialized / already existed]
 
 You're ready to go. Try:
-  /plan    — brainstorm before building
+  /planning — brainstorm before building
   /status  — see where things stand
   /wrap    — end-of-session documentation
 ```

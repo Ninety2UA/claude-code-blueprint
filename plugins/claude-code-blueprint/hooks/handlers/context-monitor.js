@@ -71,10 +71,12 @@ function parseAndProcess() {
     state.reads = 0;
   }
 
-  // Save state
+  // Save state (atomic write: temp file + rename to avoid race conditions)
   try {
     fs.mkdirSync(stateDir, { recursive: true });
-    fs.writeFileSync(stateFile, JSON.stringify(state));
+    const tmpFile = stateFile + '.' + process.pid + '.tmp';
+    fs.writeFileSync(tmpFile, JSON.stringify(state));
+    fs.renameSync(tmpFile, stateFile);
   } catch (e) { /* ignore */ }
 
   // Output warnings

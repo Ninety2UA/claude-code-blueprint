@@ -7,7 +7,7 @@ description: Use after solving a non-trivial problem to document the problem, ap
 
 ## Overview
 
-Each solved problem should make future problems easier. This skill captures solved problems as structured documents in `docs/solutions/`, creating a searchable knowledge base that the learnings-researcher agent and `/plan` command automatically consult.
+Each solved problem should make future problems easier. This skill captures solved problems as structured documents in `docs/solutions/`, creating a searchable knowledge base that the learnings-researcher agent and `/planning` command automatically consult.
 
 **Core principle:** Solve a problem once; benefit every time a similar problem arises.
 
@@ -103,14 +103,14 @@ Tell the user:
 ```
 Knowledge compounded: docs/solutions/[filename]
 Tags: [tags]
-Future /plan and /deep-research commands will find this automatically.
+Future /planning and /deep-research commands will find this automatically.
 ```
 
 ## How This Integrates with Other Skills
 
 | Skill/Command | How It Uses Solutions |
 |---------------|---------------------|
-| `/plan` (build Stage 3) | learnings-researcher searches `docs/solutions/` before planning |
+| `/planning` (build Stage 3) | learnings-researcher searches `docs/solutions/` before planning |
 | `/deep-research` | learnings-researcher includes solutions in research brief |
 | `/build` | Automatically runs `/compound` after Stage 6 if a non-trivial problem was solved |
 | `/wrap` | Reminds to compound if significant debugging or problem-solving occurred |

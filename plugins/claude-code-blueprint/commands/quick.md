@@ -17,13 +17,13 @@ Before proceeding, verify this qualifies as a "quick" change:
 - Adding a test for existing behavior
 - Renaming or minor refactor within a single module
 
-**Does NOT qualify — redirect to /plan:**
+**Does NOT qualify — redirect to /planning:**
 - Touching 4+ files
 - Adding new public API or endpoint
 - Changing data models or schemas
 - Anything where you're unsure of the approach
 
-If the change does NOT qualify, say: "This looks like it needs the full workflow. Let me switch to /plan." Then run the /plan command instead.
+If the change does NOT qualify, say: "This looks like it needs the full workflow. Let me switch to /planning." Then run the /planning command instead.
 
 ## Step 2: Write a Failing Test
 

@@ -126,7 +126,7 @@ The synthesizer de-duplicates, resolves contradictions, and produces one unified
 
 Present the synthesized report and offer next steps:
 - For review findings: offer to fix via resolve-in-parallel
-- For research findings: offer to proceed to `/plan`
+- For research findings: offer to proceed to `/planning`
 
 ## Scaling Guidelines
 
@@ -168,4 +168,4 @@ Swarms and Agent Teams serve different purposes and complement each other:
 | **Coordination** | Synthesizer merges outputs | Shared task list + messaging |
 | **When to use** | Multiple perspectives on same code | Complex multi-file implementation |
 
-**Typical workflow:** `/deep-research` (swarm) → `/plan` → `/team` (agent teams) → `/review-swarm` (swarm)
+**Typical workflow:** `/deep-research` (swarm) → `/planning` → `/team` (agent teams) → `/review-swarm` (swarm)

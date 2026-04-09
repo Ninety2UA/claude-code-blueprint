@@ -86,7 +86,7 @@ Every component in Blueprint is informed by what works (and what doesn't) across
 
 **Key changes:**
 - **Plugin architecture** — 25 commands, 34 skills, 26 agents, 6 hooks provided by the plugin, not copied into your project
-- **`/init` scaffolding** — project files (CLAUDE.md, docs/, BACKLOG.md) created on demand per project
+- **`/start` scaffolding** — project files (CLAUDE.md, docs/, BACKLOG.md) created on demand per project
 - **`/migrate-to-plugin`** — new command to transition v2.x projects to plugin mode
 - **Cross-references use Skill tool** — commands invoke skills by name instead of reading file paths (required by Claude Code's sandbox)
 - **Legacy mode preserved** — `--legacy` flag in install.sh for users who prefer in-project files
@@ -239,8 +239,8 @@ That's it — the blueprint is now available in **all your projects**. No per-pr
 
 ```bash
 claude          # Start Claude Code — plugin loads automatically
-> /init         # Scaffolds project files (CLAUDE.md, docs/) + interactive setup
-> /plan         # Brainstorm and plan your first feature
+> /start        # Scaffolds project files (CLAUDE.md, docs/) + interactive setup
+> /planning     # Brainstorm and plan your first feature
 ```
 
 ### Alternative: one-line install via script
@@ -269,12 +269,12 @@ Already using the blueprint with in-project files? Install the plugin, then run 
 
 ```
 Plugin (installed globally, zero files in your project)
-├── 25 commands          /plan, /ship, /build, /review-swarm, /orchestrate, /team, ...
+├── 25 commands          /planning, /ship, /build, /review-swarm, /orchestrate, /team, ...
 ├── 34 skills            TDD, wave-orchestration, swarms, iterative-refinement, ...
 ├── 26 agents            team-lead, reviewer, security, perf, ...
-└── 6 hooks              session-start, context-monitor, prompt-guard, ship-loop + 2 opt-in
+└── 6 hooks              session-start, context-monitor, prompt-guard, ship-loop + 2 Agent Teams
 
-your-project/ (scaffolded by /init)
+your-project/ (scaffolded by /start)
 ├── docs/
 │   ├── context/        # GOALS.md · STATUS.md · CONVENTIONS.md
 │   ├── plans/          # Implementation plans
@@ -297,9 +297,9 @@ your-project/ (scaffolded by /init)
 | **CLAUDE.md** | Master configuration that Claude reads at session start. Contains behavioral rules, session continuity, agent team hierarchy, skill triggers, and project-specific learnings. |
 | **Skills** | Workflow modules that activate at specific points — TDD, debugging, code review, wave orchestration, swarm coordination, knowledge compounding. They enforce quality gates automatically. |
 | **Agents** | Specialized subprocesses dispatched for focused analysis — security audits, performance reviews, architecture evaluation. Organized into teams (review swarm, research swarm, execution waves). Each gets a fresh 200K context. |
-| **Commands** | User-facing slash commands (`/plan`, `/review-swarm`, `/orchestrate`, `/compound`) that invoke the right skills with the right context. |
+| **Commands** | User-facing slash commands (`/planning`, `/review-swarm`, `/orchestrate`, `/compound`) that invoke the right skills with the right context. |
 | **docs/context/** | Living project state — goals, current status, conventions, execution state. Updated every session by `/wrap`. |
-| **docs/solutions/** | Institutional knowledge — solved problems documented by `/compound` and searched by `/plan` before future work. |
+| **docs/solutions/** | Institutional knowledge — solved problems documented by `/compound` and searched by `/planning` before future work. |
 | **BACKLOG.md** | Quick-capture inbox for ideas, bugs, and tasks. Triaged by `/backlog` into prioritized work. |
 | **blueprint.local.md** | Per-project agent configuration — choose which review/research agents are relevant for your tech stack. Gitignored so each developer can customize. |
 
@@ -317,9 +317,9 @@ Every feature follows this flow:
   <img src="docs/images/dev-loop.png" alt="Orient → Design → Plan → Build → Ship → next feature" width="90%">
 </p>
 
-**1. Orient** — Load context with `/status` or set up with `/init`
+**1. Orient** — Load context with `/status` or set up with `/start`
 
-**2. Design** — Brainstorm options with `/plan`. Present tradeoffs. Get human approval before any code is written.
+**2. Design** — Brainstorm options with `/planning`. Present tradeoffs. Get human approval before any code is written.
 
 **3. Plan** — Break approved design into bite-sized tasks (2-5 min each) with exact file paths, code snippets, and test strategies.
 
@@ -433,11 +433,11 @@ For complex multi-file implementations where teammates need to discuss and coord
 | **Waves** (`/orchestrate`) | Dependency-ordered implementation | Worktree isolation, integration verification |
 | **Agent Teams** (`/team`) | Collaborative multi-file implementation | Shared task list, inter-teammate messaging |
 
-Agent Teams is an experimental Claude Code feature. Enable it with `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS: "1"` in settings.json. The typical workflow combines all patterns: `/deep-research` (swarm) → `/plan` → `/team` (agent teams) → `/review-swarm` (swarm).
+Agent Teams is an experimental Claude Code feature. Enable it with `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS: "1"` in settings.json. The typical workflow combines all patterns: `/deep-research` (swarm) → `/planning` → `/team` (agent teams) → `/review-swarm` (swarm).
 
 ### Knowledge Loop (`/compound`)
 
-Each solved problem becomes searchable institutional knowledge. Future `/plan` and `/deep-research` commands automatically consult past solutions.
+Each solved problem becomes searchable institutional knowledge. Future `/planning` and `/deep-research` commands automatically consult past solutions.
 
 <p align="center">
   <img src="docs/images/knowledge-loop.png" alt="Knowledge Loop — solve → compound → search → plan → repeat" width="90%">
@@ -459,7 +459,7 @@ Skills are workflow modules that activate at specific development phases. They c
 
 | Skill | What it does | Trigger |
 |-------|-------------|---------|
-| [**brainstorming**](plugins/claude-code-blueprint/skills/brainstorming/) | Explores 3+ design options with tradeoff analysis before any creative work | `/plan` or before any new feature |
+| [**brainstorming**](plugins/claude-code-blueprint/skills/brainstorming/) | Explores 3+ design options with tradeoff analysis before any creative work | `/planning` or before any new feature |
 | [**writing-plans**](plugins/claude-code-blueprint/skills/writing-plans/) | Converts approved design into implementation plan with bite-sized tasks | After design approval |
 | [**spike-exploration**](plugins/claude-code-blueprint/skills/spike-exploration/) | Timeboxed investigation to answer a specific technical question before committing to an approach | Significant technical uncertainty |
 | [**scope-cutting**](plugins/claude-code-blueprint/skills/scope-cutting/) | Systematically separates must-haves from nice-to-haves using MoSCoW classification | Feature too large or deadline at risk |
@@ -594,8 +594,8 @@ Commands are user-facing shortcuts that invoke the right skills with the right c
 
 | Command | What it does |
 |---------|-------------|
-| **`/init`** | Interactive project setup. Fills in CONVENTIONS.md, GOALS.md, STATUS.md through a guided conversation. |
-| **`/plan`** | Brainstorming session. Explores design options, presents tradeoffs, gets approval, then creates implementation plan. |
+| **`/start`** | Interactive project setup. Fills in CONVENTIONS.md, GOALS.md, STATUS.md through a guided conversation. |
+| **`/planning`** | Brainstorming session. Explores design options, presents tradeoffs, gets approval, then creates implementation plan. |
 | **`/build`** | Full-cycle supervised pipeline with checkpoints between every stage. Supports `--iterate N` for iterative review and `--team` for team-lead dispatch. |
 | **`/ship`** | Fully autonomous pipeline — zero checkpoints, fire-and-forget. Plans, executes via team-lead, iteratively reviews (3 cycles), and opens a PR. |
 | **`/discuss`** | Capture decisions before planning. Explores requirements, locks decisions that planners must honor. |
@@ -627,7 +627,7 @@ Commands are user-facing shortcuts that invoke the right skills with the right c
 claude
 > /resume                            # Reload context from last session
 > /deep-research add OAuth2 login    # Research before planning (5 agents in parallel)
-> /plan add OAuth2 login             # Design + plan based on research findings
+> /planning add OAuth2 login          # Design + plan based on research findings
 > /orchestrate                       # Execute with wave-based parallelism
 >   # OR: /team                      # Execute with collaborative Agent Team
 > /review-swarm                      # Multi-agent review (6-10 reviewers in parallel)
@@ -649,7 +649,7 @@ claude
 
 ### Adapting to your project
 
-After installation, run `/init` to configure:
+After installation, run `/start` to configure:
 
 - **GOALS.md** — Your 3-5 project objectives and priority framework
 - **CONVENTIONS.md** — Your tech stack, naming conventions, file structure patterns
@@ -744,7 +744,7 @@ The `docs/` directory uses four categories, each with its own lifecycle:
 | `docs/specs/` | `feature-name.md` specifications | Created before building, stable after approval |
 | `docs/decisions/` | `NNN-kebab-case-title.md` ADRs | Created when choosing between options, permanent |
 | `docs/research/` | Spike results, tool evaluations | Created during exploration, referenced later |
-| `docs/solutions/` | Solved problems, institutional knowledge | Created by `/compound`, searched by `/plan` and `/deep-research` |
+| `docs/solutions/` | Solved problems, institutional knowledge | Created by `/compound`, searched by `/planning` and `/deep-research` |
 
 ## How it works under the hood
 
@@ -823,7 +823,7 @@ CLAUDE.md includes built-in guidance for common failure scenarios:
 <details>
 <summary><strong>Can I use this with an existing project?</strong></summary>
 
-Yes. In plugin mode (default), the blueprint installs as a plugin — it adds zero files to your project. Run `/plugin marketplace add Ninety2UA/claude-code-blueprint` then `/plugin install claude-code-blueprint`, then `/init` in your project to scaffold the docs structure. Your existing code is never touched.
+Yes. In plugin mode (default), the blueprint installs as a plugin — it adds zero files to your project. Run `/plugin marketplace add Ninety2UA/claude-code-blueprint` then `/plugin install claude-code-blueprint`, then `/start` in your project to scaffold the docs structure. Your existing code is never touched.
 </details>
 
 <details>
@@ -887,7 +887,7 @@ Wave orchestration (`/orchestrate`) groups plan tasks by dependency. Independent
 <details>
 <summary><strong>What is knowledge compounding?</strong></summary>
 
-After solving a non-trivial problem, `/compound` saves it as a structured document in `docs/solutions/`. Future `/plan` and `/deep-research` commands automatically search this directory before starting new work. Over time, your project builds institutional knowledge that prevents repeated mistakes and informs better plans.
+After solving a non-trivial problem, `/compound` saves it as a structured document in `docs/solutions/`. Future `/planning` and `/deep-research` commands automatically search this directory before starting new work. Over time, your project builds institutional knowledge that prevents repeated mistakes and informs better plans.
 </details>
 
 <details>

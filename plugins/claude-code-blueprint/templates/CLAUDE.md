@@ -16,13 +16,13 @@ Quality over speed. Small steps compound. The patterns you establish will be cop
 - Project scaffolded with Claude Code Blueprint v3.0 plugin
 
 **What's remaining:**
-- Run `/init` to configure conventions, goals, and status
+- Run `/start` to configure conventions, goals, and status
 
-**Start here:** Run `/init` to set up your project.
+**Start here:** Run `/start` to set up your project.
 
 **Current state of the code:**
-- Build: not configured (run `/init`)
-- Tests: not configured (run `/init`)
+- Build: not configured (run `/start`)
+- Tests: not configured (run `/start`)
 - Uncommitted changes: none
 
 ## Commands
@@ -34,14 +34,14 @@ No build step (template repo). Key commands for installed projects:
 | `/build` | Supervised pipeline — checkpoints between every stage |
 | `/ship` | Autonomous pipeline — zero checkpoints, fire-and-forget |
 | `/quick` | Fast-track small changes (< 3 files) with TDD |
-| `/plan` | Brainstorm before building |
+| `/planning` | Brainstorm before building |
 | `/review-swarm` | Multi-agent parallel code review |
 | `/deep-research` | Multi-agent parallel research |
 | `/orchestrate` | Wave-based parallel execution (dependency-ordered) |
 | `/team` | Collaborative agent team (shared task list + messaging) |
 | `./scripts/ship.sh "feature"` | External loop — fresh context per iteration |
 
-Run `/init` after install to configure `docs/context/CONVENTIONS.md` with actual lint/test/dev commands.
+Run `/start` after install to configure `docs/context/CONVENTIONS.md` with actual lint/test/dev commands.
 
 ## Architecture
 
@@ -112,7 +112,7 @@ When executing a plan or working autonomously:
 For small, well-understood changes (< 3 files, obvious root cause):
 1. Write failing test → 2. Fix → 3. Verify → 4. Commit
 
-If touching 4+ files, adding new API, or changing data models → use full workflow (`/plan` → `/build`).
+If touching 4+ files, adding new API, or changing data models → use full workflow (`/planning` → `/build`).
 
 ## Code Quality
 

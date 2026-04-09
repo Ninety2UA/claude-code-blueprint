@@ -102,7 +102,7 @@ If in supervised mode, wait for user approval. If autonomous, proceed immediatel
 Follow the wave-orchestration skill:
 
 For each wave:
-1. Dispatch one subagent per task using Task tool with `isolation: worktree`
+1. Dispatch one subagent per task using the Agent tool with `isolation: worktree`
 2. Each subagent gets:
    - The specific task description
    - Relevant project conventions

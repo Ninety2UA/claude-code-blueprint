@@ -20,6 +20,20 @@ review-agents:
   # - data-integrity-guardian    # Uncomment for projects with database migrations
   # - schema-drift-detector      # Uncomment for projects with ORM schemas
 
+# Specialized agents (auto-dispatched by pipelines — not user-configurable)
+# These agents are used internally by /build, /ship, /orchestrate, and /team:
+#   - team-lead               # Orchestrates /orchestrate and /team workflows
+#   - plan-checker             # Verifies plans are achievable before execution
+#   - integration-verifier     # Verifies tasks work together after each wave
+#   - deployment-verifier      # Pre-deployment verification (8 areas)
+#   - findings-synthesizer     # De-duplicates and prioritizes review findings
+#   - research-synthesizer     # Merges research findings from parallel agents
+#   - bug-reproduction-validator  # Validates bug reproductions
+#   - test-gap-analyzer        # Identifies missing test coverage
+#   - pr-comment-resolver      # Resolves PR review comments (uses worktree)
+#   - codebase-mapper          # Full codebase structure analysis
+#   - integration-checker      # Cross-component integration checks
+
 # Research agents dispatched by /deep-research
 research-agents:
   - learnings-researcher

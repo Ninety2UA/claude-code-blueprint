@@ -29,7 +29,7 @@ The key tension: too little structure means the AI reinvents conventions every s
 
 ## Decision
 
-Option B — use the full project template. The initial overhead is a one-time cost (~15 min with `/init`), while the benefits compound across every session. Quality gates prevent regressions. Session continuity eliminates re-orientation time.
+Option B — use the full project template. The initial overhead is a one-time cost (~15 min with `/start`), while the benefits compound across every session. Quality gates prevent regressions. Session continuity eliminates re-orientation time.
 
 ## Consequences
 
@@ -48,6 +48,6 @@ Option B — use the full project template. The initial overhead is a one-time c
 
 ## Follow-Up Actions
 
-- [x] Run `/init` to configure project-specific values
+- [x] Run `/start` to configure project-specific values
 - [ ] Review and customize quality gate strictness in skill files
 - [ ] Add project-specific agents if needed

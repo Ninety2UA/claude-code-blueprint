@@ -13,7 +13,7 @@ Dispatch multiple research agents in parallel to enrich an existing plan with de
 
 If `$ARGUMENTS` specifies a plan file path, read it. Otherwise, find the most recent plan in `docs/plans/` (sort by date prefix, pick latest).
 
-If no plan file found, report: "No plan file found. Write a plan first with `/plan` or specify a path."
+If no plan file found, report: "No plan file found. Write a plan first with `/planning` or specify a path."
 
 Read the full plan file. Identify:
 - Each section/task in the plan

@@ -44,14 +44,14 @@ No build step (template repo). Key commands for installed projects:
 | `/build` | Supervised pipeline — checkpoints between every stage |
 | `/ship` | Autonomous pipeline — zero checkpoints, fire-and-forget |
 | `/quick` | Fast-track small changes (< 3 files) with TDD |
-| `/plan` | Brainstorm before building |
+| `/planning` | Brainstorm before building |
 | `/review-swarm` | Multi-agent parallel code review |
 | `/deep-research` | Multi-agent parallel research |
 | `/orchestrate` | Wave-based parallel execution (dependency-ordered) |
 | `/team` | Collaborative agent team (shared task list + messaging) |
 | `./scripts/ship.sh "feature"` | External loop — fresh context per iteration |
 
-Run `/init` after install to configure `docs/context/CONVENTIONS.md` with actual lint/test/dev commands.
+Run `/start` after install to configure `docs/context/CONVENTIONS.md` with actual lint/test/dev commands.
 
 ## Architecture
 
@@ -63,7 +63,7 @@ plugins/claude-code-blueprint/           # Plugin root
   agents/                                # 26 specialized subagents
   hooks/hooks.json                       # Hook definitions (${CLAUDE_PLUGIN_ROOT})
   hooks/handlers/                        # Hook scripts (session-start, context-monitor, etc.)
-  templates/                             # Project scaffolding source (copied by /init)
+  templates/                             # Project scaffolding source (copied by /start)
     CLAUDE.md, BACKLOG.md, docs/...      # Template files for new projects
   scripts/ship.sh                        # Ralph-style external loop for /ship
   .claude-plugin/plugin.json             # Plugin manifest
@@ -121,7 +121,7 @@ When executing a plan or working autonomously:
 For small, well-understood changes (< 3 files, obvious root cause):
 1. Write failing test → 2. Fix → 3. Verify → 4. Commit
 
-If touching 4+ files, adding new API, or changing data models → use full workflow (`/plan` → `/build`).
+If touching 4+ files, adding new API, or changing data models → use full workflow (`/planning` → `/build`).
 
 ## Code Quality
 

@@ -1,5 +1,5 @@
 {
-  "description": "Blueprint lifecycle hooks — context monitoring, prompt injection guard, and ship loop",
+  "description": "Blueprint lifecycle hooks — context monitoring, prompt injection guard, ship loop, and Agent Teams quality gates",
   "hooks": {
     "SessionStart": [
       {
@@ -42,6 +42,28 @@
             "type": "command",
             "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/handlers/ship-loop.sh",
             "timeout": 10000
+          }
+        ]
+      }
+    ],
+    "TaskCompleted": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/handlers/task-completed.js",
+            "timeout": 60000
+          }
+        ]
+      }
+    ],
+    "TeammateIdle": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/handlers/teammate-idle.js",
+            "timeout": 60000
           }
         ]
       }

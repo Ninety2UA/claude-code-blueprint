@@ -5,7 +5,7 @@ argument-hint: "<topic or feature to research>"
 
 # /deep-research — Multi-Agent Parallel Research
 
-Spawn a swarm of research agents in parallel, then synthesize their findings into a unified research brief that feeds into `/plan`.
+Spawn a swarm of research agents in parallel, then synthesize their findings into a unified research brief that feeds into `/planning`.
 
 **Announce at start:** "Starting deep research on: $ARGUMENTS"
 
@@ -56,7 +56,7 @@ Present to the user:
 - **Gaps** (what needs further investigation)
 - **Recommended approach** (based on all evidence)
 
-Ask: **"Research complete. Ready to `/plan` based on these findings?"**
+Ask: **"Research complete. Ready to `/planning` based on these findings?"**
 
 If the user confirms, the plan command will automatically pick up the research brief from `docs/research/`.
 
@@ -71,5 +71,5 @@ If the user confirms, the plan command will automatically pick up the research b
 ## When NOT to Use
 
 - For small, well-understood changes (use `/quick` instead)
-- When you already have a clear plan (go straight to `/plan`)
+- When you already have a clear plan (go straight to `/planning`)
 - For debugging (use `/debug` instead)

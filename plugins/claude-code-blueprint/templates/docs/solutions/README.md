@@ -2,7 +2,7 @@
 
 Solved problems documented for future reference. Created by `/compound`.
 
-The `learnings-researcher` agent and `/plan` command automatically search this directory before planning new work.
+The `learnings-researcher` agent and `/planning` command automatically search this directory before planning new work.
 
 ## Format
 

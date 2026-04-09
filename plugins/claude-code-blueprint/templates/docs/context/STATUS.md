@@ -4,9 +4,9 @@ Last updated: (not yet initialized)
 
 ## Current State of the Code
 
-- **Build:** not configured (run `/init`)
-- **Tests:** not configured (run `/init`)
-- **Lint:** not configured (run `/init`)
+- **Build:** not configured (run `/start`)
+- **Tests:** not configured (run `/start`)
+- **Lint:** not configured (run `/start`)
 - **Last verified:** —
 
 ## In Flight
@@ -19,7 +19,7 @@ Last updated: (not yet initialized)
 
 | Task | Status | Blockers | Notes |
 |------|--------|----------|-------|
-| Run `/init` to configure project | — | — | — |
+| Run `/start` to configure project | — | — | — |
 
 ## What's Done
 

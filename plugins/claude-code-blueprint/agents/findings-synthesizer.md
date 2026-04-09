@@ -35,7 +35,7 @@ Many review agents will flag the same issue from different angles:
 
 Merge duplicates, keeping the most specific description and the highest severity.
 
-**False-positive filtering:** Review agents operate on diffs with limited architectural context. They will flag issues that don't actually exist — theoretical vulnerabilities where input is already validated upstream, performance concerns for code that runs once at startup, missing error handling where the caller already catches. For any finding that seems questionable, use your tools (Read, Grep) to spot-check the surrounding code. Downgrade or discard findings you cannot verify in the actual codebase. A shorter report with only real issues is far more valuable than a comprehensive one padded with false positives.
+**False-positive filtering:** Review agents operate on diffs with limited architectural context. They will flag issues that don't actually exist — theoretical vulnerabilities where input is already validated upstream, performance concerns for code that runs once at startup, missing error handling where the caller already catches. For any finding that seems questionable, use your tools (Read, Glob, Grep) to spot-check the surrounding code. Downgrade or discard findings you cannot verify in the actual codebase. A shorter report with only real issues is far more valuable than a comprehensive one padded with false positives.
 
 ### Step 2.5: Confidence Tiering
 

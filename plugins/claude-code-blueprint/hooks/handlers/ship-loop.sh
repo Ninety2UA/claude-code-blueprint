@@ -138,10 +138,4 @@ fi
 ESCAPED_PROMPT=$(printf '%s' "$PROMPT_TEXT" | python3 -c "import sys,json; print(json.dumps(sys.stdin.read())[1:-1])" 2>/dev/null || printf '%s' "$PROMPT_TEXT" | sed 's/\\/\\\\/g; s/"/\\"/g; s/\t/\\t/g' | tr '\n' ' ')
 ESCAPED_SYSTEM="Ship loop iteration $NEXT_ITERATION/$MAX_ITERATIONS | To complete: output <promise>$COMPLETION_PROMISE</promise> (ONLY when ALL work is done and verified)"
 
-cat <<EOF
-{
-  "decision": "block",
-  "reason": "$ESCAPED_PROMPT",
-  "systemMessage": "$ESCAPED_SYSTEM"
-}
-EOF
+printf '{\n  "decision": "block",\n  "reason": "%s",\n  "systemMessage": "%s"\n}\n' "$ESCAPED_PROMPT" "$ESCAPED_SYSTEM"
