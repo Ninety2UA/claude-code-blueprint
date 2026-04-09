@@ -46,7 +46,7 @@ Run `/start` after install to configure `docs/context/CONVENTIONS.md` with actua
 ## Architecture
 
 ```
-# Plugin-provided (25 commands, 34 skills, 26 agents, 6 hooks)
+# Plugin-provided (26 commands, 34 skills, 26 agents, 6 hooks)
 # Available automatically — no per-project files needed
 
 # Project-local (your project state)
