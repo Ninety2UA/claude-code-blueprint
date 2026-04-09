@@ -619,6 +619,7 @@ Commands are user-facing shortcuts that invoke the right skills with the right c
 | **`/add-tests`** | Analyze test coverage gaps and generate tests for untested code paths. |
 | **`/health`** | Comprehensive project health check — build, tests, lint, deps, conventions, docs, backlog, git. |
 | **`/migrate-to-plugin`** | Migrate v2.x in-project files to v3.0 plugin mode. Removes engine files, keeps project state. |
+| **`/update`** | Update the blueprint plugin to the latest version from GitHub. Self-service — no reinstall needed. |
 
 ### Typical session flow
 

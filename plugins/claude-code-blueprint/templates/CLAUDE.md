@@ -40,6 +40,7 @@ No build step (template repo). Key commands for installed projects:
 | `/orchestrate` | Wave-based parallel execution (dependency-ordered) |
 | `/team` | Collaborative agent team (shared task list + messaging) |
 | `./scripts/ship.sh "feature"` | External loop — fresh context per iteration |
+| `/update` | Update plugin to latest version from GitHub |
 
 Run `/start` after install to configure `docs/context/CONVENTIONS.md` with actual lint/test/dev commands.
 
