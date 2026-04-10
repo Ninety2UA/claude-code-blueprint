@@ -9,6 +9,15 @@ Spawn a team of independent Claude Code instances that coordinate through a shar
 
 **Announce at start:** "Setting up Agent Team — dispatching team-lead agent."
 
+## Activate Team State
+
+Before dispatching the team-lead, create the state file so Agent Teams hooks (TeammateIdle, TaskCompleted) know a team is active:
+
+```bash
+mkdir -p .claude
+echo "active: true" > .claude/team-active.local.md
+```
+
 **Prerequisite:** Agent Teams is an experimental feature. Ensure `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS: "1"` is set in your Claude Code settings.json.
 
 ## Parse Arguments

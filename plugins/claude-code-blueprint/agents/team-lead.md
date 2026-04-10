@@ -254,6 +254,16 @@ Return a comprehensive report to the calling command:
 [list of all commits]
 ```
 
+## Phase 6: Cleanup
+
+Remove the team state file so Agent Teams hooks stop firing after the team is done:
+
+```bash
+rm -f .claude/team-active.local.md
+```
+
+This prevents TeammateIdle and TaskCompleted hooks from triggering on subsequent commands in the same session.
+
 ## Behavioral Rules
 
 - **NEVER write code.** Not even "just this one small fix." Delegate everything.

@@ -14,6 +14,13 @@
 
 const { execFileSync } = require('child_process');
 const fs = require('fs');
+const path = require('path');
+
+// Guard: only run during active /team sessions
+const stateFile = path.join(process.cwd(), '.claude', 'team-active.local.md');
+if (!fs.existsSync(stateFile)) {
+  process.exit(0); // No active team — allow completion silently
+}
 
 function run(cmd, args) {
   try {
