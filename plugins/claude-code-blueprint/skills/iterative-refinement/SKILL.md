@@ -1,6 +1,6 @@
 ---
 name: iterative-refinement
-description: Use when code needs iterative quality improvement — dispatches review→fix→review cycles N times until convergence (zero P1 findings) or max iterations reached
+description: "Trigger this skill when code needs repeated review-fix-review cycles until quality converges, when the user says 'iterate on quality', 'keep improving until clean', 'review loop', 'polish this', 'iterate until done', or 'refinement cycles'. Usually invoked by pipeline skills (ship-pipeline, build-pipeline) rather than directly, but also trigger when the user wants to go beyond a single review pass for production-quality output. Supports three convergence modes: fast (zero P1), deep (zero P1+P2), and perfect (zero findings). Dispatches review swarm, resolves findings, verifies fixes, checks for convergence, and repeats up to max iterations. Includes deslop pass (Step 0.5) to clean AI-generated text patterns before review begins."
 ---
 
 # Iterative Refinement

@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Claude Code Blueprint — Production-Grade Plugin for AI-Assisted Development</title>
-  <meta name="description" content="35 skills, 26 agents, 27 commands, 6 hooks. A structured operating system for Claude Code that compounds across sessions.">
+  <meta name="description" content="53 skills, 26 agents, 6 hooks. A structured operating system for Claude Code that compounds across sessions.">
   <meta property="og:title" content="Claude Code Blueprint">
-  <meta property="og:description" content="Production-grade Claude Code plugin. 35 skills, 26 agents, 27 commands, 6 hooks covering the full development lifecycle.">
+  <meta property="og:description" content="Production-grade Claude Code plugin. 53 skills, 26 agents, 6 hooks covering the full development lifecycle.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ninety2ua.github.io/claude-code-blueprint/">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231a1a2e'/><text x='50' y='72' font-size='60' font-weight='700' fill='%23D4A574' text-anchor='middle' font-family='system-ui'>B</text></svg>">
@@ -1697,7 +1697,7 @@
         <li><a href="#ralph">Ralph Loop</a></li>
         <li><a href="#quality">Quality</a></li>
         <li><a href="#install">Install</a></li>
-        <li><a href="#commands">Commands</a></li>
+        <li><a href="#skills-reference">Skills</a></li>
         <li><a href="#faq">FAQ</a></li>
       </ul>
       <button class="nav__hamburger" id="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
@@ -1730,7 +1730,7 @@
           </span>
           <span class="hero__stat">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
-            26 Commands
+            53 Skills
           </span>
           <span class="hero__stat">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
@@ -1759,7 +1759,7 @@
           </div>
           <div class="term__body">
             <span class="term__line"><span class="term__prompt">$</span> <span class="term__cmd">claude</span></span>
-            <span class="term__line"><span class="term__success">&gt;</span> <span class="term__cmd">/planning</span> add user authentication</span>
+            <span class="term__line"><span class="term__success">&gt;</span> <span class="term__cmd">/brainstorming</span> add user authentication</span>
             <span class="term__line"><span class="term__output">&nbsp;&nbsp;Brainstorming 3 design options...</span></span>
             <span class="term__line"><span class="term__output">&nbsp;&nbsp;Writing implementation plan...</span></span>
             <span class="term__line"><span class="term__success">&nbsp;&nbsp;&#10003; Plan ready &mdash; 6 tasks, 2 waves</span></span>
@@ -1826,7 +1826,7 @@
       </div>
       <div class="grid-4 reveal reveal-stagger">
         <div class="feature-card">
-          <span class="feature-card__number">34</span>
+          <span class="feature-card__number">53</span>
           <div class="feature-card__icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
           </div>
@@ -1846,8 +1846,8 @@
           <div class="feature-card__icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
           </div>
-          <h3>Commands</h3>
-          <p>Slash commands from <code>/planning</code> to <code>/ship</code> to <code>/review-swarm</code>. Workflow automation at your fingertips.</p>
+          <h3>Slash Skills</h3>
+          <p>Slash skills from <code>/brainstorming</code> to <code>/ship-pipeline</code> to <code>/review-swarm</code>. Workflow automation at your fingertips.</p>
         </div>
         <div class="feature-card">
           <span class="feature-card__number">6</span>
@@ -1870,17 +1870,17 @@
       </div>
       <div class="grid-4 reveal reveal-stagger">
         <div class="pipeline-card">
-          <span class="pipeline-card__tag">/build</span>
+          <span class="pipeline-card__tag">/build-pipeline</span>
           <h3>Supervised</h3>
           <p>Full-cycle pipeline with checkpoints between every stage. Human in the loop at every gate. Best for guided feature development.</p>
         </div>
         <div class="pipeline-card">
-          <span class="pipeline-card__tag">/ship</span>
+          <span class="pipeline-card__tag">/ship-pipeline</span>
           <h3>Autonomous</h3>
           <p>Zero checkpoints, fire-and-forget. Plans, executes via team-lead agent, iteratively reviews (3 cycles), and opens a PR automatically.</p>
         </div>
         <div class="pipeline-card">
-          <span class="pipeline-card__tag">/quick</span>
+          <span class="pipeline-card__tag">/quick-fix</span>
           <h3>Fast-Track</h3>
           <p>For small, well-understood changes under 3 files. Write a failing test, fix it, verify, commit. TDD in its purest form.</p>
         </div>
@@ -1902,10 +1902,10 @@
             </tr>
           </thead>
           <tbody>
-            <tr><td><code>/build</code></td><td>Between every stage</td><td>Single pass</td><td>Human-guided features</td></tr>
-            <tr><td><code>/ship</code></td><td>None</td><td>3 iterative cycles</td><td>Single-context fire-and-forget</td></tr>
+            <tr><td><code>/build-pipeline</code></td><td>Between every stage</td><td>Single pass</td><td>Human-guided features</td></tr>
+            <tr><td><code>/ship-pipeline</code></td><td>None</td><td>3 iterative cycles</td><td>Single-context fire-and-forget</td></tr>
             <tr><td><code>ship.sh</code></td><td>None</td><td>3 iterative cycles</td><td>Large features, context exhaustion</td></tr>
-            <tr><td><code>/quick</code></td><td>None</td><td>None</td><td>Trivial changes (&lt; 3 files)</td></tr>
+            <tr><td><code>/quick-fix</code></td><td>None</td><td>None</td><td>Trivial changes (&lt; 3 files)</td></tr>
           </tbody>
         </table>
       </div>
@@ -1926,7 +1926,7 @@
             <h4>Orient</h4>
           </div>
           <p>Load context, review status, understand what's in flight</p>
-          <span class="wf-card__cmd">/status</span>
+          <span class="wf-card__cmd">/project-status</span>
         </div>
         <div class="wf-card wf-card--2">
           <div class="wf-card__header">
@@ -1934,7 +1934,7 @@
             <h4>Design</h4>
           </div>
           <p>Brainstorm 3+ options, present tradeoffs, get human approval</p>
-          <span class="wf-card__cmd">/planning</span>
+          <span class="wf-card__cmd">/brainstorming</span>
         </div>
         <div class="wf-card wf-card--3">
           <div class="wf-card__header">
@@ -1942,7 +1942,7 @@
             <h4>Plan</h4>
           </div>
           <p>Break into bite-sized tasks with file paths and test strategies</p>
-          <span class="wf-card__cmd">/deepen</span>
+          <span class="wf-card__cmd">/deepen-plan</span>
         </div>
         <div class="wf-card wf-card--4">
           <div class="wf-card__header">
@@ -1958,7 +1958,7 @@
             <h4>Ship</h4>
           </div>
           <p>Merge, update docs, capture learnings for next session</p>
-          <span class="wf-card__cmd">/wrap</span>
+          <span class="wf-card__cmd">/session-wrap</span>
         </div>
       </div>
       <p class="workflow__desc reveal">
@@ -1994,7 +1994,7 @@
           <div class="orch-card__img-wrap"><img src="docs/images/wave-orchestration.png" alt="Wave Orchestration — dependency-ordered waves with integration verification" loading="lazy"></div>
         </div>
         <div class="orch-card">
-          <span class="orch-card__cmd">/team</span>
+          <span class="orch-card__cmd">/team-execution</span>
           <h3>Agent Teams</h3>
           <p>Fully independent Claude Code instances with a <strong>shared task list and messaging</strong>. Unlike swarms (read-only), Agent Teams are peers that discuss, divide files, and coordinate.</p>
           <div class="orch-card__img-wrap"><img src="docs/images/agent-teams.png" alt="Agent Teams — collaborative instances with shared task list and messaging" loading="lazy"></div>
@@ -2039,7 +2039,7 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
               </div>
               <span class="ralph__step-text">Execute</span>
-              <span class="ralph__step-sub">/ship pipeline</span>
+              <span class="ralph__step-sub">/ship-pipeline</span>
             </div>
             <span class="ralph__arrow">&rarr;</span>
             <div class="ralph__step">
@@ -2145,7 +2145,7 @@
             Completion Signal
           </h4>
           <p>
-            Both loops gate on the same signal: <code>&lt;promise&gt;DONE&lt;/promise&gt;</code>. This isn't a string Claude casually outputs &mdash; the <code>/ship</code> command only emits it after all 7 pipeline stages complete (requirements &rarr; plan &rarr; deepen &rarr; execute &rarr; review &rarr; compound &rarr; ship). No false positives.
+            Both loops gate on the same signal: <code>&lt;promise&gt;DONE&lt;/promise&gt;</code>. This isn't a string Claude casually outputs &mdash; the <code>/ship-pipeline</code> skill only emits it after all 7 pipeline stages complete (requirements &rarr; plan &rarr; deepen &rarr; execute &rarr; review &rarr; compound &rarr; ship). No false positives.
           </p>
         </div>
         <div class="ralph__detail-card reveal">
@@ -2275,12 +2275,12 @@
                 <span class="code-block__dot" style="background:#28c840"></span>
               </div>
               <span class="code-block__title">claude</span>
-              <button class="code-block__copy" data-copy="claude&#10;> /start&#10;> /planning">Copy</button>
+              <button class="code-block__copy" data-copy="claude&#10;> /project-start&#10;> /brainstorming">Copy</button>
             </div>
             <div class="code-block__body">
               <span class="term__line"><span class="term__prompt">$</span> <span class="str">claude</span></span>
-              <span class="term__line"><span class="term__success">&gt;</span> <span class="cmd">/start</span> <span class="cmt"># scaffold docs</span></span>
-              <span class="term__line"><span class="term__success">&gt;</span> <span class="cmd">/planning</span> <span class="cmt"># first feature</span></span>
+              <span class="term__line"><span class="term__success">&gt;</span> <span class="cmd">/project-start</span> <span class="cmt"># scaffold docs</span></span>
+              <span class="term__line"><span class="term__success">&gt;</span> <span class="cmd">/brainstorming</span> <span class="cmt"># first feature</span></span>
               <span class="term__line"><span class="term__success">&#10003;</span> <span class="term__success">Ready to build</span></span>
             </div>
           </div>
@@ -2293,37 +2293,37 @@
     </div>
   </section>
 
-  <!-- ===== COMMANDS ===== -->
-  <section class="commands" id="commands">
+  <!-- ===== SKILLS REFERENCE ===== -->
+  <section class="commands" id="skills-reference">
     <div class="container">
       <div class="section-header reveal">
-        <h2>Commands Reference</h2>
-        <p>27 slash commands covering the full development lifecycle</p>
+        <h2>Skills Reference</h2>
+        <p>53 skills covering the full development lifecycle</p>
       </div>
       <div class="table-wrap reveal">
         <table class="commands-table">
           <thead>
-            <tr><th>Command</th><th>Description</th></tr>
+            <tr><th>Skill</th><th>Description</th></tr>
           </thead>
           <tbody>
-            <tr><td><code>/ideate</code></td><td>Generate and rank improvement ideas by scanning codebase and git history</td></tr>
-            <tr><td><code>/planning</code></td><td>Brainstorm design options, present tradeoffs, create implementation plan</td></tr>
+            <tr><td><code>/ideation</code></td><td>Generate and rank improvement ideas by scanning codebase and git history</td></tr>
+            <tr><td><code>/brainstorming</code></td><td>Brainstorm design options, present tradeoffs, create implementation plan</td></tr>
             <tr><td><code>/discuss</code></td><td>Capture decisions before planning &mdash; locks requirements that planners must honor</td></tr>
-            <tr><td><code>/build</code></td><td>Supervised pipeline with checkpoints between every stage</td></tr>
-            <tr><td><code>/ship</code></td><td>Autonomous pipeline &mdash; zero checkpoints, fire-and-forget to PR</td></tr>
-            <tr><td><code>/quick</code></td><td>Fast-track small changes (&lt; 3 files) with TDD</td></tr>
+            <tr><td><code>/build-pipeline</code></td><td>Supervised pipeline with checkpoints between every stage</td></tr>
+            <tr><td><code>/ship-pipeline</code></td><td>Autonomous pipeline &mdash; zero checkpoints, fire-and-forget to PR</td></tr>
+            <tr><td><code>/quick-fix</code></td><td>Fast-track small changes (&lt; 3 files) with TDD</td></tr>
             <tr><td><code>/review-swarm</code></td><td>Multi-agent parallel code review (6-10 reviewers)</td></tr>
             <tr><td><code>/deep-research</code></td><td>Multi-agent parallel research (5 agents)</td></tr>
             <tr><td><code>/orchestrate</code></td><td>Wave-based parallel execution with dependency ordering. Supports <code>--iterations N</code> and <code>--convergence</code></td></tr>
-            <tr><td><code>/team</code></td><td>Collaborative agent team with shared task list + messaging. Supports <code>--iterations N</code> and <code>--convergence</code></td></tr>
-            <tr><td><code>/start</code></td><td>Interactive project setup &mdash; scaffolds docs and config</td></tr>
-            <tr><td><code>/status</code></td><td>Current project state, goal alignment, suggested next actions</td></tr>
-            <tr><td><code>/debug</code></td><td>Root cause investigation with systematic hypothesis testing</td></tr>
-            <tr><td><code>/wrap</code></td><td>End-of-session documentation and context capture</td></tr>
-            <tr><td><code>/compound</code></td><td>Document solved problems as searchable institutional knowledge</td></tr>
-            <tr><td><code>/backlog</code></td><td>Triage inbox items into prioritized tasks</td></tr>
-            <tr><td><code>/health</code></td><td>Comprehensive project health check across 8 areas</td></tr>
-            <tr><td><code>/update</code></td><td>Update plugin to latest version from GitHub</td></tr>
+            <tr><td><code>/team-execution</code></td><td>Collaborative agent team with shared task list + messaging. Supports <code>--iterations N</code> and <code>--convergence</code></td></tr>
+            <tr><td><code>/project-start</code></td><td>Interactive project setup &mdash; scaffolds docs and config</td></tr>
+            <tr><td><code>/project-status</code></td><td>Current project state, goal alignment, suggested next actions</td></tr>
+            <tr><td><code>/systematic-debugging</code></td><td>Root cause investigation with systematic hypothesis testing</td></tr>
+            <tr><td><code>/session-wrap</code></td><td>End-of-session documentation and context capture</td></tr>
+            <tr><td><code>/knowledge-compounding</code></td><td>Document solved problems as searchable institutional knowledge</td></tr>
+            <tr><td><code>/backlog-triage</code></td><td>Triage inbox items into prioritized tasks</td></tr>
+            <tr><td><code>/health-check</code></td><td>Comprehensive project health check across 8 areas</td></tr>
+            <tr><td><code>/plugin-update</code></td><td>Update plugin to latest version from GitHub</td></tr>
           </tbody>
         </table>
       </div>
@@ -2375,7 +2375,7 @@
           <p>Install once, available in every project. Zero engine files in your git history.</p>
         </div>
         <div class="new-card">
-          <h3>/start Scaffolding</h3>
+          <h3>/project-start Scaffolding</h3>
           <p>Project files (CLAUDE.md, docs/, BACKLOG.md) created on demand per project.</p>
         </div>
         <div class="new-card">
@@ -2403,7 +2403,7 @@
             <svg class="faq__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
           <div class="faq__answer"><div class="faq__answer-inner">
-            Yes. The blueprint installs as a plugin &mdash; it adds zero files to your project. Run the plugin install commands, then <code>/start</code> to scaffold the docs structure. Your existing code is never touched.
+            Yes. The blueprint installs as a plugin &mdash; it adds zero files to your project. Run the plugin install commands, then <code>/project-start</code> to scaffold the docs structure. Your existing code is never touched.
           </div></div>
         </div>
         <div class="faq__item">
@@ -2435,11 +2435,11 @@
         </div>
         <div class="faq__item">
           <button class="faq__question">
-            What is /ship and when should I use it?
+            What is /ship-pipeline and when should I use it?
             <svg class="faq__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
           <div class="faq__answer"><div class="faq__answer-inner">
-            <code>/ship</code> is the fully autonomous pipeline &mdash; zero checkpoints, fire-and-forget. It plans, researches, executes via a dedicated team-lead agent, iteratively reviews (3 cycles), and opens a PR. Use it for well-defined features. For large features that may exhaust context, use <code>scripts/ship.sh</code> from your terminal.
+            <code>/ship-pipeline</code> is the fully autonomous pipeline &mdash; zero checkpoints, fire-and-forget. It plans, researches, executes via a dedicated team-lead agent, iteratively reviews (3 cycles), and opens a PR. Use it for well-defined features. For large features that may exhaust context, use <code>scripts/ship.sh</code> from your terminal.
           </div></div>
         </div>
         <div class="faq__item">
@@ -2457,7 +2457,7 @@
             <svg class="faq__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
           <div class="faq__answer"><div class="faq__answer-inner">
-            After solving a non-trivial problem, <code>/compound</code> saves it as a structured document in <code>docs/solutions/</code>. Future <code>/planning</code> and <code>/deep-research</code> commands automatically search this directory before starting new work. Your project builds institutional knowledge over time.
+            After solving a non-trivial problem, <code>/knowledge-compounding</code> saves it as a structured document in <code>docs/solutions/</code>. Future <code>/brainstorming</code> and <code>/deep-research</code> skills automatically search this directory before starting new work. Your project builds institutional knowledge over time.
           </div></div>
         </div>
       </div>
@@ -2486,7 +2486,7 @@
             <li><a href="#features">Features</a></li>
             <li><a href="#pipelines">Pipelines</a></li>
             <li><a href="#install">Installation</a></li>
-            <li><a href="#commands">Commands</a></li>
+            <li><a href="#skills-reference">Skills</a></li>
             <li><a href="#faq">FAQ</a></li>
           </ul>
         </div>

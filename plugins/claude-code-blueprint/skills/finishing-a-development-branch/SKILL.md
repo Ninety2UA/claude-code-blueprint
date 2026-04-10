@@ -1,6 +1,6 @@
 ---
 name: finishing-a-development-branch
-description: Use when implementation is complete, all tests pass, and you need to decide how to integrate the work - guides completion of development work by presenting structured options for merge, PR, or cleanup
+description: "Trigger this skill when all implementation is complete and tests pass — even if the user doesn't explicitly ask what's next. Trigger when the user says 'done with the feature', 'ready to merge', 'branch is complete', 'what now', 'finished implementing', 'all tests pass now what', 'how do I wrap this up', or 'integration options'. Trigger when you detect that a feature branch has all planned work completed and tests are green. Guides completion by presenting structured options: merge to main, create a PR, or cleanup. Verifies tests pass before presenting options. DO NOT TRIGGER for creating PRs specifically — use pr-workflow instead. DO NOT TRIGGER if implementation is still in progress or tests are failing."
 ---
 
 # Finishing a Development Branch

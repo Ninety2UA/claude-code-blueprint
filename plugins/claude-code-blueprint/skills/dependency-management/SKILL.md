@@ -1,6 +1,6 @@
 ---
 name: dependency-management
-description: Use when adding, upgrading, or removing dependencies — evaluates necessity, checks compatibility, manages lock files, and plans safe rollback
+description: "Trigger this skill when adding, upgrading, or removing ANY dependency — even a single package install deserves compatibility checking. Trigger when the user says 'add dependency', 'upgrade package', 'remove dependency', 'update deps', 'dependency conflict', 'version mismatch', 'install this library', 'npm install', 'pip install', 'cargo add', 'go get', 'bump version', 'security advisory', or 'audit dependencies'. Trigger even when the user wants to just run 'npm install X' without thinking — evaluate necessity, check compatibility, manage lock files, and plan safe rollback first. DO NOT TRIGGER for updating the blueprint plugin itself — use plugin-update instead. DO NOT TRIGGER for installing dev tooling that doesn't ship with the product (linters, formatters) — just do it."
 ---
 
 # Dependency Management

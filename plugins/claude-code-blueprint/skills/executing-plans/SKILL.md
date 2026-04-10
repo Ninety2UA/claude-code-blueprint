@@ -1,6 +1,6 @@
 ---
 name: executing-plans
-description: Use when you have a written implementation plan to execute in a separate session with review checkpoints
+description: "Trigger this skill when executing a written plan sequentially with human review checkpoints between batches. Trigger scenarios: 'execute the plan', 'implement the plan', 'work through the tasks', 'follow this plan', 'run through the plan step by step', 'execute sequentially', or when the user has a plan file and wants controlled, checkpoint-based execution with human review between batches. Even if the user doesn't explicitly mention checkpoints, trigger this skill when they want sequential plan execution with oversight rather than autonomous or parallel approaches. DO NOT TRIGGER when tasks can run in parallel and speed matters — use orchestrate instead. DO NOT TRIGGER when spawning collaborative teammates with shared task lists — use team-execution instead. DO NOT TRIGGER for fully autonomous execution without human checkpoints — use autonomous-loop instead."
 ---
 
 # Executing Plans

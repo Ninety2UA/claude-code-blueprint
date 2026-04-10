@@ -1,6 +1,6 @@
 ---
 name: writing-plans
-description: Use when you have a spec or requirements for a multi-step task, before touching code
+description: "Trigger this skill when converting an approved design or spec into a detailed implementation plan with exact file paths, code snippets, dependency ordering, and test strategies. Trigger when the user says 'write a plan', 'create a plan', 'implementation steps', 'break this down into tasks', 'how do we implement this', 'plan out the work', or 'turn this design into tasks'. Trigger after brainstorming produces an approved design — even if the user doesn't explicitly ask for a plan, suggest this skill once a design is approved. Also trigger when the user has a clear spec from any source and needs it decomposed into bite-sized executable steps. DO NOT TRIGGER when the user hasn't brainstormed or designed yet — use brainstorming first to produce an approved design. DO NOT TRIGGER for executing an existing plan — use executing-plans instead. DO NOT TRIGGER for enriching a plan with research — use deepen-plan instead."
 ---
 
 # Writing Plans

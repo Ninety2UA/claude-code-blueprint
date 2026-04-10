@@ -1,6 +1,6 @@
 ---
 name: scope-cutting
-description: Use when a feature is too large, a deadline is at risk, or you need to identify the minimum viable version of a plan — systematically separates must-haves from nice-to-haves
+description: "Trigger this skill when a feature is too large, a plan has grown unwieldy, or timeline pressure demands cutting scope. Trigger when the user says 'scope down', 'MVP', 'too big', 'what can we cut', 'simplify', 'reduce scope', 'deadline risk', 'we don't have time for all of this', 'this is taking too long', 'can we ship less', or 'minimum viable'. Trigger even when the user hasn't explicitly asked to cut scope — proactively suggest this skill whenever a plan has more than 10 tasks, an estimate exceeds available time, or the user expresses concern about timeline or complexity. Systematically separates must-haves from nice-to-haves and identifies the smallest useful deliverable. DO NOT TRIGGER when the feature is already minimal and cutting more would make it useless. DO NOT TRIGGER when the complexity is in the core (you need a different approach, not less scope)."
 ---
 
 # Scope Cutting

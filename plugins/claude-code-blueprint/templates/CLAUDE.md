@@ -8,7 +8,7 @@ Quality over speed. Small steps compound. The patterns you establish will be cop
 
 ## Session Continuity
 
-<!-- Updated by /wrap. For full state: read docs/context/STATUS.md -->
+<!-- Updated by /session-wrap. For full state: read docs/context/STATUS.md -->
 
 **Last session:** Not yet initialized
 
@@ -16,7 +16,7 @@ Quality over speed. Small steps compound. The patterns you establish will be cop
 - Project scaffolded with Claude Code Blueprint v3.0 plugin
 
 **What's remaining:**
-- Run `/start` to configure conventions, goals, and status
+- Run `/project-start` to configure conventions, goals, and status
 
 **Start here:** Run `/start` to set up your project.
 
@@ -25,37 +25,37 @@ Quality over speed. Small steps compound. The patterns you establish will be cop
 - Tests: not configured (run `/start`)
 - Uncommitted changes: none
 
-## Commands
+## Skills
 
-No build step (template repo). Key commands for installed projects:
+No build step (template repo). Key skills for installed projects:
 
-| Command | Purpose |
-|---------|---------|
-| `/build` | Supervised pipeline — checkpoints between every stage |
-| `/ship` | Autonomous pipeline — zero checkpoints, fire-and-forget |
-| `/quick` | Fast-track small changes (< 3 files) with TDD |
-| `/ideate` | Generate and rank improvement ideas |
-| `/planning` | Brainstorm before building |
+| Skill | Purpose |
+|-------|---------|
+| `/build-pipeline` | Supervised pipeline — checkpoints between every stage |
+| `/ship-pipeline` | Autonomous pipeline — zero checkpoints, fire-and-forget |
+| `/quick-fix` | Fast-track small changes (< 3 files) with TDD |
+| `/ideation` | Generate and rank improvement ideas |
+| `/brainstorming` | Brainstorm before building |
 | `/review-swarm` | Multi-agent parallel code review |
 | `/deep-research` | Multi-agent parallel research |
 | `/orchestrate` | Wave-based parallel execution (dependency-ordered) |
-| `/team` | Collaborative agent team (shared task list + messaging) |
+| `/team-execution` | Collaborative agent team (shared task list + messaging) |
 | `./scripts/ship.sh "feature"` | External loop — fresh context per iteration |
-| `/update` | Update plugin to latest version from GitHub |
+| `/plugin-update` | Update plugin to latest version from GitHub |
 
-Run `/start` after install to configure `docs/context/CONVENTIONS.md` with actual lint/test/dev commands.
+Run `/project-start` after install to configure `docs/context/CONVENTIONS.md` with actual lint/test/dev commands.
 
 ## Architecture
 
 ```
-# Plugin-provided (27 commands, 35 skills, 26 agents, 6 hooks)
+# Plugin-provided (53 skills, 26 agents, 6 hooks)
 # Available automatically — no per-project files needed
 
 # Project-local (your project state)
 docs/context/        # GOALS.md, STATUS.md, CONVENTIONS.md, DECISIONS.md
 docs/plans/          # Implementation plans (YYYY-MM-DD-topic.md)
-docs/solutions/      # Institutional knowledge (created by /compound)
-docs/learnings/      # Key learnings and gotchas (updated by /wrap)
+docs/solutions/      # Institutional knowledge (created by /knowledge-compounding)
+docs/learnings/      # Key learnings and gotchas (updated by /session-wrap)
 docs/decisions/      # Architecture decision records (ADRs)
 docs/research/       # Research findings and exploration notes
 docs/specs/          # Feature specs and requirements
@@ -64,7 +64,7 @@ blueprint.local.md   # Per-project agent config (gitignored)
 BACKLOG.md           # Quick capture inbox
 ```
 
-Skills, agents, and commands are self-describing via frontmatter — read their files for when/how to use them.
+Skills and agents are self-describing via frontmatter — read their files for when/how to use them.
 
 ## Behavioral Rules
 
@@ -114,7 +114,7 @@ When executing a plan or working autonomously:
 For small, well-understood changes (< 3 files, obvious root cause):
 1. Write failing test → 2. Fix → 3. Verify → 4. Commit
 
-If touching 4+ files, adding new API, or changing data models → use full workflow (`/planning` → `/build`).
+If touching 4+ files, adding new API, or changing data models → use full workflow (`/brainstorming` → `/build-pipeline`).
 
 ## Code Quality
 
@@ -137,9 +137,9 @@ Types: `feat`, `fix`, `refactor`, `docs`, `test`, `chore`, `style`, `perf`
 
 | Pipeline | Checkpoints | Review | Best For |
 |----------|-------------|--------|----------|
-| `/build` | Between every stage | Single pass (or `--iterate N`) | Features needing human guidance |
-| `/ship` | None (fully autonomous) | Iterative (default 3 cycles) | Well-defined features, fire-and-forget |
-| `/quick` | None | None | Trivial changes (< 3 files) |
+| `/build-pipeline` | Between every stage | Single pass (or `--iterate N`) | Features needing human guidance |
+| `/ship-pipeline` | None (fully autonomous) | Iterative (default 3 cycles) | Well-defined features, fire-and-forget |
+| `/quick-fix` | None | None | Trivial changes (< 3 files) |
 
 ## Context Loading Order
 
@@ -161,4 +161,4 @@ Types: `feat`, `fix`, `refactor`, `docs`, `test`, `chore`, `style`, `perf`
 
 ## Key Learnings
 
-See `docs/learnings/LEARNINGS.md` for project-specific patterns, gotchas, and insights. Updated by `/wrap`.
+See `docs/learnings/LEARNINGS.md` for project-specific patterns, gotchas, and insights. Updated by `/session-wrap`.

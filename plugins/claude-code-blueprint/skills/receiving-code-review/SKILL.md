@@ -1,6 +1,6 @@
 ---
 name: receiving-code-review
-description: Use when receiving code review feedback, before implementing suggestions, especially if feedback seems unclear or technically questionable - requires technical rigor and verification, not performative agreement or blind implementation
+description: "Trigger this skill when PR review feedback arrives, when comments need addressing, when a reviewer pushes back, or when the user says 'address review comments', 'fix review feedback', 'reviewer said', 'handle review', 'respond to comments', or 'address feedback'. Trigger especially when feedback seems questionable, unclear, or technically wrong — this skill enforces technical verification and reasoned evaluation, not blind agreement or performative compliance. Also trigger when review findings come back from review-swarm or requesting-code-review and need to be acted on. Every piece of review feedback must be verified against codebase reality before implementing. Requires technical rigor: restate, verify, evaluate, then respond with either acknowledgment or reasoned pushback."
 ---
 
 # Code Review Reception

@@ -1,6 +1,6 @@
 ---
 name: performance-profiling
-description: Use when investigating performance issues, before optimizing code, or when the user reports something is "slow" — always profile before optimizing
+description: "Trigger this skill whenever the user mentions performance concerns — even if they want to jump straight to optimizing. Trigger when the user says 'slow', 'performance', 'optimize', 'profile', 'bottleneck', 'takes too long', 'speed up', 'laggy', 'high latency', 'memory leak', 'CPU spike', 'N+1 queries', 'timeout', 'response time', or 'make it faster'. Trigger even when the user says 'just add an index' or 'just cache it' — ALWAYS profile before optimizing. Never guess at bottlenecks. Measure first, then target the actual bottleneck with data. DO NOT TRIGGER for code quality improvements that aren't performance-related — use simplify or iterative-refinement instead."
 ---
 
 # Performance Profiling

@@ -1,6 +1,6 @@
 ---
 name: autonomous-loop
-description: Use when executing a multi-task plan autonomously — iterates through tasks with retry logic, completion tracking, and exponential backoff until the entire plan is done
+description: "Trigger this skill when executing multi-task plans autonomously with retry logic and no human checkpoints. Trigger scenarios: 'run autonomously', 'keep going', 'don't stop until done', 'just do it all', 'run through the whole plan', 'execute everything without stopping', or when a plan needs continuous autonomous execution with built-in retry logic, completion tracking, circuit breaker, and degradation detection. Typically invoked internally by pipeline skills (ship-pipeline, build-pipeline) rather than directly by users. Even if the user doesn't explicitly ask for autonomous execution, trigger this skill when the context calls for looping through plan tasks without human intervention between each one. DO NOT TRIGGER when human review checkpoints are needed between batches — use executing-plans instead. DO NOT TRIGGER when tasks should run in parallel — use orchestrate instead."
 ---
 
 # Autonomous Loop

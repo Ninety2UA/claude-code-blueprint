@@ -39,7 +39,6 @@ const CONTEXT_PATHS = [
   'blueprint.local.md',
   '.claude/skills/',
   '.claude/agents/',
-  '.claude/commands/',
 ];
 
 let input = '';

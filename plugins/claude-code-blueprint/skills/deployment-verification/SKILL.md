@@ -1,6 +1,6 @@
 ---
 name: deployment-verification
-description: Use before any production deployment to verify build, tests, security, migrations, configuration, dependencies, rollback plan, and monitoring readiness
+description: "Trigger this skill before ANY production deployment — even if the user seems confident everything is fine. Trigger when the user says 'deploy', 'deploy check', 'ready to deploy', 'go live', 'production ready', 'pre-deploy', 'ship it', 'push to prod', 'release to production', 'launch', or 'can we deploy this'. Trigger even for 'just a small change' deployments — small changes cause outages too. Verifies build, tests, security, migrations, configuration, dependencies, rollback plan, and monitoring readiness. Dispatches the deployment-verifier agent for a systematic go/no-go checklist. DO NOT TRIGGER for deploying to local dev environments. DO NOT TRIGGER for creating PRs — use pr-workflow instead."
 ---
 
 # Deployment Verification

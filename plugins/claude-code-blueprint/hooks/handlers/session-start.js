@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * SessionStart Hook — Bootstrap context for new sessions.
- * Checks project state and reminds agent about available skills/commands.
+ * Checks project state and reminds agent about available skills.
  */
 
 const fs = require('fs');
@@ -97,8 +97,8 @@ try {
   if (fs.existsSync(ctxStateFile)) fs.unlinkSync(ctxStateFile);
 } catch (e) { /* ignore */ }
 
-// Remind about commands
-lines.push('Commands: /start · /ideate · /planning · /build · /ship · /quick · /discuss · /review · /review-swarm · /deep-research · /compound · /orchestrate · /team · /status · /debug · /backlog · /wrap · /update');
+// Remind about skills
+lines.push('Skills: /project-start · /ideation · /brainstorming · /build-pipeline · /ship-pipeline · /quick-fix · /discuss · /requesting-code-review · /review-swarm · /deep-research · /knowledge-compounding · /orchestrate · /team-execution · /project-status · /systematic-debugging · /backlog-triage · /session-wrap · /plugin-update');
 
 if (lines.length > 0) {
   console.log(lines.join('\n'));

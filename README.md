@@ -85,10 +85,10 @@ Every component in Blueprint is informed by what works (and what doesn't) across
 ```
 
 **Key changes:**
-- **Plugin architecture** — 27 commands, 35 skills, 26 agents, 6 hooks provided by the plugin, not copied into your project
+- **Plugin architecture** — 53 skills, 26 agents, 6 hooks provided by the plugin, not copied into your project
 - **`/start` scaffolding** — project files (CLAUDE.md, docs/, BACKLOG.md) created on demand per project
-- **`/migrate-to-plugin`** — new command to transition v2.x projects to plugin mode
-- **Cross-references use Skill tool** — commands invoke skills by name instead of reading file paths (required by Claude Code's sandbox)
+- **`/migrate-to-plugin`** — skill to transition v2.x projects to plugin mode
+- **All slash commands are skills** — invoked by name, content loads directly (no sandbox gap)
 - **Legacy mode preserved** — `--legacy` flag in install.sh for users who prefer in-project files
 
 ### What was new in v2.3
@@ -239,8 +239,8 @@ That's it — the blueprint is now available in **all your projects**. No per-pr
 
 ```bash
 claude          # Start Claude Code — plugin loads automatically
-> /start        # Scaffolds project files (CLAUDE.md, docs/) + interactive setup
-> /planning     # Brainstorm and plan your first feature
+> /project-start    # Scaffolds project files (CLAUDE.md, docs/) + interactive setup
+> /brainstorming    # Brainstorm and plan your first feature
 ```
 
 ### Alternative: one-line install via script
@@ -279,8 +279,8 @@ Already using the blueprint with in-project files? Install the plugin, then run 
 
 ```
 Plugin (installed globally, zero files in your project)
-├── 27 commands          /planning, /ship, /build, /review-swarm, /orchestrate, /team, ...
-├── 35 skills            TDD, wave-orchestration, swarms, iterative-refinement, ...
+├── 53 skills            /build-pipeline, /ship-pipeline, /brainstorming, /review-swarm, /orchestrate, ...
+│                        TDD, wave-orchestration, swarms, iterative-refinement, ...
 ├── 26 agents            team-lead, reviewer, security, perf, ...
 └── 6 hooks              session-start, context-monitor, prompt-guard, ship-loop + 2 Agent Teams
 
@@ -307,10 +307,9 @@ your-project/ (scaffolded by /start)
 | **CLAUDE.md** | Master configuration that Claude reads at session start. Contains behavioral rules, session continuity, agent team hierarchy, skill triggers, and project-specific learnings. |
 | **Skills** | Workflow modules that activate at specific points — TDD, debugging, code review, wave orchestration, swarm coordination, knowledge compounding. They enforce quality gates automatically. |
 | **Agents** | Specialized subprocesses dispatched for focused analysis — security audits, performance reviews, architecture evaluation. Organized into teams (review swarm, research swarm, execution waves). Each gets a fresh 200K context. |
-| **Commands** | User-facing slash commands (`/planning`, `/review-swarm`, `/orchestrate`, `/compound`) that invoke the right skills with the right context. |
-| **docs/context/** | Living project state — goals, current status, conventions, execution state. Updated every session by `/wrap`. |
-| **docs/solutions/** | Institutional knowledge — solved problems documented by `/compound` and searched by `/planning` before future work. |
-| **BACKLOG.md** | Quick-capture inbox for ideas, bugs, and tasks. Triaged by `/backlog` into prioritized work. |
+| **docs/context/** | Living project state — goals, current status, conventions, execution state. Updated every session by `/session-wrap`. |
+| **docs/solutions/** | Institutional knowledge — solved problems documented by `/knowledge-compounding` and searched by `/brainstorming` before future work. |
+| **BACKLOG.md** | Quick-capture inbox for ideas, bugs, and tasks. Triaged by `/backlog-triage` into prioritized work. |
 | **blueprint.local.md** | Per-project agent configuration — choose which review/research agents are relevant for your tech stack. Gitignored so each developer can customize. |
 
 ## Workflow
@@ -327,17 +326,17 @@ Every feature follows this flow:
   <img src="docs/images/dev-loop.png" alt="Orient → Design → Plan → Build → Ship → next feature" width="90%">
 </p>
 
-**1. Orient** — Load context with `/status` or set up with `/start`
+**1. Orient** — Load context with `/project-status` or set up with `/project-start`
 
-**2. Ideate** (optional) — Run `/ideate` to discover what's worth building. AI scans your codebase and surfaces ranked improvement ideas.
+**2. Ideate** (optional) — Run `/ideation` to discover what's worth building. AI scans your codebase and surfaces ranked improvement ideas.
 
-**3. Design** — Brainstorm options with `/planning`. Present tradeoffs. Get human approval before any code is written.
+**3. Design** — Brainstorm options with `/brainstorming`. Present tradeoffs. Get human approval before any code is written.
 
-**4. Plan** — Break approved design into bite-sized tasks (2-5 min each) with exact file paths, code snippets, and test strategies. After the plan is written, choose: deepen with research (`/deepen`), execute sequentially (subagent-driven), execute in parallel (`/orchestrate`), or execute with Agent Teams (`/team`).
+**4. Plan** — Break approved design into bite-sized tasks (2-5 min each) with exact file paths, code snippets, and test strategies. After the plan is written, choose: deepen with research (`/deepen-plan`), execute sequentially (subagent-driven), execute in parallel (`/orchestrate`), or execute with Agent Teams (`/team-execution`).
 
 **5. Build** — Execute using TDD (red-green-refactor). Verify with evidence. Dispatch code review agents.
 
-**6. Ship** — Merge the branch. Update all documentation with `/wrap`. Capture learnings for next session.
+**6. Ship** — Merge the branch. Update all documentation with `/session-wrap`. Capture learnings for next session.
 
 ### Lightweight workflow for small changes
 
@@ -349,17 +348,17 @@ Not everything needs the full 5-step flow. Bug fixes with obvious root causes, t
 
 The boundary is clear: if you're touching 4+ files, adding a new API, or unsure of the approach, use the full workflow. See CLAUDE.md for the complete criteria.
 
-### Autonomous pipeline: `/ship`
+### Autonomous pipeline: `/ship-pipeline`
 
 <p align="center">
   <img src="docs/images/ship-pipeline.png" alt="/ship Pipeline" width="90%">
 </p>
 
-For well-defined features you want to fire and forget, `/ship` runs the entire development lifecycle autonomously — zero checkpoints, zero user input. It plans, researches, executes via a dedicated team-lead agent, iteratively reviews (3 cycles by default), and opens a PR.
+For well-defined features you want to fire and forget, `/ship-pipeline` runs the entire development lifecycle autonomously — zero checkpoints, zero user input. It plans, researches, executes via a dedicated team-lead agent, iteratively reviews (3 cycles by default), and opens a PR.
 
 ```bash
 # Inside Claude — interactive mode (single session)
-> /ship add JWT authentication with refresh tokens
+> /ship-pipeline add JWT authentication with refresh tokens
 
 # From terminal — external loop mode (fresh 200K context per iteration)
 ./scripts/ship.sh "add JWT authentication with refresh tokens" --max 10
@@ -604,59 +603,59 @@ Main Session → Task("security-sentinel: audit auth endpoints") → findings �
 
 ## Commands Reference
 
-Commands are user-facing shortcuts that invoke the right skills with the right context.
+Skills are invoked as slash commands. Each skill's content loads directly — no indirection.
 
-| Command | What it does |
-|---------|-------------|
-| **`/start`** | Interactive project setup. Fills in CONVENTIONS.md, GOALS.md, STATUS.md through a guided conversation. |
-| **`/ideate`** | Generate and rank improvement ideas. Scans codebase, backlog, and git history to surface what's worth building. |
-| **`/planning`** | Brainstorming session. Explores design options, presents tradeoffs, gets approval, then creates implementation plan. |
-| **`/build`** | Full-cycle supervised pipeline with checkpoints between every stage. Supports `--iterate N` for iterative review and `--team` for team-lead dispatch. |
-| **`/ship`** | Fully autonomous pipeline — zero checkpoints, fire-and-forget. Plans, executes via team-lead, iteratively reviews (3 cycles), and opens a PR. |
+| Skill | What it does |
+|-------|-------------|
+| **`/project-start`** | Interactive project setup. Fills in CONVENTIONS.md, GOALS.md, STATUS.md through a guided conversation. |
+| **`/ideation`** | Generate and rank improvement ideas. Scans codebase, backlog, and git history to surface what's worth building. |
+| **`/brainstorming`** | Brainstorming session. Explores design options, presents tradeoffs, gets approval, then creates implementation plan. |
+| **`/build-pipeline`** | Full-cycle supervised pipeline with checkpoints between every stage. Supports `--iterate N` for iterative review and `--team` for team-lead dispatch. |
+| **`/ship-pipeline`** | Fully autonomous pipeline — zero checkpoints, fire-and-forget. Plans, executes via team-lead, iteratively reviews (3 cycles), and opens a PR. |
 | **`/discuss`** | Capture decisions before planning. Explores requirements, locks decisions that planners must honor. |
-| **`/deepen`** | Enrich an existing plan with parallel research agents. Dispatches all configured researchers in parallel, then merges findings into the plan. |
-| **`/review`** | Dispatches code-reviewer agent against your current changes. |
+| **`/deepen-plan`** | Enrich an existing plan with parallel research agents. Dispatches all configured researchers in parallel, then merges findings into the plan. |
+| **`/requesting-code-review`** | Dispatches code-reviewer agent against your current changes. |
 | **`/review-swarm`** | Multi-agent parallel review — dispatches 6-10 specialized reviewers, synthesizes findings into prioritized P1/P2/P3 report. |
 | **`/deep-research`** | Multi-agent parallel research — spawns 5 research agents, synthesizes into unified brief for planning. |
-| **`/compound`** | Document a solved problem for future reference. Creates searchable entry in docs/solutions/. |
+| **`/knowledge-compounding`** | Document a solved problem for future reference. Creates searchable entry in docs/solutions/. |
 | **`/orchestrate`** | Wave-based parallel execution — groups plan tasks by dependency, runs independent tasks in parallel per wave. Supports `--iterations N` and `--convergence fast\|deep\|perfect` for iterative review. |
-| **`/team`** | Spawn an Agent Team for collaborative multi-file implementation with shared task list and messaging (experimental). Supports `--iterations N` and `--convergence fast\|deep\|perfect` for iterative review. |
-| **`/status`** | Shows current project state, goal alignment, blockers, and suggests next actions. |
-| **`/debug [issue]`** | Root cause investigation. Gathers evidence, forms hypotheses, tests them systematically. |
-| **`/backlog`** | Triages inbox items in BACKLOG.md into prioritized tasks using GOALS.md context. |
-| **`/wrap`** | End-of-session documentation. Updates CLAUDE.md session continuity, STATUS.md, and captures learnings. Distinguishes planning-only vs implementation sessions — won't mark goals as done if only a plan was written. |
-| **`/pr`** | Create, manage, or respond to pull requests. Full PR lifecycle. |
-| **`/map`** | Map an unfamiliar codebase into structured documentation before modifying it. |
-| **`/resume`** | Resume work from where the last session left off. Loads context and orients you. |
-| **`/pause`** | Quick mid-session checkpoint. Captures state without full `/wrap`. |
-| **`/quick`** | Fast-track a small, well-understood change with TDD and verification gates. |
-| **`/changelog`** | Generate release notes from git history using Keep a Changelog format. |
+| **`/team-execution`** | Spawn an Agent Team for collaborative multi-file implementation with shared task list and messaging (experimental). Supports `--iterations N` and `--convergence fast\|deep\|perfect` for iterative review. |
+| **`/project-status`** | Shows current project state, goal alignment, blockers, and suggests next actions. |
+| **`/systematic-debugging [issue]`** | Root cause investigation. Gathers evidence, forms hypotheses, tests them systematically. |
+| **`/backlog-triage`** | Triages inbox items in BACKLOG.md into prioritized tasks using GOALS.md context. |
+| **`/session-wrap`** | End-of-session documentation. Updates CLAUDE.md session continuity, STATUS.md, and captures learnings. Distinguishes planning-only vs implementation sessions — won't mark goals as done if only a plan was written. |
+| **`/pr-workflow`** | Create, manage, or respond to pull requests. Full PR lifecycle. |
+| **`/codebase-mapping`** | Map an unfamiliar codebase into structured documentation before modifying it. |
+| **`/resume-session`** | Resume work from where the last session left off. Loads context and orients you. |
+| **`/pause-checkpoint`** | Quick mid-session checkpoint. Captures state without full `/session-wrap`. |
+| **`/quick-fix`** | Fast-track a small, well-understood change with TDD and verification gates. |
+| **`/changelog-generation`** | Generate release notes from git history using Keep a Changelog format. |
 | **`/add-tests`** | Analyze test coverage gaps and generate tests for untested code paths. |
-| **`/health`** | Comprehensive project health check — build, tests, lint, deps, conventions, docs, backlog, git. |
+| **`/health-check`** | Comprehensive project health check — build, tests, lint, deps, conventions, docs, backlog, git. |
 | **`/migrate-to-plugin`** | Migrate v2.x in-project files to v3.0 plugin mode. Removes engine files, keeps project state. |
-| **`/update`** | Update the blueprint plugin to the latest version from GitHub. Self-service — no reinstall needed. |
+| **`/plugin-update`** | Update the blueprint plugin to the latest version from GitHub. Self-service — no reinstall needed. |
 
 ### Typical session flow
 
 **Supervised (human in the loop):**
 ```bash
 claude
-> /resume                            # Reload context from last session
-> /ideate                            # "What's worth building?" — AI generates ranked ideas
-> /deep-research add OAuth2 login    # Research the chosen idea (5 agents in parallel)
-> /planning add OAuth2 login          # Design + plan based on research findings
-> /orchestrate                       # Execute with wave-based parallelism
->   # OR: /team                      # Execute with collaborative Agent Team
-> /review-swarm                      # Multi-agent review (6-10 reviewers in parallel)
-> /compound OAuth2 session handling  # Document the solution for future reference
-> /wrap                              # Document everything for next session
+> /resume-session                           # Reload context from last session
+> /ideation                                 # "What's worth building?" — AI generates ranked ideas
+> /deep-research add OAuth2 login           # Research the chosen idea (5 agents in parallel)
+> /brainstorming add OAuth2 login           # Design + plan based on research findings
+> /orchestrate                              # Execute with wave-based parallelism
+>   # OR: /team-execution                   # Execute with collaborative Agent Team
+> /review-swarm                             # Multi-agent review (6-10 reviewers in parallel)
+> /knowledge-compounding OAuth2 sessions    # Document the solution for future reference
+> /session-wrap                             # Document everything for next session
 ```
 
 **Autonomous (fire and forget):**
 ```bash
 # Inside Claude — single session
 claude
-> /ship add OAuth2 login with JWT refresh tokens --iterations 5
+> /ship-pipeline add OAuth2 login with JWT refresh tokens --iterations 5
 
 # From terminal — with context-exhaustion recovery
 ./scripts/ship.sh "add OAuth2 login with JWT refresh tokens" --max 10 --swarm

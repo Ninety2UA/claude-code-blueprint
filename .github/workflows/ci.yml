@@ -47,21 +47,18 @@ jobs:
           test -f /tmp/blueprint-test/.gitignore
 
           echo "Checking .claude/ structure..."
-          test -d /tmp/blueprint-test/.claude/commands
           test -d /tmp/blueprint-test/.claude/skills
           test -d /tmp/blueprint-test/.claude/agents
           test -d /tmp/blueprint-test/.claude/hooks
 
           # Count installed components
-          COMMANDS=$(find /tmp/blueprint-test/.claude/commands -name '*.md' | wc -l | tr -d ' ')
           AGENTS=$(find /tmp/blueprint-test/.claude/agents -name '*.md' | wc -l | tr -d ' ')
           SKILLS=$(find /tmp/blueprint-test/.claude/skills -name 'SKILL.md' | wc -l | tr -d ' ')
 
-          echo "Commands: $COMMANDS, Agents: $AGENTS, Skills: $SKILLS"
+          echo "Agents: $AGENTS, Skills: $SKILLS"
 
-          test "$COMMANDS" -ge 20 || { echo "Expected >= 20 commands, got $COMMANDS"; exit 1; }
           test "$AGENTS" -ge 24 || { echo "Expected >= 24 agents, got $AGENTS"; exit 1; }
-          test "$SKILLS" -ge 28 || { echo "Expected >= 28 skills, got $SKILLS"; exit 1; }
+          test "$SKILLS" -ge 45 || { echo "Expected >= 45 skills, got $SKILLS"; exit 1; }
 
           echo "Checking docs/ structure..."
           test -d /tmp/blueprint-test/docs/context
@@ -98,7 +95,6 @@ jobs:
           test -f plugins/claude-code-blueprint/.claude-plugin/plugin.json
 
           echo "Checking plugin components..."
-          test -d plugins/claude-code-blueprint/commands
           test -d plugins/claude-code-blueprint/skills
           test -d plugins/claude-code-blueprint/agents
           test -d plugins/claude-code-blueprint/hooks

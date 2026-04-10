@@ -1,6 +1,6 @@
 ---
 name: session-continuity
-description: Use when pausing, resuming, or handing off work between sessions — manages persistent state tracking via STATE.md to ensure no context is lost across session boundaries
+description: "Trigger this skill when pausing, resuming, or handing off work between sessions. Manages persistent state tracking via docs/context/STATE.md to ensure no context is lost across session boundaries. Trigger when session state needs to be written or updated — wave progress, task completion status, blockers, or execution phase changes. Usually invoked internally by pause-checkpoint and session-wrap, not directly by users. Trigger even when the user doesn't mention STATE.md explicitly — any session transition (pause, resume, wrap, handoff) needs state tracking. DO NOT TRIGGER as the primary user-facing command for pausing — use pause-checkpoint instead. DO NOT TRIGGER as the primary user-facing command for ending sessions — use session-wrap instead. This skill is the internal state persistence engine that those user-facing skills delegate to."
 ---
 
 # Session Continuity

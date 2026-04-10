@@ -1,6 +1,6 @@
 ---
 name: swarm-orchestration
-description: Use when you need to coordinate multiple specialized agents working in parallel on different aspects of the same problem — dispatches a team of agents simultaneously and synthesizes their outputs
+description: "Trigger this skill when coordinating multiple specialized agents on different aspects of the same problem — even if the user just wants a thorough review or analysis. Trigger when the user says 'swarm', 'parallel agents', 'dispatch agents', 'multi-agent review', 'get multiple perspectives', or 'thorough analysis'. Trigger for review swarms (multiple reviewers checking different quality dimensions), research swarms (multiple researchers investigating different aspects), analysis swarms, and audit swarms. Dispatches agents simultaneously and synthesizes their combined outputs into one result. Usually invoked internally by review-swarm and deep-research — not typically called directly by users. DO NOT TRIGGER when tasks modify shared state — use wave-orchestration instead. DO NOT TRIGGER when only one perspective is needed — dispatch a single agent."
 ---
 
 # Swarm Orchestration
