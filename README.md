@@ -85,7 +85,7 @@ Every component in Blueprint is informed by what works (and what doesn't) across
 ```
 
 **Key changes:**
-- **Plugin architecture** — 26 commands, 34 skills, 26 agents, 6 hooks provided by the plugin, not copied into your project
+- **Plugin architecture** — 27 commands, 35 skills, 26 agents, 6 hooks provided by the plugin, not copied into your project
 - **`/start` scaffolding** — project files (CLAUDE.md, docs/, BACKLOG.md) created on demand per project
 - **`/migrate-to-plugin`** — new command to transition v2.x projects to plugin mode
 - **Cross-references use Skill tool** — commands invoke skills by name instead of reading file paths (required by Claude Code's sandbox)
@@ -279,8 +279,8 @@ Already using the blueprint with in-project files? Install the plugin, then run 
 
 ```
 Plugin (installed globally, zero files in your project)
-├── 26 commands          /planning, /ship, /build, /review-swarm, /orchestrate, /team, ...
-├── 34 skills            TDD, wave-orchestration, swarms, iterative-refinement, ...
+├── 27 commands          /planning, /ship, /build, /review-swarm, /orchestrate, /team, ...
+├── 35 skills            TDD, wave-orchestration, swarms, iterative-refinement, ...
 ├── 26 agents            team-lead, reviewer, security, perf, ...
 └── 6 hooks              session-start, context-monitor, prompt-guard, ship-loop + 2 Agent Teams
 
@@ -605,6 +605,7 @@ Commands are user-facing shortcuts that invoke the right skills with the right c
 | Command | What it does |
 |---------|-------------|
 | **`/start`** | Interactive project setup. Fills in CONVENTIONS.md, GOALS.md, STATUS.md through a guided conversation. |
+| **`/ideate`** | Generate and rank improvement ideas. Scans codebase, backlog, and git history to surface what's worth building. |
 | **`/planning`** | Brainstorming session. Explores design options, presents tradeoffs, gets approval, then creates implementation plan. |
 | **`/build`** | Full-cycle supervised pipeline with checkpoints between every stage. Supports `--iterate N` for iterative review and `--team` for team-lead dispatch. |
 | **`/ship`** | Fully autonomous pipeline — zero checkpoints, fire-and-forget. Plans, executes via team-lead, iteratively reviews (3 cycles), and opens a PR. |

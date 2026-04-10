@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "claude-code-blueprint",
-      "description": "34 skills, 26 agents, 26 commands, 6 hooks covering the full development lifecycle",
+      "description": "35 skills, 26 agents, 27 commands, 6 hooks covering the full development lifecycle",
       "version": "3.0.0",
       "source": "./plugins/claude-code-blueprint",
       "category": "productivity"

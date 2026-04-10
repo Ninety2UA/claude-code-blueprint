@@ -44,6 +44,7 @@ No build step (template repo). Key commands for installed projects:
 | `/build` | Supervised pipeline — checkpoints between every stage |
 | `/ship` | Autonomous pipeline — zero checkpoints, fire-and-forget |
 | `/quick` | Fast-track small changes (< 3 files) with TDD |
+| `/ideate` | Generate and rank improvement ideas |
 | `/planning` | Brainstorm before building |
 | `/review-swarm` | Multi-agent parallel code review |
 | `/deep-research` | Multi-agent parallel research |
@@ -59,7 +60,7 @@ Run `/start` after install to configure `docs/context/CONVENTIONS.md` with actua
 ```
 .claude-plugin/                          # Marketplace manifest (marketplace.json)
 plugins/claude-code-blueprint/           # Plugin root
-  commands/                              # 26 slash commands (description frontmatter)
+  commands/                              # 27 slash commands (description frontmatter)
   skills/                                # 34 workflow skills (triggered contextually)
   agents/                                # 26 specialized subagents
   hooks/hooks.json                       # Hook definitions (${CLAUDE_PLUGIN_ROOT})

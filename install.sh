@@ -417,7 +417,7 @@ elif [ -n "$TARGET_DIR" ]; then
     echo -e "  ${DIM}2.${NC} claude"
     echo -e "  ${DIM}3.${NC} /start ${DIM}← interactive project setup${NC}"
     echo ""
-    echo -e "  ${DIM}Plugin provides: 34 skills · 26 agents · 26 commands · 6 hooks${NC}"
+    echo -e "  ${DIM}Plugin provides: 35 skills · 26 agents · 27 commands · 6 hooks${NC}"
     echo -e "  ${DIM}Quick commands: /build · /ship · /planning · /review-swarm · /deep-research${NC}"
 else
     echo -e "  ${GREEN}${BOLD}Plugin installed!${NC}"
@@ -427,7 +427,7 @@ else
     echo -e "  ${DIM}2.${NC} claude"
     echo -e "  ${DIM}3.${NC} /start ${DIM}← scaffolds project + interactive setup${NC}"
     echo ""
-    echo -e "  ${DIM}Plugin provides: 34 skills · 26 agents · 26 commands · 6 hooks${NC}"
+    echo -e "  ${DIM}Plugin provides: 35 skills · 26 agents · 27 commands · 6 hooks${NC}"
     echo -e "  ${DIM}Available in all projects — no per-project installation needed${NC}"
 fi
 

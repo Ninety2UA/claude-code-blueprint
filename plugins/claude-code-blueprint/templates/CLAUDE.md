@@ -34,6 +34,7 @@ No build step (template repo). Key commands for installed projects:
 | `/build` | Supervised pipeline — checkpoints between every stage |
 | `/ship` | Autonomous pipeline — zero checkpoints, fire-and-forget |
 | `/quick` | Fast-track small changes (< 3 files) with TDD |
+| `/ideate` | Generate and rank improvement ideas |
 | `/planning` | Brainstorm before building |
 | `/review-swarm` | Multi-agent parallel code review |
 | `/deep-research` | Multi-agent parallel research |
@@ -47,7 +48,7 @@ Run `/start` after install to configure `docs/context/CONVENTIONS.md` with actua
 ## Architecture
 
 ```
-# Plugin-provided (26 commands, 34 skills, 26 agents, 6 hooks)
+# Plugin-provided (27 commands, 35 skills, 26 agents, 6 hooks)
 # Available automatically — no per-project files needed
 
 # Project-local (your project state)
