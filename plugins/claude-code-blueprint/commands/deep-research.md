@@ -9,6 +9,10 @@ Spawn a swarm of research agents in parallel, then synthesize their findings int
 
 **Announce at start:** "Starting deep research on: $ARGUMENTS"
 
+## Step 0: Load Project Configuration
+
+Check `blueprint.local.md` for configured research agents. If not found, use defaults below.
+
 ## Step 1: Define Research Questions
 
 Based on `$ARGUMENTS`, formulate specific research questions for each agent:

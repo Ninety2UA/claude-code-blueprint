@@ -1,5 +1,6 @@
 ---
 description: "Full-cycle autonomous development. Chains discuss → plan → execute → review → verify into one pipeline."
+argument-hint: "<feature description> [--quick] [--iterate N] [--deploy] [--team]"
 ---
 
 # /build — Full-Cycle Development Pipeline
@@ -28,7 +29,7 @@ If the user has already provided clear, unambiguous requirements, summarize them
 
 Rate each dimension 0.0–1.0. Calculate: `clarity = (scope × 0.4) + (constraints × 0.3) + (criteria × 0.3)`
 
-For **brownfield** tasks, add **Context clarity (15%)** and adjust weights to 35%/25%/25%/15%.
+For **brownfield** tasks (modifying existing code), add **Context clarity (15%)** and adjust weights to 35%/25%/25%/15%.
 
 - If clarity **≥ 0.8** → proceed to Stage 2
 - If clarity **< 0.8** → use AskUserQuestion to clarify the weakest dimension before proceeding
@@ -41,11 +42,27 @@ Explore 2-3 design alternatives. Present trade-offs. Get user approval before pr
 
 ### Stage 3: Plan (Implementation Steps)
 
-Before planning, dispatch the **learnings-researcher** agent to search `docs/` for relevant prior work. Incorporate findings into the plan.
+Before planning, use the Task tool to dispatch research agents in parallel:
+
+```
+Task("learnings-researcher: Search docs/solutions/ for relevant prior work related to: [feature]. Return findings as bullet points.")
+
+Task("framework-docs-researcher: Gather current documentation for [frameworks involved]. Focus on API patterns, version constraints, and gotchas.")
+
+Task("codebase-context-mapper: Map all files and dependencies affected by: [feature description]. Identify integration points and potential conflicts.")
+```
+
+Incorporate findings into the plan.
 
 Invoke the writing-plans skill. Convert the approved design into actionable steps.
 
-After the plan is written, dispatch the **plan-checker** agent to verify the plan will work. Fix any BLOCKING issues before proceeding.
+After the plan is written, use the Task tool to dispatch the **plan-checker** agent:
+
+```
+Task("plan-checker: Verify the implementation plan at [plan file path]. Report BLOCKING issues only.")
+```
+
+Fix any BLOCKING issues (issues that prevent implementation: missing dependencies, architectural conflicts, unresolvable ambiguity) before proceeding.
 
 Get user approval of the plan.
 
@@ -66,7 +83,7 @@ Run `/team [plan file] --no-review`. This dispatches a team-lead agent that spaw
 
 Run `/review-swarm` to dispatch the full review agent swarm in parallel. This dispatches all configured review agents (code-reviewer, security-sentinel, performance-oracle, code-simplicity-reviewer, convention-enforcer, test-coverage-reviewer, plus conditional agents based on changes), then synthesizes findings via the findings-synthesizer.
 
-Address all P1 (critical) and P2 (important) findings before proceeding. Use resolve-in-parallel to fix independent findings concurrently.
+Address all P1 (critical) and P2 (important) findings before proceeding. Use resolve-in-parallel to fix independent findings (different files, no shared state) concurrently.
 
 ### Stage 6: Verify (Completion)
 

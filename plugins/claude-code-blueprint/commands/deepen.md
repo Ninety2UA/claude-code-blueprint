@@ -71,7 +71,11 @@ For each section of the plan, add a `### Research Notes` subsection containing:
 
 ## Step 5: Re-verify
 
-After enrichment, dispatch the **plan-checker** agent on the updated plan to verify the research notes don't conflict with the plan's approach.
+After enrichment, use the Task tool to dispatch the **plan-checker** agent on the updated plan to verify the research notes don't conflict with the plan's approach.
+
+```
+Task("plan-checker: Verify the enriched plan at [plan file path]. Check for conflicts between research notes and the plan's approach. Report BLOCKING issues only.")
+```
 
 If the plan-checker finds new issues introduced by research (e.g., a best practice contradicts the plan's approach):
 - Flag the conflict clearly in the plan
@@ -96,7 +100,9 @@ Update the plan file with enriched content. Report:
 Plan updated: [path to plan file]
 ```
 
-Then offer execution options:
+**If called from a pipeline** (`/build` or `/ship`): skip execution options and return to the calling workflow. The pipeline controls execution in its next stage.
+
+**If called standalone** (user ran `/deepen` directly): offer execution options:
 
 **"Ready to execute. Which approach?**
 

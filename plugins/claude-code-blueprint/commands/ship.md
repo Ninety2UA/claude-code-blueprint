@@ -1,6 +1,6 @@
 ---
 description: "Fully autonomous development pipeline — zero checkpoints, plans through execution through iterative review to PR. Fire and forget."
-argument-hint: "<feature description> [--swarm] [--iterations N] [--convergence fast|deep|perfect] [--external]"
+argument-hint: "<feature description> [--swarm] [--iterations N] [--convergence fast|deep|perfect] [--deploy] [--external]"
 ---
 
 # /ship — Autonomous End-to-End Pipeline
@@ -92,7 +92,7 @@ Rate each dimension 0.0–1.0. Calculate: `clarity = (scope × 0.4) + (constrain
 For **brownfield** tasks (modifying existing code), add a 4th dimension — **Context clarity (15%)**: is existing codebase behavior understood? Adjust weights to 35%/25%/25%/15%.
 
 - If clarity **≥ 0.8** → proceed to Stage 2
-- If clarity **< 0.8** → make reasonable assumptions for the weakest dimension, document them as locked decisions, then re-score. If still < 0.8, proceed anyway with assumptions documented (autonomous mode — no user questions).
+- If clarity **< 0.8** → make reasonable assumptions for the weakest dimension, append them as locked decisions to `docs/context/DECISIONS.md`, then re-score. If still < 0.8, proceed anyway with assumptions documented (autonomous mode — no user questions).
 
 ---
 
@@ -100,10 +100,15 @@ For **brownfield** tasks (modifying existing code), add a 4th dimension — **Co
 
 #### 2a. Parallel Research
 
-Dispatch these agents simultaneously:
-- **learnings-researcher** — search `docs/solutions/` for relevant prior work
-- **framework-docs-researcher** — gather current docs for frameworks involved
-- **codebase-context-mapper** — map files and dependencies affected by this change
+Use the Task tool to dispatch these agents simultaneously:
+
+```
+Task("learnings-researcher: Search docs/solutions/ for relevant prior work related to: [feature]. Return findings as bullet points.")
+
+Task("framework-docs-researcher: Gather current documentation for [frameworks involved]. Focus on API patterns, version constraints, and gotchas.")
+
+Task("codebase-context-mapper: Map all files and dependencies affected by: [feature description]. Identify integration points and potential conflicts.")
+```
 
 Collect all research results.
 
@@ -113,7 +118,7 @@ Invoke the writing-plans skill and follow it. Incorporate all research findings 
 
 #### 2c. Plan Verification Loop
 
-Dispatch the **plan-checker** agent to verify the plan. If the plan-checker reports BLOCKING issues:
+Use the Task tool to dispatch the **plan-checker** agent to verify the plan. BLOCKING issues are those that prevent implementation (missing dependencies, architectural conflicts, unresolvable ambiguity). If the plan-checker reports BLOCKING issues:
 
 ```
 for pass in 1..3:
@@ -164,7 +169,7 @@ In swarm mode, dispatch review and browser testing as parallel background tasks 
 
 1. **Dispatch in parallel:**
    - Background Task 1: Run iterative-refinement skill (review→fix→review cycles)
-   - Background Task 2: Run browser-testing skill (if UI changes detected in the diff)
+   - Background Task 2: Run browser-testing skill (if `git diff` contains changes to component files — `.tsx`, `.jsx`, `.vue`, `.svelte` — or CSS/SCSS files or template files)
 
 2. **Wait for both to complete**
 
@@ -181,7 +186,7 @@ Pass the configured parameters:
 - `convergence`: from `--convergence` flag (default `fast`)
 - `scope`: all changes on this branch vs main (`git diff main...HEAD`)
 
-If iterative refinement exits with P1 > 0 (max iterations reached without convergence):
+If iterative refinement exits without converging per the specified mode (P1 > 0 for `fast`, P1+P2 > 0 for `deep`, any findings > 0 for `perfect`):
 - STOP the pipeline
 - Report: "Review found unresolved critical issues after [N] iterations. Run `/build` to address manually."
 - Do NOT create a PR with known critical issues
@@ -210,7 +215,13 @@ Skip if the work was straightforward.
    - Review iterations completed and convergence status
    - Test results
 
-3. **Report completion:**
+3. **Deploy check** (if `--deploy` flag): Use the Task tool to dispatch the **deployment-verifier** agent to verify deployment readiness. Report the go/no-go checklist in the completion report.
+
+   ```
+   Task("deployment-verifier: Verify deployment readiness for this PR. Check build, tests, security, migrations, configuration, dependencies, rollback plan, and monitoring.")
+   ```
+
+4. **Report completion:**
    ```markdown
    ## /ship Complete
 
