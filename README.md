@@ -638,7 +638,8 @@ Commands are user-facing shortcuts that invoke the right skills with the right c
 ```bash
 claude
 > /resume                            # Reload context from last session
-> /deep-research add OAuth2 login    # Research before planning (5 agents in parallel)
+> /ideate                            # "What's worth building?" — AI generates ranked ideas
+> /deep-research add OAuth2 login    # Research the chosen idea (5 agents in parallel)
 > /planning add OAuth2 login          # Design + plan based on research findings
 > /orchestrate                       # Execute with wave-based parallelism
 >   # OR: /team                      # Execute with collaborative Agent Team
