@@ -187,7 +187,11 @@ If tests/build/lint fail:
 
 **Skip this phase entirely if review mode = `no-review`.** Jump to Phase 5 and report execution results only.
 
-### 4a. Dispatch Review Swarm
+**Choose review strategy based on iteration parameters:**
+- **iterations = 1 (default):** Single-pass review (4a–4d below)
+- **iterations > 1:** Use the iterative-refinement skill instead. Pass `max_iterations` and `convergence` mode from the calling command. The skill handles the review→fix→review loop internally. Skip to 4d (Sign-Off) when it returns.
+
+### 4a. Dispatch Review Swarm (single-pass mode)
 
 Run `/review-swarm` on all changes (`git diff main...HEAD`). This dispatches all configured review agents in parallel and synthesizes findings via findings-synthesizer.
 

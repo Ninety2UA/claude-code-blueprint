@@ -1,6 +1,6 @@
 ---
 description: "Spawn an Agent Team for collaborative multi-file implementation — delegates to a team-lead agent that designs the team, enforces plan approval, coordinates teammates, and optionally reviews + signs off."
-argument-hint: "<plan file or task description> [--no-review]"
+argument-hint: "<plan file or task description> [--no-review] [--iterations N] [--convergence fast|deep|perfect]"
 ---
 
 # /team — Collaborative Agent Team
@@ -15,6 +15,8 @@ Spawn a team of independent Claude Code instances that coordinate through a shar
 
 - **Plan file or task description:** From `$ARGUMENTS`
 - **`--no-review`:** Skip the team-lead's built-in review and sign-off (used when called from `/ship` or `/build`, which handle review themselves)
+- **`--iterations N`:** Max review-improve iterations (default: 1 = single pass, max: 10). When > 1, team-lead uses iterative-refinement skill instead of single review-swarm pass.
+- **`--convergence fast|deep|perfect`:** Review convergence mode (default: `fast`). `fast` = exit when P1=0, `deep` = exit when P1+P2=0, `perfect` = exit when all findings=0. Only applies when `--iterations` > 1.
 
 ## Dispatch Team Lead
 
@@ -25,6 +27,8 @@ Task("team-lead: Execute this plan using TEAM mode (Agent Teams).
 
 Plan file / task: [path or description]
 Review mode: [with-review | no-review]
+Review iterations: [N] (default 1)
+Review convergence: [fast|deep|perfect] (default fast)
 Autonomous mode: [autonomous if called from /ship, supervised otherwise]
 
 Read the plan file completely. Design a team of 3-5 teammates.
@@ -32,8 +36,9 @@ Assign file ownership (NO overlap between teammates).
 Break work into 5-6 tasks per teammate.
 Spawn teammates, enforce plan approval gate, then monitor execution.
 After all tasks complete, run tests + build + lint.
-[If with-review: Run /review-swarm, fix findings, sign off when P1=0.]
 [If no-review: Report execution results only.]
+[If with-review AND iterations=1: Run /review-swarm, fix P1 findings, sign off.]
+[If with-review AND iterations>1: Run iterative-refinement skill with max_iterations=[N] and convergence=[mode]. Sign off when converged.]
 
 Follow the team-lead agent instructions and agent-teams skill exactly.
 
@@ -72,7 +77,9 @@ The team-lead agent handles all the coordination that the main session previousl
 
 | Context | --no-review | Review happens in |
 |---------|-------------|-------------------|
-| `/team` (standalone) | No (default) | Team-lead agent reviews + signs off |
+| `/team` (standalone) | No (default) | Team-lead: single review-swarm pass |
+| `/team --iterations 5` | No | Team-lead: iterative-refinement (up to 5 cycles) |
+| `/team --iterations 5 --convergence deep` | No | Team-lead: iterative-refinement (exit when P1+P2=0) |
 | Called from `/ship` | Yes | `/ship` Stage 5 (iterative-refinement) |
 | Called from `/ship --swarm` | Yes | `/ship` Stage 5 (parallel review + test) |
 | Called from `/build` | Yes | `/build` Stage 5 (review-swarm) |
