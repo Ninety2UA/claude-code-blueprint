@@ -27,7 +27,7 @@ Quality over speed. Small steps compound. The patterns you establish will be cop
 - `render-graphs.js` uses `execSync` instead of `execFileSync` — cosmetic, low risk
 - Reinstall plugin after changes: `/plugin install claude-code-blueprint`
 
-**Start here:** No in-flight work. v3.0.0 on `main`, CI green, website live. All audit findings resolved.
+**Start here:** No in-flight work. v3.1.0 on `main`, CI green, website live. All audit findings resolved.
 
 **Current state of the code:**
 - Build: n/a (template repo, no build step)
