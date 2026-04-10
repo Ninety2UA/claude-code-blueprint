@@ -67,6 +67,30 @@ git branch --show-current
 find ~/.claude -name "MEMORY.md" -path "*$(basename $(pwd))*" 2>/dev/null
 ```
 
+## Step 1.5: Classify Session Type
+
+Before analyzing, classify the session based on git history from Step 1:
+
+**Planning session** — only plan files (`docs/plans/`), research docs (`docs/research/`), design docs, decision records (`docs/decisions/`), or ideation artifacts were created/modified. No source code, tests, or infrastructure changes in the diff.
+
+**Implementation session** — source code, tests, configs, or infrastructure files were modified (anything outside `docs/` and project state files).
+
+Determine this by checking: `git log --diff-filter=AM --name-only --since="8 hours ago" --format="" | grep -v -E '^(docs/|CLAUDE\.md|BACKLOG\.md|blueprint\.local\.md)'`
+
+If the result is empty → **planning session**. If it has files → **implementation session**.
+
+<HARD-GATE>
+**If planning session:** Do NOT mark goals, milestones, or tasks as "completed" or "done" anywhere. A plan is not delivery. Specifically:
+- Step 4 (CLAUDE.md): "What was done" should say "planned [feature]" or "wrote plan for [feature]" — NOT "implemented" or "built"
+- Step 4 (CLAUDE.md): "Start here" should say "execute the plan at docs/plans/..." — NOT "continue implementing"
+- Step 6 (STATUS.md): Add plan to "In Flight" or "Up Next" — do NOT move anything to "What's Done"
+- Step 8 (GOALS.md): Do NOT mark goals/milestones as complete — at most note "plan written for [goal]"
+- Step 10 (Plans): Do NOT mark the plan as COMPLETE — it hasn't been executed yet
+- Skip Step 7 (CONVENTIONS.md) and Step 11 (Specs) — planning doesn't change conventions or specs
+</HARD-GATE>
+
+**If implementation session:** proceed with all steps as normal.
+
 ## Step 2: Analyze Session Work
 
 Before writing anything, build a complete mental model:
