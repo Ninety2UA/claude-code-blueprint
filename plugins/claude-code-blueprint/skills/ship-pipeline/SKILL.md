@@ -236,11 +236,11 @@ Skip if the work was straightforward.
    - Iterations to convergence: [N]/[max]
    ```
 
-4. **Clean up loop state:**
+5. **Clean up loop state:**
    - Remove `.claude/ship-loop.local.md` if it exists (Stop hook state)
    - Remove `.claude/ship-progress.local.md` if it exists (external loop progress)
 
-5. Output the completion signal (detected by both the Stop hook and `scripts/ship.sh`):
+6. Output the completion signal (detected by both the Stop hook and `scripts/ship.sh`):
    ```
    <promise>DONE</promise>
    ```
