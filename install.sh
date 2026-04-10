@@ -286,7 +286,7 @@ if [ "$SCAFFOLD_ONLY" = false ]; then
     if [ "$DRY_RUN" = false ]; then
         mkdir -p "$CACHE_DIR"
         # Copy plugin engine files from plugins/ subdirectory
-        for dir in commands skills agents hooks .claude-plugin scripts templates .claude; do
+        for dir in commands skills agents hooks .claude-plugin scripts templates; do
             if [ -d "$PLUGIN_DIR/$dir" ]; then
                 cp -R "$PLUGIN_DIR/$dir" "$CACHE_DIR/$dir"
             fi
