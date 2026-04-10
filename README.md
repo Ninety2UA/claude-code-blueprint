@@ -12,11 +12,10 @@
   <a href="#quick-start">Quick Start</a> ·
   <a href="#what-you-get">What You Get</a> ·
   <a href="#workflow">Workflow</a> ·
-  <a href="#autonomous-pipeline-ship">Ship</a> ·
+  <a href="#autonomous-pipeline-ship-pipeline">Ship</a> ·
   <a href="#agent-teams--swarms">Agent Teams</a> ·
   <a href="#skills-reference">Skills</a> ·
   <a href="#agents-reference">Agents</a> ·
-  <a href="#commands-reference">Commands</a> ·
   <a href="#customization">Customization</a> ·
   <a href="#error-recovery">Error Recovery</a>
 </p>
@@ -31,7 +30,7 @@
 
 Most AI coding sessions start from scratch: no conventions, no memory, no workflow. Each session reinvents the wheel. This template fixes that.
 
-It gives Claude Code a **structured operating system** — a set of skills, agents, commands, and documentation patterns that compound across sessions. The result: higher quality code, fewer regressions, and a codebase that gets easier to work on over time.
+It gives Claude Code a **structured operating system** — a set of skills, agents, and documentation patterns that compound across sessions. The result: higher quality code, fewer regressions, and a codebase that gets easier to work on over time.
 
 **The core philosophy:**
 
@@ -75,7 +74,7 @@ Every component in Blueprint is informed by what works (and what doesn't) across
 
 > **"Import nothing" is a feature, not a failure.** The gravitational pull to adopt *something* from impressive repos is a real bias. Sometimes the right answer after deep analysis is to change nothing — and documenting why is just as valuable as documenting what you imported.
 
-### What's New in v3.1 — Plugin Mode
+### What's New in v3.1 & v3.2 — Plugin Mode
 
 **Blueprint is now a native Claude Code plugin.** Install once, available in every project — zero engine files in your git history.
 
@@ -86,10 +85,20 @@ Every component in Blueprint is informed by what works (and what doesn't) across
 
 **Key changes:**
 - **Plugin architecture** — 53 skills, 26 agents, 6 hooks provided by the plugin, not copied into your project
-- **`/start` scaffolding** — project files (CLAUDE.md, docs/, BACKLOG.md) created on demand per project
+- **`/project-start` scaffolding** — project files (CLAUDE.md, docs/, BACKLOG.md) created on demand per project
 - **`/migrate-to-plugin`** — skill to transition v2.x projects to plugin mode
 - **All slash commands are skills** — invoked by name, content loads directly (no sandbox gap)
 - **Legacy mode preserved** — `--legacy` flag in install.sh for users who prefer in-project files
+
+### What's New in v3.2 — Commands Merged into Skills
+
+Commands were thin wrappers that couldn't load skill content due to Claude Code's plugin sandbox. v3.2 eliminates this gap entirely by removing commands and making skills the direct entry point.
+
+**Key changes:**
+- **Commands eliminated** — all 27 commands merged into 53 skills. Every slash command now loads full workflow content directly
+- **Skill descriptions follow Anthropic best practices** — pushy triggers ("even if they don't explicitly ask..."), negative triggers ("DO NOT TRIGGER when..."), extensive trigger phrase lists
+- **No more sandbox loading gap** — skills are invoked by name and Claude sees the full content, no improvisation
+- **Skill names changed** — `/build` → `/build-pipeline`, `/ship` → `/ship-pipeline`, `/planning` → `/brainstorming`, `/quick` → `/quick-fix`, `/start` → `/project-start`, and more (see Skills Reference for full list)
 
 ### What was new in v2.3
 
@@ -190,7 +199,7 @@ Analyzed a hybrid multi-model coordination framework (Claude Code as lead + Gemi
 - **Contradiction resolution rules for findings-synthesizer** — 4-step protocol: same problem → more specific fix; different problems → address both; genuine contradiction → conservative position wins + log reasoning; one approves one flags → flag wins
 - **Structured escalation format for iterative-refinement** — when convergence fails, present "both perspectives + my recommendation" with lettered options instead of a flat findings list
 
-**Rejected:** Multi-model delegation via CLI (fragile, adds dependencies, loses native tool access), file-based coordination protocol (I/O overhead unnecessary for same-model systems), assignment heuristic matrix (designed for heterogeneous agents), Phase 0 whole-repo analysis (our 5-agent research swarm is more thorough), CONTRACTS.md (GSD import of interface context extraction is fresher), attribution changelog (git blame already handles this), research skip conditions (already covered by `/quick` and session awareness).
+**Rejected:** Multi-model delegation via CLI (fragile, adds dependencies, loses native tool access), file-based coordination protocol (I/O overhead unnecessary for same-model systems), assignment heuristic matrix (designed for heterogeneous agents), Phase 0 whole-repo analysis (our 5-agent research swarm is more thorough), CONTRACTS.md (GSD import of interface context extraction is fresher), attribution changelog (git blame already handles this), research skip conditions (already covered by `/quick-fix` and session awareness).
 
 </details>
 
@@ -202,7 +211,7 @@ Analyzed [oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode) —
 **Imported:**
 
 - **Evidence hierarchy for systematic-debugging** — 6-tier credibility ranking (direct reproduction > reproduction script > logs/traces > converging sources > code-path inference > speculation). Prevents treating speculation as fact. Cross-referenced in findings-synthesizer confidence tiering
-- **Ambiguity gating for pipeline entry** — dimension-weighted requirement scoring (scope 40%, constraints 30%, criteria 30%) with 0.8 clarity threshold. Gates `/ship` Stage 1 and `/build` Stage 1. Brownfield variant adds context clarity at 15%
+- **Ambiguity gating for pipeline entry** — dimension-weighted requirement scoring (scope 40%, constraints 30%, criteria 30%) with 0.8 clarity threshold. Gates `/ship-pipeline` Stage 1 and `/build-pipeline` Stage 1. Brownfield variant adds context clarity at 15%
 - **Deslop pass for iterative-refinement** — pre-review cleaning step targeting AI text patterns (over-hedged language, filler transitions, restating-the-obvious comments, redundant type annotations). Step 0.5 in iterative-refinement, referenced from autonomous-loop Step 7
 
 **Rejected:** Multi-AI routing (unpredictable cross-model behavior, already rejected in multi-agent framework analysis), MCP bridge + LSP + AST integration (environment-level tool, breaks zero-dependency guarantee), magic keywords (semantic landmines that conflict with project names), `.omc/` state directory (fragments state across three locations), Deep Interview mode (target users know what to build), notification routing (infrastructure-layer concern), Ralplan consensus planning (analysis paralysis risk — plan-checker is sufficient).
@@ -284,14 +293,14 @@ Plugin (installed globally, zero files in your project)
 ├── 26 agents            team-lead, reviewer, security, perf, ...
 └── 6 hooks              session-start, context-monitor, prompt-guard, ship-loop + 2 Agent Teams
 
-your-project/ (scaffolded by /start)
+your-project/ (scaffolded by /project-start)
 ├── docs/
 │   ├── context/        # GOALS.md · STATUS.md · CONVENTIONS.md
 │   ├── plans/          # Implementation plans
 │   ├── specs/          # Feature specifications
 │   ├── decisions/      # Architecture Decision Records
 │   ├── research/       # Spike results & evaluations
-│   └── solutions/      # Institutional knowledge (created by /compound)
+│   └── solutions/      # Institutional knowledge (created by /knowledge-compounding)
 ├── src/                # Your application code
 ├── tests/              # Your test suite
 ├── infra/              # Deployment & infrastructure
@@ -377,12 +386,12 @@ The external loop (`ship.sh`) is inspired by [Ralph](https://github.com/snarktan
 
 | Pipeline | Checkpoints | Review | Best for |
 |----------|-------------|--------|----------|
-| `/build` | Between every stage | Single pass (or `--iterate N`) | Human-guided features |
-| `/ship` (interactive) | None | 3 iterative cycles | Single-context fire-and-forget |
+| `/build-pipeline` | Between every stage | Single pass (or `--iterate N`) | Human-guided features |
+| `/ship-pipeline` (interactive) | None | 3 iterative cycles | Single-context fire-and-forget |
 | `ship.sh` (external) | None | 3 iterative cycles | Large features, context exhaustion |
-| `/quick` | None | None | Trivial changes (< 3 files) |
+| `/quick-fix` | None | None | Trivial changes (< 3 files) |
 | `/orchestrate` | Between waves | Single pass (or `--iterations N`) | Dependency-ordered parallel execution |
-| `/team` | Async (teammates) | Single pass (or `--iterations N`) | Collaborative multi-file work |
+| `/team-execution` | Async (teammates) | Single pass (or `--iterations N`) | Collaborative multi-file work |
 
 ### Quality gates
 
@@ -430,7 +439,7 @@ Groups plan tasks by dependency into waves. Independent tasks within each wave r
   <img src="docs/images/wave-orchestration.png" alt="Wave Orchestration — dependency-ordered waves with integration verification" width="90%">
 </p>
 
-### Agent Teams (`/team`) — Experimental
+### Agent Teams (`/team-execution`) — Experimental
 
 For complex multi-file implementations where teammates need to discuss and coordinate, Agent Teams spawns fully independent Claude Code instances with a shared task list and messaging system.
 
@@ -444,13 +453,13 @@ For complex multi-file implementations where teammates need to discuss and coord
 |---------|----------|-------------|
 | **Swarms** (`/review-swarm`, `/deep-research`) | Parallel analysis — same code, different lenses | Read-only, synthesizer merges outputs |
 | **Waves** (`/orchestrate`) | Dependency-ordered implementation | Worktree isolation, integration verification |
-| **Agent Teams** (`/team`) | Collaborative multi-file implementation | Shared task list, inter-teammate messaging |
+| **Agent Teams** (`/team-execution`) | Collaborative multi-file implementation | Shared task list, inter-teammate messaging |
 
-Agent Teams is an experimental Claude Code feature. Enable it with `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS: "1"` in settings.json. The typical workflow combines all patterns: `/deep-research` (swarm) → `/planning` → `/team` (agent teams) → `/review-swarm` (swarm).
+Agent Teams is an experimental Claude Code feature. Enable it with `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS: "1"` in settings.json. The typical workflow combines all patterns: `/deep-research` (swarm) → `/brainstorming` → `/team-execution` (agent teams) → `/review-swarm` (swarm).
 
-### Knowledge Loop (`/compound`)
+### Knowledge Loop (`/knowledge-compounding`)
 
-Each solved problem becomes searchable institutional knowledge. Future `/planning` and `/deep-research` commands automatically consult past solutions.
+Each solved problem becomes searchable institutional knowledge. Future `/brainstorming` and `/deep-research` skills automatically consult past solutions.
 
 <p align="center">
   <img src="docs/images/knowledge-loop.png" alt="Knowledge Loop — solve → compound → search → plan → repeat" width="90%">
@@ -472,7 +481,7 @@ Skills are workflow modules that activate at specific development phases. They c
 
 | Skill | What it does | Trigger |
 |-------|-------------|---------|
-| [**brainstorming**](plugins/claude-code-blueprint/skills/brainstorming/) | Explores 3+ design options with tradeoff analysis before any creative work | `/planning` or before any new feature |
+| [**brainstorming**](plugins/claude-code-blueprint/skills/brainstorming/) | Explores 3+ design options with tradeoff analysis before any creative work | `/brainstorming` or before any new feature |
 | [**writing-plans**](plugins/claude-code-blueprint/skills/writing-plans/) | Converts approved design into implementation plan with bite-sized tasks | After design approval |
 | [**spike-exploration**](plugins/claude-code-blueprint/skills/spike-exploration/) | Timeboxed investigation to answer a specific technical question before committing to an approach | Significant technical uncertainty |
 | [**scope-cutting**](plugins/claude-code-blueprint/skills/scope-cutting/) | Systematically separates must-haves from nice-to-haves using MoSCoW classification | Feature too large or deadline at risk |
@@ -501,24 +510,24 @@ Skills are workflow modules that activate at specific development phases. They c
 | Skill | What it does | Trigger |
 |-------|-------------|---------|
 | [**finishing-a-development-branch**](plugins/claude-code-blueprint/skills/finishing-a-development-branch/) | Structured merge workflow with options for squash, rebase, or merge | After all tests pass |
-| [**session-wrap**](plugins/claude-code-blueprint/skills/session-wrap/) | Documents work done, updates all project docs, captures learnings. Regenerates from source of truth — never summarizes previous summaries | `/wrap` or end of session |
+| [**session-wrap**](plugins/claude-code-blueprint/skills/session-wrap/) | Documents work done, updates all project docs, captures learnings. Regenerates from source of truth — never summarizes previous summaries | `/session-wrap` or end of session |
 
 ### Operations phase
 
 | Skill | What it does | Trigger |
 |-------|-------------|---------|
-| [**codebase-mapping**](plugins/claude-code-blueprint/skills/codebase-mapping/) | Maps unfamiliar codebase into structured documentation | `/map` or before modifying unfamiliar code |
-| [**context-checkpoint**](plugins/claude-code-blueprint/skills/context-checkpoint/) | Mid-session state capture — lighter than `/wrap` | `/pause` or before risky operations |
-| [**pr-workflow**](plugins/claude-code-blueprint/skills/pr-workflow/) | End-to-end PR lifecycle — create, self-review, handle feedback | `/pr` or when creating pull requests |
+| [**codebase-mapping**](plugins/claude-code-blueprint/skills/codebase-mapping/) | Maps unfamiliar codebase into structured documentation | `/codebase-mapping` or before modifying unfamiliar code |
+| [**context-checkpoint**](plugins/claude-code-blueprint/skills/context-checkpoint/) | Mid-session state capture — lighter than `/wrap` | `/pause-checkpoint` or before risky operations |
+| [**pr-workflow**](plugins/claude-code-blueprint/skills/pr-workflow/) | End-to-end PR lifecycle — create, self-review, handle feedback | `/pr-workflow` or when creating pull requests |
 | [**resolve-in-parallel**](plugins/claude-code-blueprint/skills/resolve-in-parallel/) | Batch-resolves independent items concurrently | 2+ independent items to fix |
 | [**deployment-verification**](plugins/claude-code-blueprint/skills/deployment-verification/) | Go/no-go pre-deploy checklist across 8 areas | Before any production deployment |
 | [**document-review**](plugins/claude-code-blueprint/skills/document-review/) | Structured three-pass critique (accuracy, clarity, completeness) | When reviewing specs, plans, or docs |
-| [**changelog-generation**](plugins/claude-code-blueprint/skills/changelog-generation/) | Release notes from git history in Keep a Changelog format | `/changelog` or preparing a release |
+| [**changelog-generation**](plugins/claude-code-blueprint/skills/changelog-generation/) | Release notes from git history in Keep a Changelog format | `/changelog-generation` or preparing a release |
 | [**migration-planning**](plugins/claude-code-blueprint/skills/migration-planning/) | Safe migration plans with rollback procedures | Database/API/dependency migrations |
 | [**performance-profiling**](plugins/claude-code-blueprint/skills/performance-profiling/) | Profile-driven investigation — measure before optimizing | When something is "slow" |
 | [**browser-testing**](plugins/claude-code-blueprint/skills/browser-testing/) | Verify UI changes via Playwright MCP browser tools | After UI changes need visual verification |
 | [**autonomous-loop**](plugins/claude-code-blueprint/skills/autonomous-loop/) | Iterate through plan tasks with retry, backoff, circuit breaker (3 no-progress / 5 same-error), degradation detection (rising difficulty, hot-file signals), and mandatory Reflection Gate before every retry (3-question self-check enforced by HARD-GATE) | Autonomous plan execution — "just do it all" |
-| [**iterative-refinement**](plugins/claude-code-blueprint/skills/iterative-refinement/) | Review→fix→review cycles with 3 convergence modes (fast/deep/perfect), early exit on convergence | `/ship` Stage 5, `/build --iterate N` |
+| [**iterative-refinement**](plugins/claude-code-blueprint/skills/iterative-refinement/) | Review→fix→review cycles with 3 convergence modes (fast/deep/perfect), early exit on convergence | `/ship-pipeline` Stage 5, `/build-pipeline --iterate N` |
 | [**dependency-management**](plugins/claude-code-blueprint/skills/dependency-management/) | Evaluates, adds, upgrades, and removes dependencies with safety gates | Adding, upgrading, or auditing dependencies |
 
 ### Orchestration phase
@@ -527,9 +536,9 @@ Skills are workflow modules that activate at specific development phases. They c
 |-------|-------------|---------|
 | [**wave-orchestration**](plugins/claude-code-blueprint/skills/wave-orchestration/) | Groups tasks by dependency into waves, parallel within waves, integration verification between | `/orchestrate` or plans with mixed dependencies |
 | [**swarm-orchestration**](plugins/claude-code-blueprint/skills/swarm-orchestration/) | Coordinates multiple specialized agents analyzing the same input in parallel | `/review-swarm`, `/deep-research`, or custom swarms |
-| [**agent-teams**](plugins/claude-code-blueprint/skills/agent-teams/) | Collaborative multi-file implementation with shared task list and messaging (experimental) | `/team` or complex cross-layer features |
-| [**knowledge-compounding**](plugins/claude-code-blueprint/skills/knowledge-compounding/) | Documents solved problems as searchable institutional knowledge in docs/solutions/ | `/compound` or after solving non-trivial problems |
-| [**session-continuity**](plugins/claude-code-blueprint/skills/session-continuity/) | Manages STATE.md for execution tracking across session boundaries | `/pause`, `/resume`, or during wave orchestration |
+| [**agent-teams**](plugins/claude-code-blueprint/skills/agent-teams/) | Collaborative multi-file implementation with shared task list and messaging (experimental) | `/team-execution` or complex cross-layer features |
+| [**knowledge-compounding**](plugins/claude-code-blueprint/skills/knowledge-compounding/) | Documents solved problems as searchable institutional knowledge in docs/solutions/ | `/knowledge-compounding` or after solving non-trivial problems |
+| [**session-continuity**](plugins/claude-code-blueprint/skills/session-continuity/) | Manages STATE.md for execution tracking across session boundaries | `/pause-checkpoint`, `/resume-session`, or during wave orchestration |
 
 ### Meta
 
@@ -572,7 +581,7 @@ Agents are specialized subprocesses dispatched via Claude's Task tool. Each agen
 | [**codebase-context-mapper**](plugins/claude-code-blueprint/agents/codebase-context-mapper.md) | Focused impact map for a specific change | Before planning — maps files and dependencies a change will touch |
 | [**integration-verifier**](plugins/claude-code-blueprint/agents/integration-verifier.md) | Cross-task integration verification | After wave completion — ensures parallel implementations work together |
 | [**findings-synthesizer**](plugins/claude-code-blueprint/agents/findings-synthesizer.md) | Review swarm output consolidation | After `/review-swarm` — de-duplicates and prioritizes all findings |
-| [**team-lead**](plugins/claude-code-blueprint/agents/team-lead.md) | Dedicated orchestrator (200K fresh context) | Coordinates `/orchestrate` and `/team` — delegates to workers, monitors progress, reviews, signs off |
+| [**team-lead**](plugins/claude-code-blueprint/agents/team-lead.md) | Dedicated orchestrator (200K fresh context) | Coordinates `/orchestrate` and `/team-execution` — delegates to workers, monitors progress, reviews, signs off |
 
 ### How agents work
 
@@ -601,7 +610,7 @@ Main Session → Task("security-sentinel: audit auth endpoints") → findings �
   <img src="docs/images/dispatch-team.png" alt="Agent team dispatch — teammates with file ownership, shared tasks + messaging" width="90%">
 </p>
 
-## Commands Reference
+## Slash Commands
 
 Skills are invoked as slash commands. Each skill's content loads directly — no indirection.
 
@@ -665,7 +674,7 @@ claude
 
 ### Adapting to your project
 
-After installation, run `/start` to configure:
+After installation, run `/project-start` to configure:
 
 - **GOALS.md** — Your 3-5 project objectives and priority framework
 - **CONVENTIONS.md** — Your tech stack, naming conventions, file structure patterns
@@ -760,7 +769,7 @@ The `docs/` directory uses four categories, each with its own lifecycle:
 | `docs/specs/` | `feature-name.md` specifications | Created before building, stable after approval |
 | `docs/decisions/` | `NNN-kebab-case-title.md` ADRs | Created when choosing between options, permanent |
 | `docs/research/` | Spike results, tool evaluations | Created during exploration, referenced later |
-| `docs/solutions/` | Solved problems, institutional knowledge | Created by `/compound`, searched by `/planning` and `/deep-research` |
+| `docs/solutions/` | Solved problems, institutional knowledge | Created by `/knowledge-compounding`, searched by `/brainstorming` and `/deep-research` |
 
 ## How it works under the hood
 
@@ -819,7 +828,7 @@ The `Session Continuity` section in CLAUDE.md acts as a handoff note between ses
 - Uncommitted changes: none
 ```
 
-This is updated automatically by `/wrap` at the end of each session.
+This is updated automatically by `/session-wrap` at the end of each session.
 
 ## Error recovery
 
@@ -839,7 +848,7 @@ CLAUDE.md includes built-in guidance for common failure scenarios:
 <details>
 <summary><strong>Can I use this with an existing project?</strong></summary>
 
-Yes. In plugin mode (default), the blueprint installs as a plugin — it adds zero files to your project. Run `/plugin marketplace add Ninety2UA/claude-code-blueprint` then `/plugin install claude-code-blueprint`, then `/start` in your project to scaffold the docs structure. Your existing code is never touched.
+Yes. In plugin mode (default), the blueprint installs as a plugin — it adds zero files to your project. Run `/plugin marketplace add Ninety2UA/claude-code-blueprint` then `/plugin install claude-code-blueprint`, then `/project-start` in your project to scaffold the docs structure. Your existing code is never touched.
 </details>
 
 <details>
@@ -891,7 +900,7 @@ No. The template includes a **lightweight workflow** for small, well-understood 
 <details>
 <summary><strong>What are agent swarms and when should I use them?</strong></summary>
 
-Agent swarms dispatch multiple specialized agents in parallel on the same input. `/review-swarm` runs 6-10 reviewers simultaneously (security, performance, code quality, etc.) and merges their findings. `/deep-research` runs 5 research agents in parallel before planning. Use swarms for significant changes — they consume more tokens but catch issues a single reviewer would miss. For small changes (< 50 lines), a single `/review` is usually sufficient.
+Agent swarms dispatch multiple specialized agents in parallel on the same input. `/review-swarm` runs 6-10 reviewers simultaneously (security, performance, code quality, etc.) and merges their findings. `/deep-research` runs 5 research agents in parallel before planning. Use swarms for significant changes — they consume more tokens but catch issues a single reviewer would miss. For small changes (< 50 lines), a single `/requesting-code-review` is usually sufficient.
 </details>
 
 <details>
@@ -903,19 +912,19 @@ Wave orchestration (`/orchestrate`) groups plan tasks by dependency. Independent
 <details>
 <summary><strong>What is knowledge compounding?</strong></summary>
 
-After solving a non-trivial problem, `/compound` saves it as a structured document in `docs/solutions/`. Future `/planning` and `/deep-research` commands automatically search this directory before starting new work. Over time, your project builds institutional knowledge that prevents repeated mistakes and informs better plans.
+After solving a non-trivial problem, `/knowledge-compounding` saves it as a structured document in `docs/solutions/`. Future `/brainstorming` and `/deep-research` skills automatically search this directory before starting new work. Over time, your project builds institutional knowledge that prevents repeated mistakes and informs better plans.
 </details>
 
 <details>
 <summary><strong>What are Agent Teams and how do they differ from swarms?</strong></summary>
 
-Agent Teams (`/team`) spawn fully independent Claude Code instances that collaborate through a shared task list and messaging. Unlike swarms (which are read-only subagents reporting analysis back to a controller), Agent Teams are peers that can discuss design decisions, divide file ownership, and coordinate in real time. Use swarms for parallel analysis (review, research) and Agent Teams for collaborative implementation. Agent Teams is an experimental feature — enable with `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS: "1"` in settings.json.
+Agent Teams (`/team-execution`) spawn fully independent Claude Code instances that collaborate through a shared task list and messaging. Unlike swarms (which are read-only subagents reporting analysis back to a controller), Agent Teams are peers that can discuss design decisions, divide file ownership, and coordinate in real time. Use swarms for parallel analysis (review, research) and Agent Teams for collaborative implementation. Agent Teams is an experimental feature — enable with `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS: "1"` in settings.json.
 </details>
 
 <details>
-<summary><strong>What is /ship and when should I use it?</strong></summary>
+<summary><strong>What is /ship-pipeline and when should I use it?</strong></summary>
 
-`/ship` is the fully autonomous development pipeline — zero checkpoints, fire-and-forget. It plans, researches, executes via a dedicated team-lead agent, iteratively reviews (3 cycles by default), and opens a PR. Use it for well-defined features where you don't need to approve each stage. For large features that may exhaust context, use `scripts/ship.sh` from your terminal — it spawns a fresh Claude process per iteration so each run gets a clean 200K context window. State persists through git commits and plan files.
+`/ship-pipeline` is the fully autonomous development pipeline — zero checkpoints, fire-and-forget. It plans, researches, executes via a dedicated team-lead agent, iteratively reviews (3 cycles by default), and opens a PR. Use it for well-defined features where you don't need to approve each stage. For large features that may exhaust context, use `scripts/ship.sh` from your terminal — it spawns a fresh Claude process per iteration so each run gets a clean 200K context window. State persists through git commits and plan files.
 </details>
 
 <details>

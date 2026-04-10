@@ -1715,22 +1715,18 @@
       <div class="hero__content">
         <div class="hero__badge">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-          v3.1.0 &mdash; Claude Code Plugin
+          v3.2.0 &mdash; Claude Code Plugin
         </div>
         <h1>Claude Code<br><span class="gradient-text">Blueprint</span></h1>
         <p class="hero__tagline">"Each unit of engineering work should make subsequent units easier &mdash; not harder."</p>
         <div class="hero__stats">
           <span class="hero__stat">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v1a3 3 0 1 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10a3 3 0 0 1 0 6h-1a3 3 0 1 1 0-6h1Z"/><path d="M5 10a3 3 0 0 0 0 6h1a3 3 0 0 0 0-6H5Z"/><path d="M12 18a3 3 0 0 1 3 3v1a3 3 0 1 1-6 0v-1a3 3 0 0 1 3-3Z"/><circle cx="12" cy="12" r="3"/></svg>
-            34 Skills
+            53 Skills
           </span>
           <span class="hero__stat">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
             26 Agents
-          </span>
-          <span class="hero__stat">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
-            53 Skills
           </span>
           <span class="hero__stat">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
@@ -1786,7 +1782,7 @@
         <p>Stop reinventing the wheel every session</p>
       </div>
       <div class="why__text reveal">
-        Most AI coding sessions start from scratch: no conventions, no memory, no workflow. Each session reinvents the wheel. Blueprint fixes that by giving Claude Code a <strong>structured operating system</strong> &mdash; a set of skills, agents, commands, and documentation patterns that compound across sessions.
+        Most AI coding sessions start from scratch: no conventions, no memory, no workflow. Each session reinvents the wheel. Blueprint fixes that by giving Claude Code a <strong>structured operating system</strong> &mdash; a set of skills, agents, and documentation patterns that compound across sessions.
       </div>
       <blockquote class="why__quote reveal">
         Each unit of engineering work should make subsequent units easier &mdash; not harder.
@@ -1797,7 +1793,7 @@
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
           </div>
           <h3>Structured</h3>
-          <p>A complete operating system for Claude Code &mdash; skills, agents, commands, and quality gates that activate automatically.</p>
+          <p>A complete operating system for Claude Code &mdash; skills, agents, and quality gates that activate automatically.</p>
         </div>
         <div class="why__card">
           <div class="why__card-icon">
@@ -1842,12 +1838,12 @@
           <p>Specialized subprocesses for security audits, performance reviews, code review, research, architecture analysis. Each gets a fresh 200K context.</p>
         </div>
         <div class="feature-card">
-          <span class="feature-card__number">25</span>
+          <span class="feature-card__number">0</span>
           <div class="feature-card__icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
           </div>
-          <h3>Slash Skills</h3>
-          <p>Slash skills from <code>/brainstorming</code> to <code>/ship-pipeline</code> to <code>/review-swarm</code>. Workflow automation at your fingertips.</p>
+          <h3>Commands</h3>
+          <p>All commands merged into skills in v3.2. Every skill is a direct entry point &mdash; <code>/brainstorming</code>, <code>/ship-pipeline</code>, <code>/review-swarm</code>, and more.</p>
         </div>
         <div class="feature-card">
           <span class="feature-card__number">6</span>
@@ -2364,10 +2360,36 @@
   <!-- ===== WHAT'S NEW ===== -->
   <section class="whats-new" id="whats-new">
     <div class="container">
+      <!-- v3.2.0 -->
       <div class="section-header reveal">
-        <span class="new__badge">v3.1.0</span>
+        <span class="new__badge">v3.2.0</span>
         <h2>What's New</h2>
-        <p>Blueprint is now a native Claude Code plugin</p>
+        <p>Commands merged into skills &mdash; 53 skills, zero commands</p>
+      </div>
+      <div class="grid-4 reveal reveal-stagger">
+        <div class="new-card">
+          <h3>Commands Merged Into Skills</h3>
+          <p>All 26 commands are now skills. 53 total skills, zero commands. Skills are the direct entry point &mdash; no sandbox loading gap.</p>
+        </div>
+        <div class="new-card">
+          <h3>Anthropic Best Practices</h3>
+          <p>Skill descriptions follow Anthropic's guidelines: pushy triggers (activate proactively) and negative triggers (avoid false matches).</p>
+        </div>
+        <div class="new-card">
+          <h3>Key Renames</h3>
+          <p><code>/build</code> &rarr; <code>/build-pipeline</code>, <code>/ship</code> &rarr; <code>/ship-pipeline</code>, <code>/planning</code> &rarr; <code>/brainstorming</code>, <code>/quick</code> &rarr; <code>/quick-fix</code>, <code>/start</code> &rarr; <code>/project-start</code></p>
+        </div>
+        <div class="new-card">
+          <h3>Direct Skill Entry</h3>
+          <p>Every skill is a first-class entry point. No wrapper commands, no indirection. Type the skill name and go.</p>
+        </div>
+      </div>
+
+      <!-- v3.1.0 -->
+      <div class="section-header reveal" style="margin-top: 4rem;">
+        <span class="new__badge">v3.1.0</span>
+        <h2>Previously</h2>
+        <p>Blueprint became a native Claude Code plugin</p>
       </div>
       <div class="grid-4 reveal reveal-stagger">
         <div class="new-card">
@@ -2403,7 +2425,7 @@
             <svg class="faq__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
           <div class="faq__answer"><div class="faq__answer-inner">
-            Yes. The blueprint installs as a plugin &mdash; it adds zero files to your project. Run the plugin install commands, then <code>/project-start</code> to scaffold the docs structure. Your existing code is never touched.
+            Yes. The blueprint installs as a plugin &mdash; it adds zero files to your project. Run the plugin install steps, then <code>/project-start</code> to scaffold the docs structure. Your existing code is never touched.
           </div></div>
         </div>
         <div class="faq__item">
