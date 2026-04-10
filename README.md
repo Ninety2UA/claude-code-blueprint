@@ -260,7 +260,7 @@ curl -fsSL https://raw.githubusercontent.com/Ninety2UA/claude-code-blueprint/mai
 Inside any Claude Code session:
 
 ```
-/update
+/claude-code-blueprint:update
 ```
 
 Clones the latest from GitHub, updates the plugin cache, and reports what changed. All projects get the update automatically — restart your session to use the new version.
