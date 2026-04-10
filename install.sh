@@ -310,7 +310,8 @@ with open('$KNOWN_FILE', 'r') as f:
 data['$MARKETPLACE_NAME'] = {
     'source': {'source': 'github', 'repo': 'Ninety2UA/claude-code-blueprint'},
     'installLocation': '$CACHE_DIR',
-    'lastUpdated': '$(date -u +"%Y-%m-%dT%H:%M:%S.000Z")'
+    'lastUpdated': '$(date -u +"%Y-%m-%dT%H:%M:%S.000Z")',
+    'autoUpdate': True
 }
 with open('$KNOWN_FILE', 'w') as f:
     json.dump(data, f, indent=2)

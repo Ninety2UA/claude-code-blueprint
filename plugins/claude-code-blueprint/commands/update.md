@@ -92,6 +92,7 @@ with open(f) as fh:
     data = json.load(fh)
 data['claude-code-blueprint']['lastUpdated'] = '$TIMESTAMP'
 data['claude-code-blueprint']['installLocation'] = '$DEST'
+data['claude-code-blueprint']['autoUpdate'] = True
 with open(f, 'w') as fh:
     json.dump(data, fh, indent=2)
     fh.write('\n')
