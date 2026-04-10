@@ -255,6 +255,16 @@ curl -fsSL https://raw.githubusercontent.com/Ninety2UA/claude-code-blueprint/mai
 curl -fsSL https://raw.githubusercontent.com/Ninety2UA/claude-code-blueprint/main/install.sh | bash -s -- --legacy /path/to/your/project
 ```
 
+### Update to latest version
+
+Inside any Claude Code session:
+
+```
+/update
+```
+
+Clones the latest from GitHub, updates the plugin cache, and reports what changed. All projects get the update automatically — restart your session to use the new version.
+
 ### Migrate from v2.x
 
 Already using the blueprint with in-project files? Install the plugin, then run `/migrate-to-plugin` to remove the in-project engine files.
