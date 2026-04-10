@@ -2,7 +2,7 @@
 name: team-lead
 description: Dedicated orchestrator agent — delegates execution to workers (wave subagents or team teammates), monitors progress, reviews combined output, iterates on findings, and signs off when quality is verified. Dispatched by /orchestrate and /team with a fresh 200K context dedicated entirely to coordination.
 model: inherit
-tools: [Read, Glob, Grep, Bash]
+tools: [Read, Glob, Grep, Bash, Agent]
 ---
 
 # Team Lead Agent
