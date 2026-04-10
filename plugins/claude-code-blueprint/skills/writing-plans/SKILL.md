@@ -192,13 +192,23 @@ After saving the plan, offer execution choice:
 
 **3. Parallel Orchestration (`/orchestrate`)** — Executes the wave plan: independent tasks run in parallel within each wave. Faster total time for plans with concurrent tasks.
 
+**4. Agent Teams (`/team`)** — Collaborative teammates with file ownership and shared task list. Best for 4+ tasks touching different areas. Requires `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS`.
+
 **Which approach?"**
+
+**If Deepen chosen:**
+- Invoke `/deepen` with the plan file path
+- After deepening, re-present execution options (2-4)
 
 **If Subagent-Driven chosen:**
 - **REQUIRED SUB-SKILL:** Use subagent-driven-development
 - Stay in this session
 - Fresh subagent per task + code review
 
-**If Parallel Session chosen:**
-- Guide them to open new session in worktree
-- **REQUIRED SUB-SKILL:** New session uses executing-plans
+**If Parallel Orchestration chosen:**
+- Invoke `/orchestrate` with the plan file path
+- Team-lead agent handles wave grouping and parallel dispatch
+
+**If Agent Teams chosen:**
+- Invoke `/team` with the plan file path
+- Team-lead agent designs team structure and assigns file ownership
