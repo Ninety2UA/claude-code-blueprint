@@ -184,11 +184,13 @@ If no automated verification exists yet, say so explicitly: `No automated verifi
 
 After saving the plan, offer execution choice:
 
-**"Plan complete and saved to `docs/plans/<filename>.md`. Two execution options:**
+**"Plan complete and saved to `docs/plans/<filename>.md`. What's next?**
 
-**1. Subagent-Driven (this session)** - I dispatch fresh subagent per task, review between tasks, fast iteration
+**1. Deepen the plan (`/deepen`)** — Dispatch parallel research agents to enrich each section with best practices, prior solutions, and framework docs before executing
 
-**2. Parallel Session (separate)** - Open new session with executing-plans, batch execution with checkpoints
+**2. Subagent-Driven (this session)** — I dispatch a fresh subagent per task, review between tasks, fast iteration. Good for hands-on oversight.
+
+**3. Parallel Orchestration (`/orchestrate`)** — Executes the wave plan: independent tasks run in parallel within each wave. Faster total time for plans with concurrent tasks.
 
 **Which approach?"**
 
