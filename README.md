@@ -257,13 +257,15 @@ curl -fsSL https://raw.githubusercontent.com/Ninety2UA/claude-code-blueprint/mai
 
 ### Update to latest version
 
-Inside any Claude Code session:
+Re-run the install script to pull the latest version:
 
-```
-/plugin install claude-code-blueprint
+```bash
+curl -fsSL https://raw.githubusercontent.com/Ninety2UA/claude-code-blueprint/main/install.sh | bash
 ```
 
-Re-fetches the latest version from GitHub and updates the plugin cache. All projects get the update automatically — restart your session to use the new version.
+Or if you already have the latest plugin, run `/claude-code-blueprint:update` inside any Claude Code session.
+
+Restart your session after updating for changes to take effect.
 
 ### Migrate from v2.x
 
