@@ -329,13 +329,15 @@ Every feature follows this flow:
 
 **1. Orient** — Load context with `/status` or set up with `/start`
 
-**2. Design** — Brainstorm options with `/planning`. Present tradeoffs. Get human approval before any code is written.
+**2. Ideate** (optional) — Run `/ideate` to discover what's worth building. AI scans your codebase and surfaces ranked improvement ideas.
 
-**3. Plan** — Break approved design into bite-sized tasks (2-5 min each) with exact file paths, code snippets, and test strategies.
+**3. Design** — Brainstorm options with `/planning`. Present tradeoffs. Get human approval before any code is written.
 
-**4. Build** — Execute using TDD (red-green-refactor). Verify with evidence. Dispatch code review agents.
+**4. Plan** — Break approved design into bite-sized tasks (2-5 min each) with exact file paths, code snippets, and test strategies. After the plan is written, choose: deepen with research (`/deepen`), execute sequentially (subagent-driven), execute in parallel (`/orchestrate`), or execute with Agent Teams (`/team`).
 
-**5. Ship** — Merge the branch. Update all documentation with `/wrap`. Capture learnings for next session.
+**5. Build** — Execute using TDD (red-green-refactor). Verify with evidence. Dispatch code review agents.
+
+**6. Ship** — Merge the branch. Update all documentation with `/wrap`. Capture learnings for next session.
 
 ### Lightweight workflow for small changes
 
@@ -376,10 +378,12 @@ The external loop (`ship.sh`) is inspired by [Ralph](https://github.com/snarktan
 
 | Pipeline | Checkpoints | Review | Best for |
 |----------|-------------|--------|----------|
-| `/build` | Between every stage | Single pass | Human-guided features |
+| `/build` | Between every stage | Single pass (or `--iterate N`) | Human-guided features |
 | `/ship` (interactive) | None | 3 iterative cycles | Single-context fire-and-forget |
 | `ship.sh` (external) | None | 3 iterative cycles | Large features, context exhaustion |
 | `/quick` | None | None | Trivial changes (< 3 files) |
+| `/orchestrate` | Between waves | Single pass (or `--iterations N`) | Dependency-ordered parallel execution |
+| `/team` | Async (teammates) | Single pass (or `--iterations N`) | Collaborative multi-file work |
 
 ### Quality gates
 
@@ -615,12 +619,12 @@ Commands are user-facing shortcuts that invoke the right skills with the right c
 | **`/review-swarm`** | Multi-agent parallel review — dispatches 6-10 specialized reviewers, synthesizes findings into prioritized P1/P2/P3 report. |
 | **`/deep-research`** | Multi-agent parallel research — spawns 5 research agents, synthesizes into unified brief for planning. |
 | **`/compound`** | Document a solved problem for future reference. Creates searchable entry in docs/solutions/. |
-| **`/orchestrate`** | Wave-based parallel execution — groups plan tasks by dependency, runs independent tasks in parallel per wave. |
-| **`/team`** | Spawn an Agent Team for collaborative multi-file implementation with shared task list and messaging (experimental). |
+| **`/orchestrate`** | Wave-based parallel execution — groups plan tasks by dependency, runs independent tasks in parallel per wave. Supports `--iterations N` and `--convergence fast\|deep\|perfect` for iterative review. |
+| **`/team`** | Spawn an Agent Team for collaborative multi-file implementation with shared task list and messaging (experimental). Supports `--iterations N` and `--convergence fast\|deep\|perfect` for iterative review. |
 | **`/status`** | Shows current project state, goal alignment, blockers, and suggests next actions. |
 | **`/debug [issue]`** | Root cause investigation. Gathers evidence, forms hypotheses, tests them systematically. |
 | **`/backlog`** | Triages inbox items in BACKLOG.md into prioritized tasks using GOALS.md context. |
-| **`/wrap`** | End-of-session documentation. Updates CLAUDE.md session continuity, STATUS.md, and captures learnings. |
+| **`/wrap`** | End-of-session documentation. Updates CLAUDE.md session continuity, STATUS.md, and captures learnings. Distinguishes planning-only vs implementation sessions — won't mark goals as done if only a plan was written. |
 | **`/pr`** | Create, manage, or respond to pull requests. Full PR lifecycle. |
 | **`/map`** | Map an unfamiliar codebase into structured documentation before modifying it. |
 | **`/resume`** | Resume work from where the last session left off. Loads context and orients you. |
