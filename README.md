@@ -75,7 +75,7 @@ Every component in Blueprint is informed by what works (and what doesn't) across
 
 > **"Import nothing" is a feature, not a failure.** The gravitational pull to adopt *something* from impressive repos is a real bias. Sometimes the right answer after deep analysis is to change nothing — and documenting why is just as valuable as documenting what you imported.
 
-### What's New in v3.0 — Plugin Mode
+### What's New in v3.1 — Plugin Mode
 
 **Blueprint is now a native Claude Code plugin.** Install once, available in every project — zero engine files in your git history.
 
