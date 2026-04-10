@@ -124,7 +124,7 @@ For each iteration `i` of `max_iterations`:
 
 Announce: "Refinement iteration [i]/[max] — dispatching review swarm."
 
-Run `/review-swarm` on the current scope. Collect the synthesized findings with P1/P2/P3 counts.
+Invoke the `/review-swarm` command (via the Skill tool if available, or by following the review-swarm command instructions directly). This dispatches all configured review agents in parallel and synthesizes findings. Collect the synthesized findings with P1/P2/P3 counts.
 
 #### 2b. Check Convergence
 
@@ -151,7 +151,7 @@ If NOT converged, continue to 2c.
 
 Separate findings into resolution groups:
 
-1. **Independent findings** (different files, no shared state) → dispatch via resolve-in-parallel skill
+1. **Independent findings** (different files, no shared state) → read and invoke the resolve-in-parallel skill to fix concurrently
 2. **Dependent findings** (same file or shared state) → resolve sequentially
 
 For each resolution:

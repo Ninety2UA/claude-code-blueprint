@@ -103,7 +103,7 @@ Only proceed with deployment if the verdict is GO or CONDITIONAL GO. If NO-GO, s
 
 If the implementation involved solving a non-trivial problem (debugging, framework gotcha, architectural decision), run `/compound` to document it in `docs/solutions/`. This makes the solution searchable for future planning.
 
-Skip this stage if the work was straightforward with no novel insights.
+Skip this stage if the work was straightforward with no novel insights. See the knowledge-compounding skill for detailed guidance on what qualifies as non-trivial.
 
 ## Checkpoints
 
@@ -129,7 +129,7 @@ This can be combined with other flags: `/build --quick --iterate 3`
 
 ## Quick Mode
 
-If the user says `/build --quick` or the change is small (< 3 files, clear requirements):
+If the user says `/build --quick` or the change is small (< 3 files, clarity ≥ 0.8 per the Ambiguity Gate):
 - Skip Stage 1 (Discuss) and Stage 2 (Brainstorm)
 - Go directly to Plan → Execute → Review → Verify
 
