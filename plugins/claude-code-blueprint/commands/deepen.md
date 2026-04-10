@@ -95,3 +95,15 @@ Update the plan file with enriched content. Report:
 
 Plan updated: [path to plan file]
 ```
+
+Then offer execution options:
+
+**"Ready to execute. Which approach?**
+
+**1. Subagent-Driven (this session)** — I dispatch a fresh subagent per task, review between tasks, fast iteration. Good for hands-on oversight.
+
+**2. Parallel Orchestration (`/orchestrate`)** — Executes the wave plan: independent tasks run in parallel within each wave. Faster total time for plans with concurrent tasks.
+
+**3. Agent Teams (`/team`)** — Collaborative teammates with file ownership and shared task list. Best for 4+ tasks touching different areas. Requires `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS`.
+
+**Which approach?"**
