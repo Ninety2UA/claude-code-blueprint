@@ -35,13 +35,15 @@ Parse the focus hint into: focus context, volume override.
 
 ## Phase 1: Codebase Scan
 
-Dispatch 3 existing agents **in parallel** (foreground — results needed before proceeding):
+Use the Task tool to dispatch 3 existing agents **in parallel** (foreground — results needed before proceeding):
 
-1. **learnings-researcher** — "Search docs/solutions/, docs/learnings/, and docs/context/DECISIONS.md for known pain points, recurring issues, and areas flagged for improvement. Focus: {focus_hint}"
+```
+Task("learnings-researcher: Search docs/solutions/, docs/learnings/, and docs/context/DECISIONS.md for known pain points, recurring issues, and areas flagged for improvement. Focus: {focus_hint}")
 
-2. **codebase-context-mapper** — "Map project structure, patterns, conventions, and gaps. Identify areas with high complexity, missing tests, or unclear architecture. Focus: {focus_hint}"
+Task("codebase-context-mapper: Map project structure, patterns, conventions, and gaps. Identify areas with high complexity, missing tests, or unclear architecture. Focus: {focus_hint}")
 
-3. **git-history-analyzer** — "Analyze recent git history (last 30 days). Find: hot files (most changed), recurring fix patterns, areas with frequent churn, recent refactors that may have follow-up work. Focus: {focus_hint}"
+Task("git-history-analyzer: Analyze recent git history (last 30 days). Find: hot files (most changed), recurring fix patterns, areas with frequent churn, recent refactors that may have follow-up work. Focus: {focus_hint}")
+```
 
 Consolidate results into a **grounding summary**:
 - **Project shape** — language, framework, structure, key patterns
@@ -53,26 +55,19 @@ Consolidate results into a **grounding summary**:
 
 Generate the full candidate list **before** critiquing any idea.
 
-Dispatch 3 parallel subagents (inherited model). Each gets: the grounding summary, the focus hint, and a per-agent volume target (~8-10 ideas). Instruct each to generate raw candidates only — no critique.
+Use the Task tool to dispatch 3 parallel ideation subagents (inherited model). Each gets: the grounding summary, the focus hint, and a per-agent volume target (~8-10 ideas). Instruct each to generate raw candidates only — no critique.
 
 Assign each a different **ideation frame** as a starting bias (not a constraint — cross-cutting ideas are valuable):
 
-1. **User/developer friction** — What's painful, slow, confusing, or error-prone? Where do people waste time?
-2. **Inversion and removal** — What can be eliminated, automated, or simplified? What would happen if we removed this entirely?
-3. **Leverage and compounding** — What small change would make many future changes easier? Where does effort compound?
+```
+Task("Ideation agent (friction frame): Generate ~{volume} concrete improvement ideas for this project, grounded in the codebase scan below. Start from this frame: User/developer friction — What's painful, slow, confusing, or error-prone? Where do people waste time? Follow any promising thread. Every idea must be grounded in the actual codebase — no abstract product advice. For each idea, return: title, summary (2-3 sentences), why_it_matters (1 sentence), grounding_evidence (what in the scan supports this). Focus hint: {focus_hint}. Grounding summary: {grounding_summary}")
 
-Each subagent prompt:
+Task("Ideation agent (inversion frame): Generate ~{volume} concrete improvement ideas for this project, grounded in the codebase scan below. Start from this frame: Inversion and removal — What can be eliminated, automated, or simplified? What would happen if we removed this entirely? Follow any promising thread. Every idea must be grounded in the actual codebase — no abstract product advice. For each idea, return: title, summary (2-3 sentences), why_it_matters (1 sentence), grounding_evidence (what in the scan supports this). Focus hint: {focus_hint}. Grounding summary: {grounding_summary}")
 
-> You are an ideation agent. Generate ~{volume} concrete improvement ideas for this project, grounded in the codebase scan below. Start from your assigned frame ({frame_name}: {frame_description}) but follow any promising thread.
->
-> Every idea must be grounded in the actual codebase — no abstract product advice.
->
-> For each idea, return: title, summary (2-3 sentences), why_it_matters (1 sentence), grounding_evidence (what in the scan supports this).
->
-> Focus hint: {focus_hint}
->
-> Grounding summary:
-> {grounding_summary}
+Task("Ideation agent (leverage frame): Generate ~{volume} concrete improvement ideas for this project, grounded in the codebase scan below. Start from this frame: Leverage and compounding — What small change would make many future changes easier? Where does effort compound? Follow any promising thread. Every idea must be grounded in the actual codebase — no abstract product advice. For each idea, return: title, summary (2-3 sentences), why_it_matters (1 sentence), grounding_evidence (what in the scan supports this). Focus hint: {focus_hint}. Grounding summary: {grounding_summary}")
+```
+
+**Important:** Dispatch ALL 3 in a single message to maximize parallelism.
 
 After all agents return:
 1. Merge and dedupe into one master list
