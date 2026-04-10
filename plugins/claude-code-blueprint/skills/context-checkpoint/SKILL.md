@@ -1,6 +1,6 @@
 ---
 name: context-checkpoint
-description: Use when you need to capture mid-session state without doing a full /wrap, or when context window is getting large and you want a recovery point
+description: "Trigger this skill when the context window is getting large and you need a recovery point, when switching between major tasks within a session, or before a risky operation (large refactor, dependency upgrade) where you want a rollback point. Trigger when significant progress has been made mid-session and preserving key decisions and state is important. Usually invoked internally by pause-checkpoint, not directly by users. Captures current session state into a lightweight checkpoint file (CHECKPOINT-*.md) — faster and less comprehensive than session-wrap. DO NOT TRIGGER at end of session — use session-wrap instead for full documentation. DO NOT TRIGGER as the user-facing pause command — use pause-checkpoint instead, which delegates to this skill."
 ---
 
 # Context Checkpoint

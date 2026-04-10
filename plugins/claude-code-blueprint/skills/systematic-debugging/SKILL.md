@@ -1,6 +1,7 @@
 ---
 name: systematic-debugging
-description: Use when encountering any bug, test failure, or unexpected behavior, before proposing fixes
+description: "Trigger this skill for ANY bug, error, test failure, or unexpected behavior — even if the user doesn't explicitly ask for debugging. Trigger when the user says 'debug', 'broken', 'not working', 'fails', 'error', 'bug', 'fix this', 'something's wrong', 'unexpected behavior', 'test failure', 'it was working before', 'regression', 'flaky test', 'intermittent failure', 'crash', 'exception', 'stack trace', or describes symptoms without naming a cause. Trigger even when the user wants to jump straight to a fix — ALWAYS investigate root cause first, because symptom fixes create new bugs. Trigger even when the user says 'just change X to Y' if the underlying reason is unclear — understanding WHY it broke prevents recurrence. DO NOT TRIGGER for adding new features or enhancements — use brainstorming instead. DO NOT TRIGGER for test coverage gaps where existing code works correctly — use add-tests instead."
+argument-hint: "[describe the issue]"
 ---
 
 # Systematic Debugging

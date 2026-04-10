@@ -1,6 +1,7 @@
 ---
 name: changelog-generation
-description: Use when preparing a release, generating release notes, or when the team needs a summary of changes since the last release tag
+description: "Trigger this skill when preparing any release or when the user asks what has changed — even if they don't explicitly mention changelogs. Trigger when the user says 'changelog', 'release notes', 'what changed', 'prepare release', 'version bump', 'tag a release', 'what's new', 'summarize changes', 'update CHANGELOG', 'ship a version', or 'what did we do since last release'. Trigger when preparing a new release, generating release notes for a version tag, summarizing changes for stakeholders, or updating CHANGELOG.md. Generates structured release notes from git history using Keep a Changelog format. DO NOT TRIGGER for session-level summaries — use session-wrap instead. DO NOT TRIGGER for PR descriptions — use pr-workflow instead."
+argument-hint: "[optional: version number or tag range]"
 ---
 
 # Changelog Generation

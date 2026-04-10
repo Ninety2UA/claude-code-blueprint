@@ -1,6 +1,7 @@
 ---
 name: ideation
-description: "Use when the user asks what to improve, requests idea generation, wants AI-suggested project directions, or says things like 'what should I build', 'give me ideas', 'surprise me', 'what would you change'. Generates grounded improvement ideas by scanning the codebase, then critically filters to the strongest survivors."
+description: "Trigger this skill when the user wants improvement ideas, project direction suggestions, or creative inspiration for what to work on next. Trigger when the user says 'what should I build', 'give me ideas', 'surprise me', 'what would you change', 'what's worth improving', 'suggest improvements', 'what to work on next', 'I'm stuck', 'I don't know what to do', 'what needs attention', or 'where should I focus'. Trigger even when the user seems stuck, directionless, or doesn't know what to do next — proactively suggest running ideation to generate grounded possibilities. Also trigger when a session starts with no clear goal or the user asks for a codebase health check. Generates improvement ideas by scanning the codebase, then critically filters to the strongest survivors. DO NOT TRIGGER when the user already knows what they want to build — use brainstorming instead. DO NOT TRIGGER for research on a specific known topic — use deep-research instead."
+argument-hint: "[optional: focus area, constraint, or volume hint]"
 ---
 
 # Generate Improvement Ideas

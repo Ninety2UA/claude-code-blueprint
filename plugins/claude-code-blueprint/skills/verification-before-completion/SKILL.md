@@ -1,6 +1,6 @@
 ---
 name: verification-before-completion
-description: Use when about to claim work is complete, fixed, or passing, before committing or creating PRs - requires running verification commands and confirming output before making any success claims; evidence before assertions always
+description: "Trigger this skill EVERY time before claiming work is done, tests pass, a fix works, a build succeeds, or any completion status. Trigger when the user says 'verify', 'make sure it works', 'confirm it passes', 'check before committing', 'does it work', 'is it fixed', or 'run the tests'. Trigger even when you are confident the code is correct — always run verification commands and check their actual output before asserting success. Evidence before assertions, always. This applies before committing, before creating PRs, before reporting task completion, before saying 'all tests pass', and before any status claim whatsoever. If you haven't run the verification command in this message, you cannot claim it passes. No exceptions, no shortcuts, no relying on prior runs."
 ---
 
 # Verification Before Completion

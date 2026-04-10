@@ -1,6 +1,6 @@
 ---
 name: document-review
-description: Use when reviewing or critiquing documents — specs, plans, ADRs, READMEs, or any written artifact that needs structured feedback
+description: "Trigger this skill when reviewing any written artifact — even if the user just says 'does this look good'. Trigger when the user says 'review this doc', 'review the spec', 'check the plan', 'feedback on this document', 'critique this', 'does this look right', 'proofread this', 'review the ADR', 'check the README', 'is this spec complete', or 'give me feedback on this write-up'. Trigger for specs, plans, ADRs, READMEs, design docs, RFCs, or any document that needs structured feedback for clarity, completeness, and accuracy. Uses a three-pass review process: accuracy, structure, then communication. DO NOT TRIGGER for code review — use requesting-code-review or review-swarm instead. DO NOT TRIGGER for changelog or release notes — use changelog-generation instead."
 ---
 
 # Document Review

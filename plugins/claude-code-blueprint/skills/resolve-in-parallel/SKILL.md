@@ -1,6 +1,6 @@
 ---
 name: resolve-in-parallel
-description: Use when you have multiple independent items to resolve concurrently — PR comments, test failures, backlog items, or review findings that don't share state
+description: "Trigger this skill when there are multiple independent items to fix concurrently — even if the user doesn't mention parallelism. Trigger when the user says 'fix all of these', 'resolve findings', 'address all comments', 'fix these test failures', 'handle all the review feedback', or 'resolve all issues'. Trigger for PR review comments, test failures in different files, backlog items, review findings, or any batch of independent fixes that don't share state or modified files. Dispatches one agent per item and collects results. DO NOT TRIGGER if items share modified files or have dependencies — use wave-orchestration for ordered execution instead."
 ---
 
 # Resolve in Parallel

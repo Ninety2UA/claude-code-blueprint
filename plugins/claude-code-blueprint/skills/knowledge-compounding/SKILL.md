@@ -1,6 +1,7 @@
 ---
 name: knowledge-compounding
-description: Use after solving a non-trivial problem to document the problem, approach, and solution as institutional knowledge that future planning can search and learn from
+description: "Trigger this skill after solving any non-trivial problem — even if the user doesn't explicitly ask to document it. Trigger when the user says 'compound', 'document this', 'save this solution', 'remember this', 'we should capture this', 'that was tricky', 'don't want to hit that again', or 'how did we fix this last time'. Trigger after debugging sessions that uncovered non-obvious root causes, after discovering framework gotchas or version-specific behavior, after implementing a reusable pattern, after making architectural decisions with significant trade-offs, and after any hard-won solution. Proactively suggest documenting if the solution took more than a few minutes to figure out — future sessions will thank you. Documents the problem, approach, and solution as institutional knowledge in docs/solutions/ that future planning can search and learn from. DO NOT TRIGGER for trivial fixes like typos, import corrections, or config changes already well-documented in framework docs."
+argument-hint: "<brief description of what was solved>"
 ---
 
 # Knowledge Compounding

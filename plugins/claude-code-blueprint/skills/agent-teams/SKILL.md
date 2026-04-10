@@ -1,6 +1,6 @@
 ---
 name: agent-teams
-description: Use when the user wants to spawn a collaborative team of Claude Code instances that coordinate via shared task lists and messaging — for complex multi-file implementations where teammates need to discuss and divide work
+description: "Trigger this skill when spawning collaborative Claude Code instances with shared task lists and messaging — for complex multi-file implementations where teammates need to discuss, divide work, and maintain file ownership. Trigger when 3+ files need coordinated changes across different system layers, when teammates would benefit from discussing design decisions mid-implementation, or when work naturally divides into ownership domains (frontend, backend, tests, infra). Usually invoked internally by team-execution skill — not typically called directly by users. Requires CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS enabled. DO NOT TRIGGER for read-only parallel analysis — use swarm-orchestration instead. DO NOT TRIGGER for dependency-ordered tasks — use wave-orchestration instead."
 ---
 
 # Agent Teams

@@ -1,6 +1,6 @@
 ---
 name: browser-testing
-description: Use when verifying UI changes, testing user flows in the browser, or when visual/interaction verification is needed beyond what unit tests can cover
+description: "Trigger this skill when changes touch UI components (.tsx, .jsx, .vue, .svelte, CSS, SCSS, HTML templates) and visual or interaction verification is needed, when the user says 'test in browser', 'check the UI', 'visual testing', 'does it look right', 'verify the layout', 'test the form', or wants to see how changes actually render. Trigger even for CSS-only changes — they can break layout, spacing, and responsiveness in ways unit tests cannot catch. Also trigger for user interaction flows (forms, navigation, modals, dropdowns), responsive layout verification at different viewport sizes, accessibility checks in a real browser context, and whenever unit tests pass but the actual user experience needs confirmation. Requires Playwright MCP or similar browser automation."
 ---
 
 # Browser Testing

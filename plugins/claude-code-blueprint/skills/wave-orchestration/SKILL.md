@@ -1,6 +1,6 @@
 ---
 name: wave-orchestration
-description: Use when executing a plan with tasks that have dependency relationships — groups tasks into waves by dependency order, executes independent tasks in parallel within each wave, and verifies integration between waves
+description: "Trigger this skill when executing dependency-ordered task groups — tasks that have a mix of independent and dependent relationships. Groups tasks into waves: independent tasks run in parallel within each wave, dependent tasks wait for prior waves. Verifies integration between waves before proceeding. Usually invoked internally by the team-lead agent via orchestrate skill — not typically called directly by users. DO NOT TRIGGER when all tasks are sequential (use autonomous-loop instead). DO NOT TRIGGER when all tasks are independent with no dependencies (use resolve-in-parallel instead). DO NOT TRIGGER for plans with fewer than 4 tasks (overhead not worth it)."
 ---
 
 # Wave Orchestration

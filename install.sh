@@ -180,8 +180,8 @@ if [ "$LEGACY" = true ]; then
     info "Legacy mode — installing all files into ${BOLD}$TARGET_DIR${NC}"
     echo ""
 
-    # Install engine files (commands, skills, agents, hooks)
-    for dir in commands skills agents; do
+    # Install engine files (skills, agents, hooks)
+    for dir in skills agents; do
         if [ -d "$PLUGIN_DIR/$dir" ]; then
             find "$PLUGIN_DIR/$dir" -type f | while read -r file; do
                 rel="${file#"$PLUGIN_DIR"/}"
@@ -286,7 +286,7 @@ if [ "$SCAFFOLD_ONLY" = false ]; then
     if [ "$DRY_RUN" = false ]; then
         mkdir -p "$CACHE_DIR"
         # Copy plugin engine files from plugins/ subdirectory
-        for dir in commands skills agents hooks .claude-plugin scripts templates; do
+        for dir in skills agents hooks .claude-plugin scripts templates; do
             if [ -d "$PLUGIN_DIR/$dir" ]; then
                 cp -R "$PLUGIN_DIR/$dir" "$CACHE_DIR/$dir"
             fi
@@ -417,8 +417,8 @@ elif [ -n "$TARGET_DIR" ]; then
     echo -e "  ${DIM}2.${NC} claude"
     echo -e "  ${DIM}3.${NC} /start ${DIM}← interactive project setup${NC}"
     echo ""
-    echo -e "  ${DIM}Plugin provides: 35 skills · 26 agents · 27 commands · 6 hooks${NC}"
-    echo -e "  ${DIM}Quick commands: /build · /ship · /planning · /review-swarm · /deep-research${NC}"
+    echo -e "  ${DIM}Plugin provides: 53 skills · 26 agents · 6 hooks${NC}"
+    echo -e "  ${DIM}Quick start: /build-pipeline · /ship-pipeline · /brainstorming · /review-swarm · /deep-research${NC}"
 else
     echo -e "  ${GREEN}${BOLD}Plugin installed!${NC}"
     echo ""
@@ -427,7 +427,7 @@ else
     echo -e "  ${DIM}2.${NC} claude"
     echo -e "  ${DIM}3.${NC} /start ${DIM}← scaffolds project + interactive setup${NC}"
     echo ""
-    echo -e "  ${DIM}Plugin provides: 35 skills · 26 agents · 27 commands · 6 hooks${NC}"
+    echo -e "  ${DIM}Plugin provides: 53 skills · 26 agents · 6 hooks${NC}"
     echo -e "  ${DIM}Available in all projects — no per-project installation needed${NC}"
 fi
 

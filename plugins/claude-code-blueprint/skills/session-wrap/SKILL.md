@@ -1,6 +1,7 @@
 ---
 name: session-wrap
-description: "Use at the end of a work session to summarize accomplishments, record learnings, and update all project documentation to reflect current state. Ensures continuity between sessions."
+description: "Trigger this skill when the user says 'wrap', 'wrap up', 'end session', 'done for today', 'finishing up', 'let's stop here', 'save everything', 'I'm done', 'that's it for now', 'calling it a day', 'log off', or anything suggesting they are ending a work session. Trigger at the end of ANY work session, even if the user just says 'I'm done' or 'gotta go' without explicitly asking for a wrap-up. Always suggest running this before ending a session if the user hasn't invoked it — session continuity depends on it. Summarizes accomplishments, records learnings, and updates all project documentation (CLAUDE.md, STATUS.md, GOALS.md, BACKLOG.md, LEARNINGS.md) to ensure the next session can pick up seamlessly. DO NOT TRIGGER for quick mid-session checkpoints or brief pauses — use pause-checkpoint instead. Session-wrap is the comprehensive end-of-session operation; pause-checkpoint is the lightweight mid-session alternative."
+argument-hint: "[optional: focus area]"
 ---
 
 # Session Wrap-Up

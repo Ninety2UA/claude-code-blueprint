@@ -1,6 +1,6 @@
 ---
 name: brainstorming
-description: "Use when starting any creative work — creating features, building components, adding functionality, or modifying behavior. MUST be used before implementation begins."
+description: "Trigger this skill for ANY creative work before implementation begins — designing features, building components, adding functionality, making architecture decisions, or changing how something works. Trigger even when the user jumps straight to coding without brainstorming first — redirect them to design before implementing. Trigger when the user says 'plan', 'planning', 'brainstorm', 'design', 'let's think about', 'how should we', 'what's the best approach', 'before we build', 'I want to add', 'let's build', or describes any non-trivial change. Even if they don't explicitly ask for brainstorming, trigger this skill whenever a change involves design decisions, multiple approaches, or touches 3+ files. DO NOT TRIGGER for trivial changes qualifying as quick-fix (< 3 files, obvious single approach) — use quick-fix instead. DO NOT TRIGGER when the user only wants to capture decisions without exploring design alternatives — use discuss instead."
 ---
 
 # Brainstorming Ideas Into Designs

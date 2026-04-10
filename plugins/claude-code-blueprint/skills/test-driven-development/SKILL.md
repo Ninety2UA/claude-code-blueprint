@@ -1,6 +1,6 @@
 ---
 name: test-driven-development
-description: Use when implementing any feature or bugfix, before writing implementation code
+description: "Trigger this skill when implementing ANY feature or bugfix, even if the user doesn't mention tests — TDD is the default development approach in this system. Trigger when the user says 'write tests', 'TDD', 'test first', 'red green refactor', 'implement this feature', 'fix this bug', or asks for any new functionality or behavior change. Write a failing test first, watch it fail, then implement the minimum code to pass it (red-green-refactor). Must be used BEFORE writing implementation code. If you are tempted to skip tests 'just this once', stop — that is rationalization. DO NOT TRIGGER when backfilling tests on existing untested code that isn't being changed — use add-tests instead. This skill is for new work where the test drives the implementation."
 ---
 
 # Test-Driven Development (TDD)

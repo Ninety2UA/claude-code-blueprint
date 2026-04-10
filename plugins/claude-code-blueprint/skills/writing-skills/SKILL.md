@@ -1,6 +1,6 @@
 ---
 name: writing-skills
-description: Use when creating new skills, editing existing skills, or verifying skills work before deployment
+description: "Trigger this skill when creating, editing, or testing skills — even if the user just wants to tweak frontmatter. Trigger when the user says 'create a skill', 'write a skill', 'edit skill', 'skill frontmatter', 'improve skill description', 'test a skill', 'new skill', 'skill template', 'how do I write a skill', 'skill format', or 'eval a skill'. Covers frontmatter format, progressive disclosure structure, description writing best practices, and testing skills with subagents using TDD (red-green-refactor). DO NOT TRIGGER for creating Claude Code plugins — use plugin-structure instead. DO NOT TRIGGER for writing agents — use agent-development instead."
 ---
 
 # Writing Skills

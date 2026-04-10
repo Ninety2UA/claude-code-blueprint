@@ -1,6 +1,7 @@
 ---
 name: pr-workflow
-description: Use when creating a pull request, responding to PR review feedback, or managing the PR lifecycle from creation through merge
+description: "Trigger this skill whenever a branch is ready to merge or PR review comments arrive — even if the user doesn't explicitly mention PRs. Trigger when the user says 'PR', 'pull request', 'create PR', 'open PR', 'respond to review', 'merge', 'PR feedback', 'submit for review', 'push and create PR', 'address review comments', 'the reviewer said...', or 'ready for review'. Trigger when implementation is complete and the user wants to share their work, when PR review comments need responses, or when managing the full PR lifecycle from creation through merge. Runs tests, self-reviews the diff, and writes clear descriptions. DO NOT TRIGGER for finishing a branch without creating a PR — use finishing-a-development-branch instead. DO NOT TRIGGER for code review of someone else's PR — use requesting-code-review or review-swarm instead."
+argument-hint: "[optional: PR title or issue reference]"
 ---
 
 # PR Workflow

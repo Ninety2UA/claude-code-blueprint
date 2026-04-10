@@ -1,6 +1,6 @@
 ---
 name: spike-exploration
-description: Use when facing significant technical uncertainty — timeboxed exploratory work to answer a specific question before committing to an approach
+description: "Trigger this skill when there is significant technical uncertainty about whether an approach will work and hands-on code exploration is needed to answer the question. Trigger when the user says 'spike', 'explore', 'prototype', 'proof of concept', 'can we even do this', 'feasibility', 'experiment', 'try it out', 'will this work', or 'I'm not sure this is possible'. Trigger even when the user is about to commit to an approach without evidence — proactively suggest a spike when unknowns are large, the team is debating without data, or an estimate feels like pure guesswork. This is for timeboxed hands-on code exploration, not documentation research. DO NOT TRIGGER for general research or context gathering — use deep-research instead. DO NOT TRIGGER when the approach is clear and the only question is effort estimation. DO NOT TRIGGER when the question can be answered by reading docs — just read them or use deep-research."
 ---
 
 # Spike / Exploration

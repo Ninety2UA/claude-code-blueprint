@@ -1,6 +1,7 @@
 ---
 name: codebase-mapping
-description: Use when onboarding to a new codebase, before modifying unfamiliar code, or when the team needs shared understanding of a system's architecture
+description: "Trigger this skill when the user needs to understand a codebase before modifying it — even if they don't explicitly ask for a map. Trigger when the user says 'map the code', 'understand this codebase', 'how is this structured', 'architecture overview', 'onboarding', 'what does this do', 'walk me through this', 'how does this work', 'explain the architecture', 'give me the lay of the land', or 'I'm new to this project'. Trigger before modifying unfamiliar code, when joining a new project, when onboarding new team members, or after a major refactor to update the team's mental model. This is a read-only analysis — no code changes. Produces structured documentation of architecture, dependencies, patterns, and concerns. DO NOT TRIGGER for targeted code investigation of a specific bug — use systematic-debugging instead. DO NOT TRIGGER for reviewing a specific document — use document-review instead."
+argument-hint: "[optional: focus area or module name]"
 ---
 
 # Codebase Mapping

@@ -1,6 +1,6 @@
 ---
 name: migration-planning
-description: Use when planning database migrations, API version transitions, dependency upgrades, or any change that requires careful sequencing and rollback capability
+description: "Trigger this skill for any change requiring careful sequencing, data transformation, and rollback capability — even if the user doesn't call it a 'migration'. Trigger when the user says 'database migration', 'API migration', 'upgrade path', 'data migration', 'schema change', 'breaking change', 'add column', 'rename table', 'change API version', 'backfill data', 'format change', or 'deprecate endpoint'. Trigger for database schema changes (adding, modifying, or removing tables/columns), API version transitions, major dependency upgrades (framework, ORM, runtime), data transformations (backfills, format changes), and any change where 'just deploy it' could corrupt data or break downstream systems. Creates safe, reversible migration plans with explicit rollback procedures. DO NOT TRIGGER for simple dependency additions — use dependency-management instead."
 ---
 
 # Migration Planning

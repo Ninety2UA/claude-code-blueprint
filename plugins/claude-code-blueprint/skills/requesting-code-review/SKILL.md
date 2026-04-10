@@ -1,6 +1,6 @@
 ---
 name: requesting-code-review
-description: Use when completing tasks, implementing major features, or before merging to verify work meets requirements
+description: "Trigger this skill when the user says 'review', 'review my code', 'code review', 'check my changes', 'look at this', 'does this look right', or wants a quick quality check on recent work. Trigger after completing any task or before merging, even if the user doesn't explicitly ask for a review — quality gates matter and catching issues early prevents cascading problems. Also trigger before committing, after fixing a bug, after refactoring, or when the user seems done implementing but hasn't verified quality. Dispatches the code-reviewer agent against current changes for a fast, single-perspective review. DO NOT TRIGGER when the user wants multi-perspective review from multiple agents, says 'thorough review', 'comprehensive review', or 'review swarm' — use review-swarm instead."
 ---
 
 # Requesting Code Review

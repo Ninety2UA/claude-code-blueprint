@@ -1,6 +1,6 @@
 ---
 name: using-git-worktrees
-description: Use when starting feature work that needs isolation from current workspace or before executing implementation plans - creates isolated git worktrees with smart directory selection and safety verification
+description: "Trigger this skill when feature work needs isolation from the current workspace or when parallel execution benefits from worktree isolation. Trigger when the user says 'worktree', 'isolated branch', 'parallel branches', 'separate workspace', or 'work on this in isolation'. Trigger before executing implementation plans that use parallel agents in separate branches. Usually invoked internally by orchestrate and team-execution skills — not typically called directly by users. Provides systematic directory selection and safety verification for reliable worktree isolation. DO NOT TRIGGER for simple branch creation — just use git checkout -b."
 ---
 
 # Using Git Worktrees
