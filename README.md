@@ -98,7 +98,34 @@ Commands were thin wrappers that couldn't load skill content due to Claude Code'
 - **Commands eliminated** — all 27 commands merged into 53 skills. Every slash command now loads full workflow content directly
 - **Skill descriptions follow Anthropic best practices** — pushy triggers ("even if they don't explicitly ask..."), negative triggers ("DO NOT TRIGGER when..."), extensive trigger phrase lists
 - **No more sandbox loading gap** — skills are invoked by name and Claude sees the full content, no improvisation
-- **Skill names changed** — `/build` → `/build-pipeline`, `/ship` → `/ship-pipeline`, `/planning` → `/brainstorming`, `/quick` → `/quick-fix`, `/start` → `/project-start`, and more (see Skills Reference for full list)
+- **Auto-create MEMORY.md** — session-start hook creates the auto-memory index if missing, eliminating the "no MEMORY.md" warning for new projects
+- **Skill names changed** — all 21 renames:
+
+  | Old (v3.1) | New (v3.2) |
+  |------------|------------|
+  | `/build` | `/build-pipeline` |
+  | `/ship` | `/ship-pipeline` |
+  | `/planning` | `/brainstorming` |
+  | `/quick` | `/quick-fix` |
+  | `/start` | `/project-start` |
+  | `/status` | `/project-status` |
+  | `/wrap` | `/session-wrap` |
+  | `/compound` | `/knowledge-compounding` |
+  | `/debug` | `/systematic-debugging` |
+  | `/update` | `/plugin-update` |
+  | `/team` | `/team-execution` |
+  | `/review` | `/requesting-code-review` |
+  | `/ideate` | `/ideation` |
+  | `/map` | `/codebase-mapping` |
+  | `/backlog` | `/backlog-triage` |
+  | `/health` | `/health-check` |
+  | `/pause` | `/pause-checkpoint` |
+  | `/resume` | `/resume-session` |
+  | `/pr` | `/pr-workflow` |
+  | `/changelog` | `/changelog-generation` |
+  | `/deepen` | `/deepen-plan` |
+
+  Unchanged: `/discuss`, `/orchestrate`, `/deep-research`, `/review-swarm`, `/add-tests`, `/migrate-to-plugin`
 
 ### What was new in v2.3
 
