@@ -97,6 +97,18 @@ try {
   if (fs.existsSync(ctxStateFile)) fs.unlinkSync(ctxStateFile);
 } catch (e) { /* ignore */ }
 
+// Auto-create MEMORY.md if missing
+const projectKey = '-' + cwd.slice(1).replace(/\//g, '-');
+const memoryDir = path.join(os.homedir(), '.claude', 'projects', projectKey, 'memory');
+const memoryFile = path.join(memoryDir, 'MEMORY.md');
+try {
+  if (!fs.existsSync(memoryFile)) {
+    fs.mkdirSync(memoryDir, { recursive: true });
+    fs.writeFileSync(memoryFile, '# Project Memory\n\n<!-- Auto-created by Claude Code Blueprint session-start hook -->\n');
+    lines.push('Auto-memory initialized — MEMORY.md created.');
+  }
+} catch (e) { /* ignore — non-critical */ }
+
 // Remind about skills
 lines.push('Skills: /project-start · /ideation · /brainstorming · /build-pipeline · /ship-pipeline · /quick-fix · /discuss · /requesting-code-review · /review-swarm · /deep-research · /knowledge-compounding · /orchestrate · /team-execution · /project-status · /systematic-debugging · /backlog-triage · /session-wrap · /plugin-update');
 
