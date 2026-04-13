@@ -154,6 +154,8 @@
     .reveal-stagger.revealed > *:nth-child(2) { transition-delay: 0.08s; }
     .reveal-stagger.revealed > *:nth-child(3) { transition-delay: 0.16s; }
     .reveal-stagger.revealed > *:nth-child(4) { transition-delay: 0.24s; }
+    .reveal-stagger.revealed > *:nth-child(5) { transition-delay: 0.32s; }
+    .reveal-stagger.revealed > *:nth-child(6) { transition-delay: 0.4s; }
     .reveal-stagger > * {
       opacity: 0;
       transform: translateY(20px);
@@ -1668,6 +1670,531 @@
       border-top: 1px solid rgba(var(--gold-rgb), 0.06);
     }
 
+    /* ===== BY THE NUMBERS ===== */
+    .stats-bar {
+      background: linear-gradient(135deg, rgba(var(--gold-rgb), 0.06) 0%, rgba(var(--purple-rgb), 0.04) 100%);
+      border-top: 1px solid rgba(var(--gold-rgb), 0.1);
+      border-bottom: 1px solid rgba(var(--gold-rgb), 0.1);
+      padding: clamp(2.5rem, 5vw, 4rem) 0;
+    }
+
+    .stats-bar__grid {
+      display: flex;
+      justify-content: center;
+      gap: clamp(1.5rem, 4vw, 3.5rem);
+      flex-wrap: wrap;
+    }
+
+    .stats-bar__item {
+      text-align: center;
+      min-width: 90px;
+      opacity: 0;
+      transform: scale(0.5);
+      transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+    }
+
+    .stats-bar.revealed .stats-bar__item {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .stats-bar.revealed .stats-bar__item:nth-child(1) { transition-delay: 0s; }
+    .stats-bar.revealed .stats-bar__item:nth-child(2) { transition-delay: 0.08s; }
+    .stats-bar.revealed .stats-bar__item:nth-child(3) { transition-delay: 0.1s; }
+    .stats-bar.revealed .stats-bar__item:nth-child(4) { transition-delay: 0.16s; }
+    .stats-bar.revealed .stats-bar__item:nth-child(5) { transition-delay: 0.22s; }
+    .stats-bar.revealed .stats-bar__item:nth-child(6) { transition-delay: 0.28s; }
+    .stats-bar.revealed .stats-bar__item:nth-child(7) { transition-delay: 0.34s; }
+
+    .stats-bar__number {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.1;
+      display: block;
+    }
+
+    .stats-bar__label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-top: 0.35rem;
+      display: block;
+    }
+
+    .stats-bar__divider {
+      width: 1px;
+      background: rgba(var(--gold-rgb), 0.15);
+      align-self: stretch;
+    }
+
+    @media (max-width: 768px) {
+      .stats-bar__grid { gap: 1.25rem; }
+      .stats-bar__divider { display: none; }
+      .stats-bar__item { min-width: 75px; }
+    }
+
+    /* ===== AGENT ECOSYSTEM ===== */
+    .agents { background: linear-gradient(180deg, var(--navy-mid), var(--navy-deep)); }
+
+    .agents__groups {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 1024px) {
+      .agents__groups { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 600px) {
+      .agents__groups { grid-template-columns: 1fr; }
+    }
+
+    .agent-group {
+      background: var(--term-bg);
+      border: 1px solid var(--term-border);
+      border-radius: 14px;
+      padding: 1.5rem;
+      transition: transform 0.3s var(--ease-out), border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .agent-group:hover {
+      transform: translateY(-4px);
+      border-color: rgba(var(--gold-rgb), 0.2);
+      box-shadow: 0 12px 30px rgba(var(--gold-rgb), 0.08);
+    }
+
+    .agent-group__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(var(--gold-rgb), 0.1);
+    }
+
+    .agent-group__title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--gold);
+    }
+
+    .agent-group__count {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: rgba(var(--gold-rgb), 0.1);
+      color: var(--gold);
+      padding: 0.15rem 0.5rem;
+      border-radius: 100px;
+    }
+
+    .agent-group__list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .agent-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      padding: 0.4rem 0;
+    }
+
+    .agent-item__icon {
+      width: 28px;
+      height: 28px;
+      min-width: 28px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(var(--gold-rgb), 0.1), rgba(var(--purple-rgb), 0.06));
+      color: var(--gold);
+      font-size: 0.75rem;
+    }
+
+    .agent-item__info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .agent-item__name {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: block;
+      line-height: 1.3;
+    }
+
+    .agent-item__desc {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      line-height: 1.3;
+      display: block;
+    }
+
+    /* ===== KNOWLEDGE COMPOUNDING ===== */
+    .knowledge { background: linear-gradient(180deg, var(--navy-deep), var(--navy-mid)); }
+
+    .knowledge__loop {
+      max-width: 800px;
+      margin: 0 auto 3rem;
+      position: relative;
+    }
+
+    .knowledge__ring {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0;
+      position: relative;
+    }
+
+    .knowledge__step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 0.75rem 0.5rem;
+      min-width: 120px;
+    }
+
+    .knowledge__step-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.6rem;
+      font-size: 1.1rem;
+      transition: transform 0.3s var(--ease-out), box-shadow 0.3s;
+    }
+
+    .knowledge__loop:hover .knowledge__step-icon {
+      animation: subtlePulse 2s ease-in-out infinite;
+    }
+
+    .knowledge__step-icon--gold {
+      background: linear-gradient(135deg, rgba(var(--gold-rgb), 0.2), rgba(var(--gold-rgb), 0.08));
+      color: var(--gold);
+      border: 1.5px solid rgba(var(--gold-rgb), 0.3);
+    }
+
+    .knowledge__step-icon--purple {
+      background: linear-gradient(135deg, rgba(var(--purple-rgb), 0.2), rgba(var(--purple-rgb), 0.08));
+      color: var(--purple-light);
+      border: 1.5px solid rgba(var(--purple-rgb), 0.3);
+    }
+
+    .knowledge__step-icon--green {
+      background: linear-gradient(135deg, rgba(126, 231, 135, 0.2), rgba(126, 231, 135, 0.08));
+      color: var(--green);
+      border: 1.5px solid rgba(126, 231, 135, 0.3);
+    }
+
+    .knowledge__step-icon--teal {
+      background: linear-gradient(135deg, rgba(var(--teal-rgb), 0.2), rgba(var(--teal-rgb), 0.08));
+      color: var(--teal);
+      border: 1.5px solid rgba(var(--teal-rgb), 0.3);
+    }
+
+    .knowledge__step-text {
+      font-size: 0.82rem;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .knowledge__step-sub {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      margin-top: 0.15rem;
+    }
+
+    .knowledge__arrow {
+      color: rgba(var(--gold-rgb), 0.35);
+      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+      margin: 0 -0.15rem;
+      padding-top: 0.5rem;
+    }
+
+    .knowledge__loop-label {
+      text-align: center;
+      margin-top: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .knowledge__cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .knowledge__cards { grid-template-columns: 1fr; }
+      .knowledge__step { min-width: 85px; padding: 0.5rem 0.25rem; }
+      .knowledge__step-icon { width: 42px; height: 42px; }
+    }
+
+    .knowledge__card {
+      padding: 1.75rem;
+      background: var(--term-bg);
+      border: 1px solid var(--term-border);
+      border-radius: 14px;
+      transition: transform 0.3s var(--ease-out), border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .knowledge__card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(var(--gold-rgb), 0.2);
+      box-shadow: 0 16px 40px rgba(var(--gold-rgb), 0.1);
+    }
+
+    .knowledge__card-icon {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(var(--gold-rgb), 0.15), rgba(var(--purple-rgb), 0.1));
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      color: var(--gold);
+      transition: transform 0.3s var(--ease-out);
+    }
+
+    .knowledge__card:hover .knowledge__card-icon {
+      transform: scale(1.1) rotate(-5deg);
+    }
+
+    .knowledge__card h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .knowledge__card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .knowledge__card code {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      background: rgba(var(--gold-rgb), 0.08);
+      color: var(--gold);
+      padding: 0.1rem 0.35rem;
+      border-radius: 3px;
+    }
+
+    /* ===== SESSION CONTINUITY ===== */
+    .continuity { background: linear-gradient(180deg, var(--navy-mid), var(--navy-light)); }
+
+    .continuity__comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    @media (max-width: 768px) {
+      .continuity__comparison { grid-template-columns: 1fr; }
+    }
+
+    .continuity__side {
+      padding: 1.75rem;
+      border-radius: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .continuity__side--without {
+      background: rgba(var(--rose-rgb), 0.04);
+      border: 1px solid rgba(var(--rose-rgb), 0.15);
+    }
+
+    .continuity__side--with {
+      background: rgba(126, 231, 135, 0.04);
+      border: 1px solid rgba(126, 231, 135, 0.15);
+    }
+
+    .continuity__side-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.3rem 0.85rem;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+    }
+
+    .continuity__side--without .continuity__side-label {
+      background: rgba(var(--rose-rgb), 0.12);
+      color: var(--rose);
+      border: 1px solid rgba(var(--rose-rgb), 0.25);
+    }
+
+    .continuity__side--with .continuity__side-label {
+      background: rgba(126, 231, 135, 0.12);
+      color: var(--green);
+      border: 1px solid rgba(126, 231, 135, 0.25);
+    }
+
+    .continuity__flow {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .continuity__flow-step {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    .continuity__flow-arrow {
+      flex-shrink: 0;
+      font-size: 0.85rem;
+    }
+
+    .continuity__side--without .continuity__flow-arrow { color: rgba(var(--rose-rgb), 0.5); }
+    .continuity__side--with .continuity__flow-arrow { color: rgba(126, 231, 135, 0.5); }
+
+    .continuity__terminal {
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    .continuity__terminal .code-block__body {
+      line-height: 1.7;
+    }
+
+    .continuity__flow-step code {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      background: rgba(126, 231, 135, 0.08);
+      color: var(--green);
+      padding: 0.1rem 0.35rem;
+      border-radius: 3px;
+    }
+
+    /* ===== SKILLS SHOWCASE ===== */
+    .skills-showcase { background: linear-gradient(180deg, var(--navy-deep), var(--navy-mid)); }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 1024px) {
+      .skills-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 600px) {
+      .skills-grid { grid-template-columns: 1fr; }
+    }
+
+    .skill-category {
+      background: var(--term-bg);
+      border: 1px solid var(--term-border);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: transform 0.3s var(--ease-out), border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .skill-category:hover {
+      transform: translateY(-4px);
+      border-color: rgba(var(--gold-rgb), 0.2);
+      box-shadow: 0 12px 30px rgba(var(--gold-rgb), 0.08);
+    }
+
+    .skill-category__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.1rem 1.25rem;
+      border-bottom: 1px solid rgba(var(--gold-rgb), 0.1);
+      background: linear-gradient(135deg, rgba(var(--gold-rgb), 0.06), rgba(var(--gold-rgb), 0.02));
+    }
+
+    .skill-category__title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .skill-category__title svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .skill-category__count {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: rgba(var(--gold-rgb), 0.12);
+      color: var(--gold);
+      padding: 0.2rem 0.6rem;
+      border-radius: 100px;
+    }
+
+    .skill-category__body {
+      padding: 1rem 1.25rem;
+    }
+
+    .skill-category__items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .skill-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      padding: 0.25rem 0.55rem;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-secondary);
+      transition: color 0.2s, background 0.2s, border-color 0.2s;
+    }
+
+    .skill-category:hover .skill-tag {
+      color: var(--text-primary);
+      background: rgba(var(--gold-rgb), 0.06);
+      border-color: rgba(var(--gold-rgb), 0.12);
+    }
+
     /* ===== TABLE RESPONSIVE ===== */
     @media (max-width: 768px) {
       .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
@@ -1692,10 +2219,10 @@
         <li><a href="#why">Why</a></li>
         <li><a href="#features">Features</a></li>
         <li><a href="#pipelines">Pipelines</a></li>
-        <li><a href="#workflow">Workflow</a></li>
-        <li><a href="#orchestration">Orchestration</a></li>
+        <li><a href="#orchestration">Agents</a></li>
         <li><a href="#ralph">Ralph Loop</a></li>
         <li><a href="#quality">Quality</a></li>
+        <li><a href="#knowledge">Knowledge</a></li>
         <li><a href="#install">Install</a></li>
         <li><a href="#skills-reference">Skills</a></li>
         <li><a href="#faq">FAQ</a></li>
@@ -1769,6 +2296,48 @@
             <span class="term__line"><span class="term__success">&gt;</span> <span class="term__cmd">/review-swarm</span></span>
             <span class="term__line"><span class="term__output">&nbsp;&nbsp;Dispatching 8 reviewers...</span><span class="term__cursor"></span></span>
           </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BY THE NUMBERS ===== -->
+  <section class="stats-bar reveal" id="stats">
+    <div class="container">
+      <div class="stats-bar__grid">
+        <div class="stats-bar__item">
+          <span class="stats-bar__number">53</span>
+          <span class="stats-bar__label">Skills</span>
+        </div>
+        <div class="stats-bar__divider"></div>
+        <div class="stats-bar__item">
+          <span class="stats-bar__number">26</span>
+          <span class="stats-bar__label">Agents</span>
+        </div>
+        <div class="stats-bar__divider"></div>
+        <div class="stats-bar__item">
+          <span class="stats-bar__number">16</span>
+          <span class="stats-bar__label">Repos Analyzed</span>
+        </div>
+        <div class="stats-bar__divider"></div>
+        <div class="stats-bar__item">
+          <span class="stats-bar__number">320K+</span>
+          <span class="stats-bar__label">Ecosystem Stars</span>
+        </div>
+        <div class="stats-bar__divider"></div>
+        <div class="stats-bar__item">
+          <span class="stats-bar__number">5</span>
+          <span class="stats-bar__label">Quality Gates</span>
+        </div>
+        <div class="stats-bar__divider"></div>
+        <div class="stats-bar__item">
+          <span class="stats-bar__number">4</span>
+          <span class="stats-bar__label">Pipelines</span>
+        </div>
+        <div class="stats-bar__divider"></div>
+        <div class="stats-bar__item">
+          <span class="stats-bar__number">2</span>
+          <span class="stats-bar__label">Loop Mechanisms</span>
         </div>
       </div>
     </div>
@@ -1999,6 +2568,259 @@
     </div>
   </section>
 
+  <!-- ===== AGENT ECOSYSTEM ===== -->
+  <section class="agents" id="agents">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>Agent Ecosystem</h2>
+        <p>26 specialized agents organized into 6 teams</p>
+      </div>
+      <div class="agents__groups reveal reveal-stagger">
+        <!-- Review Team -->
+        <div class="agent-group">
+          <div class="agent-group__header">
+            <span class="agent-group__title">Review Team</span>
+            <span class="agent-group__count">6</span>
+          </div>
+          <div class="agent-group__list">
+            <div class="agent-item">
+              <div class="agent-item__icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+              <div class="agent-item__info">
+                <span class="agent-item__name">code-reviewer</span>
+                <span class="agent-item__desc">General code quality and patterns</span>
+              </div>
+            </div>
+            <div class="agent-item">
+              <div class="agent-item__icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+              <div class="agent-item__info">
+                <span class="agent-item__name">security-sentinel</span>
+                <span class="agent-item__desc">Security vulnerabilities and risks</span>
+              </div>
+            </div>
+            <div class="agent-item">
+              <div class="agent-item__icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+              <div class="agent-item__info">
+                <span class="agent-item__name">performance-oracle</span>
+                <span class="agent-item__desc">Performance bottlenecks and scaling</span>
+              </div>
+            </div>
+            <div class="agent-item">
+              <div class="agent-item__icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></div>
+              <div class="agent-item__info">
+                <span class="agent-item__name">code-simplicity-reviewer</span>
+                <span class="agent-item__desc">Complexity reduction and clarity</span>
+              </div>
+            </div>
+            <div class="agent-item">
+              <div class="agent-item__icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg></div>
+              <div class="agent-item__info">
+                <span class="agent-item__name">convention-enforcer</span>
+                <span class="agent-item__desc">Project conventions compliance</span>
+              </div>
+            </div>
+            <div class="agent-item">
+              <div class="agent-item__icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+              <div class="agent-item__info">
+                <span class="agent-item__name">test-coverage-reviewer</span>
+                <span class="agent-item__desc">Test gaps and coverage analysis</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Research Team -->
+        <div class="agent-group">
+          <div class="agent-group__header">
+            <span class="agent-group__title">Research Team</span>
+            <span class="agent-group__count">5</span>
+          </div>
+          <div class="agent-group__list">
+            <div class="agent-item">
+              <div class="agent-item__icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+              <div class="agent-item__info">
+                <span class="agent-item__name">learnings-researcher</span>
+                <span class="agent-item__desc">Search past solutions and learnings</span>
+              </div>
+            </div>
+            <div class="agent-item">
+              <div class="agent-item__icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+              <div class="agent-item__info">
+                <span class="agent-item__name">framework-docs-researcher</span>
+                <span class="agent-item__desc">Framework documentation lookup</span>
+              </div>
+            </div>
+            <div class="agent-item">
+              <div class="agent-item__icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+              <div class="agent-item__info">
+                <span class="agent-item__name">best-practices-researcher</span>
+                <span class="agent-item__desc">Industry best practices analysis</span>
+              </div>
+            </div>
+            <div class="agent-item">
+              <div class="agent-item__icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><line x1="1.05" y1="12" x2="7" y2="12"/><line x1="17.01" y1="12" x2="22.96" y2="12"/></svg></div>
+              <div class="agent-item__info">
+                <span class="agent-item__name">git-history-analyzer</span>
+                <span class="agent-item__desc">Git log patterns and history mining</span>
+              </div>
+            </div>
+            <div class="agent-item">
+              <div class="agent-item__icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/></svg></div>
+              <div class="agent-item__info">
+                <span class="agent-item__name">codebase-context-mapper</span>
+                <span class="agent-item__desc">Architecture and dependency mapping</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Conditional Reviewers -->
+        <div class="agent-group">
+          <div class="agent-group__header">
+            <span class="agent-group__title">Conditional Reviewers</span>
+            <span class="agent-group__count">4</span>
+          </div>
+          <div class="agent-group__list">
+            <div class="agent-item">
+              <div class="agent-item__icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div>
+              <div class="agent-item__info">
+                <span class="agent-item__name">architecture-strategist</span>
+                <span class="agent-item__desc">Structural patterns and design</span>
+              </div>
+            </div>
+            <div class="agent-item">
+              <div class="agent-item__icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+              <div class="agent-item__info">
+                <span class="agent-item__name">frontend-reviewer</span>
+                <span class="agent-item__desc">UI/UX patterns and accessibility</span>
+              </div>
+            </div>
+            <div class="agent-item">
+              <div class="agent-item__icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
+              <div class="agent-item__info">
+                <span class="agent-item__name">data-integrity-guardian</span>
+                <span class="agent-item__desc">Data validation and consistency</span>
+              </div>
+            </div>
+            <div class="agent-item">
+              <div class="agent-item__icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18"/><path d="M18 9l-6-6-6 6"/></svg></div>
+              <div class="agent-item__info">
+                <span class="agent-item__name">schema-drift-detector</span>
+                <span class="agent-item__desc">Schema and API contract changes</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Synthesis -->
+        <div class="agent-group">
+          <div class="agent-group__header">
+            <span class="agent-group__title">Synthesis</span>
+            <span class="agent-group__count">3</span>
+          </div>
+          <div class="agent-group__list">
+            <div class="agent-item">
+              <div class="agent-item__icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg></div>
+              <div class="agent-item__info">
+                <span class="agent-item__name">findings-synthesizer</span>
+                <span class="agent-item__desc">Merge review findings into P1/P2/P3</span>
+              </div>
+            </div>
+            <div class="agent-item">
+              <div class="agent-item__icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg></div>
+              <div class="agent-item__info">
+                <span class="agent-item__name">research-synthesizer</span>
+                <span class="agent-item__desc">Consolidate research into briefs</span>
+              </div>
+            </div>
+            <div class="agent-item">
+              <div class="agent-item__icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+              <div class="agent-item__info">
+                <span class="agent-item__name">integration-verifier</span>
+                <span class="agent-item__desc">Cross-wave integration checks</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Execution -->
+        <div class="agent-group">
+          <div class="agent-group__header">
+            <span class="agent-group__title">Execution</span>
+            <span class="agent-group__count">4</span>
+          </div>
+          <div class="agent-group__list">
+            <div class="agent-item">
+              <div class="agent-item__icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+              <div class="agent-item__info">
+                <span class="agent-item__name">team-lead</span>
+                <span class="agent-item__desc">200K-context orchestrator for workers</span>
+              </div>
+            </div>
+            <div class="agent-item">
+              <div class="agent-item__icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div>
+              <div class="agent-item__info">
+                <span class="agent-item__name">integration-checker</span>
+                <span class="agent-item__desc">Post-merge integration validation</span>
+              </div>
+            </div>
+            <div class="agent-item">
+              <div class="agent-item__icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+              <div class="agent-item__info">
+                <span class="agent-item__name">deployment-verifier</span>
+                <span class="agent-item__desc">Deployment readiness checks</span>
+              </div>
+            </div>
+            <div class="agent-item">
+              <div class="agent-item__icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+              <div class="agent-item__info">
+                <span class="agent-item__name">bug-reproduction-validator</span>
+                <span class="agent-item__desc">Reproduce and verify bug fixes</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Specialist -->
+        <div class="agent-group">
+          <div class="agent-group__header">
+            <span class="agent-group__title">Specialist</span>
+            <span class="agent-group__count">4</span>
+          </div>
+          <div class="agent-group__list">
+            <div class="agent-item">
+              <div class="agent-item__icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/></svg></div>
+              <div class="agent-item__info">
+                <span class="agent-item__name">codebase-mapper</span>
+                <span class="agent-item__desc">Full codebase structure mapping</span>
+              </div>
+            </div>
+            <div class="agent-item">
+              <div class="agent-item__icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+              <div class="agent-item__info">
+                <span class="agent-item__name">pr-comment-resolver</span>
+                <span class="agent-item__desc">Resolve PR review comments</span>
+              </div>
+            </div>
+            <div class="agent-item">
+              <div class="agent-item__icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+              <div class="agent-item__info">
+                <span class="agent-item__name">test-gap-analyzer</span>
+                <span class="agent-item__desc">Find untested code paths</span>
+              </div>
+            </div>
+            <div class="agent-item">
+              <div class="agent-item__icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg></div>
+              <div class="agent-item__info">
+                <span class="agent-item__name">plan-checker</span>
+                <span class="agent-item__desc">Validate plan quality and scope</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ===== RALPH LOOP / CONTEXT EXHAUSTION ===== -->
   <section class="ralph" id="ralph">
     <div class="container">
@@ -2213,6 +3035,196 @@
     </div>
   </section>
 
+  <!-- ===== KNOWLEDGE COMPOUNDING ===== -->
+  <section class="knowledge" id="knowledge">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>Knowledge Compounding</h2>
+        <p>Every solved problem makes the next one easier</p>
+      </div>
+
+      <!-- Circular flow diagram -->
+      <div class="knowledge__loop reveal">
+        <div class="knowledge__ring">
+          <div class="knowledge__step">
+            <div class="knowledge__step-icon knowledge__step-icon--gold">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+            </div>
+            <span class="knowledge__step-text">Solve Problem</span>
+          </div>
+          <span class="knowledge__arrow">&rarr;</span>
+          <div class="knowledge__step">
+            <div class="knowledge__step-icon knowledge__step-icon--purple">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            </div>
+            <span class="knowledge__step-text">Capture</span>
+            <span class="knowledge__step-sub">/knowledge-compounding</span>
+          </div>
+          <span class="knowledge__arrow">&rarr;</span>
+          <div class="knowledge__step">
+            <div class="knowledge__step-icon knowledge__step-icon--green">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <span class="knowledge__step-text">Store</span>
+            <span class="knowledge__step-sub">docs/solutions/</span>
+          </div>
+          <span class="knowledge__arrow">&rarr;</span>
+          <div class="knowledge__step">
+            <div class="knowledge__step-icon knowledge__step-icon--teal">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </div>
+            <span class="knowledge__step-text">Auto-Consult</span>
+            <span class="knowledge__step-sub">/brainstorming</span>
+          </div>
+          <span class="knowledge__arrow">&rarr;</span>
+          <div class="knowledge__step">
+            <div class="knowledge__step-icon knowledge__step-icon--purple">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            </div>
+            <span class="knowledge__step-text">Better Plans</span>
+          </div>
+          <span class="knowledge__arrow">&rarr;</span>
+          <div class="knowledge__step">
+            <div class="knowledge__step-icon knowledge__step-icon--gold">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>
+            </div>
+            <span class="knowledge__step-text">Solve Faster</span>
+          </div>
+        </div>
+        <div class="knowledge__loop-label">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+          Cycle repeats &mdash; institutional memory grows with every session
+        </div>
+      </div>
+
+      <!-- Stat cards -->
+      <div class="knowledge__cards reveal reveal-stagger">
+        <div class="knowledge__card">
+          <div class="knowledge__card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </div>
+          <h3>Institutional Memory That Grows</h3>
+          <p>Every solved problem becomes a structured, searchable document in <code>docs/solutions/</code>. Your project accumulates institutional knowledge over time.</p>
+        </div>
+        <div class="knowledge__card">
+          <div class="knowledge__card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </div>
+          <h3>Automatic Consultation</h3>
+          <p>Planning skills like <code>/brainstorming</code> and <code>/deep-research</code> automatically search past solutions before starting new work. No manual lookup needed.</p>
+        </div>
+        <div class="knowledge__card">
+          <div class="knowledge__card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <h3>Zero Manual Effort</h3>
+          <p>The <code>/session-wrap</code> skill captures learnings automatically at the end of every session. Knowledge compounds without extra work from you.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SESSION CONTINUITY ===== -->
+  <section class="continuity" id="continuity">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>Session Continuity</h2>
+        <p>Pick up exactly where you left off &mdash; every time</p>
+      </div>
+
+      <!-- Before / After comparison -->
+      <div class="continuity__comparison reveal">
+        <div class="continuity__side continuity__side--without">
+          <span class="continuity__side-label">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            Without Blueprint
+          </span>
+          <div class="continuity__flow">
+            <div class="continuity__flow-step">
+              <span class="continuity__flow-arrow">&rarr;</span>
+              "What were we doing?"
+            </div>
+            <div class="continuity__flow-step">
+              <span class="continuity__flow-arrow">&rarr;</span>
+              Re-read everything from scratch
+            </div>
+            <div class="continuity__flow-step">
+              <span class="continuity__flow-arrow">&rarr;</span>
+              Lose track of previous decisions
+            </div>
+            <div class="continuity__flow-step">
+              <span class="continuity__flow-arrow">&rarr;</span>
+              Waste 10+ minutes orienting
+            </div>
+            <div class="continuity__flow-step">
+              <span class="continuity__flow-arrow">&rarr;</span>
+              Accidentally redo completed work
+            </div>
+          </div>
+        </div>
+        <div class="continuity__side continuity__side--with">
+          <span class="continuity__side-label">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            With Blueprint
+          </span>
+          <div class="continuity__flow">
+            <div class="continuity__flow-step">
+              <span class="continuity__flow-arrow">&rarr;</span>
+              CLAUDE.md Session Continuity auto-updated
+            </div>
+            <div class="continuity__flow-step">
+              <span class="continuity__flow-arrow">&rarr;</span>
+              <code>/resume-session</code> loads full context
+            </div>
+            <div class="continuity__flow-step">
+              <span class="continuity__flow-arrow">&rarr;</span>
+              Instant orientation in seconds
+            </div>
+            <div class="continuity__flow-step">
+              <span class="continuity__flow-arrow">&rarr;</span>
+              "Start here" tells you exactly what to do
+            </div>
+            <div class="continuity__flow-step">
+              <span class="continuity__flow-arrow">&rarr;</span>
+              Decisions preserved across sessions
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mini terminal -->
+      <div class="continuity__terminal reveal">
+        <div class="code-block">
+          <div class="code-block__header">
+            <div class="code-block__dots">
+              <span class="code-block__dot" style="background:#ff5f57"></span>
+              <span class="code-block__dot" style="background:#febc2e"></span>
+              <span class="code-block__dot" style="background:#28c840"></span>
+            </div>
+            <span class="code-block__title">CLAUDE.md &mdash; Session Continuity</span>
+          </div>
+          <div class="code-block__body">
+            <span class="term__line"><span class="kw">## Session Continuity</span></span>
+            <span class="term__line">&nbsp;</span>
+            <span class="term__line"><span class="str">Last session:</span> 2026-04-13</span>
+            <span class="term__line">&nbsp;</span>
+            <span class="term__line"><span class="str">What was done:</span></span>
+            <span class="term__line"><span class="cmt">- Implemented user auth with OAuth2</span></span>
+            <span class="term__line"><span class="cmt">- Added JWT token refresh endpoint</span></span>
+            <span class="term__line"><span class="cmt">- Review swarm found 2 P2 issues, both fixed</span></span>
+            <span class="term__line">&nbsp;</span>
+            <span class="term__line"><span class="str">What's remaining:</span></span>
+            <span class="term__line"><span class="cmt">- Add rate limiting to auth endpoints</span></span>
+            <span class="term__line"><span class="cmt">- Write integration tests for token flow</span></span>
+            <span class="term__line">&nbsp;</span>
+            <span class="term__line"><span class="str">Start here:</span> <span class="cmd">Add rate limiting middleware</span></span>
+            <span class="term__line"><span class="cmt">&nbsp;&nbsp;to src/middleware/auth-limiter.ts</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ===== INSTALLATION ===== -->
   <section class="install" id="install">
     <div class="container">
@@ -2289,39 +3301,156 @@
     </div>
   </section>
 
-  <!-- ===== SKILLS REFERENCE ===== -->
-  <section class="commands" id="skills-reference">
+  <!-- ===== ALL 53 SKILLS ===== -->
+  <section class="skills-showcase" id="skills-reference">
     <div class="container">
       <div class="section-header reveal">
-        <h2>Skills Reference</h2>
-        <p>53 skills covering the full development lifecycle</p>
+        <h2>All 53 Skills</h2>
+        <p>Every skill in the Blueprint, organized by category</p>
       </div>
-      <div class="table-wrap reveal">
-        <table class="commands-table">
-          <thead>
-            <tr><th>Skill</th><th>Description</th></tr>
-          </thead>
-          <tbody>
-            <tr><td><code>/ideation</code></td><td>Generate and rank improvement ideas by scanning codebase and git history</td></tr>
-            <tr><td><code>/brainstorming</code></td><td>Brainstorm design options, present tradeoffs, create implementation plan</td></tr>
-            <tr><td><code>/discuss</code></td><td>Capture decisions before planning &mdash; locks requirements that planners must honor</td></tr>
-            <tr><td><code>/build-pipeline</code></td><td>Supervised pipeline with checkpoints between every stage</td></tr>
-            <tr><td><code>/ship-pipeline</code></td><td>Autonomous pipeline &mdash; zero checkpoints, fire-and-forget to PR</td></tr>
-            <tr><td><code>/quick-fix</code></td><td>Fast-track small changes (&lt; 3 files) with TDD</td></tr>
-            <tr><td><code>/review-swarm</code></td><td>Multi-agent parallel code review (6-10 reviewers)</td></tr>
-            <tr><td><code>/deep-research</code></td><td>Multi-agent parallel research (5 agents)</td></tr>
-            <tr><td><code>/orchestrate</code></td><td>Wave-based parallel execution with dependency ordering. Supports <code>--iterations N</code> and <code>--convergence</code></td></tr>
-            <tr><td><code>/team-execution</code></td><td>Collaborative agent team with shared task list + messaging. Supports <code>--iterations N</code> and <code>--convergence</code></td></tr>
-            <tr><td><code>/project-start</code></td><td>Interactive project setup &mdash; scaffolds docs and config</td></tr>
-            <tr><td><code>/project-status</code></td><td>Current project state, goal alignment, suggested next actions</td></tr>
-            <tr><td><code>/systematic-debugging</code></td><td>Root cause investigation with systematic hypothesis testing</td></tr>
-            <tr><td><code>/session-wrap</code></td><td>End-of-session documentation and context capture</td></tr>
-            <tr><td><code>/knowledge-compounding</code></td><td>Document solved problems as searchable institutional knowledge</td></tr>
-            <tr><td><code>/backlog-triage</code></td><td>Triage inbox items into prioritized tasks</td></tr>
-            <tr><td><code>/health-check</code></td><td>Comprehensive project health check across 8 areas</td></tr>
-            <tr><td><code>/plugin-update</code></td><td>Update plugin to latest version from GitHub</td></tr>
-          </tbody>
-        </table>
+      <div class="skills-grid reveal reveal-stagger">
+        <!-- Pipelines -->
+        <div class="skill-category">
+          <div class="skill-category__header">
+            <span class="skill-category__title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Pipelines
+            </span>
+            <span class="skill-category__count">5</span>
+          </div>
+          <div class="skill-category__body">
+            <div class="skill-category__items">
+              <span class="skill-tag">build-pipeline</span>
+              <span class="skill-tag">ship-pipeline</span>
+              <span class="skill-tag">quick-fix</span>
+              <span class="skill-tag">orchestrate</span>
+              <span class="skill-tag">team-execution</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Design & Planning -->
+        <div class="skill-category">
+          <div class="skill-category__header">
+            <span class="skill-category__title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+              Design &amp; Planning
+            </span>
+            <span class="skill-category__count">8</span>
+          </div>
+          <div class="skill-category__body">
+            <div class="skill-category__items">
+              <span class="skill-tag">brainstorming</span>
+              <span class="skill-tag">discuss</span>
+              <span class="skill-tag">writing-plans</span>
+              <span class="skill-tag">deepen-plan</span>
+              <span class="skill-tag">deep-research</span>
+              <span class="skill-tag">ideation</span>
+              <span class="skill-tag">scope-cutting</span>
+              <span class="skill-tag">spike-exploration</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quality & Review -->
+        <div class="skill-category">
+          <div class="skill-category__header">
+            <span class="skill-category__title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Quality &amp; Review
+            </span>
+            <span class="skill-category__count">8</span>
+          </div>
+          <div class="skill-category__body">
+            <div class="skill-category__items">
+              <span class="skill-tag">review-swarm</span>
+              <span class="skill-tag">requesting-code-review</span>
+              <span class="skill-tag">receiving-code-review</span>
+              <span class="skill-tag">systematic-debugging</span>
+              <span class="skill-tag">test-driven-development</span>
+              <span class="skill-tag">add-tests</span>
+              <span class="skill-tag">verification-before-completion</span>
+              <span class="skill-tag">iterative-refinement</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Session Management -->
+        <div class="skill-category">
+          <div class="skill-category__header">
+            <span class="skill-category__title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              Session Management
+            </span>
+            <span class="skill-category__count">9</span>
+          </div>
+          <div class="skill-category__body">
+            <div class="skill-category__items">
+              <span class="skill-tag">project-start</span>
+              <span class="skill-tag">project-status</span>
+              <span class="skill-tag">resume-session</span>
+              <span class="skill-tag">pause-checkpoint</span>
+              <span class="skill-tag">session-wrap</span>
+              <span class="skill-tag">session-continuity</span>
+              <span class="skill-tag">context-checkpoint</span>
+              <span class="skill-tag">backlog-triage</span>
+              <span class="skill-tag">health-check</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Operations -->
+        <div class="skill-category">
+          <div class="skill-category__header">
+            <span class="skill-category__title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+              Operations
+            </span>
+            <span class="skill-category__count">11</span>
+          </div>
+          <div class="skill-category__body">
+            <div class="skill-category__items">
+              <span class="skill-tag">pr-workflow</span>
+              <span class="skill-tag">codebase-mapping</span>
+              <span class="skill-tag">changelog-generation</span>
+              <span class="skill-tag">plugin-update</span>
+              <span class="skill-tag">migrate-to-plugin</span>
+              <span class="skill-tag">dependency-management</span>
+              <span class="skill-tag">deployment-verification</span>
+              <span class="skill-tag">migration-planning</span>
+              <span class="skill-tag">performance-profiling</span>
+              <span class="skill-tag">document-review</span>
+              <span class="skill-tag">browser-testing</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Orchestration & Meta -->
+        <div class="skill-category">
+          <div class="skill-category__header">
+            <span class="skill-category__title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2a3 3 0 0 0-3 3v1a3 3 0 1 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10a3 3 0 0 1 0 6h-1a3 3 0 1 1 0-6h1Z"/><path d="M5 10a3 3 0 0 0 0 6h1a3 3 0 0 0 0-6H5Z"/><path d="M12 18a3 3 0 0 1 3 3v1a3 3 0 1 1-6 0v-1a3 3 0 0 1 3-3Z"/></svg>
+              Orchestration &amp; Meta
+            </span>
+            <span class="skill-category__count">12</span>
+          </div>
+          <div class="skill-category__body">
+            <div class="skill-category__items">
+              <span class="skill-tag">wave-orchestration</span>
+              <span class="skill-tag">swarm-orchestration</span>
+              <span class="skill-tag">agent-teams</span>
+              <span class="skill-tag">dispatching-parallel-agents</span>
+              <span class="skill-tag">resolve-in-parallel</span>
+              <span class="skill-tag">using-git-worktrees</span>
+              <span class="skill-tag">subagent-driven-development</span>
+              <span class="skill-tag">executing-plans</span>
+              <span class="skill-tag">autonomous-loop</span>
+              <span class="skill-tag">finishing-a-development-branch</span>
+              <span class="skill-tag">knowledge-compounding</span>
+              <span class="skill-tag">writing-skills</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
