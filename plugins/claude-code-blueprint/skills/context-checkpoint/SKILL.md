@@ -7,7 +7,7 @@ description: "Trigger this skill when the context window is getting large and yo
 
 ## Overview
 
-Capture the current session state into a lightweight checkpoint file. This is a faster, less comprehensive alternative to `/wrap` — use it when you need a save point but aren't ending the session.
+Capture the current session state into a lightweight checkpoint file. This is a faster, less comprehensive alternative to `/session-wrap` — use it when you need a save point but aren't ending the session.
 
 ## When to Use
 
@@ -89,7 +89,7 @@ Tell the user: "Checkpoint saved. You can resume from this point if context is l
 
 ## Common Mistakes
 
-**Over-documenting** — A checkpoint should take 30 seconds to write. If you're spending more than a minute, you're writing a `/wrap`.
+**Over-documenting** — A checkpoint should take 30 seconds to write. If you're spending more than a minute, you're writing a `/session-wrap`.
 
 **Modifying code** — This is documentation only. The checkpoint captures state, it doesn't change it.
 

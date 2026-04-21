@@ -8,7 +8,7 @@ set -euo pipefail
 
 REPO_URL="https://github.com/Ninety2UA/claude-code-blueprint"
 TEMP_DIR=""
-VERSION="3.1.0"
+VERSION="3.2.0"
 
 # Colors
 RED='\033[0;31m'
@@ -50,6 +50,7 @@ usage() {
     echo "  --scaffold          Scaffold project files only (plugin already installed)"
     echo "  --legacy            Legacy mode: copy all files into project (no plugin)"
     echo "  --no-overwrite      Skip files that already exist"
+    echo "  --local             Install from local repo (for development)"
     echo "  --force             Overwrite all existing files without prompting"
     echo "  --dry-run           Show what would be installed without making changes"
     echo "  -v, --version       Show version and exit"

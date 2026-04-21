@@ -1,10 +1,10 @@
 # Backlog
 
-Dump anything here — ideas, bugs, tasks, notes. No structure required for new entries. Process with `/backlog` to triage into STATUS.md.
+Dump anything here — ideas, bugs, tasks, notes. No structure required for new entries. Process with `/backlog-triage` to triage into STATUS.md.
 
 ## Inbox
 
-<!-- Add items here. Run /backlog to triage. -->
+<!-- Add items here. Run /backlog-triage to triage. -->
 
 ## Triaged
 

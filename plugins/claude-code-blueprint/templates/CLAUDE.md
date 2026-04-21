@@ -18,11 +18,11 @@ Quality over speed. Small steps compound. The patterns you establish will be cop
 **What's remaining:**
 - Run `/project-start` to configure conventions, goals, and status
 
-**Start here:** Run `/start` to set up your project.
+**Start here:** Run `/project-start` to set up your project.
 
 **Current state of the code:**
-- Build: not configured (run `/start`)
-- Tests: not configured (run `/start`)
+- Build: not configured (run `/project-start`)
+- Tests: not configured (run `/project-start`)
 - Uncommitted changes: none
 
 ## Skills

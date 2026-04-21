@@ -7,13 +7,13 @@ description: "Trigger this skill when pausing, resuming, or handing off work bet
 
 ## Overview
 
-Manage state across session boundaries so work can be paused and resumed without losing context. This skill extends the existing `/pause` and `/resume` commands with structured state tracking.
+Manage state across session boundaries so work can be paused and resumed without losing context. This skill extends the existing `/pause-checkpoint` and `/resume-session` skills with structured state tracking.
 
 **Core principle:** Every session should be resumable. If you can't resume cleanly from a state file, the state file is incomplete.
 
 ## State File: docs/context/STATE.md
 
-The central state tracking file. Updated automatically by `/pause`, `/wrap`, and wave-orchestration.
+The central state tracking file. Updated automatically by `/pause-checkpoint`, `/session-wrap`, and wave-orchestration.
 
 ### State File Format
 
@@ -72,13 +72,13 @@ status: [active | paused | blocked | complete]
 | Completing a task in a plan | Update progress and completed tasks list |
 | Completing a wave | Update wave progress table |
 | Hitting a blocker | Add to blockers section |
-| `/pause` command | Full state dump including uncommitted changes |
-| `/wrap` command | Final state update before session end |
-| `/resume` command | Read STATE.md to reload context |
+| `/pause-checkpoint` | Full state dump including uncommitted changes |
+| `/session-wrap` | Final state update before session end |
+| `/resume-session` | Read STATE.md to reload context |
 
 ## Process: Pausing Work
 
-When the user runs `/pause` or you need to save state:
+When the user runs `/pause-checkpoint` or you need to save state:
 
 1. **Capture git state:**
    ```bash

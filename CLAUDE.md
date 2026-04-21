@@ -10,24 +10,27 @@ Quality over speed. Small steps compound. The patterns you establish will be cop
 
 <!-- Updated by /wrap. For full state: read docs/context/STATUS.md -->
 
-**Last session:** 2026-04-02
+**Last session:** 2026-04-21
 
 **What was done:**
-- Built GitHub Pages website (`index.html`, ~97KB) — 13 sections, deployed at <https://ninety2ua.github.io/claude-code-blueprint/> (`9a151f0`)
-- Fixed hook errors: `context-monitor.js` double processState() race, `ship-loop.sh` set -e + stderr leaks, `prompt-guard.js` timeout race (`9a151f0`)
-- Design iterations: peach-amber `#f0a875`, workflow cards, orchestration image uniformity, 3-col install grid (`26fb3be`, `01d7d45`)
-- Deep-analyzed oh-my-claudecode (21.9K stars) — imported 3 patterns: evidence hierarchy, ambiguity gating, deslop pass (`316852f`)
-- Full framework audit (5 reviewer agents + team-lead) — 7 findings, 0 critical. Fixed: `/discuss` in README, stage numbering, duplicate step labels (`9b552f1`)
-- Updated README + website with OMC ecosystem entry (16th repo, 320K+ combined stars) (`36bff61`)
-- Fixed CI: bare URLs in CLAUDE.md for markdownlint MD034 (`714157e`)
+- Full framework audit (5 reviewers + Team Lead cross-check) — 21 findings total, 0 critical
+- Fixed install.sh VERSION 3.1.0 → 3.2.0
+- Fixed stale command names in 7 template files (/start, /backlog, /wrap, /compound, /planning → current names)
+- Fixed stale command names in 6 skill files (ideation, swarm-orchestration, knowledge-compounding, session-continuity, context-checkpoint, backlog-triage)
+- Fixed task-completed.js: removed .ts/.tsx from `node --check` (false positives), changed `python` → `python3`
+- Fixed README TOC anchor (#whats-new-in-v30 → #whats-new-in-v31--v32)
+- Fixed render-graphs.js: `execSync` → `execFileSync`
+- Fixed find-polluter.sh: word splitting on file paths with spaces
+- Fixed team count disagreement: index.html 6→4 teams (matches render-diagrams.html)
+- Documented --local flag in install.sh usage()
 
 **What's remaining:**
 - Untracked `docs/images/icon.png` — decide whether to commit or remove
 - Add OG image (`og-image.png`) for social preview cards when URL is shared
-- `render-graphs.js` uses `execSync` instead of `execFileSync` — cosmetic, low risk
+- `bug-reproduction-validator` agent is unreferenced by any skill — consider integrating into systematic-debugging
 - Reinstall plugin after changes: `/plugin install claude-code-blueprint`
 
-**Start here:** No in-flight work. v3.1.0 on `main`, CI green, website live. All audit findings resolved.
+**Start here:** No in-flight work. v3.2.0 on `main`. Audit fixes uncommitted.
 
 **Current state of the code:**
 - Build: n/a (template repo, no build step)

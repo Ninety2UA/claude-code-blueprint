@@ -8,7 +8,7 @@ argument-hint: "<brief description of what was solved>"
 
 ## Overview
 
-Each solved problem should make future problems easier. This skill captures solved problems as structured documents in `docs/solutions/`, creating a searchable knowledge base that the learnings-researcher agent and `/planning` command automatically consult.
+Each solved problem should make future problems easier. This skill captures solved problems as structured documents in `docs/solutions/`, creating a searchable knowledge base that the learnings-researcher agent and `/writing-plans` skill automatically consult.
 
 **Core principle:** Solve a problem once; benefit every time a similar problem arises.
 
@@ -19,7 +19,7 @@ Each solved problem should make future problems easier. This skill captures solv
 - After discovering a framework gotcha or version-specific behavior
 - After a debugging session that uncovered a non-obvious root cause
 - After making an architectural decision with significant trade-offs
-- When the user says `/compound` or "document this for future reference"
+- When the user says `/knowledge-compounding` or "document this for future reference"
 
 **Don't use for:**
 - Trivial fixes (typos, import corrections)
@@ -111,10 +111,10 @@ Future /planning and /deep-research commands will find this automatically.
 
 | Skill/Command | How It Uses Solutions |
 |---------------|---------------------|
-| `/planning` (build Stage 3) | learnings-researcher searches `docs/solutions/` before planning |
+| `/writing-plans` (build Stage 3) | learnings-researcher searches `docs/solutions/` before planning |
 | `/deep-research` | learnings-researcher includes solutions in research brief |
-| `/build` | Automatically runs `/compound` after Stage 6 if a non-trivial problem was solved |
-| `/wrap` | Reminds to compound if significant debugging or problem-solving occurred |
+| `/build-pipeline` | Automatically runs `/knowledge-compounding` after Stage 6 if a non-trivial problem was solved |
+| `/session-wrap` | Reminds to compound if significant debugging or problem-solving occurred |
 
 ## Quality Bar
 

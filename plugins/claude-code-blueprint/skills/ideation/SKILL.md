@@ -8,7 +8,7 @@ argument-hint: "[optional: focus area, constraint, or volume hint]"
 
 `/ideate` answers: **"What are the strongest ideas worth exploring?"**
 
-This skill produces a ranked ideation artifact in `docs/research/`. It does **not** produce requirements, plans, or code. When the user selects an idea, hand off to `/planning`.
+This skill produces a ranked ideation artifact in `docs/research/`. It does **not** produce requirements, plans, or code. When the user selects an idea, hand off to `/writing-plans`.
 
 ## Focus Hint
 
@@ -117,7 +117,7 @@ Then include a brief **rejection summary** table:
 
 After presenting, ask what should happen next:
 
-1. **Brainstorm a selected idea** — write/update the ideation doc, mark that idea as `Explored`, then invoke `/planning` with the selected idea as the seed
+1. **Brainstorm a selected idea** — write/update the ideation doc, mark that idea as `Explored`, then invoke `/writing-plans` with the selected idea as the seed
 2. **Refine the ideation** — add more angles (→ Phase 2), raise the bar (→ Phase 3), or dig deeper on one idea
 3. **End session** — write/update the ideation doc, offer to commit it
 
@@ -157,10 +157,10 @@ focus: <optional focus hint>
 - YYYY-MM-DD: Initial ideation — <candidate count> generated, <survivor count> survived
 ```
 
-**Always write the artifact before:** handing off to `/planning`, ending the session, or after refinement rounds.
+**Always write the artifact before:** handing off to `/writing-plans`, ending the session, or after refinement rounds.
 
 ## Key Principles
 
 - **Ground before ideating** — scan the actual codebase first. No abstract advice.
 - **Generate many → critique all → explain survivors** — quality comes from explicit rejection, not optimistic ranking.
-- **Route to /planning** — ideation identifies directions; `/planning` defines the selected one precisely.
+- **Route to /writing-plans** — ideation identifies directions; `/writing-plans` defines the selected one precisely.

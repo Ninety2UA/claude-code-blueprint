@@ -45,7 +45,7 @@ if (files.length === 0) {
 for (const file of files) {
   if (!fs.existsSync(file)) continue;
 
-  if (file.endsWith('.js') || file.endsWith('.ts') || file.endsWith('.tsx')) {
+  if (file.endsWith('.js') || file.endsWith('.jsx')) {
     const result = run('node', ['--check', file]);
     if (result === null) {
       issues.push('Syntax error in ' + file);
@@ -58,7 +58,7 @@ for (const file of files) {
     }
   }
   if (file.endsWith('.py')) {
-    const result = run('python', ['-m', 'py_compile', file]);
+    const result = run('python3', ['-m', 'py_compile', file]);
     if (result === null) {
       issues.push('Syntax error in ' + file);
     }
