@@ -2242,7 +2242,7 @@
       <div class="hero__content">
         <div class="hero__badge">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-          v3.2.0 &mdash; Claude Code Plugin
+          v3.2.1 &mdash; Claude Code Plugin
         </div>
         <h1>Claude Code<br><span class="gradient-text">Blueprint</span></h1>
         <p class="hero__tagline">"Each unit of engineering work should make subsequent units easier &mdash; not harder."</p>
@@ -3489,10 +3489,35 @@
   <!-- ===== WHAT'S NEW ===== -->
   <section class="whats-new" id="whats-new">
     <div class="container">
-      <!-- v3.2.0 -->
+      <!-- v3.2.1 -->
       <div class="section-header reveal">
-        <span class="new__badge">v3.2.0</span>
+        <span class="new__badge">v3.2.1</span>
         <h2>What's New</h2>
+        <p>Framework audit &mdash; 18 fixes across hooks, skills, templates, and docs</p>
+      </div>
+      <div class="grid-4 reveal reveal-stagger">
+        <div class="new-card">
+          <h3>Hook Quality Fixes</h3>
+          <p><code>task-completed.js</code> no longer false-positives on TypeScript files. Python syntax checks now use <code>python3</code> (was silently skipped on macOS).</p>
+        </div>
+        <div class="new-card">
+          <h3>Stale References Purged</h3>
+          <p>35 occurrences of old command names (<code>/start</code>, <code>/wrap</code>, <code>/planning</code>, etc.) updated across 13 files. Every new project now gets correct skill references.</p>
+        </div>
+        <div class="new-card">
+          <h3>Shell Scripts Hardened</h3>
+          <p><code>render-graphs.js</code> upgraded to <code>execFileSync</code>. <code>find-polluter.sh</code> word-splitting bug fixed for paths with spaces.</p>
+        </div>
+        <div class="new-card">
+          <h3>Version Chain Aligned</h3>
+          <p>All manifests, installer, and docs now report consistent version numbers. README TOC anchor fixed. Team count corrected across website pages.</p>
+        </div>
+      </div>
+
+      <!-- v3.2.0 -->
+      <div class="section-header reveal" style="margin-top: 4rem;">
+        <span class="new__badge">v3.2.0</span>
+        <h2>Previously</h2>
         <p>Commands merged into skills &mdash; 53 skills, zero commands</p>
       </div>
       <div class="grid-4 reveal reveal-stagger">

@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="#how-does-this-compare">Compare</a> ·
-  <a href="#whats-new-in-v31--v32--plugin-mode">What's New</a> ·
+  <a href="#whats-new-in-v321--framework-audit-fixes">What's New</a> ·
   <a href="#quick-start">Quick Start</a> ·
   <a href="#what-you-get">What You Get</a> ·
   <a href="#workflow">Workflow</a> ·
@@ -73,6 +73,20 @@ Every component in Blueprint is informed by what works (and what doesn't) across
 | **Multi-Agent Framework** | Doc | **3 patterns** | Worker failure protocol, contradiction resolution, structured escalation |
 
 > **"Import nothing" is a feature, not a failure.** The gravitational pull to adopt *something* from impressive repos is a real bias. Sometimes the right answer after deep analysis is to change nothing — and documenting why is just as valuable as documenting what you imported.
+
+### What's New in v3.2.1 — Framework Audit Fixes
+
+Full framework audit (5 parallel reviewers + Team Lead cross-check) across all 53 skills, 26 agents, 6 hooks, 17 templates, and supporting infrastructure. **18 fixes:**
+
+- **TypeScript false positives fixed** — `task-completed.js` hook was running `node --check` on `.ts`/`.tsx` files, which always fails. Narrowed to `.js`/`.jsx` only.
+- **Python syntax checks restored** — same hook used `python` (missing on macOS) instead of `python3`. Python file syntax errors were silently ignored.
+- **Stale command names purged** — 35 occurrences of old command names (`/start`, `/wrap`, `/compound`, `/planning`, `/backlog`, `/pause`, `/build`, `/ship`, `/quick`) updated across 7 template files and 6 skill files. Every new project now gets correct references.
+- **`execSync` replaced with `execFileSync`** — `render-graphs.js` now uses the safer subprocess API.
+- **Shell script hardened** — `find-polluter.sh` word-splitting bug on file paths with spaces fixed (`for` loop replaced with `while IFS= read -r`).
+- **README TOC anchor fixed** — "What's New" link now resolves correctly on GitHub.
+- **Version chain aligned** — `install.sh`, `plugin.json`, and `CLAUDE.md` all report consistent version numbers.
+- **Team count corrected** — website and diagram source now agree on 4 agent teams (was 6 vs 4).
+- **`--local` flag documented** — `install.sh` usage now shows the development install flag.
 
 ### What's New in v3.1 & v3.2 — Plugin Mode
 

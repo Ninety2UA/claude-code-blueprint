@@ -23,6 +23,8 @@ Quality over speed. Small steps compound. The patterns you establish will be cop
 - Fixed find-polluter.sh: word splitting on file paths with spaces
 - Fixed team count disagreement: index.html 6→4 teams (matches render-diagrams.html)
 - Documented --local flag in install.sh usage()
+- Bumped version to v3.2.1 across plugin.json, install.sh, CLAUDE.md
+- Added v3.2.1 changelog to README.md and index.html (GitHub Pages)
 
 **What's remaining:**
 - Untracked `docs/images/icon.png` — decide whether to commit or remove
@@ -30,7 +32,7 @@ Quality over speed. Small steps compound. The patterns you establish will be cop
 - `bug-reproduction-validator` agent is unreferenced by any skill — consider integrating into systematic-debugging
 - Reinstall plugin after changes: `/plugin install claude-code-blueprint`
 
-**Start here:** No in-flight work. v3.2.0 on `main`. Audit fixes uncommitted.
+**Start here:** No in-flight work. v3.2.1 on `main`. Audit fixes uncommitted.
 
 **Current state of the code:**
 - Build: n/a (template repo, no build step)
