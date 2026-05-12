@@ -10,6 +10,14 @@ You are executing the full-cycle development pipeline. This chains together mult
 
 **Announce at start:** "Starting the build pipeline — full-cycle development from requirements to verified code."
 
+## When NOT to Use
+
+- **Trivial change (< 3 files, obvious root cause)** — use `/quick-fix`; the pipeline is overhead.
+- **Fully autonomous, no human checkpoints** — use `/ship-pipeline`; build-pipeline exists *because* of the checkpoints.
+- **Pure refactor without behavior change** — use `/iterative-refinement` directly against the diff.
+- **You only need a plan, not execution** — use `/writing-plans` and stop there.
+- **Deep research or feasibility check** — use `/deep-research` or `/spike-exploration` before entering the pipeline.
+
 ## Pipeline Stages
 
 Execute these stages IN ORDER. Do not skip stages. Stop between stages for user feedback.
@@ -140,3 +148,14 @@ If the user specifies `--quick` or the change is small (< 3 files, clarity ≥ 0
 - Use the systematic-debugging skill if you encounter bugs during execution
 - If blocked, stop and ask for help — don't guess
 - If review finds critical issues, return to Stage 4 to fix them before Stage 6
+
+## Common Rationalizations
+
+| Rationalization | Reality |
+|---|---|
+| "Stage 5 review is overkill, the code looks right" | Review is the discipline; "looks right" is the heuristic that produced the bug. Run it. |
+| "I'll skip the brainstorm — requirements are clear" | If requirements are clear AND the change is small, use `--quick`. Otherwise, brainstorm. Skipped brainstorms are how features ship the wrong shape. |
+| "I'll batch through stages without checkpoints" | That's `/ship-pipeline`. `/build-pipeline` exists *because* checkpoints catch misalignment cheaply. Strip them and you've made the wrong tool. |
+| "The user approved Stage 1, so Stage 4 changes are pre-approved" | Approval is per-stage. Plan changes mid-execution need a fresh checkpoint. |
+| "Tests fail but the build is otherwise complete" | Stage 6 (Verify) blocks the pipeline. Failing tests at the gate means the previous stages weren't actually done. |
+| "I'll defer the compound stage" | Stage 8 captures learnings while context is hot. Deferred to "later" means lost. 60 seconds now beats reconstructing it next sprint. |

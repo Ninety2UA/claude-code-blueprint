@@ -96,6 +96,36 @@ Flag:
 - [what's done well]
 ```
 
+## Calibration
+
+**Confidence scoring** — Use discrete anchored integers for each finding:
+
+| Score | Meaning |
+|-------|---------|
+| **0** | False positive or pre-existing issue |
+| **25** | Might be real but couldn't verify |
+| **50** | Verified real but nitpick / low importance |
+| **75** | Double-checked, will hit in practice |
+| **100** | Confirmed, will happen frequently |
+
+**Remediation tier** — Classify each finding:
+
+| Tier | When to Use |
+|------|-------------|
+| **safe_auto** | Mechanical test fix, zero ambiguity (fix assertion typo, add missing cleanup, rename misleading test) |
+| **gated_auto** | Concrete test to add/fix but needs confirmation (missing edge case, weak assertion, test smell) |
+| **advisory** | Observation about test strategy (coverage gap in low-risk area, style preference) |
+| **present** | Testing strategy decision (mock vs integration, test granularity, shared fixture approach) |
+
+When uncertain between tiers, choose the more conservative (higher-touch) tier.
+
+**Finding format** — Each finding must include:
+```
+- **[Title]** — `file:line` — Confidence: [0/25/50/75/100] — Tier: [safe_auto|gated_auto|advisory|present]
+  - Impact: [what regression risk this creates — describe the scenario that breaks]
+  - Fix: [specific test to add or assertion to strengthen]
+```
+
 ## Rules
 
 - Focus on behavioral coverage, not line coverage

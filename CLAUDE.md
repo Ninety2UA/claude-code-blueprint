@@ -65,8 +65,8 @@ Run `/project-start` after install to configure `docs/context/CONVENTIONS.md` wi
 ```
 .claude-plugin/                          # Marketplace manifest (marketplace.json)
 plugins/claude-code-blueprint/           # Plugin root
-  skills/                                # 53 skills (slash commands + workflows)
-  agents/                                # 26 specialized subagents
+  skills/                                # 54 skills (slash commands + workflows)
+  agents/                                # 27 specialized subagents
   hooks/hooks.json                       # Hook definitions (${CLAUDE_PLUGIN_ROOT})
   hooks/handlers/                        # Hook scripts (session-start, context-monitor, etc.)
   templates/                             # Project scaffolding source (copied by /start)

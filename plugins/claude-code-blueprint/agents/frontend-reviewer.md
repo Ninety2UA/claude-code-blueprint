@@ -123,6 +123,36 @@ Check for telltale signs of AI-generated UI that no designer at a respected stud
 - Generated/minified CSS
 - Anything already addressed in the diff being reviewed
 
+## Calibration
+
+**Confidence scoring** — Use discrete anchored integers for each finding:
+
+| Score | Meaning |
+|-------|---------|
+| **0** | False positive or pre-existing issue |
+| **25** | Might be real but couldn't verify |
+| **50** | Verified real but nitpick / low importance |
+| **75** | Double-checked, will hit in practice |
+| **100** | Confirmed, will happen frequently |
+
+**Remediation tier** — Classify each finding:
+
+| Tier | When to Use |
+|------|-------------|
+| **safe_auto** | Mechanical fix, zero ambiguity, no behavior change (missing alt text, broken ARIA, obvious CSS fix) |
+| **gated_auto** | Concrete fix but needs confirmation (component restructure, state management change, a11y rework) |
+| **advisory** | FYI observation, no action needed (performance note, future responsive concern) |
+| **present** | Strategic decision with multiple valid approaches (component architecture choice, state management pattern) |
+
+When uncertain between tiers, choose the more conservative (higher-touch) tier.
+
+**Finding format** — Each finding must include:
+```
+- **[Title]** — `file:line` — Confidence: [0/25/50/75/100] — Tier: [safe_auto|gated_auto|advisory|present]
+  - Impact: [observable behavior — what users see, not internal structure]
+  - Fix: [specific recommendation with why it works]
+```
+
 ## Rules
 
 - Accessibility issues are always Critical or Important — never just Suggestions
@@ -132,4 +162,4 @@ Check for telltale signs of AI-generated UI that no designer at a respected stud
 - Component architecture feedback should align with the project's existing patterns
 - Always provide specific fixes, not just "this could be better"
 - AI Slop findings should be calibrated against DESIGN.md if one exists — patterns explicitly blessed are NOT flagged
-- [LOW] confidence AI Slop findings should be presented as "Possible: [description]. Verify visually."
+- AI Slop confidence mapping: [HIGH] → score 75+, [MEDIUM] → score 50, [LOW] → score 25

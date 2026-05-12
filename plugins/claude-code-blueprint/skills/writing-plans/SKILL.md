@@ -9,6 +9,14 @@ description: "Trigger this skill when converting an approved design or spec into
 
 Write comprehensive implementation plans assuming the engineer has zero context for our codebase and questionable taste. Document everything they need to know: which files to touch for each task, code, testing, docs they might need to check, how to test it. Give them the whole plan as bite-sized tasks. DRY. YAGNI. TDD. Frequent commits.
 
+## When NOT to Use
+
+- **No design exists yet** — run `/brainstorming` first to lock the design; planning a vague idea produces a vague plan.
+- **The change qualifies as a quick fix** (< 3 files, obvious root cause) — use `/quick-fix` and skip the plan document.
+- **You're triaging open work** — use `/backlog-triage`; `/writing-plans` produces *one* plan for *one* change.
+- **You're researching feasibility** — use `/spike-exploration` or `/deep-research`; the plan is the artifact *after* feasibility is settled.
+- **You're fixing a regression** — use `/systematic-debugging`; debug-first then plan if the fix is non-trivial.
+
 Assume they are a skilled developer, but know almost nothing about our toolset or problem domain. Assume they don't know good test design very well.
 
 **Announce at start:** "I'm using the writing-plans skill to create the implementation plan."
@@ -16,6 +24,25 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 **Context:** This should be run in a dedicated worktree (created by brainstorming skill).
 
 **Save plans to:** `docs/plans/YYYY-MM-DD-<feature-name>.md`
+
+## Requirements Quality Check (Rigor Probes)
+
+Before diving into planning, verify the incoming requirements are solid. If requirements came from brainstorming, scan for these five gap types. Fire each as a prose question to the user — not a checklist.
+
+| Probe | Question | When to Fire |
+|-------|----------|-------------|
+| **Evidence gap** | "What evidence do we have that this is actually the problem?" | Requirements assert a problem without citing user data, logs, or incidents |
+| **Specificity gap** | "Can you give a concrete example of when this would happen?" | Requirements describe abstract scenarios without grounding in real use cases |
+| **Counterfactual gap** | "What if we didn't do this — what breaks?" | Requirements lack a clear cost-of-inaction; the feature might be nice-to-have |
+| **Attachment gap** | "Are we attached to this solution, or is there a simpler approach?" | Requirements prescribe a specific implementation rather than describing the problem |
+| **Durability gap** | "Will this still matter in 6 months?" | Requirements address a transient pain point that may resolve itself |
+
+**Rules:**
+- Fire at most 2-3 probes per planning session — don't interrogate
+- Skip probes where the answer is obvious from the requirements doc
+- If requirements came from a rigorous brainstorming session with probes already applied, skip this section entirely
+- Probes that surface real gaps → pause planning, send the user back to refine requirements
+- Probes that are satisfactorily answered → proceed to planning
 
 ## Bite-Sized Task Granularity
 
@@ -179,6 +206,27 @@ If no automated verification exists yet, say so explicitly: `No automated verifi
 - Exact commands with expected output
 - Reference relevant skills with @ syntax
 - DRY, YAGNI, TDD, frequent commits
+
+## Boundaries
+
+Every plan should declare three lists, in this order:
+
+- **Always do** — non-negotiables for this work (run tests before commits, follow existing naming, validate user input at boundaries, cite framework docs for non-obvious patterns)
+- **Ask first** — actions that need explicit user approval (DB schema changes, new dependencies, auth changes, env var additions, public API changes, anything in CLAUDE.md's "Must ask the user FIRST" list)
+- **Never do** — hard prohibitions (commit secrets, edit vendor directories, remove failing tests without approval, skip verification, use `--no-verify` to bypass hooks)
+
+The three-tier framing is sharper than a generic "be careful" — at decision time, an action falls into exactly one bucket. Plans without explicit boundaries inherit them from CLAUDE.md, but for non-trivial work always restate the work-specific items.
+
+## Common Rationalizations
+
+| Rationalization | Reality |
+|---|---|
+| "The plan is obvious, I'll just describe the steps" | Vague plans become vague code. Exact file paths, exact commands, and inline code prevent the executor from improvising. |
+| "I'll skip verification commands and figure them out at run-time" | The executor will skip verification too. If the plan-author can't articulate "Expected: PASS," neither will the implementer. |
+| "Interface contracts are implementation details" | When parallel executors share a contract, the contract IS the spec. Skipping the interface section creates Wave-N integration breakage. |
+| "Plans are overhead — let me start coding" | Planning IS the task. Implementation without a plan is typing, not engineering. The cost of the plan is paid back many times over in fewer wrong turns. |
+| "I'll write the plan after the design — they're the same thing" | Brainstorming produces a *what*; the plan produces a *how with file paths and commands*. Conflating them loses the executable detail. |
+| "Boundaries are for big projects" | Boundaries are cheapest to declare on small plans (3 lines per list) and most expensive to recover from when missing. |
 
 ## Execution Handoff
 

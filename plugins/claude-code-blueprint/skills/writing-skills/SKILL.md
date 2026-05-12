@@ -116,8 +116,10 @@ What is this? Core principle in 1-2 sentences.
 ## When to Use
 [Small inline flowchart IF decision non-obvious]
 
-Bullet list with SYMPTOMS and use cases
-When NOT to use
+Bullet list with SYMPTOMS and use cases.
+
+## When NOT to Use
+**Required section.** Bulleted list of cases that look like a match but aren't, plus the skill that *should* trigger instead. Symmetric to "When to Use" — readers compare the two before deciding to invoke.
 
 ## Core Pattern (for techniques/patterns)
 Before/after code comparison
@@ -132,9 +134,24 @@ Link to file for heavy reference or reusable tools
 ## Common Mistakes
 What goes wrong + fixes
 
+## Common Rationalizations
+**Required section** for any skill that enforces a discipline (gates, mandatory hops, quality bars). Two-column table:
+
+| Rationalization | Reality |
+|---|---|
+| "It's working, no need to touch it" | Working code that's hard to read will be hard to fix when it breaks. |
+| "I'll just quickly skip the test for this one" | Skipped tests become permanent. The convention is the value. |
+
+Anticipate 5–7 excuses an agent might use to bypass the skill, with a one-line direct counter. Keep entries punchy — multi-line prose dilutes the format. Tables are denser and harder to skim past than prose lists, which is the point.
+
 ## Real-World Impact (optional)
 Concrete results
 ```
+
+**Why these sections are required:**
+
+- **When NOT to Use** prevents skill mis-triggering. Every skill has near-neighbors; without explicit boundaries, the wrong skill fires.
+- **Common Rationalizations** is the loophole patch. Every discipline-enforcing skill that ships without one accumulates skip patterns. Catalog them in the table so the next agent reads its own excuse refuted before it speaks.
 
 
 ## Claude Search Optimization (CSO)
@@ -287,6 +304,43 @@ Use skill name only, with explicit requirement markers:
 
 **Why no @ links:** `@` syntax force-loads files immediately, consuming 200k+ context before you need them.
 
+## Load-Bearing Rules Belong Inline (Not in References)
+
+**SKILL.md is always loaded; references load on demand.** An agent that renders past a "Load `references/X.md` now" instruction on the way to a later phase has no per-option routing in its context — the menu becomes a textual handoff with no associated action.
+
+**The test:** Could an agent that skips the reference still complete the skill correctly? If no — if the agent without the reference would stop, guess, or render a menu without firing the routed action — the missing content is **load-bearing** and belongs inline.
+
+**Rules of thumb:**
+
+| Pattern | Belongs in |
+|---------|-----------|
+| **Per-option routing for an interactive menu the skill renders** | **Inline** (SKILL.md) — the bare per-option action lives here, even if the elaborate sub-flow stays in a reference |
+| **Always-executed step in this phase** | **Inline** — references are for branches the agent enters only sometimes |
+| **Conditional sub-flow that only fires under specific signals** | **Reference** — load-on-demand is appropriate |
+| **Heavy reference material (API docs, syntax, comprehensive examples)** | **Reference** — too large for inline |
+| **Sub-flow used in a minority of invocations** | **Reference** — extracts >50 lines from skill body, saves tokens on every other invocation |
+
+**Platform-explicit invocation language:** When a routing line says "Call `/foo`," ask whether an agent could read it as "tell the user to type" rather than "fire the tool now." Name the platform primitive and the argument shape:
+
+```
+❌ Bad:  "Start /ce-work" → "Call /ce-work with the plan path"
+            (Reads as "tell the user to invoke /ce-work")
+
+✅ Good: "Invoke the ce-work skill via the platform's skill-invocation primitive
+          (Skill in Claude Code), passing the plan path as the skill argument.
+          Do NOT merely tell the user to type /ce-work — fire the invocation now
+          so the plan executes in this session."
+```
+
+**Why this matters:** The agent that skipped your reference is still going to render the menu. If you didn't put the routing inline, the menu becomes a dead end.
+
+**Authoring checklist before extracting a block to a reference:**
+
+- [ ] Is the block always executed when this phase is reached? If yes, lean toward inlining.
+- [ ] Does the block carry routing for an interactive menu? If yes, the bare per-option action belongs inline.
+- [ ] Could an agent that skips the reference still complete the skill correctly? If no, the content is load-bearing — inline it.
+- [ ] Is the language platform-explicit? Name the primitive (Skill tool) and the argument shape.
+
 ## Flowchart Usage
 
 ```dot
@@ -343,6 +397,50 @@ Choose most relevant language:
 - Write contrived examples
 
 You're good at porting - one great example is enough.
+
+## Script-First Skill Architecture
+
+When a skill processes large datasets (session transcripts, log files, configuration inventories, JSONL output), having the model do the processing is a token-expensive anti-pattern. Moving data processing into a bundled script and having the model present results cuts tokens by 60-75%.
+
+**The pattern:**
+
+```
+skills/<skill-name>/
+  SKILL.md              # Instructions: run script, present output
+  scripts/
+    process.py          # Does ALL data processing, outputs JSON
+```
+
+1. **Script does all mechanical work.** Reading files, parsing structured formats, applying classification rules (regex, keyword lists), normalizing results, computing counts. Outputs pre-classified JSON to stdout.
+2. **SKILL.md instructs presentation only.** Run the script, read the JSON, format it for the user. Explicitly prohibit re-classifying, re-parsing, or loading reference files.
+3. **Single source of truth for rules.** Classification logic lives exclusively in the script. The SKILL.md references the script's output categories as given facts but does not define them.
+
+**Apply when** the skill meets ANY of:
+- Processes more than ~50 items or reads files larger than a few KB
+- Classification rules are deterministic (regex, keyword lists, lookup tables)
+- Input data follows a consistent schema (JSONL, CSV, structured logs)
+- The skill runs frequently or feeds into further analysis
+
+**Do NOT apply when:**
+- The skill's core value is the model's judgment (code review, architectural analysis)
+- Input is unstructured natural language
+- The dataset is small enough that processing costs are negligible
+
+### Anti-patterns
+
+- **Instruction-only optimization** — Adding "don't do X" to SKILL.md without providing a script alternative. The model finds other token-expensive paths to the same result.
+- **Hybrid classification** — Script classifies some items and the model classifies the rest. This still loads context. Go all-in on the script. Items the script can't classify should be dropped as "unclassified," not handed to the model.
+- **Dual rule definitions** — Classification rules in BOTH the script AND SKILL.md. They drift apart, the model may override the script's decisions, and tokens are wasted on re-evaluation. One source of truth.
+
+### Prefer Python over bash for multi-step scripts
+
+When a script orchestrates 2+ external CLI tools or needs retry logic, **Python beats bash**:
+
+- Bash `set -euo pipefail` becomes a footgun when you need controlled failure paths — `url=$(curl ...)` exits the entire script before retry logic runs.
+- Bash 3.2 (default on macOS) lacks negative array indexing, can't spawn shell builtins from non-shell test runners, and integer-math edge cases recur.
+- Python's `subprocess` model makes error handling explicit and testable: `result = subprocess.run(cmd, check=False); if result.returncode != 0: retry()`.
+
+Bash is still the right choice for simple sequential scripts with no error recovery, one-liner wrappers around a single tool, or git hooks where the only failure mode is "abort the pipeline."
 
 ## File Organization
 

@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Claude Code Blueprint — Production-Grade Plugin for AI-Assisted Development</title>
-  <meta name="description" content="53 skills, 26 agents, 6 hooks. A structured operating system for Claude Code that compounds across sessions.">
+  <meta name="description" content="54 skills, 29 agents, 8 hooks. A structured operating system for Claude Code that compounds across sessions.">
   <meta property="og:title" content="Claude Code Blueprint">
-  <meta property="og:description" content="Production-grade Claude Code plugin. 53 skills, 26 agents, 6 hooks covering the full development lifecycle.">
+  <meta property="og:description" content="Production-grade Claude Code plugin. 54 skills, 29 agents, 8 hooks covering the full development lifecycle.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ninety2ua.github.io/claude-code-blueprint/">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231a1a2e'/><text x='50' y='72' font-size='60' font-weight='700' fill='%23D4A574' text-anchor='middle' font-family='system-ui'>B</text></svg>">
@@ -2242,7 +2242,7 @@
       <div class="hero__content">
         <div class="hero__badge">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-          v3.2.1 &mdash; Claude Code Plugin
+          v3.3.0 &mdash; GSD Deep-Analysis Imports
         </div>
         <h1>Claude Code<br><span class="gradient-text">Blueprint</span></h1>
         <p class="hero__tagline">"Each unit of engineering work should make subsequent units easier &mdash; not harder."</p>
@@ -3489,10 +3489,51 @@
   <!-- ===== WHAT'S NEW ===== -->
   <section class="whats-new" id="whats-new">
     <div class="container">
-      <!-- v3.2.1 -->
+      <!-- v3.3.0 -->
       <div class="section-header reveal">
-        <span class="new__badge">v3.2.1</span>
+        <span class="new__badge">v3.3.0</span>
         <h2>What's New</h2>
+        <p>GSD deep-analysis imports &mdash; 13 patterns across read-injection, debug persistence, plan-checker, doc verification, and more</p>
+      </div>
+      <div class="grid-4 reveal reveal-stagger">
+        <div class="new-card">
+          <h3>Read-Injection Scanner</h3>
+          <p>New PostToolUse hook scans content returned by <code>Read</code> for prompt-injection patterns + invisible Unicode + tag-block range. Catches file-content poisoning that survives context compression.</p>
+        </div>
+        <div class="new-card">
+          <h3>Persistent Debug Sessions</h3>
+          <p><code>systematic-debugging</code> now optionally writes <code>.claude/debug/&lt;slug&gt;.md</code>. Hypothesis log + eliminated branches survive context resets. Auto-trigger after 3rd cycle.</p>
+        </div>
+        <div class="new-card">
+          <h3>Doc-Claim Verifier</h3>
+          <p>New agent extracts factual claims from docs (file paths, commands, endpoints, symbols, deps) and verifies each against the filesystem. PASS/FAIL/UNVERIFIABLE per claim. Catches doc drift after refactors.</p>
+        </div>
+        <div class="new-card">
+          <h3>Pattern Mapper</h3>
+          <p>New agent finds 3&ndash;5 existing analogs for each new file in a plan, emits <code>PATTERNS.md</code> with line-numbered code excerpts. Stops new code from inventing structure that already exists.</p>
+        </div>
+        <div class="new-card">
+          <h3>/forensics Skill</h3>
+          <p>New post-mortem skill diagnoses failed <code>/ship</code> runs against ship-logs and git state. Investigates 4 anomaly categories. Read-only. Redacts sensitive content.</p>
+        </div>
+        <div class="new-card">
+          <h3>Adversarial Stance</h3>
+          <p>code-reviewer, security-sentinel, integration-checker, findings-synthesizer, plan-checker now lead with explicit "assume X is broken until evidence proves otherwise" framing.</p>
+        </div>
+        <div class="new-card">
+          <h3>Plan-Checker Refinements</h3>
+          <p>Three new dimensions: scope-reduction detection ("v1" hedges against locked decisions), cross-plan data-contract compatibility, must_haves discipline (user-observable truths).</p>
+        </div>
+        <div class="new-card">
+          <h3>Subagent Return Contract</h3>
+          <p>Long-running agents now return <code>{DONE&nbsp;|&nbsp;BLOCKED&nbsp;|&nbsp;NEEDS_INPUT&nbsp;|&nbsp;INCONCLUSIVE}</code> + &le;&nbsp;2K-token summary. Bounds handoff cost. Detail spilled to disk, not context.</p>
+        </div>
+      </div>
+
+      <!-- v3.2.1 -->
+      <div class="section-header reveal" style="margin-top: 4rem;">
+        <span class="new__badge">v3.2.1</span>
+        <h2>Previously</h2>
         <p>Framework audit &mdash; 18 fixes across hooks, skills, templates, and docs</p>
       </div>
       <div class="grid-4 reveal reveal-stagger">

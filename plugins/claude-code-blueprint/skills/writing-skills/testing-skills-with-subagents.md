@@ -483,6 +483,101 @@ If you wouldn't write code without tests, don't write skills without testing the
 
 RED-GREEN-REFACTOR for documentation works exactly like RED-GREEN-REFACTOR for code.
 
+## Variance Reduction as Eval Methodology
+
+When tuning agent prompts or rubrics, **measure variance reduction first** — not classification accuracy. A rubric that produces the same answer every time is more valuable than one that produces the "right" answer inconsistently.
+
+### Three Signal Tiers (hierarchy of evidence)
+
+| Tier | Signal | Trust level | What to do |
+|------|--------|-------------|------------|
+| **First-order** | Variance reduction on ambiguous fixtures | Highest — this is the determinism win | N≥3 trials per cell, count distinct classifications, report that count |
+| **Second-order** | Stable disagreements on boundary cases | Real — defensible trade-off | Both readings defensible = legible trade-off, not a problem |
+| **Third-order** | Classification rate shifts on textbook fixtures | Noisiest, lowest-value | Treat as third-tier signal — don't optimize on this |
+
+### Why N=1 synthetic-fixture evals mislead
+
+Persona dispatches over the same input can produce different classifications across runs because the rubric's wording is genuinely ambiguous, not because the model is broken. On synthetic fixtures the temptation to read N=1 is strong — the fixture *feels* deterministic, so one trial *feels* sufficient. **It isn't.**
+
+A baseline that emits 3 different classifications across 4 trials on the same input is not "the model is broken" — it's "the rubric is ambiguous." Two single-trial reads on the same prompt pair on the same fixture can produce wildly different stories:
+
+- (baseline=safe_auto, tightened=gated_auto) → "regression: tightening pushed a safe_auto into gated_auto"
+- (baseline=manual, tightened=gated_auto) → "improvement: tightening pulled a manual into gated_auto"
+- (baseline=gated_auto, tightened=gated_auto) → "no effect"
+
+All three are sampled from the same prompt pair on the same fixture. Only the **variance summary** tells the truth: baseline is essentially random; tightened is pinned. That's the win.
+
+### Practical Rules
+
+- **Never trust N=1 on a synthetic fixture for a directional read.** Single-trial reads are smoke checks, not behavior measurements.
+- **N=3 is the floor; bump until variance stops moving.** If three trials disagree, run more trials *before* running more fixtures. Depth on the noisy cell matters more than breadth across new cells.
+- **Aggregate variance explicitly in the summary table.** A row like `F3b: baseline manual / safe_auto / gated_auto / safe_auto (4 trials, 3 distinct classes)` tells the reader something a single-class summary cannot.
+- **Treat reduction in number of distinct classes per cell as the headline metric** for prompt-tightening changes. This is the determinism win, and it's what justifies the prompt's added token cost.
+- **Always include a negative control fixture** that should not move at all under any version. If it moves, the rubric has a stability problem the calibration is masking.
+
+### Workspace Pattern (reusable harness)
+
+```
+/tmp/<eval-name>/
+  fixtures/
+    F<N>-<short-label>/
+      fixture.json        # id, intent, expected outcome, persona
+      diff.patch          # the unified diff under review
+      context/            # repo files visible as surrounding context (NOT in diff)
+      files/              # post-change versions of touched files
+  skill-snapshot/         # the BASELINE prompt(s), copied verbatim before any edits
+  persona-runner-prompt.md
+  iteration-1/
+    F<N>-old_skill-trial-1/outputs/findings.json
+    F<N>-with_skill-trial-1/outputs/findings.json
+    ...
+  iteration-2/
+  ...
+```
+
+The `persona-runner-prompt.md` defines a strict contract every dispatch obeys: (1) read exactly the four input paths (rubric, persona profile, diff, context dir), (2) do not fall back to any other version of the prompt, (3) stay in persona, (4) write findings JSON to the specified `OUTPUT_PATH`, (5) no prose in the dispatch reply. This is what makes the workspace reproducible — every cell behaves identically except for the parameters you vary.
+
+### Steps to Apply
+
+1. **Snapshot the baseline first.** Before editing the prompt, copy the current version to `skill-snapshot/`. Treat as immutable for the duration of the eval.
+2. **Build a fixture matrix that spans the boundary, not just the easy cases.** Five fixture roles to cover:
+
+| Role | What it probes |
+|------|---------------|
+| **Textbook positive** | Should classify the "right" way under both versions |
+| **Textbook negative** | Should classify the "wrong-direction" way under both versions |
+| **Explicit negative control** | Must not move; if it moves, the prompt has a regression |
+| **Ambiguous boundary** | The reason the eval exists — outcome unknown a priori |
+| **Stable disagreement candidate** | Both versions defensible; you want to see the trade clearly |
+
+   Each fixture gets a tiny `fixture.json` documenting intent and expected outcome — this prevents post-hoc rationalization.
+3. **Spawn cells via parallel Agent dispatches.** Pass the four paths and a unique `OUTPUT_PATH` per cell. Use a simple naming scheme (`F3b-old_skill-trial-2`) so aggregation is `jq` over a glob.
+4. **Run multiple trials per cell.** Three is the practical minimum; bump to seven or more on cells that look noisy at N=3.
+5. **Aggregate with `jq`** over the structured field under test (e.g. `jq '.findings[0].tier' iteration-*/F3b-*/outputs/findings.json`). Build a summary table indexed by fixture × prompt version.
+6. **Iterate, then re-snapshot if the prompt changes again.** Each iteration directory is a separate run.
+
+### When to Apply This Pattern
+
+Use the harness when:
+- A persona rubric, decision guide, or output-contract section is being edited, and the change is intended to alter classification behavior.
+- The rubric drives downstream automation (auto-apply gates, fixer dispatch, escalation routing) where wrong classification has real cost.
+- "Just ship it and watch" is too slow or too risky because the change touches headless or auto-apply paths.
+- A reported incident motivated the change and you want to validate the hypothesis before shipping.
+
+Skip or downscale when the change is purely textual (typo, link fix), gated behind a feature flag with low cost-of-bad-ship, or when a real-branch test gives equally clean signal at similar cost.
+
+### Key Insight
+
+When a rubric produces 3 different classifications across 4 trials on identical input, **the variance itself is the bug**, not the specific class chosen. Refinements that pin behavior deterministically are wins even when they trade one defensible reading for another.
+
+**Example:** A rubric for "orphan code without explicit deadness comment" baseline-produced `{manual, safe_auto, gated_auto}` randomly across 4 trials. Tightened rubric pinned it to `gated_auto` deterministically — that's a win independent of which class was chosen.
+
+### When Variance Is Acceptable
+
+- **Boundary cases where both readings are defensible** (second-order signal) — stable disagreement is not a problem
+- **Textbook cases** (third-order) — variance here indicates a bigger rubric problem, but fixing it is low-value
+- **Creative output** (brainstorming, ideation) — variance is a feature, not a bug
+
 ## Real-World Impact
 
 From applying TDD to TDD skill itself (2025-10-03):

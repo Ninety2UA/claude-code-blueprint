@@ -303,3 +303,14 @@ The external loop passes `--external` to the ship pipeline, which disables the S
 - Do NOT try to skip stages or work around failures
 - Partial work (plan, branch, code) is preserved for the user to continue with the build-pipeline skill
 - If the execution stage fails, do NOT enter the review stage — there's nothing to review
+
+## Common Rationalizations
+
+| Rationalization | Reality |
+|---|---|
+| "The change is well-defined enough — no need for autonomous review iterations" | If the change is *that* well-defined and small, use `/quick-fix`. Ship-pipeline exists for autonomous quality, not autonomous skipping. |
+| "I'll prompt for approval mid-pipeline if something feels off" | That's `/build-pipeline`. Adding checkpoints to `/ship-pipeline` defeats the point — fire-and-forget is the contract. |
+| "Iteration cap reached, ship it anyway" | Cap-reached without convergence is a NO-GO signal, not a permission slip. Surface findings to the user. |
+| "I'll auto-merge after a green review" | Ship-pipeline reviews; the user merges. The pipeline finishes by handing off, not by pushing main. |
+| "Reviews are duplicating work between iterations" | Iterations exist *because* fixes introduce regressions. Two passes catch what one missed; you'd find this with measurement, not intuition. |
+| "Database migration is small, autonomous is fine" | Never. Migrations always go through `/build-pipeline --deploy` with human review of the migration file. |

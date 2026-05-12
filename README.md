@@ -74,6 +74,37 @@ Every component in Blueprint is informed by what works (and what doesn't) across
 
 > **"Import nothing" is a feature, not a failure.** The gravitational pull to adopt *something* from impressive repos is a real bias. Sometimes the right answer after deep analysis is to change nothing — and documenting why is just as valuable as documenting what you imported.
 
+### What's New in v3.3.0 — GSD Deep-Analysis Imports
+
+Third-pass deep analysis of [gsd-build/get-shit-done](https://github.com/gsd-build/get-shit-done) (60.9K ★) compared dimension-by-dimension against our system. **13 patterns imported across 3 priority tiers:**
+
+**P0 — high-leverage / low-effort:**
+- **Read-injection PostToolUse hook** — new `read-injection-scanner.js` scans content returned by `Read` for prompt-injection patterns + invisible Unicode + Unicode tag-block range (U+E0000–U+E007F). Different threat model from prompt-guard (Write/Edit content): catches file-content poisoning that survives context compression. Advisory, non-blocking.
+- **Agent-handoff `<<DATA_START>>` / `<<DATA_END>>` markers** — defense-in-depth for agent-to-agent injection. team-lead, code-reviewer, findings-synthesizer, integration-checker all wrap externally-sourced content in markers when forwarding to subagents.
+- **Plan-checker dimensional additions** — three new checks: scope-reduction detection ("v1" hedges against locked decisions), cross-plan data-contract compatibility, must_haves discipline (user-observable truths, not implementation details).
+
+**P1 — meaningful refinements to existing surfaces:**
+- **Persistent debug session file** — `systematic-debugging` skill now supports optional `.claude/debug/<slug>.md` capturing hypothesis log + eliminated branches. Survives context resets. Auto-trigger after 3rd hypothesis cycle.
+- **Nyquist test-gap discipline** — `test-gap-analyzer` agent adopts FILLED/ESCALATED/SKIP triage. Implementation files are read-only — bugs escalate, never direct-fix. Adversarial framing: every gap uncovered until passing test proves otherwise.
+- **doc-claim-verifier agent (new)** — extracts factual claims (file paths, commands, API endpoints, function names, deps) from docs and verifies each against the filesystem. Returns PASS/FAIL/UNVERIFIABLE per claim. Wired into `document-review` Pass 1.
+- **pattern-mapper agent (new)** — for each new file in a plan, finds 3–5 strong analogs and emits `PATTERNS.md` with line-numbered code excerpts. Wired into `executing-plans`.
+- **context-monitor refactor** — debounce + severity escalation (NONE→WARNING→CRITICAL). Suppresses repeats unless 5 tool calls passed or severity escalated. Replaces prior implementation that had double-trigger bugs.
+- **Adversarial stance phrasing** — code-reviewer, security-sentinel, integration-checker, findings-synthesizer, plan-checker now lead with explicit "assume X is broken until evidence proves otherwise" framing.
+
+**P2 — refinements and additions:**
+- **`/forensics` skill (new)** — post-mortem of failed `/ship` runs against `.claude/ship-logs/` + git state. Investigates 4 anomaly categories (stuck loops, missing artifacts, abandoned work, crashes). Read-only. Redacts sensitive content before producing reports.
+- **Conventional-commits validator (opt-in)** — new `validate-commit.js` PreToolUse hook on Bash. Validates `type(scope): subject ≤ 72 chars`. Off by default; opt-in via `.claude/blueprint.local.json`.
+- **Calibration tiers** — Full / Standard / Minimal-decisive scaling in `research-synthesizer` and `plan-checker`.
+- **LOCKED-vs-LOCKED hard-blocker rule** — two contradictory locked decisions in DECISIONS.md is a hard BLOCKER, never auto-resolved.
+- **Severity-mandatory formalism** — code-reviewer, security-sentinel, plan-checker explicitly invalidate findings without severity + confidence anchor.
+- **Synthesis-by-intersection** — research-synthesizer surfaces gaps where research files don't intersect (capability described but no architectural counterpart).
+- **Required-reading block + goal-backward verification** — plan-checker explicit conventions.
+- **Subagent return-state contract** — `{DONE, BLOCKED, NEEDS_INPUT, INCONCLUSIVE}` enum + ≤ 2K-token summary commitment for long-running agents in team-lead and iterative-refinement.
+
+**Rejected (verified to be already-covered or scope-mismatched):** workflow-guard hook (already rejected v2.3), read-before-edit guard (Claude Code native), AI-application-specific eval/framework agents, knowledge-graph/sketch/spike commands (we have spike-exploration), pause-work/resume-work commands (we have session-continuity trio), MVP-mode/SPIDR/Walking-Skeleton methodology, ns-* router commands.
+
+[gsd-build/get-shit-done](https://github.com/gsd-build/get-shit-done) joins the ecosystem table as the 3rd-deepest analysis after compound-engineering and multi-agent-framework. The overlap with our system is large enough that imports were mostly *refinements*, not net-new capabilities — which validates that the prior two GSD import waves (v2.3 and earlier v3.x) absorbed most load-bearing patterns.
+
 ### What's New in v3.2.1 — Framework Audit Fixes
 
 Full framework audit (5 parallel reviewers + Team Lead cross-check) across all 53 skills, 26 agents, 6 hooks, 17 templates, and supporting infrastructure. **18 fixes:**
@@ -98,7 +129,7 @@ Full framework audit (5 parallel reviewers + Team Lead cross-check) across all 5
 ```
 
 **Key changes:**
-- **Plugin architecture** — 53 skills, 26 agents, 6 hooks provided by the plugin, not copied into your project
+- **Plugin architecture** — 54 skills, 29 agents, 8 hooks provided by the plugin, not copied into your project
 - **`/project-start` scaffolding** — project files (CLAUDE.md, docs/, BACKLOG.md) created on demand per project
 - **`/migrate-to-plugin`** — skill to transition v2.x projects to plugin mode
 - **All slash commands are skills** — invoked by name, content loads directly (no sandbox gap)
@@ -109,7 +140,7 @@ Full framework audit (5 parallel reviewers + Team Lead cross-check) across all 5
 Commands were thin wrappers that couldn't load skill content due to Claude Code's plugin sandbox. v3.2 eliminates this gap entirely by removing commands and making skills the direct entry point.
 
 **Key changes:**
-- **Commands eliminated** — all 27 commands merged into 53 skills. Every slash command now loads full workflow content directly
+- **Commands eliminated** — all 27 commands merged into 54 skills. Every slash command now loads full workflow content directly
 - **Skill descriptions follow Anthropic best practices** — pushy triggers ("even if they don't explicitly ask..."), negative triggers ("DO NOT TRIGGER when..."), extensive trigger phrase lists
 - **No more sandbox loading gap** — skills are invoked by name and Claude sees the full content, no improvisation
 - **Auto-create MEMORY.md** — session-start hook creates the auto-memory index if missing, eliminating the "no MEMORY.md" warning for new projects
@@ -329,10 +360,10 @@ Already using the blueprint with in-project files? Install the plugin, then run 
 
 ```
 Plugin (installed globally, zero files in your project)
-├── 53 skills            /build-pipeline, /ship-pipeline, /brainstorming, /review-swarm, /orchestrate, ...
+├── 54 skills            /build-pipeline, /ship-pipeline, /brainstorming, /review-swarm, /orchestrate, /forensics, ...
 │                        TDD, wave-orchestration, swarms, iterative-refinement, ...
-├── 26 agents            team-lead, reviewer, security, perf, ...
-└── 6 hooks              session-start, context-monitor, prompt-guard, ship-loop + 2 Agent Teams
+├── 29 agents            team-lead, reviewer, security, perf, doc-claim-verifier, pattern-mapper, ...
+└── 8 hooks              session-start, context-monitor, prompt-guard, read-injection-scanner, validate-commit (opt-in), ship-loop + 2 Agent Teams
 
 your-project/ (scaffolded by /project-start)
 ├── docs/

@@ -99,4 +99,34 @@ Complexity score: [High/Medium/Low]
 Recommended action: [Proceed with simplifications/Minor tweaks only/Already minimal]
 ```
 
+## Calibration
+
+**Confidence scoring** — Use discrete anchored integers for each finding:
+
+| Score | Meaning |
+|-------|---------|
+| **0** | False positive or pre-existing issue |
+| **25** | Might be real but couldn't verify |
+| **50** | Verified real but nitpick / low importance |
+| **75** | Double-checked, will hit in practice |
+| **100** | Confirmed, will happen frequently |
+
+**Remediation tier** — Classify each finding:
+
+| Tier | When to Use |
+|------|-------------|
+| **safe_auto** | Mechanical simplification, zero risk (remove dead code, inline single-use variable, remove redundant check) |
+| **gated_auto** | Simplification needs confirmation (remove abstraction layer, consolidate modules, flatten hierarchy) |
+| **advisory** | Observation about complexity that may be intentional (high cyclomatic complexity, deep nesting) |
+| **present** | Architectural simplification with tradeoffs (merge vs split services, remove vs keep extension point) |
+
+When uncertain between tiers, choose the more conservative (higher-touch) tier.
+
+**Finding format** — Each finding must include:
+```
+- **[Title]** — `file:line` — Confidence: [0/25/50/75/100] — Tier: [safe_auto|gated_auto|advisory|present]
+  - Impact: [what complexity costs — maintenance burden, cognitive load, or bug risk]
+  - Fix: [specific simplification with LOC reduction estimate]
+```
+
 Remember: Perfect is the enemy of good. The simplest code that works is often the best code. Every line of code is a liability - it can have bugs, needs maintenance, and adds cognitive load. Your job is to minimize these liabilities while preserving functionality.

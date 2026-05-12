@@ -13,13 +13,22 @@ Load plan, review critically, execute tasks in batches, report for review betwee
 
 **Announce at start:** "I'm using the executing-plans skill to implement this plan."
 
+## When NOT to Use
+
+- **Tasks can run in parallel and speed matters** — use `/orchestrate` for wave-based parallelism.
+- **Spawning collaborative teammates with shared task list** — use `/team-execution`.
+- **Fully autonomous, no checkpoints** — use `/autonomous-loop` or `/ship-pipeline`.
+- **No written plan exists** — write one with `/writing-plans` first.
+- **One task only, change is trivial** — execute directly with `/quick-fix`.
+
 ## The Process
 
 ### Step 1: Load and Review Plan
 1. Read plan file
 2. Review critically - identify any questions or concerns about the plan
 3. If concerns: Raise them with your human partner before starting
-4. If no concerns: Create TodoWrite and proceed
+4. **Pattern mapping (optional but recommended for plans with 3+ new files):** dispatch the `pattern-mapper` agent to produce `.claude/plans/PATTERNS.md` mapping each new file to existing analogs with line-numbered excerpts. Read PATTERNS.md before each task — it grounds new code in existing conventions and prevents structural drift.
+5. If no concerns: Create TodoWrite and proceed
 
 ### Step 2: Execute Batch
 **Default: First 3 tasks**
@@ -29,6 +38,8 @@ For each task:
 2. Follow each step exactly (plan has bite-sized steps)
 3. Run verifications as specified
 4. Mark as completed
+
+**Framework-specific code:** if a task touches a framework or library API (forms, routing, data fetching, hooks, ORM queries, framework config), invoke the `source-driven-development` skill — detect the version, fetch the relevant docs page, follow the documented pattern, and cite the URL. The `sdd-cache` hook revalidates each WebFetch via HTTP `If-None-Match`, so repeat fetches are cheap and citations stay fresh.
 
 ### Step 3: Report
 When batch complete:
@@ -145,6 +156,18 @@ During execution, you will make interpretive decisions — the spec says "handle
 - Stop when blocked, don't guess
 - Never start implementation on main/master branch without explicit user consent
 - Document interpretive decisions in Assumptions section (see above)
+
+## Common Rationalizations
+
+| Rationalization | Reality |
+|---|---|
+| "The plan says X but Y is obviously better, I'll just do Y" | If Y is better, surface it. Silent deviations break the spec contract and corrupt the next reviewer's mental model. |
+| "I'll skip verification — the code is obviously correct" | Verification catches what "obvious" misses. Skipping is the failure mode every postmortem cites. |
+| "Three tasks done, I'll do six before reporting" | Bigger batches mean more rework when feedback finally arrives. Default 3 exists for a reason. |
+| "I'll fix this adjacent thing while I'm here" | Scope creep. Note it for the assumption log or BACKLOG; don't expand the diff. |
+| "The plan is wrong, I'll rewrite it" | If the plan is wrong, stop and report. Rewriting silently creates a phantom plan no one reviewed. |
+| "Verification failed but the code looks right" | Trust the verification. "Looks right" is exactly the heuristic that produced the failure. |
+| "I'll add a stub now and fill it in later" | Stubs ship. Track them explicitly in Known Stubs and resolve before the batch is complete — never carry implicit ones forward. |
 
 ## Integration
 

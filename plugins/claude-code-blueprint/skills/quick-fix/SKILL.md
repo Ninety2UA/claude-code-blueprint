@@ -8,6 +8,14 @@ argument-hint: "[describe the change]"
 
 You are executing a small, well-understood change using the lightweight workflow.
 
+## When NOT to Use
+
+- **Touching 4+ files** — use `/build-pipeline` (or `/ship-pipeline` for autonomous).
+- **New public API, endpoint, or schema** — needs design first via `/brainstorming`.
+- **Auth, payments, or data-migration code** — never quick-fix; always full pipeline with review.
+- **Approach is unclear or has multiple options** — use `/discuss` or `/brainstorming`.
+- **Bug with non-obvious root cause** — use `/systematic-debugging` first; quick-fix once cause is known and small.
+
 ## Step 1: Qualification Check
 
 Before proceeding, verify this qualifies as a "quick" change:
@@ -59,3 +67,13 @@ git commit -m "[type](scope): [description]"
 ```
 
 Follow the commit conventions in CLAUDE.md.
+
+## Common Rationalizations
+
+| Rationalization | Reality |
+|---|---|
+| "It's quick, I'll skip the failing test" | Quick-fix without a test is a guess. The test is what makes the fix verifiable; skipping it means you can't tell if you fixed anything. |
+| "The qualification check feels like overhead" | Misqualifying a complex change as quick-fix is how 3-file fixes balloon into 12-file regressions. The check is the cheapest insurance. |
+| "Three files now, but I'm sure it'll stay small" | If you're sure, prove it: scope it, do it, commit. If scope creeps mid-fix, stop and switch to `/build-pipeline`. Don't backfill design after the fact. |
+| "I'll skip lint — it's just style" | Lint catches structural issues alongside style. Quick-fix is short; lint is fast; run it. |
+| "Trivial fix, I'll commit straight to main" | Quick-fix is fast, not unreviewed. Commit to a branch unless explicitly told otherwise. |

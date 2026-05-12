@@ -23,6 +23,8 @@ Dispatch repeated review→fix→review cycles to iteratively improve code quali
 - You haven't implemented anything yet — review needs code to review
 - Review findings require architectural changes — stop and re-plan instead
 
+**Framework-specific findings:** when reviewers flag uncited or potentially-deprecated framework patterns, the fix step should invoke `source-driven-development` — detect the version, fetch the current docs page, replace the pattern, and cite the URL. `UNVERIFIED:` markers left in shipped code are an automatic fix target.
+
 ## Configuration
 
 | Parameter | Default | Range | Override |
@@ -39,6 +41,25 @@ Dispatch repeated review→fix→review cycles to iteratively improve code quali
 | **perfect** | P1 + P2 + P3 = 0 | High-stakes (auth, payments, data migrations) |
 
 ## Process
+
+## Return Contract for Sub-Agents
+
+Each review and fix agent dispatched by this skill must end its response with:
+
+```
+## Return State
+<DONE | BLOCKED | NEEDS_INPUT | INCONCLUSIVE>
+
+## Summary (<= 2000 tokens)
+- What was done
+- Files touched
+- Issues found (or "none")
+- Path to detail artifacts if any
+```
+
+This bounds handoff cost. If a reviewer's full findings exceed 2K tokens, persist them to `.claude/review-runs/<run_id>/<reviewer>.json` and quote only the summary in the response. The synthesizer reads detail files directly when needed; iterative-refinement only needs the summary to drive the loop.
+
+If a sub-agent returns without this structure, re-prompt once before counting it toward the iteration result.
 
 ### Step 0: Initialize
 
@@ -147,9 +168,21 @@ EXIT the loop. Proceed to Step 3.
 
 If NOT converged, continue to 2c.
 
-#### 2c. Resolve Findings
+#### 2c. Route by Remediation Tier
 
-Separate findings into resolution groups:
+The synthesized report groups findings by remediation tier. Process each tier differently:
+
+**1. Decisions Required (present tier)** — STOP and ask the user. These are strategic choices with multiple valid approaches. Do not proceed until the user decides. In autonomous mode (`/ship`), choose the more conservative option and log the decision.
+
+**2. Auto-fixable (safe_auto tier)** — Apply immediately without confirmation. These are mechanical fixes with zero ambiguity (typos, missing imports, formatting). Log what was auto-applied.
+
+**3. Main findings (gated_auto tier)** — Process as before: separate into independent vs dependent groups.
+
+**4. Advisory (advisory tier)** — Do NOT attempt to fix. Include in the progress report for awareness only.
+
+#### 2d. Resolve Gated Findings
+
+Separate gated_auto findings into resolution groups:
 
 1. **Independent findings** (different files, no shared state) → read and invoke the resolve-in-parallel skill to fix concurrently
 2. **Dependent findings** (same file or shared state) → resolve sequentially
@@ -159,7 +192,7 @@ For each resolution:
 - Do NOT make unrelated changes
 - Do NOT introduce new patterns or refactors beyond the finding
 
-#### 2d. Verify
+#### 2e. Verify
 
 Run the full test suite and build:
 ```bash
@@ -173,14 +206,14 @@ If tests fail:
 - Re-run tests until passing
 - If unable to fix after 2 attempts, revert the problematic fix and mark that finding as "deferred"
 
-#### 2e. Commit
+#### 2f. Commit
 
 Commit all fixes from this iteration:
 ```
 fix: address review findings (iteration [i]/[max])
 ```
 
-#### 2f. Progress Report
+#### 2g. Progress Report
 
 After each iteration, report:
 ```markdown
@@ -190,13 +223,15 @@ After each iteration, report:
 - P1 (critical): [count] found, [count] fixed, [count] deferred
 - P2 (important): [count] found, [count] fixed, [count] deferred
 - P3 (suggestions): [count] found, [count] noted
+- By tier: [safe_auto count] auto-applied, [gated_auto count] fixed, [advisory count] noted, [present count] decided
+- Filtered (below confidence gate): [count]
 
 ### Cumulative Progress
-| Iteration | P1 | P2 | P3 | Action |
-|-----------|----|----|-----|--------|
-| 1 | [n] | [n] | [n] | Fixed [n] findings |
-| 2 | [n] | [n] | [n] | Fixed [n] findings |
-| ... | | | | |
+| Iteration | P1 | P2 | P3 | Auto-applied | Decisions | Action |
+|-----------|----|----|-----|-------------|-----------|--------|
+| 1 | [n] | [n] | [n] | [n] | [n] | Fixed [n] findings |
+| 2 | [n] | [n] | [n] | [n] | [n] | Fixed [n] findings |
+| ... | | | | | | |
 
 ### Next
 - [Continuing to iteration i+1] OR [Converged — exiting loop]
@@ -282,3 +317,15 @@ Present both the reviewers' perspectives AND your recommendation — don't just 
 | Data migration | 5 iterations, deep convergence |
 | Payment/billing code | 10 iterations, perfect convergence |
 | Quick bug fix | 1 iteration, fast convergence (essentially a single review) |
+
+## Common Rationalizations
+
+| Rationalization | Reality |
+|---|---|
+| "One review pass is enough — I'll skip iteration" | Single passes miss the bugs that fixes introduce. The second iteration catches the regressions you just authored. |
+| "All findings are P3, let me bump to deep mode" | If P1+P2 are clean in fast mode, you've converged. Pushing deeper turns suggestions into churn without value. |
+| "I'll fix everything in one big commit between iterations" | Large fix bundles re-introduce findings other reviewers already cleared. One finding, one fix, one verification. |
+| "The reviewer is wrong, I'll override the finding" | Maybe. Document the override in the run log so the next iteration doesn't re-raise it. Silent overrides defeat convergence. |
+| "Tests fail but the fix is correct" | If the fix is correct and tests fail, the test was wrong AND that's a separate finding. Never ship a red test green by deletion. |
+| "Iteration 4 found new issues, let me run iteration 5" | Past 3 iterations with new findings every cycle, the underlying design is the issue. Escalate, don't loop. |
+| "I'll skip the deslop pass — those are stylistic" | AI-generated text patterns survive review (reviewers have the same blind spots). Step 0.5 is cheap and catches what graders won't flag. |

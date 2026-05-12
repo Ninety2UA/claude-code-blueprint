@@ -30,6 +30,8 @@ Focus exclusively on whether the content is correct.
 - Outdated information (references to deprecated APIs, old patterns)
 - Incorrect references (file paths that don't exist, broken links)
 
+**For docs that name files, commands, endpoints, functions, or dependencies:** dispatch the `doc-claim-verifier` agent (via the Agent tool) to extract and verify every factual claim against the filesystem. Its PASS/FAIL/UNVERIFIABLE report becomes the authoritative input to Pass 1. Manual reading misses drift; the agent doesn't.
+
 **Do NOT check for:** Grammar, formatting, tone, or completeness — those come later.
 
 **Output after Pass 1:**

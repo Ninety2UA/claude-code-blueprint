@@ -10,6 +10,14 @@ argument-hint: "[optional: focus area, constraint, or volume hint]"
 
 This skill produces a ranked ideation artifact in `docs/research/`. It does **not** produce requirements, plans, or code. When the user selects an idea, hand off to `/writing-plans`.
 
+## When NOT to Use
+
+- **The user already knows what to build** — use `/brainstorming` to design that specific thing.
+- **Research on a single named topic** — use `/deep-research`, not ideation.
+- **Sub-tasking a known feature** — use `/writing-plans` directly.
+- **Picking between two pre-named options** — use `/discuss`; ideation is for "I don't know what to do," not "which of these two?"
+- **Bug triage** — use `/backlog-triage`; ideation generates new directions, it doesn't rank existing reports.
+
 ## Focus Hint
 
 The user's argument: $ARGUMENTS
@@ -164,3 +172,14 @@ focus: <optional focus hint>
 - **Ground before ideating** — scan the actual codebase first. No abstract advice.
 - **Generate many → critique all → explain survivors** — quality comes from explicit rejection, not optimistic ranking.
 - **Route to /writing-plans** — ideation identifies directions; `/writing-plans` defines the selected one precisely.
+
+## Common Rationalizations
+
+| Rationalization | Reality |
+|---|---|
+| "I already know what to build, skip ideation" | Then use `/brainstorming` directly. Ideation is for "I don't know what's worth doing" — not for re-ranking a foregone conclusion. |
+| "More ideas is better" | 25 shallow ideas beats 8 strong ones less than half the time. The critique pass matters more than the volume. |
+| "Skip the rejection summary, only show survivors" | The rejected list is half the value — it tells the user what was considered and why it didn't survive. Without it, survivors look arbitrary. |
+| "I'll skip the codebase scan and ideate from intuition" | Ungrounded ideas drift toward generic advice. The signal is in what *this* codebase needs, not what any codebase might. |
+| "Just hand the top idea to /writing-plans automatically" | The user picks. Ideation produces a ranked menu; planning operates on the chosen item. Automating the choice removes the user's leverage. |
+| "Painkiller-vs-vitamin distinction is too philosophical" | It's the cheapest filter we have. Vitamins look reasonable in a list; under the painkiller test, most evaporate. |
