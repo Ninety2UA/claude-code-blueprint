@@ -1,0 +1,57 @@
+{
+  "elements": [
+    {"type": "text", "x": 60, "y": 30, "width": 1100, "height": 36, "text": "Wave dispatch — parallel within waves, integration-verifier between", "fontSize": 22, "fontFamily": "1", "textAlign": "center", "strokeColor": "#0f172a"},
+
+    {"type": "rectangle", "x": 60, "y": 110, "width": 290, "height": 380, "backgroundColor": "#eff6ff", "strokeColor": "#2563eb", "fillStyle": "hachure", "strokeWidth": 1.5, "roughness": 1.5, "roundness": {"type": 3}},
+    {"type": "text", "x": 75, "y": 125, "width": 260, "height": 26, "text": "Wave 1", "fontSize": 17, "fontFamily": "1", "textAlign": "left", "strokeColor": "#1e3a8a"},
+
+    {"type": "rectangle", "x": 80, "y": 165, "width": 250, "height": 70, "backgroundColor": "#dbeafe", "strokeColor": "#2563eb", "fillStyle": "hachure", "strokeWidth": 1.5, "roughness": 1, "roundness": {"type": 3}},
+    {"type": "text", "x": 90, "y": 180, "width": 230, "height": 22, "text": "Task 1 · worktree A", "fontSize": 13, "fontFamily": "1", "textAlign": "left", "strokeColor": "#1e40af"},
+    {"type": "text", "x": 90, "y": 205, "width": 230, "height": 22, "text": "independent", "fontSize": 11, "fontFamily": "3", "textAlign": "left", "strokeColor": "#3730a3"},
+
+    {"type": "rectangle", "x": 80, "y": 245, "width": 250, "height": 70, "backgroundColor": "#dbeafe", "strokeColor": "#2563eb", "fillStyle": "hachure", "strokeWidth": 1.5, "roughness": 1, "roundness": {"type": 3}},
+    {"type": "text", "x": 90, "y": 260, "width": 230, "height": 22, "text": "Task 2 · worktree B", "fontSize": 13, "fontFamily": "1", "textAlign": "left", "strokeColor": "#1e40af"},
+    {"type": "text", "x": 90, "y": 285, "width": 230, "height": 22, "text": "independent", "fontSize": 11, "fontFamily": "3", "textAlign": "left", "strokeColor": "#3730a3"},
+
+    {"type": "rectangle", "x": 80, "y": 325, "width": 250, "height": 70, "backgroundColor": "#dbeafe", "strokeColor": "#2563eb", "fillStyle": "hachure", "strokeWidth": 1.5, "roughness": 1, "roundness": {"type": 3}},
+    {"type": "text", "x": 90, "y": 340, "width": 230, "height": 22, "text": "Task 3 · worktree C", "fontSize": 13, "fontFamily": "1", "textAlign": "left", "strokeColor": "#1e40af"},
+    {"type": "text", "x": 90, "y": 365, "width": 230, "height": 22, "text": "independent", "fontSize": 11, "fontFamily": "3", "textAlign": "left", "strokeColor": "#3730a3"},
+
+    {"type": "text", "x": 80, "y": 415, "width": 250, "height": 22, "text": "↓ parallel execution", "fontSize": 12, "fontFamily": "3", "textAlign": "center", "strokeColor": "#64748b"},
+
+    {"type": "rectangle", "x": 80, "y": 442, "width": 250, "height": 38, "backgroundColor": "#fde68a", "strokeColor": "#d97706", "fillStyle": "hachure", "strokeWidth": 2, "roughness": 1, "roundness": {"type": 3}},
+    {"type": "text", "x": 90, "y": 452, "width": 230, "height": 22, "text": "integration-verifier", "fontSize": 13, "fontFamily": "1", "textAlign": "center", "strokeColor": "#78350f"},
+
+    {"type": "rectangle", "x": 390, "y": 110, "width": 290, "height": 380, "backgroundColor": "#fffbeb", "strokeColor": "#d97706", "fillStyle": "hachure", "strokeWidth": 1.5, "roughness": 1.5, "roundness": {"type": 3}},
+    {"type": "text", "x": 405, "y": 125, "width": 260, "height": 26, "text": "Wave 2 — depends on 1", "fontSize": 17, "fontFamily": "1", "textAlign": "left", "strokeColor": "#78350f"},
+
+    {"type": "rectangle", "x": 410, "y": 165, "width": 250, "height": 70, "backgroundColor": "#fef3c7", "strokeColor": "#d97706", "fillStyle": "hachure", "strokeWidth": 1.5, "roughness": 1, "roundness": {"type": 3}},
+    {"type": "text", "x": 420, "y": 180, "width": 230, "height": 22, "text": "Task 4 · worktree D", "fontSize": 13, "fontFamily": "1", "textAlign": "left", "strokeColor": "#92400e"},
+    {"type": "text", "x": 420, "y": 205, "width": 230, "height": 22, "text": "needs Wave 1 output", "fontSize": 11, "fontFamily": "3", "textAlign": "left", "strokeColor": "#9a3412"},
+
+    {"type": "rectangle", "x": 410, "y": 245, "width": 250, "height": 70, "backgroundColor": "#fef3c7", "strokeColor": "#d97706", "fillStyle": "hachure", "strokeWidth": 1.5, "roughness": 1, "roundness": {"type": 3}},
+    {"type": "text", "x": 420, "y": 260, "width": 230, "height": 22, "text": "Task 5 · worktree E", "fontSize": 13, "fontFamily": "1", "textAlign": "left", "strokeColor": "#92400e"},
+    {"type": "text", "x": 420, "y": 285, "width": 230, "height": 22, "text": "needs Wave 1 output", "fontSize": 11, "fontFamily": "3", "textAlign": "left", "strokeColor": "#9a3412"},
+
+    {"type": "text", "x": 410, "y": 340, "width": 250, "height": 22, "text": "↓ parallel within wave", "fontSize": 12, "fontFamily": "3", "textAlign": "center", "strokeColor": "#64748b"},
+
+    {"type": "rectangle", "x": 410, "y": 370, "width": 250, "height": 38, "backgroundColor": "#fde68a", "strokeColor": "#d97706", "fillStyle": "hachure", "strokeWidth": 2, "roughness": 1, "roundness": {"type": 3}},
+    {"type": "text", "x": 420, "y": 380, "width": 230, "height": 22, "text": "integration-verifier", "fontSize": 13, "fontFamily": "1", "textAlign": "center", "strokeColor": "#78350f"},
+
+    {"type": "rectangle", "x": 720, "y": 110, "width": 290, "height": 380, "backgroundColor": "#f0fdf4", "strokeColor": "#059669", "fillStyle": "hachure", "strokeWidth": 1.5, "roughness": 1.5, "roundness": {"type": 3}},
+    {"type": "text", "x": 735, "y": 125, "width": 260, "height": 26, "text": "Wave 3 — final wire-up", "fontSize": 17, "fontFamily": "1", "textAlign": "left", "strokeColor": "#064e3b"},
+
+    {"type": "rectangle", "x": 740, "y": 165, "width": 250, "height": 70, "backgroundColor": "#ecfdf5", "strokeColor": "#059669", "fillStyle": "hachure", "strokeWidth": 1.5, "roughness": 1, "roundness": {"type": 3}},
+    {"type": "text", "x": 750, "y": 180, "width": 230, "height": 22, "text": "Task 6 · worktree F", "fontSize": 13, "fontFamily": "1", "textAlign": "left", "strokeColor": "#065f46"},
+    {"type": "text", "x": 750, "y": 205, "width": 230, "height": 22, "text": "merges all waves", "fontSize": 11, "fontFamily": "3", "textAlign": "left", "strokeColor": "#047857"},
+
+    {"type": "rectangle", "x": 740, "y": 290, "width": 250, "height": 70, "backgroundColor": "#bbf7d0", "strokeColor": "#059669", "fillStyle": "hachure", "strokeWidth": 2, "roughness": 1, "roundness": {"type": 3}},
+    {"type": "text", "x": 750, "y": 305, "width": 230, "height": 22, "text": "PR · merge to main", "fontSize": 14, "fontFamily": "1", "textAlign": "center", "strokeColor": "#064e3b"},
+    {"type": "text", "x": 750, "y": 330, "width": 230, "height": 22, "text": "all waves consolidated", "fontSize": 11, "fontFamily": "3", "textAlign": "center", "strokeColor": "#065f46"},
+
+    {"type": "arrow", "x": 350, "y": 300, "points": [[0, 0], [40, 0]], "strokeColor": "#94a3b8", "strokeWidth": 2, "roughness": 1},
+    {"type": "arrow", "x": 680, "y": 300, "points": [[0, 0], [40, 0]], "strokeColor": "#94a3b8", "strokeWidth": 2, "roughness": 1},
+
+    {"type": "text", "x": 60, "y": 520, "width": 1000, "height": 22, "text": "/orchestrate dispatches · each worktree git-isolated · verifier blocks bad merges", "fontSize": 13, "fontFamily": "3", "textAlign": "center", "strokeColor": "#64748b"}
+  ]
+}

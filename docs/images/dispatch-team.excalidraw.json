@@ -1,0 +1,49 @@
+{
+  "elements": [
+    {"type": "text", "x": 60, "y": 30, "width": 1100, "height": 36, "text": "Agent team dispatch — file ownership, shared tasks, messaging", "fontSize": 22, "fontFamily": "1", "textAlign": "center", "strokeColor": "#0f172a"},
+
+    {"id": "lead", "type": "rectangle", "x": 470, "y": 90, "width": 280, "height": 80, "backgroundColor": "#0f172a", "strokeColor": "#0f172a", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "roundness": {"type": 3}},
+    {"type": "text", "x": 480, "y": 105, "width": 260, "height": 24, "text": "team-lead", "fontSize": 16, "fontFamily": "1", "textAlign": "center", "strokeColor": "#ffffff"},
+    {"type": "text", "x": 480, "y": 132, "width": 260, "height": 32, "text": "delegates · reviews · signs off", "fontSize": 12, "fontFamily": "3", "textAlign": "center", "strokeColor": "#cbd5e1"},
+
+    {"id": "tA", "type": "rectangle", "x": 80, "y": 240, "width": 260, "height": 120, "backgroundColor": "#dbeafe", "strokeColor": "#2563eb", "fillStyle": "hachure", "strokeWidth": 2, "roughness": 1, "roundness": {"type": 3}},
+    {"type": "text", "x": 90, "y": 255, "width": 240, "height": 22, "text": "Teammate A", "fontSize": 15, "fontFamily": "1", "textAlign": "center", "strokeColor": "#1e3a8a"},
+    {"type": "text", "x": 90, "y": 285, "width": 240, "height": 22, "text": "owns: api/auth/*", "fontSize": 12, "fontFamily": "3", "textAlign": "center", "strokeColor": "#1e40af"},
+    {"type": "text", "x": 90, "y": 312, "width": 240, "height": 42, "text": "fresh 200K context\nseparate Claude instance", "fontSize": 11, "fontFamily": "3", "textAlign": "center", "strokeColor": "#3730a3"},
+
+    {"id": "tB", "type": "rectangle", "x": 370, "y": 240, "width": 260, "height": 120, "backgroundColor": "#fef3c7", "strokeColor": "#d97706", "fillStyle": "hachure", "strokeWidth": 2, "roughness": 1, "roundness": {"type": 3}},
+    {"type": "text", "x": 380, "y": 255, "width": 240, "height": 22, "text": "Teammate B", "fontSize": 15, "fontFamily": "1", "textAlign": "center", "strokeColor": "#78350f"},
+    {"type": "text", "x": 380, "y": 285, "width": 240, "height": 22, "text": "owns: components/*", "fontSize": 12, "fontFamily": "3", "textAlign": "center", "strokeColor": "#92400e"},
+    {"type": "text", "x": 380, "y": 312, "width": 240, "height": 42, "text": "fresh 200K context\nseparate Claude instance", "fontSize": 11, "fontFamily": "3", "textAlign": "center", "strokeColor": "#9a3412"},
+
+    {"id": "tC", "type": "rectangle", "x": 660, "y": 240, "width": 260, "height": 120, "backgroundColor": "#ecfdf5", "strokeColor": "#059669", "fillStyle": "hachure", "strokeWidth": 2, "roughness": 1, "roundness": {"type": 3}},
+    {"type": "text", "x": 670, "y": 255, "width": 240, "height": 22, "text": "Teammate C", "fontSize": 15, "fontFamily": "1", "textAlign": "center", "strokeColor": "#064e3b"},
+    {"type": "text", "x": 670, "y": 285, "width": 240, "height": 22, "text": "owns: tests/*", "fontSize": 12, "fontFamily": "3", "textAlign": "center", "strokeColor": "#065f46"},
+    {"type": "text", "x": 670, "y": 312, "width": 240, "height": 42, "text": "fresh 200K context\nseparate Claude instance", "fontSize": 11, "fontFamily": "3", "textAlign": "center", "strokeColor": "#047857"},
+
+    {"id": "tD", "type": "rectangle", "x": 950, "y": 240, "width": 260, "height": 120, "backgroundColor": "#f5f3ff", "strokeColor": "#7c3aed", "fillStyle": "hachure", "strokeWidth": 2, "roughness": 1, "roundness": {"type": 3}},
+    {"type": "text", "x": 960, "y": 255, "width": 240, "height": 22, "text": "Teammate D", "fontSize": 15, "fontFamily": "1", "textAlign": "center", "strokeColor": "#4c1d95"},
+    {"type": "text", "x": 960, "y": 285, "width": 240, "height": 22, "text": "owns: docs/* ADRs", "fontSize": 12, "fontFamily": "3", "textAlign": "center", "strokeColor": "#5b21b6"},
+    {"type": "text", "x": 960, "y": 312, "width": 240, "height": 42, "text": "fresh 200K context\nseparate Claude instance", "fontSize": 11, "fontFamily": "3", "textAlign": "center", "strokeColor": "#6d28d9"},
+
+    {"id": "tasks", "type": "rectangle", "x": 80, "y": 430, "width": 510, "height": 130, "backgroundColor": "#fffbeb", "strokeColor": "#d97706", "fillStyle": "hachure", "strokeWidth": 2, "roughness": 1, "roundness": {"type": 3}},
+    {"type": "text", "x": 90, "y": 445, "width": 490, "height": 24, "text": "Shared task list", "fontSize": 15, "fontFamily": "1", "textAlign": "center", "strokeColor": "#78350f"},
+    {"type": "text", "x": 90, "y": 475, "width": 490, "height": 80, "text": "TaskList · TaskGet · TaskUpdate · TaskCreate\nteammates claim work, mark done, report blockers", "fontSize": 12, "fontFamily": "3", "textAlign": "center", "strokeColor": "#92400e"},
+
+    {"id": "msg", "type": "rectangle", "x": 620, "y": 430, "width": 510, "height": 130, "backgroundColor": "#eff6ff", "strokeColor": "#2563eb", "fillStyle": "hachure", "strokeWidth": 2, "roughness": 1, "roundness": {"type": 3}},
+    {"type": "text", "x": 630, "y": 445, "width": 490, "height": 24, "text": "Messaging", "fontSize": 15, "fontFamily": "1", "textAlign": "center", "strokeColor": "#1e3a8a"},
+    {"type": "text", "x": 630, "y": 475, "width": 490, "height": 80, "text": "SendMessage between teammates · discuss design,\nhand off work, resolve blockers, avoid file conflicts", "fontSize": 12, "fontFamily": "3", "textAlign": "center", "strokeColor": "#1e40af"},
+
+    {"type": "arrow", "x": 0, "y": 0, "start": {"id": "lead"}, "end": {"id": "tA"}, "strokeColor": "#94a3b8", "strokeWidth": 2, "roughness": 1},
+    {"type": "arrow", "x": 0, "y": 0, "start": {"id": "lead"}, "end": {"id": "tB"}, "strokeColor": "#94a3b8", "strokeWidth": 2, "roughness": 1},
+    {"type": "arrow", "x": 0, "y": 0, "start": {"id": "lead"}, "end": {"id": "tC"}, "strokeColor": "#94a3b8", "strokeWidth": 2, "roughness": 1},
+    {"type": "arrow", "x": 0, "y": 0, "start": {"id": "lead"}, "end": {"id": "tD"}, "strokeColor": "#94a3b8", "strokeWidth": 2, "roughness": 1},
+
+    {"type": "arrow", "x": 0, "y": 0, "start": {"id": "tA"}, "end": {"id": "tasks"}, "strokeColor": "#d97706", "strokeWidth": 1.5, "roughness": 1, "strokeStyle": "dashed"},
+    {"type": "arrow", "x": 0, "y": 0, "start": {"id": "tB"}, "end": {"id": "tasks"}, "strokeColor": "#d97706", "strokeWidth": 1.5, "roughness": 1, "strokeStyle": "dashed"},
+    {"type": "arrow", "x": 0, "y": 0, "start": {"id": "tC"}, "end": {"id": "msg"}, "strokeColor": "#2563eb", "strokeWidth": 1.5, "roughness": 1, "strokeStyle": "dashed"},
+    {"type": "arrow", "x": 0, "y": 0, "start": {"id": "tD"}, "end": {"id": "msg"}, "strokeColor": "#2563eb", "strokeWidth": 1.5, "roughness": 1, "strokeStyle": "dashed"},
+
+    {"type": "text", "x": 60, "y": 590, "width": 1150, "height": 22, "text": "Experimental — peers, not subordinates · /team-execution dispatches · file ownership prevents conflicts", "fontSize": 13, "fontFamily": "3", "textAlign": "center", "strokeColor": "#64748b"}
+  ]
+}

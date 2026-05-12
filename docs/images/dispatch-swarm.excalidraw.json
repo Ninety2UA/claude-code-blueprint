@@ -1,0 +1,48 @@
+{
+  "elements": [
+    {"type": "text", "x": 60, "y": 30, "width": 1000, "height": 36, "text": "Swarm dispatch — same input, different lenses", "fontSize": 22, "fontFamily": "1", "textAlign": "center", "strokeColor": "#0f172a"},
+
+    {"id": "input", "type": "rectangle", "x": 60, "y": 220, "width": 200, "height": 80, "backgroundColor": "#0f172a", "strokeColor": "#0f172a", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "roundness": {"type": 3}},
+    {"type": "text", "x": 70, "y": 240, "width": 180, "height": 24, "text": "Same input", "fontSize": 15, "fontFamily": "1", "textAlign": "center", "strokeColor": "#ffffff"},
+    {"type": "text", "x": 70, "y": 265, "width": 180, "height": 28, "text": "code · plan · question", "fontSize": 11, "fontFamily": "3", "textAlign": "center", "strokeColor": "#cbd5e1"},
+
+    {"id": "a1", "type": "rectangle", "x": 340, "y": 100, "width": 220, "height": 55, "backgroundColor": "#dbeafe", "strokeColor": "#2563eb", "fillStyle": "hachure", "strokeWidth": 2, "roughness": 1, "roundness": {"type": 3}},
+    {"type": "text", "x": 350, "y": 115, "width": 200, "height": 26, "text": "Agent A", "fontSize": 14, "fontFamily": "1", "textAlign": "center", "strokeColor": "#1e3a8a"},
+
+    {"id": "a2", "type": "rectangle", "x": 340, "y": 170, "width": 220, "height": 55, "backgroundColor": "#fef3c7", "strokeColor": "#d97706", "fillStyle": "hachure", "strokeWidth": 2, "roughness": 1, "roundness": {"type": 3}},
+    {"type": "text", "x": 350, "y": 185, "width": 200, "height": 26, "text": "Agent B", "fontSize": 14, "fontFamily": "1", "textAlign": "center", "strokeColor": "#78350f"},
+
+    {"id": "a3", "type": "rectangle", "x": 340, "y": 240, "width": 220, "height": 55, "backgroundColor": "#ecfdf5", "strokeColor": "#059669", "fillStyle": "hachure", "strokeWidth": 2, "roughness": 1, "roundness": {"type": 3}},
+    {"type": "text", "x": 350, "y": 255, "width": 200, "height": 26, "text": "Agent C", "fontSize": 14, "fontFamily": "1", "textAlign": "center", "strokeColor": "#064e3b"},
+
+    {"id": "a4", "type": "rectangle", "x": 340, "y": 310, "width": 220, "height": 55, "backgroundColor": "#f5f3ff", "strokeColor": "#7c3aed", "fillStyle": "hachure", "strokeWidth": 2, "roughness": 1, "roundness": {"type": 3}},
+    {"type": "text", "x": 350, "y": 325, "width": 200, "height": 26, "text": "Agent D", "fontSize": 14, "fontFamily": "1", "textAlign": "center", "strokeColor": "#4c1d95"},
+
+    {"id": "a5", "type": "rectangle", "x": 340, "y": 380, "width": 220, "height": 55, "backgroundColor": "#fce7f3", "strokeColor": "#db2777", "fillStyle": "hachure", "strokeWidth": 2, "roughness": 1, "roundness": {"type": 3}},
+    {"type": "text", "x": 350, "y": 395, "width": 200, "height": 26, "text": "Agent E", "fontSize": 14, "fontFamily": "1", "textAlign": "center", "strokeColor": "#831843"},
+
+    {"id": "synth", "type": "ellipse", "x": 660, "y": 230, "width": 200, "height": 80, "backgroundColor": "#fde68a", "strokeColor": "#d97706", "fillStyle": "hachure", "strokeWidth": 3, "roughness": 1},
+    {"type": "text", "x": 670, "y": 250, "width": 180, "height": 22, "text": "findings-", "fontSize": 14, "fontFamily": "1", "textAlign": "center", "strokeColor": "#78350f"},
+    {"type": "text", "x": 670, "y": 272, "width": 180, "height": 22, "text": "synthesizer", "fontSize": 14, "fontFamily": "1", "textAlign": "center", "strokeColor": "#78350f"},
+
+    {"id": "out", "type": "rectangle", "x": 940, "y": 220, "width": 200, "height": 100, "backgroundColor": "#fef3c7", "strokeColor": "#d97706", "fillStyle": "hachure", "strokeWidth": 2, "roughness": 1, "roundness": {"type": 3}},
+    {"type": "text", "x": 950, "y": 235, "width": 180, "height": 24, "text": "Unified report", "fontSize": 15, "fontFamily": "1", "textAlign": "center", "strokeColor": "#78350f"},
+    {"type": "text", "x": 950, "y": 265, "width": 180, "height": 48, "text": "deduped\nprioritized P1/P2/P3", "fontSize": 11, "fontFamily": "3", "textAlign": "center", "strokeColor": "#92400e"},
+
+    {"type": "arrow", "x": 0, "y": 0, "start": {"id": "input"}, "end": {"id": "a1"}, "strokeColor": "#94a3b8", "strokeWidth": 1.5, "roughness": 1},
+    {"type": "arrow", "x": 0, "y": 0, "start": {"id": "input"}, "end": {"id": "a2"}, "strokeColor": "#94a3b8", "strokeWidth": 1.5, "roughness": 1},
+    {"type": "arrow", "x": 0, "y": 0, "start": {"id": "input"}, "end": {"id": "a3"}, "strokeColor": "#94a3b8", "strokeWidth": 1.5, "roughness": 1},
+    {"type": "arrow", "x": 0, "y": 0, "start": {"id": "input"}, "end": {"id": "a4"}, "strokeColor": "#94a3b8", "strokeWidth": 1.5, "roughness": 1},
+    {"type": "arrow", "x": 0, "y": 0, "start": {"id": "input"}, "end": {"id": "a5"}, "strokeColor": "#94a3b8", "strokeWidth": 1.5, "roughness": 1},
+
+    {"type": "arrow", "x": 0, "y": 0, "start": {"id": "a1"}, "end": {"id": "synth"}, "strokeColor": "#94a3b8", "strokeWidth": 1.5, "roughness": 1},
+    {"type": "arrow", "x": 0, "y": 0, "start": {"id": "a2"}, "end": {"id": "synth"}, "strokeColor": "#94a3b8", "strokeWidth": 1.5, "roughness": 1},
+    {"type": "arrow", "x": 0, "y": 0, "start": {"id": "a3"}, "end": {"id": "synth"}, "strokeColor": "#94a3b8", "strokeWidth": 1.5, "roughness": 1},
+    {"type": "arrow", "x": 0, "y": 0, "start": {"id": "a4"}, "end": {"id": "synth"}, "strokeColor": "#94a3b8", "strokeWidth": 1.5, "roughness": 1},
+    {"type": "arrow", "x": 0, "y": 0, "start": {"id": "a5"}, "end": {"id": "synth"}, "strokeColor": "#94a3b8", "strokeWidth": 1.5, "roughness": 1},
+
+    {"type": "arrow", "x": 0, "y": 0, "start": {"id": "synth"}, "end": {"id": "out"}, "strokeColor": "#d97706", "strokeWidth": 2, "roughness": 1},
+
+    {"type": "text", "x": 60, "y": 470, "width": 1080, "height": 22, "text": "Read-only · runs in parallel · used by /review-swarm and /deep-research", "fontSize": 13, "fontFamily": "3", "textAlign": "center", "strokeColor": "#64748b"}
+  ]
+}

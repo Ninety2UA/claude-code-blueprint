@@ -1,0 +1,48 @@
+{
+  "elements": [
+    {
+      "type": "text",
+      "x": 60, "y": 30, "width": 1100, "height": 36,
+      "text": "/ship-pipeline — fully autonomous, zero checkpoints",
+      "fontSize": 22, "fontFamily": "1", "textAlign": "center", "strokeColor": "#0f172a"
+    },
+
+    {"type": "rectangle", "x": 60, "y": 120, "width": 170, "height": 110, "backgroundColor": "#dbeafe", "strokeColor": "#2563eb", "fillStyle": "hachure", "strokeWidth": 2, "roughness": 1, "roundness": {"type": 3}},
+    {"type": "text", "x": 70, "y": 135, "width": 150, "height": 24, "text": "1 · Research", "fontSize": 15, "fontFamily": "1", "textAlign": "center", "strokeColor": "#1e3a8a"},
+    {"type": "text", "x": 70, "y": 165, "width": 150, "height": 56, "text": "/deep-research\n5 parallel agents → brief", "fontSize": 11, "fontFamily": "3", "textAlign": "center", "strokeColor": "#1e40af"},
+
+    {"type": "rectangle", "x": 245, "y": 120, "width": 170, "height": 110, "backgroundColor": "#fef3c7", "strokeColor": "#d97706", "fillStyle": "hachure", "strokeWidth": 2, "roughness": 1, "roundness": {"type": 3}},
+    {"type": "text", "x": 255, "y": 135, "width": 150, "height": 24, "text": "2 · Plan", "fontSize": 15, "fontFamily": "1", "textAlign": "center", "strokeColor": "#78350f"},
+    {"type": "text", "x": 255, "y": 165, "width": 150, "height": 56, "text": "writing-plans\nbite-sized tasks", "fontSize": 11, "fontFamily": "3", "textAlign": "center", "strokeColor": "#92400e"},
+
+    {"type": "rectangle", "x": 430, "y": 120, "width": 170, "height": 110, "backgroundColor": "#ffedd5", "strokeColor": "#ea580c", "fillStyle": "hachure", "strokeWidth": 2, "roughness": 1, "roundness": {"type": 3}},
+    {"type": "text", "x": 440, "y": 135, "width": 150, "height": 24, "text": "3 · Execute", "fontSize": 15, "fontFamily": "1", "textAlign": "center", "strokeColor": "#7c2d12"},
+    {"type": "text", "x": 440, "y": 165, "width": 150, "height": 56, "text": "team-lead agent\ndelegates · monitors", "fontSize": 11, "fontFamily": "3", "textAlign": "center", "strokeColor": "#9a3412"},
+
+    {"type": "rectangle", "x": 615, "y": 120, "width": 170, "height": 110, "backgroundColor": "#fce7f3", "strokeColor": "#db2777", "fillStyle": "hachure", "strokeWidth": 2, "roughness": 1, "roundness": {"type": 3}},
+    {"type": "text", "x": 625, "y": 135, "width": 150, "height": 24, "text": "4 · Review", "fontSize": 15, "fontFamily": "1", "textAlign": "center", "strokeColor": "#831843"},
+    {"type": "text", "x": 625, "y": 165, "width": 150, "height": 56, "text": "iterative-refinement\n3 cycles default", "fontSize": 11, "fontFamily": "3", "textAlign": "center", "strokeColor": "#9d174d"},
+
+    {"type": "rectangle", "x": 800, "y": 120, "width": 170, "height": 110, "backgroundColor": "#ecfdf5", "strokeColor": "#059669", "fillStyle": "hachure", "strokeWidth": 2, "roughness": 1, "roundness": {"type": 3}},
+    {"type": "text", "x": 810, "y": 135, "width": 150, "height": 24, "text": "5 · Open PR", "fontSize": 15, "fontFamily": "1", "textAlign": "center", "strokeColor": "#064e3b"},
+    {"type": "text", "x": 810, "y": 165, "width": 150, "height": 56, "text": "pr-workflow\nconventional commits", "fontSize": 11, "fontFamily": "3", "textAlign": "center", "strokeColor": "#065f46"},
+
+    {"type": "rectangle", "x": 985, "y": 120, "width": 175, "height": 110, "backgroundColor": "#f5f3ff", "strokeColor": "#7c3aed", "fillStyle": "hachure", "strokeWidth": 2, "roughness": 1, "roundness": {"type": 3}},
+    {"type": "text", "x": 995, "y": 135, "width": 155, "height": 24, "text": "6 · Wrap", "fontSize": 15, "fontFamily": "1", "textAlign": "center", "strokeColor": "#4c1d95"},
+    {"type": "text", "x": 995, "y": 165, "width": 155, "height": 56, "text": "session-wrap\nlearnings captured", "fontSize": 11, "fontFamily": "3", "textAlign": "center", "strokeColor": "#5b21b6"},
+
+    {"type": "arrow", "x": 230, "y": 175, "points": [[0, 0], [15, 0]], "strokeColor": "#94a3b8", "strokeWidth": 2, "roughness": 1},
+    {"type": "arrow", "x": 415, "y": 175, "points": [[0, 0], [15, 0]], "strokeColor": "#94a3b8", "strokeWidth": 2, "roughness": 1},
+    {"type": "arrow", "x": 600, "y": 175, "points": [[0, 0], [15, 0]], "strokeColor": "#94a3b8", "strokeWidth": 2, "roughness": 1},
+    {"type": "arrow", "x": 785, "y": 175, "points": [[0, 0], [15, 0]], "strokeColor": "#94a3b8", "strokeWidth": 2, "roughness": 1},
+    {"type": "arrow", "x": 970, "y": 175, "points": [[0, 0], [15, 0]], "strokeColor": "#94a3b8", "strokeWidth": 2, "roughness": 1},
+
+    {"type": "rectangle", "x": 60, "y": 290, "width": 530, "height": 100, "backgroundColor": "#fffbeb", "strokeColor": "#d97706", "fillStyle": "hachure", "strokeWidth": 1.5, "roughness": 1, "roundness": {"type": 3}},
+    {"type": "text", "x": 75, "y": 305, "width": 500, "height": 24, "text": "Inner guard — ship-loop.sh (Stop hook)", "fontSize": 14, "fontFamily": "1", "textAlign": "left", "strokeColor": "#78350f"},
+    {"type": "text", "x": 75, "y": 335, "width": 500, "height": 48, "text": "Blocks premature exit · re-injects prompt (max 5)\nSame session — context grows", "fontSize": 12, "fontFamily": "1", "textAlign": "left", "strokeColor": "#92400e"},
+
+    {"type": "rectangle", "x": 630, "y": 290, "width": 530, "height": 100, "backgroundColor": "#eff6ff", "strokeColor": "#2563eb", "fillStyle": "hachure", "strokeWidth": 1.5, "roughness": 1, "roundness": {"type": 3}},
+    {"type": "text", "x": 645, "y": 305, "width": 500, "height": 24, "text": "Outer loop — scripts/ship.sh (bash)", "fontSize": 14, "fontFamily": "1", "textAlign": "left", "strokeColor": "#1e3a8a"},
+    {"type": "text", "x": 645, "y": 335, "width": 500, "height": 48, "text": "Spawns fresh Claude per iteration (max 10)\nState persists via git — true 200K reset", "fontSize": 12, "fontFamily": "1", "textAlign": "left", "strokeColor": "#1e40af"}
+  ]
+}
