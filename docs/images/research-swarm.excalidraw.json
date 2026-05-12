@@ -1,0 +1,511 @@
+{
+  "elements": [
+    {
+      "type": "text",
+      "x": 60,
+      "y": 30,
+      "width": 1100,
+      "height": 36,
+      "text": "Research Swarm \u2014 5 parallel researchers \u2192 unified brief",
+      "fontSize": 22,
+      "fontFamily": "2",
+      "textAlign": "center",
+      "strokeColor": "#0f172a"
+    },
+    {
+      "id": "src",
+      "type": "rectangle",
+      "x": 60,
+      "y": 250,
+      "width": 200,
+      "height": 100,
+      "backgroundColor": "#0f172a",
+      "strokeColor": "#0f172a",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "roughness": 0,
+      "roundness": {
+        "type": 3
+      }
+    },
+    {
+      "type": "text",
+      "x": 70,
+      "y": 270,
+      "width": 180,
+      "height": 24,
+      "text": "Feature idea",
+      "fontSize": 16,
+      "fontFamily": "2",
+      "textAlign": "center",
+      "strokeColor": "#ffffff"
+    },
+    {
+      "type": "text",
+      "x": 70,
+      "y": 300,
+      "width": 180,
+      "height": 42,
+      "text": "add OAuth2 with\nrefresh tokens",
+      "fontSize": 11,
+      "fontFamily": "3",
+      "textAlign": "center",
+      "strokeColor": "#cbd5e1"
+    },
+    {
+      "id": "r1",
+      "type": "rectangle",
+      "x": 360,
+      "y": 100,
+      "width": 240,
+      "height": 70,
+      "backgroundColor": "#dbeafe",
+      "strokeColor": "#2563eb",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "roughness": 0,
+      "roundness": {
+        "type": 3
+      }
+    },
+    {
+      "type": "text",
+      "x": 370,
+      "y": 110,
+      "width": 220,
+      "height": 22,
+      "text": "best-practices-researcher",
+      "fontSize": 14,
+      "fontFamily": "2",
+      "textAlign": "center",
+      "strokeColor": "#1e3a8a"
+    },
+    {
+      "type": "text",
+      "x": 370,
+      "y": 135,
+      "width": 220,
+      "height": 30,
+      "text": "industry standards \u00b7 RFCs",
+      "fontSize": 11,
+      "fontFamily": "3",
+      "textAlign": "center",
+      "strokeColor": "#1e40af"
+    },
+    {
+      "id": "r2",
+      "type": "rectangle",
+      "x": 360,
+      "y": 190,
+      "width": 240,
+      "height": 70,
+      "backgroundColor": "#fef3c7",
+      "strokeColor": "#d97706",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "roughness": 0,
+      "roundness": {
+        "type": 3
+      }
+    },
+    {
+      "type": "text",
+      "x": 370,
+      "y": 200,
+      "width": 220,
+      "height": 22,
+      "text": "framework-docs-researcher",
+      "fontSize": 14,
+      "fontFamily": "2",
+      "textAlign": "center",
+      "strokeColor": "#78350f"
+    },
+    {
+      "type": "text",
+      "x": 370,
+      "y": 225,
+      "width": 220,
+      "height": 30,
+      "text": "lib docs for installed versions",
+      "fontSize": 11,
+      "fontFamily": "3",
+      "textAlign": "center",
+      "strokeColor": "#92400e"
+    },
+    {
+      "id": "r3",
+      "type": "rectangle",
+      "x": 360,
+      "y": 280,
+      "width": 240,
+      "height": 70,
+      "backgroundColor": "#ecfdf5",
+      "strokeColor": "#059669",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "roughness": 0,
+      "roundness": {
+        "type": 3
+      }
+    },
+    {
+      "type": "text",
+      "x": 370,
+      "y": 290,
+      "width": 220,
+      "height": 22,
+      "text": "learnings-researcher",
+      "fontSize": 14,
+      "fontFamily": "2",
+      "textAlign": "center",
+      "strokeColor": "#064e3b"
+    },
+    {
+      "type": "text",
+      "x": 370,
+      "y": 315,
+      "width": 220,
+      "height": 30,
+      "text": "docs/solutions \u00b7 prior art",
+      "fontSize": 11,
+      "fontFamily": "3",
+      "textAlign": "center",
+      "strokeColor": "#065f46"
+    },
+    {
+      "id": "r4",
+      "type": "rectangle",
+      "x": 360,
+      "y": 370,
+      "width": 240,
+      "height": 70,
+      "backgroundColor": "#f5f3ff",
+      "strokeColor": "#7c3aed",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "roughness": 0,
+      "roundness": {
+        "type": 3
+      }
+    },
+    {
+      "type": "text",
+      "x": 370,
+      "y": 380,
+      "width": 220,
+      "height": 22,
+      "text": "codebase-context-mapper",
+      "fontSize": 14,
+      "fontFamily": "2",
+      "textAlign": "center",
+      "strokeColor": "#4c1d95"
+    },
+    {
+      "type": "text",
+      "x": 370,
+      "y": 405,
+      "width": 220,
+      "height": 30,
+      "text": "impact map \u00b7 affected files",
+      "fontSize": 11,
+      "fontFamily": "3",
+      "textAlign": "center",
+      "strokeColor": "#5b21b6"
+    },
+    {
+      "id": "r5",
+      "type": "rectangle",
+      "x": 360,
+      "y": 460,
+      "width": 240,
+      "height": 70,
+      "backgroundColor": "#fce7f3",
+      "strokeColor": "#db2777",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "roughness": 0,
+      "roundness": {
+        "type": 3
+      }
+    },
+    {
+      "type": "text",
+      "x": 370,
+      "y": 470,
+      "width": 220,
+      "height": 22,
+      "text": "git-history-analyzer",
+      "fontSize": 14,
+      "fontFamily": "2",
+      "textAlign": "center",
+      "strokeColor": "#831843"
+    },
+    {
+      "type": "text",
+      "x": 370,
+      "y": 495,
+      "width": 220,
+      "height": 30,
+      "text": "evolution \u00b7 pattern archaeology",
+      "fontSize": 11,
+      "fontFamily": "3",
+      "textAlign": "center",
+      "strokeColor": "#9d174d"
+    },
+    {
+      "id": "synth",
+      "type": "ellipse",
+      "x": 720,
+      "y": 265,
+      "width": 210,
+      "height": 100,
+      "backgroundColor": "#fde68a",
+      "strokeColor": "#d97706",
+      "fillStyle": "solid",
+      "strokeWidth": 3,
+      "roughness": 0
+    },
+    {
+      "type": "text",
+      "x": 730,
+      "y": 285,
+      "width": 190,
+      "height": 22,
+      "text": "research-",
+      "fontSize": 14,
+      "fontFamily": "2",
+      "textAlign": "center",
+      "strokeColor": "#78350f"
+    },
+    {
+      "type": "text",
+      "x": 730,
+      "y": 308,
+      "width": 190,
+      "height": 22,
+      "text": "synthesizer",
+      "fontSize": 14,
+      "fontFamily": "2",
+      "textAlign": "center",
+      "strokeColor": "#78350f"
+    },
+    {
+      "type": "text",
+      "x": 730,
+      "y": 333,
+      "width": 190,
+      "height": 20,
+      "text": "merge \u00b7 cite \u00b7 dedupe",
+      "fontSize": 11,
+      "fontFamily": "3",
+      "textAlign": "center",
+      "strokeColor": "#92400e"
+    },
+    {
+      "id": "brief",
+      "type": "rectangle",
+      "x": 990,
+      "y": 250,
+      "width": 180,
+      "height": 130,
+      "backgroundColor": "#fef3c7",
+      "strokeColor": "#d97706",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "roughness": 0,
+      "roundness": {
+        "type": 3
+      }
+    },
+    {
+      "type": "text",
+      "x": 1000,
+      "y": 265,
+      "width": 160,
+      "height": 22,
+      "text": "Research Brief",
+      "fontSize": 15,
+      "fontFamily": "2",
+      "textAlign": "center",
+      "strokeColor": "#78350f"
+    },
+    {
+      "type": "text",
+      "x": 1000,
+      "y": 290,
+      "width": 160,
+      "height": 88,
+      "text": "options \u00b7 tradeoffs\ncitations\nrecommendation\n\u2192 feeds /brainstorming",
+      "fontSize": 11,
+      "fontFamily": "3",
+      "textAlign": "center",
+      "strokeColor": "#92400e"
+    },
+    {
+      "type": "arrow",
+      "x": 0,
+      "y": 0,
+      "start": {
+        "id": "src"
+      },
+      "end": {
+        "id": "r1"
+      },
+      "strokeColor": "#94a3b8",
+      "strokeWidth": 1.5,
+      "roughness": 0
+    },
+    {
+      "type": "arrow",
+      "x": 0,
+      "y": 0,
+      "start": {
+        "id": "src"
+      },
+      "end": {
+        "id": "r2"
+      },
+      "strokeColor": "#94a3b8",
+      "strokeWidth": 1.5,
+      "roughness": 0
+    },
+    {
+      "type": "arrow",
+      "x": 0,
+      "y": 0,
+      "start": {
+        "id": "src"
+      },
+      "end": {
+        "id": "r3"
+      },
+      "strokeColor": "#94a3b8",
+      "strokeWidth": 1.5,
+      "roughness": 0
+    },
+    {
+      "type": "arrow",
+      "x": 0,
+      "y": 0,
+      "start": {
+        "id": "src"
+      },
+      "end": {
+        "id": "r4"
+      },
+      "strokeColor": "#94a3b8",
+      "strokeWidth": 1.5,
+      "roughness": 0
+    },
+    {
+      "type": "arrow",
+      "x": 0,
+      "y": 0,
+      "start": {
+        "id": "src"
+      },
+      "end": {
+        "id": "r5"
+      },
+      "strokeColor": "#94a3b8",
+      "strokeWidth": 1.5,
+      "roughness": 0
+    },
+    {
+      "type": "arrow",
+      "x": 0,
+      "y": 0,
+      "start": {
+        "id": "r1"
+      },
+      "end": {
+        "id": "synth"
+      },
+      "strokeColor": "#94a3b8",
+      "strokeWidth": 1.5,
+      "roughness": 0
+    },
+    {
+      "type": "arrow",
+      "x": 0,
+      "y": 0,
+      "start": {
+        "id": "r2"
+      },
+      "end": {
+        "id": "synth"
+      },
+      "strokeColor": "#94a3b8",
+      "strokeWidth": 1.5,
+      "roughness": 0
+    },
+    {
+      "type": "arrow",
+      "x": 0,
+      "y": 0,
+      "start": {
+        "id": "r3"
+      },
+      "end": {
+        "id": "synth"
+      },
+      "strokeColor": "#94a3b8",
+      "strokeWidth": 1.5,
+      "roughness": 0
+    },
+    {
+      "type": "arrow",
+      "x": 0,
+      "y": 0,
+      "start": {
+        "id": "r4"
+      },
+      "end": {
+        "id": "synth"
+      },
+      "strokeColor": "#94a3b8",
+      "strokeWidth": 1.5,
+      "roughness": 0
+    },
+    {
+      "type": "arrow",
+      "x": 0,
+      "y": 0,
+      "start": {
+        "id": "r5"
+      },
+      "end": {
+        "id": "synth"
+      },
+      "strokeColor": "#94a3b8",
+      "strokeWidth": 1.5,
+      "roughness": 0
+    },
+    {
+      "type": "arrow",
+      "x": 0,
+      "y": 0,
+      "start": {
+        "id": "synth"
+      },
+      "end": {
+        "id": "brief"
+      },
+      "strokeColor": "#d97706",
+      "strokeWidth": 2,
+      "roughness": 0
+    },
+    {
+      "type": "text",
+      "x": 60,
+      "y": 580,
+      "width": 1110,
+      "height": 22,
+      "text": "/deep-research dispatches all five before planning \u00b7 brief feeds /brainstorming and /writing-plans",
+      "fontSize": 13,
+      "fontFamily": "3",
+      "textAlign": "center",
+      "strokeColor": "#64748b"
+    }
+  ]
+}
