@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/images/hero-banner.png" alt="Claude Code Project Template" width="100%">
+  <img src="docs/images/hero-banner.svg" alt="Claude Code Project Template" width="100%">
 </p>
 
 <p align="center">
