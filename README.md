@@ -775,6 +775,7 @@ In plugin mode, agents are provided by the plugin. To add project-specific agent
 name: your-agent-name
 description: "When to use this agent. Be specific so Claude knows when to delegate."
 model: inherit
+effort: medium
 tools: [Read, Glob, Grep, Bash]
 ---
 
@@ -796,8 +797,31 @@ You are a [role] specializing in [domain].
 |-------|---------|---------|
 | `tools` | Restrict which tools the agent can use (principle of least privilege) | `[Read, Glob, Grep, Bash]` for read-only; add `Edit, Write` for agents that modify code |
 | `model` | Override the model (`sonnet`, `opus`, `haiku`, or `inherit`) | `inherit` to use the session's model |
+| `effort` | Reasoning-depth tier — `low`, `medium`, or `high`. Every bundled agent sets one (see Effort tiers below) | `high` for reviewers/oracles, `low` for mechanical validators |
 | `isolation` | Set to `worktree` for agents that modify files in parallel | Used by `pr-comment-resolver` |
 | `maxTurns` | Limit agentic turns to prevent runaway token consumption | `20` for focused tasks |
+
+### Effort tiers & opt-in model mapping
+
+Every bundled agent now carries an `effort:` tier in its frontmatter — `low`, `medium`, or `high` — chosen from the depth of reasoning its job demands (all 29 agents set exactly one):
+
+| Tier | Assigned to | Examples |
+|------|-------------|----------|
+| `high` | Reviewers, synthesizers, oracles, and the orchestrator — deep reasoning, cross-checking, adversarial review | `code-reviewer`, `security-sentinel`, `findings-synthesizer`, `team-lead` |
+| `medium` | Standard workers and researchers — implementers, verifiers, doc and research gathering | `pr-comment-resolver`, `best-practices-researcher`, `integration-checker` |
+| `low` | Mechanical validators — rule-matching or existence checks against a known source | `convention-enforcer`, `doc-claim-verifier` |
+
+`effort:` is a plain frontmatter scalar. CLIs that don't recognize the key ignore it harmlessly, so the tiers are safe to ship in a portable template.
+
+The shipped default stays `model: inherit` on every agent, so agents ride whatever model your session runs and the template assumes nothing about your plan tier. If your plan supports per-model selection, you *may* opt in by adding a `model:` line per agent in your project's `.claude/agents/` copies, mapping tiers to models:
+
+| Effort tier | Suggested opt-in model |
+|-------------|------------------------|
+| `low` | Haiku 4.5 |
+| `medium` | Sonnet 5 |
+| `high` | Opus 4.8 / Fable 5 |
+
+This mapping is documentation, not shipped configuration — leaving `model: inherit` in place is the supported default.
 
 ### Adjusting quality gates
 

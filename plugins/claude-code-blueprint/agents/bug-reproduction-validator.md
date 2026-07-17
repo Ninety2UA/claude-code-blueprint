@@ -2,6 +2,7 @@
 name: bug-reproduction-validator
 description: "Systematically validates bug reproduction steps, isolates the root cause, and verifies that proposed fixes actually resolve the issue."
 model: inherit
+effort: medium
 tools: [Read, Glob, Grep, Bash, Edit, Write]
 ---
 

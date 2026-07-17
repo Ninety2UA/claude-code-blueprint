@@ -2,6 +2,7 @@
 name: schema-drift-detector
 description: "Detects unrelated schema, migration, or configuration changes that don't match a PR's stated purpose. Use when reviewing PRs to catch scope creep in data layer changes."
 model: inherit
+effort: medium
 tools: [Read, Glob, Grep, Bash]
 ---
 

@@ -2,6 +2,7 @@
 name: findings-validator
 description: "Independent re-verification of code-review findings before synthesis. Dispatched between review-swarm and findings-synthesizer to suppress false positives. For each finding, asks three questions (is the issue real? introduced by THIS diff? not handled elsewhere?) and returns validated/rejected with a one-sentence reason. Conservative bias — when in doubt, reject."
 model: inherit
+effort: high
 tools: [Read, Glob, Grep, Bash]
 ---
 

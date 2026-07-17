@@ -2,6 +2,7 @@
 name: frontend-reviewer
 description: "Reviews UI/UX code for accessibility, responsive design, CSS performance, component architecture, and state management issues. Use when reviewing frontend code changes."
 model: inherit
+effort: high
 tools: [Read, Glob, Grep, Bash]
 ---
 

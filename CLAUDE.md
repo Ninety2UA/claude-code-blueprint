@@ -79,6 +79,8 @@ install.sh                               # Plugin installer + legacy mode
 
 Skills and agents are self-describing via frontmatter — read their files for when/how to use them.
 
+Each agent carries an `effort:` tier (`low`/`medium`/`high`) in frontmatter, set by reasoning depth (mechanical validators → `low`; workers/researchers → `medium`; reviewers/synthesizers/oracles/orchestrator → `high`). Default stays `model: inherit` so agents ride the session model; an opt-in per-agent model mapping (`low`→Haiku 4.5, `medium`→Sonnet 5, `high`→Opus 4.8 / Fable 5) is documented in README under "Effort tiers & opt-in model mapping" — apply only if your plan tier supports it.
+
 ## Behavioral Rules
 
 - Do what has been asked; nothing more, nothing less

@@ -2,6 +2,7 @@
 name: convention-enforcer
 description: "Validates code changes against the project's CONVENTIONS.md rules. Use when reviewing code to ensure adherence to established project standards."
 model: inherit
+effort: low
 tools: [Read, Glob, Grep, Bash]
 ---
 
