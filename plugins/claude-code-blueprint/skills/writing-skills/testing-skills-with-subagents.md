@@ -379,6 +379,12 @@ Target: ≥90% accuracy (≤2 misses in 20 queries).
 | False positives (wrong triggers) | Narrow conditions, add "NOT for..." qualifiers |
 | Both | Description is vague — rewrite from scratch focusing on specific triggering conditions |
 
+### Cross-Skill Collision Check
+
+The 20-query test proves this skill fires correctly **in isolation** — it says nothing about whether *another* skill's description overlaps enough to steal or split the routing. Two skills with near-duplicate descriptions produce ambiguous routing that neither skill's own trigger test can detect.
+
+Run `python3 scripts/check-skill-collisions.py` (also a CI gate): it computes pairwise content-token overlap across every skill description and **warns at ≥50%, fails at ≥75%**. When a pair is flagged, narrow the *more specific* skill's trigger conditions rather than widening both — the goal is one unambiguous home per prompt. A description can pass its own 20-query test and still collide with a sibling; both checks are needed.
+
 ### Common Description Failure Modes
 
 | Failure | Example | Fix |

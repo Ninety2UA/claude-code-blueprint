@@ -128,3 +128,6 @@ jobs:
 
       - name: Check count/version drift
         run: bash scripts/check-drift.sh
+
+      - name: Check skill-description collisions
+        run: python3 scripts/check-skill-collisions.py
