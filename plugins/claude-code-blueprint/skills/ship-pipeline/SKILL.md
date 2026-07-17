@@ -65,6 +65,20 @@ completion_promise: "DONE"
 - The session_id uses the branch name so other sessions aren't blocked
 - If this file already exists with `iteration` > 1, you are in a **continuation session** from a prior Stop hook restart
 
+#### Optional: native `/goal` completion (interactive only, CLI v2.1.139+)
+
+The `ship-loop.sh` Stop hook above is the **default, zero-config guard** — it needs no user action and works in every mode, including headless `--external` runs. As an *optional* enhancement for interactive users on CLI v2.1.139+, emit a copyable `/goal` prompt so completion is also tracked by the platform's native condition-completion (with its live elapsed/turns/tokens overlay). Print this block once at Stage 0 for the user to paste:
+
+```text
+/goal Keep working across turns until the ship pipeline is fully complete: all
+stages done, review converged, changes committed, and the pipeline has emitted
+<promise>DONE</promise> with every item verified. Do not stop before then.
+```
+
+- **Emit only in interactive mode** (never when `--external` is set — a headless loop has no one to paste it, which is why the Stop hook, not `/goal`, is the guarantee). **Do not stall waiting for the paste** — continue the pipeline immediately; the `ship-loop.sh` hook protects the run whether or not the user pastes.
+- If pasted, native `/goal` and the Stop hook coexist harmlessly: both release the session once `<promise>DONE</promise>` appears, and `/goal` just adds an overlay. `/goal` is an opt-in convenience, **not** a dependency — the pipeline never relies on it, so no minimum-CLI floor is imposed on `/ship` itself.
+- Native `STOP_HOOK_BLOCK_CAP` (default 8, since CLI 2.1.143) backstops the hook against runaway blocking even if `max_iterations` is misconfigured — defense in depth, no action needed.
+
 ---
 
 ### Stage 1: Requirements (Auto-Discuss)
@@ -263,7 +277,7 @@ Skip if the work was straightforward.
 
 ### Interactive: `/ship-pipeline` inside Claude
 
-Type `/ship-pipeline <feature>` in a Claude session. The Stop hook (`ship-loop.sh`) guards against premature exit — if Claude tries to stop before outputting `<promise>DONE</promise>`, the hook blocks exit and re-injects the prompt. This does NOT reset context — the conversation keeps growing. Best for features that fit within a single context window.
+Type `/ship-pipeline <feature>` in a Claude session. The Stop hook (`ship-loop.sh`) guards against premature exit — if Claude tries to stop before outputting `<promise>DONE</promise>`, the hook blocks exit and re-injects the prompt. This does NOT reset context — the conversation keeps growing. Best for features that fit within a single context window. On CLI v2.1.139+ you can optionally paste the native `/goal` prompt emitted at Stage 0 for an elapsed/turns/tokens overlay — the Stop hook remains the guarantee regardless (see Stage 0).
 
 ### External loop: `scripts/ship.sh`
 
