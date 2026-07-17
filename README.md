@@ -59,7 +59,7 @@ Every component in Blueprint is informed by what works (and what doesn't) across
 | [**GSD-2**](https://github.com/gsd-build/gsd-2) | KB | **6 patterns** | Error classification fast-path, degradation detection, structured escalation, assumption tracking |
 | [**gsd-core**](https://github.com/open-gsd/gsd-core) [†](#gsd-core-provenance) | 6.8K | **Import nothing** | Community fork of GSD (4th GSD-lineage pass, v1.7.0); post-fork build-out is 16-runtime embeddable-orchestration + MCP infra — the multi-runtime direction we repeatedly reject; 4 verifier/plan refinements deferred |
 | [**Anthropic skill-creator**](https://github.com/anthropics/skills) | Official | **3 concepts** | Description trigger testing, structured assertions, iteration strategy by skill type |
-| [**Superpowers**](https://github.com/obra/superpowers) | 257K | Patterns adopted | Anti-rationalization guards, TDD quality gates (re-analyzed v6.1.1 — superset fork, nothing new) |
+| [**Superpowers**](https://github.com/obra/superpowers) | 257K | Patterns adopted | Anti-rationalization guards, TDD quality gates (re-analyzed v6.1.1 — blueprint already carries 13/14 of its skills, nothing new) |
 | [**Compound Eng.**](https://github.com/EveryInc/compound-engineering-plugin) | 9.9K | Patterns adopted | Parallel review swarm, agent tool restrictions, confidence-anchored scoring, blindspot pass, reversibility-tiering (re-analyzed v3.19.0) |
 | [**Ralphy**](https://github.com/michaelshimeles/ralphy) | 2.5K | Pattern adopted | External bash loop for context-exhaustion recovery |
 | [**Ralph**](https://github.com/snarktank/ralph) | 13.5K | Pattern adopted | Original autonomous agent loop that inspired the external ship loop |
@@ -77,7 +77,7 @@ Every component in Blueprint is informed by what works (and what doesn't) across
 > **"Import nothing" is a feature, not a failure.** The gravitational pull to adopt *something* from impressive repos is a real bias. Sometimes the right answer after deep analysis is to change nothing — and documenting why is just as valuable as documenting what you imported.
 
 <a id="gsd-core-provenance"></a>
-> **† gsd-core provenance.** `open-gsd/gsd-core` is a **post-abandonment community fork** of `gsd-build/get-shit-done` (created 2026-05-22, after the original maintainer went dark and the associated `$GSD` token was linked to a rug-pull). Maintainer safety is **unconfirmed**. It appears here for analysis completeness only; any pattern from a GSD-lineage repo is re-implemented from the described idea, never copied from fork source — so the supply-chain risk to this project is nil.
+> **† gsd-core provenance.** `open-gsd/gsd-core` is a **post-abandonment community fork** of `gsd-build/get-shit-done` (created 2026-05-22, after the original maintainer went dark and the associated `$GSD` token was linked to a rug-pull). Maintainer safety is **unconfirmed**. It appears here for analysis completeness only; any pattern from a GSD-lineage repo is re-implemented from the described idea, never copied from fork source — so the supply-chain risk to this project is negligible.
 
 ### What's New in v3.5.0 — Ecosystem Delta Sweep
 

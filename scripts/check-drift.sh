@@ -196,7 +196,7 @@ if idx_html is not None:
     prefix = idx_html.split('id="whats-new"')[0]
     label_gt = {"skills": SK, "agents": AG, "hooks": HK}
     widgets = 0
-    for m in re.finditer(r"(\d+)\s+(Skills|Agents|Hooks)\b", prefix):
+    for m in re.finditer(r"(\d+)(?:\s|&nbsp;|&#160;)+(Skills|Agents|Hooks)\b", prefix):
         widgets += 1
         num, lab = int(m.group(1)), m.group(2).lower()
         if num != label_gt[lab]:

@@ -46,7 +46,7 @@ When the user signals unfamiliarity (or you detect it), run a blindspot pass **b
 2. **Surface the blind spots** — for each decision, name what the user would need to know to choose well, and flag the ones they are least likely to be aware of.
 3. **Present the map, then ask** — show the decision surface and the blind spots first so the user learns the shape of the problem. Only then begin the one-at-a-time questions, now that the user can actually evaluate them.
 
-This composes with the sections around it: run the **Premise Challenge** first (is this even the right problem?), then the blindspot pass (what does deciding well require?), then apply **Scope Modes** and proceed to questions. Skip it when the user is clearly fluent in the domain — the blindspot pass is for unfamiliar territory, not every session. In a non-interactive run (a pipeline stage, headless `-p`, no human to answer), don't stall on the offer: record the recommended defaults as explicit assumptions and proceed, so the pass informs the work instead of blocking it.
+This composes with the sections around it: run the **Premise Challenge** first (is this even the right problem?), then the blindspot pass (what does deciding well require?), then apply **Scope Modes** and proceed to questions. Skip it when the user is clearly fluent in the domain — the blindspot pass is for unfamiliar territory, not every session. In a non-interactive run (a pipeline stage, headless `-p`, no human to answer), don't stall waiting for answers: record the recommended defaults as explicit assumptions and proceed, so the pass informs the work instead of blocking it.
 
 ## Scope Modes
 

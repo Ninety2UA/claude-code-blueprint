@@ -84,7 +84,7 @@ Recorded so a future cycle does not read superpowers' consolidation as pressure 
 
 Two pre-existing items the delta exposed (neither is an import from the delta; both are cheap fixes to bundle when the ecosystem row is touched):
 
-1. **Star count is badly stale.** README records **71K**; current is **~252K** (star-history: 252.1K, rank #14 globally; obra profile ~256K). Refresh the ecosystem row and add the `v6.1.1` pin at implementation. Pull the exact figure fresh at that time.
+1. **Star count is badly stale.** README records **71K**; current is **~252K** (star-history: 252.1K, rank #14 globally; obra profile ~256K). Refresh the ecosystem row and add the `v6.1.1` pin at implementation. (Refreshed to 257K on 2026-07-17.)
 2. **Derived skills still carry superpowers-brand strings.** `using-git-worktrees`, `verification-before-completion`, and `subagent-driven-development` still contain `~/.config/superpowers/…` paths, "Jesse's rule", "24 failure memories", and a `~/.config/superpowers/hooks/` example. Harmless but off-brand for a standalone template. Optional de-brand pass — not delta-driven, flagged because the analysis walked these files.
 
 ## Bottom line

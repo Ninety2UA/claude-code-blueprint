@@ -66,7 +66,7 @@ def description(path):
     # real text is on the following more-indented lines. Gather them so a folded
     # description is still compared instead of collapsing to the indicator character
     # (which would token-empty and silently drop the skill from collision detection).
-    if re.fullmatch(r"[>|][+-]?", val):
+    if re.fullmatch(r"[>|][0-9]*[+-]?", val):
         block = []
         for ln in fm[d.end():].split("\n"):
             if ln.strip() == "":

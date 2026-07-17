@@ -144,7 +144,7 @@ What works perfectly for Opus might need more detail for Haiku. If you plan to u
 ## Skill structure
 
 <Note>
-  **YAML Frontmatter**: The SKILL.md frontmatter supports two fields:
+  **YAML Frontmatter**: The SKILL.md frontmatter supports two portable fields (Claude Code additionally honors optional `allowed-tools`/`disallowed-tools` — see SKILL.md):
 
   * `name` - Human-readable name of the Skill (64 characters maximum)
   * `description` - One-line description of what the Skill does and when to use it (1024 characters maximum)
@@ -1092,7 +1092,7 @@ reader = PdfReader("file.pdf")
 
 ### YAML frontmatter requirements
 
-The SKILL.md frontmatter includes only `name` (64 characters max) and `description` (1024 characters max) fields. See the [Skills overview](/en/docs/agents-and-tools/agent-skills/overview#skill-structure) for complete structure details.
+The SKILL.md frontmatter's portable core is `name` (64 characters max) and `description` (1024 characters max) (Claude Code additionally honors optional `allowed-tools`/`disallowed-tools`; see SKILL.md). See the [Skills overview](/en/docs/agents-and-tools/agent-skills/overview#skill-structure) for complete structure details.
 
 ### Token budgets
 
