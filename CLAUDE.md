@@ -177,4 +177,4 @@ Types: `feat`, `fix`, `refactor`, `docs`, `test`, `chore`, `style`, `perf`
 
 ## Key Learnings
 
-See `docs/learnings/LEARNINGS.md` for project-specific patterns, gotchas, and insights. Updated by `/session-wrap`.
+See `docs/learnings/` for project-specific patterns, gotchas, and insights — one doc per import/analysis cycle (e.g. `pipeline-discipline.md`, `addy-osmani-agent-skills-imports.md`). Updated by `/session-wrap`.

@@ -71,6 +71,7 @@ Every component in Blueprint is informed by what works (and what doesn't) across
 | [**Plugins+Skills**](https://github.com/jeremylongshore/claude-code-plugins-plus-skills) | 1.5K | Reference | Community patterns |
 | [**oh-my-claudecode**](https://github.com/Yeachan-Heo/oh-my-claudecode) | 21.9K | **3 patterns** | Evidence hierarchy for debugging, ambiguity gating for requirements, deslop pass for AI text cleanup |
 | **Multi-Agent Framework** | Doc | **3 patterns** | Worker failure protocol, contradiction resolution, structured escalation |
+| [**agent-skills**](https://github.com/addyosmani/agent-skills) | 79K | **7 patterns** | HTTP-revalidating WebFetch cache, source-driven-development skill, rationalization tables, severity prefixes, When-NOT-to-Use sections |
 
 > **"Import nothing" is a feature, not a failure.** The gravitational pull to adopt *something* from impressive repos is a real bias. Sometimes the right answer after deep analysis is to change nothing — and documenting why is just as valuable as documenting what you imported.
 
