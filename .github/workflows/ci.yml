@@ -113,3 +113,18 @@ jobs:
 
       - name: Run ShellCheck on ship.sh
         run: shellcheck --exclude=SC2317,SC2329 plugins/claude-code-blueprint/scripts/ship.sh
+
+      - name: Run ShellCheck on check-drift.sh
+        run: shellcheck scripts/check-drift.sh
+
+      - name: Run ShellCheck on hook handlers
+        run: shellcheck plugins/claude-code-blueprint/hooks/handlers/*.sh
+
+  drift-gate:
+    name: Drift Gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check count/version drift
+        run: bash scripts/check-drift.sh

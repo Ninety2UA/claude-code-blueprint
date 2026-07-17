@@ -1,0 +1,276 @@
+#!/usr/bin/env bash
+# check-drift.sh — Exact-match drift gate for count/version claims (R15 / KTD-6).
+#
+# Ground truth is DERIVED from the filesystem — the number of skills, agents, and
+# hook command entries the plugin actually ships, plus the release version — and
+# then compared against every hardcoded claim in the manifests, docs, installer,
+# and website. Any mismatch prints "LOCATION: expected X, found Y" and the script
+# exits non-zero. This replaces manual count sweeps, which drifted three times.
+#
+# Usage: check-drift.sh [repo-root]
+#   repo-root defaults to the parent of this script's directory, so CI
+#   (`bash scripts/check-drift.sh`) and local invocations both resolve correctly.
+#
+# Deliberately NOT `set -e`: the checker must report every mismatch in a single
+# run, so a non-zero check must not abort collection. The embedded python checker
+# aggregates all failures and this script propagates its exit code.
+#
+# Exit codes: 0 = consistent · 1 = drift detected · 2 = ground truth missing/empty
+# (a renamed or absent source tree fails loudly here rather than passing vacuously).
+
+set -uo pipefail
+
+# ── Colors (TTY only; CI logs stay plain) ─────────────────────
+if [[ -t 1 ]] && command -v tput &>/dev/null && [[ $(tput colors 2>/dev/null || echo 0) -ge 8 ]]; then
+  RED=$(tput setaf 1); GREEN=$(tput setaf 2)
+  BLUE=$(tput setaf 4); BOLD=$(tput bold); NC=$(tput sgr0)
+else
+  RED=""; GREEN=""; BLUE=""; BOLD=""; NC=""
+fi
+
+info()    { echo "  ${BLUE}▸${NC} $1"; }
+success() { echo "  ${GREEN}✓${NC} $1"; }
+fail()    { echo "  ${RED}✗${NC} $1"; }
+
+# ── Resolve repo root ─────────────────────────────────────────
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [[ $# -ge 1 && -n "${1:-}" ]]; then
+  REPO_ROOT="$1"
+else
+  REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+fi
+if [[ ! -d "$REPO_ROOT" ]]; then
+  fail "repo root not found: $REPO_ROOT"
+  exit 2
+fi
+REPO_ROOT="$(cd "$REPO_ROOT" && pwd)"
+
+PLUGIN_DIR="$REPO_ROOT/plugins/claude-code-blueprint"
+SKILLS_DIR="$PLUGIN_DIR/skills"
+AGENTS_DIR="$PLUGIN_DIR/agents"
+HOOKS_JSON="$PLUGIN_DIR/hooks/hooks.json"
+
+echo ""
+echo "${BOLD}Drift gate${NC} — $REPO_ROOT"
+
+# ── Ground-truth source existence (fail loud, never vacuous) ──
+missing=0
+[[ -d "$SKILLS_DIR" ]] || { fail "required directory missing: skills/";        missing=1; }
+[[ -d "$AGENTS_DIR" ]] || { fail "required directory missing: agents/";        missing=1; }
+[[ -f "$HOOKS_JSON"  ]] || { fail "required file missing: hooks/hooks.json";    missing=1; }
+if [[ $missing -ne 0 ]]; then
+  fail "ground-truth sources missing under $PLUGIN_DIR — treated as drift, not a pass"
+  exit 2
+fi
+
+# ── Derive ground truth from the filesystem ───────────────────
+SKILLS=$(find "$SKILLS_DIR" -type f -name 'SKILL.md' | wc -l | tr -d ' ')
+AGENTS=$(find "$AGENTS_DIR" -maxdepth 1 -type f -name '*.md' | wc -l | tr -d ' ')
+HOOKS=$(python3 - "$HOOKS_JSON" <<'PY'
+import json, sys
+try:
+    data = json.load(open(sys.argv[1], encoding="utf-8"))
+except Exception as exc:                       # noqa: BLE001 - parse failure -> 0 -> loud fail below
+    sys.stderr.write("hooks.json parse error: %s\n" % exc)
+    print(0)
+    sys.exit(0)
+count = 0
+for groups in data.get("hooks", {}).values():  # event -> list of matcher groups
+    for group in groups:
+        for hook in group.get("hooks", []):
+            if hook.get("type") == "command":
+                count += 1
+print(count)
+PY
+)
+
+# ── Guard: empty / non-numeric ground truth must fail loudly ──
+for pair in "skills:$SKILLS" "agents:$AGENTS" "hooks:$HOOKS"; do
+  name="${pair%%:*}"; val="${pair##*:}"
+  if ! [[ "$val" =~ ^[0-9]+$ ]] || [[ "$val" -eq 0 ]]; then
+    fail "derived $name count is '$val' (zero or non-numeric) — refusing to pass vacuously"
+    exit 2
+  fi
+done
+
+info "Derived ground truth: ${BOLD}${SKILLS}${NC} skills · ${BOLD}${AGENTS}${NC} agents · ${BOLD}${HOOKS}${NC} hooks"
+echo ""
+
+# ── Compare every hardcoded claim against ground truth ────────
+# The checker anchors each claim narrowly so frozen changelog text (README
+# "What's New" entries, older index.html new__badge spans) is never gated —
+# only current-state claims. A missing anchor is reported as drift, not skipped.
+python3 - "$REPO_ROOT" "$SKILLS" "$AGENTS" "$HOOKS" <<'PY'
+import json, os, re, sys
+
+repo = sys.argv[1]
+SK, AG, HK = int(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4])
+GT = {"skills": SK, "agents": AG, "hooks": HK}
+PLUGIN = "plugins/claude-code-blueprint"
+
+failures = []
+_cache = {}
+
+def rd(rel):
+    """Read a repo-relative file (cached). A missing canonical location is drift."""
+    if rel in _cache:
+        return _cache[rel]
+    try:
+        with open(os.path.join(repo, rel), encoding="utf-8") as fh:
+            _cache[rel] = fh.read()
+    except OSError as exc:
+        failures.append("%s: cannot read (%s) — expected count/version claim location to exist"
+                        % (rel, exc.strerror))
+        _cache[rel] = None
+    return _cache[rel]
+
+def json_get(rel, path):
+    text = rd(rel)
+    if text is None:
+        return None
+    try:
+        cur = json.loads(text)
+    except json.JSONDecodeError as exc:
+        failures.append("%s: invalid JSON (%s) — cannot verify counts/version" % (rel, exc))
+        return None
+    try:
+        for key in path:
+            cur = cur[key]
+    except (KeyError, IndexError, TypeError):
+        failures.append("%s: missing field '%s' — manifest shape changed, re-point the gate"
+                        % (rel, ".".join(map(str, path))))
+        return None
+    return cur
+
+# Single-line "N skills ... N agents ... N hooks" (separator-agnostic, never crosses a newline).
+TRIPLE   = re.compile(r"(\d+) skills[^\d\n]+?(\d+) agents[^\d\n]+?(\d+) hooks")
+PROVIDES = re.compile(r"Plugin provides:\s*(\d+) skills[^\d\n]+?(\d+) agents[^\d\n]+?(\d+) hooks")
+LABELED  = re.compile(r"[├└]──\s*(\d+)\s+(skills|agents|hooks)\b")  # README tree
+
+def check_triple(label, rel, text, min_matches=1, pattern=TRIPLE):
+    if text is None:
+        return
+    matches = list(pattern.finditer(text))
+    if len(matches) < min_matches:
+        failures.append("%s (%s): expected >=%d 'N skills, N agents, N hooks' claim(s), found %d "
+                        "— anchor text changed, re-point the gate"
+                        % (label, rel, min_matches, len(matches)))
+        return
+    for m in matches:
+        got = [int(m.group(1)), int(m.group(2)), int(m.group(3))]
+        if got != [SK, AG, HK]:
+            failures.append("%s (%s): expected %d skills / %d agents / %d hooks, found %d / %d / %d"
+                            % (label, rel, SK, AG, HK, got[0], got[1], got[2]))
+
+def check_single(label, rel, text, pattern, name):
+    if text is None:
+        return
+    m = re.search(pattern, text)
+    if not m:
+        failures.append("%s (%s): '%s' count claim not found (/%s/) — anchor text changed, re-point the gate"
+                        % (label, rel, name, pattern))
+        return
+    got = int(m.group(1))
+    if got != GT[name]:
+        failures.append("%s (%s): expected %d %s, found %d" % (label, rel, GT[name], name, got))
+
+# ── COUNT CLAIMS (current-state locations only) ──
+plugin_json = "%s/.claude-plugin/plugin.json" % PLUGIN
+marketplace = ".claude-plugin/marketplace.json"
+
+check_triple("plugin.json description", plugin_json, json_get(plugin_json, ["description"]))
+check_triple("marketplace.json plugin description", marketplace,
+             json_get(marketplace, ["plugins", 0, "description"]))
+check_triple("templates/CLAUDE.md Plugin-provided line", "%s/templates/CLAUDE.md" % PLUGIN,
+             rd("%s/templates/CLAUDE.md" % PLUGIN))
+check_triple("index.html meta/og description", "index.html", rd("index.html"), min_matches=2)
+check_triple("install.sh 'Plugin provides' summary", "install.sh", rd("install.sh"),
+             min_matches=2, pattern=PROVIDES)
+
+claude_md = rd("CLAUDE.md")
+check_single("CLAUDE.md architecture", "CLAUDE.md", claude_md, r"(\d+) skills \(slash commands", "skills")
+check_single("CLAUDE.md architecture", "CLAUDE.md", claude_md, r"(\d+) specialized subagents", "agents")
+
+readme = rd("README.md")
+if readme is not None:
+    tree = list(LABELED.finditer(readme))
+    if len(tree) < 3:
+        failures.append("README.md project-structure tree (README.md): expected >=3 tree count lines, "
+                        "found %d — anchor changed, re-point the gate" % len(tree))
+    for m in tree:
+        num, name = int(m.group(1)), m.group(2)
+        if num != GT[name]:
+            failures.append("README.md project-structure tree (README.md) '%s': expected %d, found %d"
+                            % (name, GT[name], num))
+
+# ── VERSION EQUALITY (canonical = plugin.json .version) ──
+version = json_get(plugin_json, ["version"])
+if version is None:
+    failures.append("plugin.json version: missing — cannot establish the canonical release version")
+else:
+    install = rd("install.sh")
+    if install is not None:
+        m = re.search(r'^VERSION="([^"]+)"', install, re.MULTILINE)
+        if not m:
+            failures.append('install.sh: VERSION="..." line not found — anchor changed, re-point the gate')
+        elif m.group(1) != version:
+            failures.append("install.sh VERSION: expected %s (matches plugin.json), found %s"
+                            % (version, m.group(1)))
+
+    index = rd("index.html")
+    if index is not None:
+        hero = re.search(r'class="hero__badge">.*?v(\d+\.\d+\.\d+)', index, re.DOTALL)
+        if not hero:
+            failures.append("index.html hero badge: version not found — anchor changed, re-point the gate")
+        elif hero.group(1) != version:
+            failures.append("index.html hero badge version: expected %s, found %s" % (version, hero.group(1)))
+
+        anchor = index.find('id="whats-new"')
+        if anchor == -1:
+            failures.append("index.html: #whats-new section not found — anchor changed, re-point the gate")
+        else:
+            latest = re.search(r'new__badge">v(\d+\.\d+\.\d+)', index[anchor:])
+            if not latest:
+                failures.append("index.html What's-New latest badge: version not found — anchor changed")
+            elif latest.group(1) != version:
+                failures.append("index.html What's-New latest badge version: expected %s, found %s"
+                                % (version, latest.group(1)))
+
+    # marketplace.json is unversioned today; verify only if a version field is added later.
+    mtext = rd(marketplace)
+    if mtext:
+        try:
+            mdata = json.loads(mtext)
+            candidates = [("marketplace.json version", mdata.get("version")),
+                          ("marketplace.json plugins[0].version",
+                           (mdata.get("plugins") or [{}])[0].get("version"))]
+            for loc, val in candidates:
+                if val is not None and val != version:
+                    failures.append("%s: expected %s, found %s" % (loc, version, val))
+        except (json.JSONDecodeError, IndexError, AttributeError, TypeError):
+            pass  # count check already reported any shape problem
+
+# ── Report ──
+if failures:
+    print("DRIFT DETECTED — %d mismatch(es):" % len(failures))
+    print("")
+    for f in failures:
+        print("  " + f)
+    print("")
+    print("Ground truth (derived from filesystem): %d skills, %d agents, %d hooks; version %s"
+          % (SK, AG, HK, version))
+    sys.exit(1)
+
+print("OK — every count and version claim matches ground truth: "
+      "%d skills, %d agents, %d hooks; version %s" % (SK, AG, HK, version))
+sys.exit(0)
+PY
+CHECKER_RC=$?
+
+echo ""
+if [[ "$CHECKER_RC" -eq 0 ]]; then
+  success "No drift — all count and version claims are consistent."
+else
+  fail "Drift detected (see mismatches above). Fix each LOCATION to match ground truth."
+fi
+exit "$CHECKER_RC"
