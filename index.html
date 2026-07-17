@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Claude Code Blueprint — Production-Grade Plugin for AI-Assisted Development</title>
-  <meta name="description" content="54 skills, 29 agents, 8 hooks. A structured operating system for Claude Code that compounds across sessions.">
+  <meta name="description" content="55 skills, 29 agents, 10 hooks. A structured operating system for Claude Code that compounds across sessions.">
   <meta property="og:title" content="Claude Code Blueprint">
-  <meta property="og:description" content="Production-grade Claude Code plugin. 54 skills, 29 agents, 8 hooks covering the full development lifecycle.">
+  <meta property="og:description" content="Production-grade Claude Code plugin. 55 skills, 29 agents, 10 hooks covering the full development lifecycle.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ninety2ua.github.io/claude-code-blueprint/">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231a1a2e'/><text x='50' y='72' font-size='60' font-weight='700' fill='%23D4A574' text-anchor='middle' font-family='system-ui'>B</text></svg>">
@@ -2242,7 +2242,7 @@
       <div class="hero__content">
         <div class="hero__badge">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-          v3.3.0 &mdash; GSD Deep-Analysis Imports
+          v3.4.0 &mdash; Platform Currency Sync
         </div>
         <h1>Claude Code<br><span class="gradient-text">Blueprint</span></h1>
         <p class="hero__tagline">"Each unit of engineering work should make subsequent units easier &mdash; not harder."</p>
@@ -3489,8 +3489,41 @@
   <!-- ===== WHAT'S NEW ===== -->
   <section class="whats-new" id="whats-new">
     <div class="container">
-      <!-- v3.3.0 -->
+      <!-- v3.4.0 -->
       <div class="section-header reveal">
+        <span class="new__badge">v3.4.0</span>
+        <h2>What's New</h2>
+        <p>Platform currency sync &mdash; the blueprint now tracks and adopts the latest Claude Code platform features as stability-guarded opt-ins</p>
+      </div>
+      <div class="grid-4 reveal reveal-stagger">
+        <div class="new-card">
+          <h3>Effort Tiers</h3>
+          <p>All 29 agents now carry an <code>effort:</code> tier (low/medium/high) by reasoning depth. <code>model: inherit</code> stays the default; an opt-in per-tier model mapping is documented for plans that support it.</p>
+        </div>
+        <div class="new-card">
+          <h3>Native <code>/goal</code> Opt-In</h3>
+          <p><code>/ship</code> can emit a copyable <code>/goal</code> prompt for platform-native condition completion. The <code>ship-loop.sh</code> Stop-hook guard stays the zero-config, headless-safe default &mdash; <code>/goal</code> complements, never replaces it.</p>
+        </div>
+        <div class="new-card">
+          <h3>Drift Gate</h3>
+          <p>New <code>check-drift.sh</code> CI job derives skill/agent/hook counts from the filesystem and enforces exact-match version equality across every manifest, doc, and the website. Ends the count-drift that recurred three times.</p>
+        </div>
+        <div class="new-card">
+          <h3>Hooks Exec-Form</h3>
+          <p>All 10 hook handlers converted to exec-form (<code>args[]</code>) spawning &mdash; no shell tokenization, robust to install paths with spaces, aligned with the plugin's execFile-over-exec convention.</p>
+        </div>
+        <div class="new-card">
+          <h3>Platform Currency</h3>
+          <p>A new README table documents native <code>/loop</code>, dynamic workflows/ultracode, per-session caps, and Agent-tool injection hardening &mdash; each recorded as a gated opt-in so no core pipeline depends on an experimental feature.</p>
+        </div>
+        <div class="new-card">
+          <h3>Ecosystem Table Fix</h3>
+          <p>The addyosmani/agent-skills row (7 imported patterns) is now present in the ecosystem table, and the learnings pointer resolves to the real per-cycle docs.</p>
+        </div>
+      </div>
+
+      <!-- v3.3.0 -->
+      <div class="section-header reveal" style="margin-top: 4rem;">
         <span class="new__badge">v3.3.0</span>
         <h2>What's New</h2>
         <p>GSD deep-analysis imports &mdash; 13 patterns across read-injection, debug persistence, plan-checker, doc verification, and more</p>

@@ -75,6 +75,19 @@ Every component in Blueprint is informed by what works (and what doesn't) across
 
 > **"Import nothing" is a feature, not a failure.** The gravitational pull to adopt *something* from impressive repos is a real bias. Sometimes the right answer after deep analysis is to change nothing — and documenting why is just as valuable as documenting what you imported.
 
+### What's New in v3.4.0 — Platform Currency Sync
+
+A full audit of the Claude Code platform delta since the last sync (68 CLI versions, 1,328 changelog entries) brought the template back to currency. New native features are adopted as **stability-guarded opt-ins** — no core pipeline depends on a gated or experimental capability. Every supersede candidate was evaluated under a keep-old-until-pass rebuild lifecycle; all four resolved to keep, with committed decision records.
+
+**Adopted:**
+- **Effort tiers on all 29 agents** — per-agent `effort:` frontmatter (low/medium/high) by reasoning depth. `model: inherit` stays the shipped default; an opt-in per-tier model mapping (`low`→Haiku 4.5, `medium`→Sonnet 5, `high`→Opus 4.8 / Fable 5) is documented for plans that support it.
+- **Native `/goal` opt-in** — `/ship` can emit a copyable `/goal` prompt for platform-native condition completion (mirroring compound-engineering's copyable-prompt pattern). The `ship-loop.sh` Stop-hook guard stays the zero-config, headless-safe default; `/goal` complements it, never replaces it.
+- **Exact-match drift gate** — new `scripts/check-drift.sh` CI job derives skill/agent/hook counts from the filesystem and enforces version-string equality across every manifest, doc, and the website. Retires the manual count sweeps that drifted three times.
+- **Hooks exec-form** — all 10 handlers converted to `args[]` exec-form spawning (no shell tokenization; robust to install paths with spaces).
+- **Platform currency docs** — native `/loop`/ScheduleWakeup, dynamic workflows/ultracode, per-session caps (200 subagents/WebSearches), and Agent-tool injection hardening are documented as gated opt-ins, each with the blueprint's stance recorded.
+
+**Evaluated and kept (decision records in `docs/learnings/`):** `ship.sh` (fresh-context respawn; native `/loop` never resets context), wave orchestration (native Workflow tool is triple-gated + forbids mid-run sign-off), and the injection scanners (native hardening observes only the subagent-read surface; the custom layers uniquely cover Write/Edit + main-session Read — 7/7 positive-fixture catch verified).
+
 ### What's New in v3.3.0 — GSD Deep-Analysis Imports
 
 Third-pass deep analysis of [gsd-build/get-shit-done](https://github.com/gsd-build/get-shit-done) (60.9K ★) compared dimension-by-dimension against our system. **13 patterns imported across 3 priority tiers:**
@@ -361,10 +374,10 @@ Already using the blueprint with in-project files? Install the plugin, then run 
 
 ```
 Plugin (installed globally, zero files in your project)
-├── 54 skills            /build-pipeline, /ship-pipeline, /brainstorming, /review-swarm, /orchestrate, /forensics, ...
+├── 55 skills            /build-pipeline, /ship-pipeline, /brainstorming, /review-swarm, /orchestrate, /forensics, ...
 │                        TDD, wave-orchestration, swarms, iterative-refinement, ...
 ├── 29 agents            team-lead, reviewer, security, perf, doc-claim-verifier, pattern-mapper, ...
-└── 8 hooks              session-start, context-monitor, prompt-guard, read-injection-scanner, validate-commit (opt-in), ship-loop + 2 Agent Teams
+└── 10 hooks              session-start, context-monitor, prompt-guard, read-injection-scanner, validate-commit (opt-in), ship-loop + 2 Agent Teams
 
 your-project/ (scaffolded by /project-start)
 ├── docs/

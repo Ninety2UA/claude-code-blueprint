@@ -48,7 +48,7 @@ Run `/project-start` after install to configure `docs/context/CONVENTIONS.md` wi
 ## Architecture
 
 ```
-# Plugin-provided (54 skills, 29 agents, 8 hooks)
+# Plugin-provided (55 skills, 29 agents, 10 hooks)
 # Available automatically — no per-project files needed
 
 # Project-local (your project state)

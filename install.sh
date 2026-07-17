@@ -8,7 +8,7 @@ set -euo pipefail
 
 REPO_URL="https://github.com/Ninety2UA/claude-code-blueprint"
 TEMP_DIR=""
-VERSION="3.3.0"
+VERSION="3.4.0"
 
 # Colors
 RED='\033[0;31m'
@@ -418,7 +418,7 @@ elif [ -n "$TARGET_DIR" ]; then
     echo -e "  ${DIM}2.${NC} claude"
     echo -e "  ${DIM}3.${NC} /start ${DIM}← interactive project setup${NC}"
     echo ""
-    echo -e "  ${DIM}Plugin provides: 53 skills · 26 agents · 6 hooks${NC}"
+    echo -e "  ${DIM}Plugin provides: 55 skills · 29 agents · 10 hooks${NC}"
     echo -e "  ${DIM}Quick start: /build-pipeline · /ship-pipeline · /brainstorming · /review-swarm · /deep-research${NC}"
 else
     echo -e "  ${GREEN}${BOLD}Plugin installed!${NC}"
@@ -428,7 +428,7 @@ else
     echo -e "  ${DIM}2.${NC} claude"
     echo -e "  ${DIM}3.${NC} /start ${DIM}← scaffolds project + interactive setup${NC}"
     echo ""
-    echo -e "  ${DIM}Plugin provides: 53 skills · 26 agents · 6 hooks${NC}"
+    echo -e "  ${DIM}Plugin provides: 55 skills · 29 agents · 10 hooks${NC}"
     echo -e "  ${DIM}Available in all projects — no per-project installation needed${NC}"
 fi
 
