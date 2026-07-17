@@ -65,6 +65,8 @@ For each agent, prepare a focused prompt that includes:
 5. **The two-output contract** (see `references/output-contract.md`): each reviewer writes a full-detail JSON artifact to `.claude/review-runs/{run_id}/{reviewer_name}.json` AND returns a compact merge-tier object to the orchestrator. Detail-tier fields (`why_it_matters`, `evidence`) live in the artifact file only; the compact return omits them so the synthesizer's context stays lean.
 6. The `run_id` and `reviewer_name` for the artifact path.
 
+**Input hygiene — feed the artifact, not the author's verdict.** Each reviewer's prompt should carry the artifact (diff/files) and the contract it must meet — spec, plan, conventions — and nothing that asserts the work is already correct. Strip the author's own summary of correctness, self-assessment, and "this handles X" claims: they anchor the reviewer toward agreement and turn review into confirmation. Frame each reviewer's job as *disproof* — "find where this violates its contract," not "check whether this looks right." A reviewer who sets out to break the artifact and fails has produced far stronger evidence than one who set out to confirm it and succeeded. This sharpens the per-reviewer adversarial stance each reviewer agent already carries (e.g. code-reviewer treats author claims as "not evidence"); it does not replace it.
+
 ## Step 4: Dispatch All Agents in Parallel
 
 Use the Task tool to dispatch all selected agents simultaneously. Each agent gets an independent 200K context window.

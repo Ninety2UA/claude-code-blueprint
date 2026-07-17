@@ -36,6 +36,18 @@ Before diving into design options, challenge the premise of the request itself:
 
 If the premise challenge reveals a better framing, present it to the user before proceeding to design options.
 
+## Blindspot Pass
+
+The rest of this skill assumes the user can evaluate the questions you ask. That assumption breaks when the user is working in unfamiliar territory — "I know nothing about X but need to…", a domain they have never shipped in, or a decision space where they cannot yet tell which choices matter. Asking decision questions first would force them to answer things they do not yet understand.
+
+When the user signals unfamiliarity (or you detect it), run a blindspot pass **before** asking any decision questions:
+
+1. **Map the decision surface** — enumerate the decisions this work actually requires, including the ones the user does not know they need to make. Where are the forks in the road?
+2. **Surface the blind spots** — for each decision, name what the user would need to know to choose well, and flag the ones they are least likely to be aware of.
+3. **Present the map, then ask** — show the decision surface and the blind spots first so the user learns the shape of the problem. Only then begin the one-at-a-time questions, now that the user can actually evaluate them.
+
+This composes with the sections around it: run the **Premise Challenge** first (is this even the right problem?), then the blindspot pass (what does deciding well require?), then apply **Scope Modes** and proceed to questions. Skip it when the user is clearly fluent in the domain — the blindspot pass is for unfamiliar territory, not every session.
+
 ## Scope Modes
 
 When presenting design options, the user can choose a scope posture. Default based on context:

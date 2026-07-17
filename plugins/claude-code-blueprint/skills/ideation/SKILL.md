@@ -100,6 +100,8 @@ For each rejected idea, write a one-line reason.
 
 **Score survivors** using: groundedness, expected value, novelty, pragmatism, leverage on future work, implementation burden.
 
+**Size scrutiny by reversibility.** Tag each survivor as a *two-way door* (easily reversed — ship it, learn, back it out cheaply) or a *one-way door* (hard or impossible to undo — a data migration, a public API shape, a foundational dependency). Two-way doors can be decided fast on thin evidence; being wrong is cheap. One-way doors warrant deeper scrutiny — demand stronger grounding, surface more alternatives, and record the irreversibility in the idea's downsides so the user can see which choices lock the project in.
+
 Target: keep 5-7 survivors. If too many survive, run a stricter pass. If fewer than 5, report honestly — don't lower the bar.
 
 ## Phase 4: Present Survivors
