@@ -78,6 +78,8 @@ Task("code-reviewer: Review [scope] against plan and standards. run_id={run_id}.
 
 **Important:** Dispatch ALL agents in a single message to maximize parallelism.
 
+**Session cap:** Claude Code allows up to 200 subagents per session. A single swarm (6-10 reviewers plus the optional validator/synthesizer) stays well within it; if you run many swarms in one session, watch the cumulative total.
+
 ## Step 5: Collect, Validate, Synthesize
 
 When all reviewers return, the flow has two synthesis stages:

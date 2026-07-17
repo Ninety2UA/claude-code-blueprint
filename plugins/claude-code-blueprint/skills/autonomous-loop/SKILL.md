@@ -281,6 +281,8 @@ wtf_score = 0%
 
 **Note:** Test commits (regression tests, new test files) do NOT count toward wtf_score. Only production code changes accumulate risk.
 
+**Native `/loop` does not replace this machinery.** Claude Code's native `/loop` and ScheduleWakeup provide interval and scheduled *recurring invocation*, but `/loop` is session-scoped: it does not reset context, circuit-break, or detect degradation between runs. The circuit breaker (Step 5) and the degradation signals (rising difficulty, hot files, WTF score) are what keep autonomous multi-task execution safe — so this skill stays necessary and complementary even when a native loop schedules the run.
+
 ### Step 6: Loop Termination
 
 The loop ends when one of these conditions is met:

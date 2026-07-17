@@ -823,6 +823,21 @@ The shipped default stays `model: inherit` on every agent, so agents ride whatev
 
 This mapping is documentation, not shipped configuration — leaving `model: inherit` in place is the supported default.
 
+### Platform currency (2026-07 sync)
+
+The blueprint tracks new Claude Code platform features and adopts them as **opt-ins** — no core pipeline is allowed to depend on a gated or experimental capability (a deliberate stability guardrail). Where a native feature overlaps something the template already does, the table records why the template's own mechanism stays the default.
+
+| Platform feature | Blueprint's stance | Gating |
+|------------------|--------------------|--------|
+| **Effort tiers** (`effort: low/medium/high`) | Shipped on every bundled agent (see "Effort tiers & opt-in model mapping" above) | None — an unrecognized key is ignored by older CLIs |
+| **`/goal`** (condition-based completion) | Opt-in complement to the ship loop's Stop-hook guard | None; generally available in the CLI |
+| **Native `/loop` + ScheduleWakeup** | Add interval/scheduled reruns, but `/loop` is session-scoped and does **not** reset context, circuit-break, or detect degradation — so `autonomous-loop` keeps its own circuit breaker and degradation detection | None; complementary, not a replacement |
+| **Workflow tool / `/workflows` / ultracode** | Opt-in for very large autonomous fan-outs (25+ independent tasks); wave orchestration stays the ungated, portable default | Gated: CLI v2.1.154+, paid plans only, disable-able per-user and org-wide |
+| **Fast mode** | Opt-in only | Gated: research preview, pricing subject to change |
+| **Claude 5 lineup** (Sonnet 5 default, Fable 5, Opus 4.8, Haiku 4.5) | Every agent ships `model: inherit`, so agents ride the session model automatically — no per-agent pins | None; opt-in model mapping documented above |
+| **Per-session caps** | Large swarms and research sweeps stay within the native limits | 200 subagents and 200 WebSearches per session |
+| **Native injection hardening** (Agent tool, CLI v2.1.210) | Reinforces — does not replace — the template's custom read/prompt scanners and `<<DATA_START>>`/`<<DATA_END>>` markers, which still cover the main-session Write/Edit and Read surfaces native hardening does not observe | None; defense-in-depth |
+
 ### Adjusting quality gates
 
 Quality gates are encoded in the skill files. To relax a gate (e.g., skip code review for docs-only changes), edit the corresponding skill's `SKILL.md` and add your exception criteria.

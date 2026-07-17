@@ -117,6 +117,8 @@ isolation: "worktree")
 
 Dispatch ALL tasks in the wave in a single message for maximum parallelism.
 
+**Session cap:** Claude Code allows up to 200 subagents per session. Very wide waves plus their between-wave integration verifiers accumulate against that limit, so keep individual waves reasonably sized on large plans.
+
 **Why worktree isolation matters:** Without isolation, parallel implementers can overwrite each other's changes to the same files. Worktrees give each implementer a clean copy. Changes are merged back after the wave completes.
 
 #### 4b. Collect Results
