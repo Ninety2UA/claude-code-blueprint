@@ -12,7 +12,7 @@ tags: [imports, ecosystem, sdd-cache, source-driven-development, citation, webfe
 
 # addy-osmani/agent-skills imports
 
-Source: https://github.com/addyosmani/agent-skills (MIT, v1.0.0, by Addy Osmani). 18th repo in the ecosystem table. Analyzed against our system on 2026-05-08; full report covered 21 skills, 3 personas, 7 commands, 2 hooks.
+Source: <https://github.com/addyosmani/agent-skills> (MIT, v1.0.0, by Addy Osmani). 18th repo in the ecosystem table. Analyzed against our system on 2026-05-08; full report covered 21 skills, 3 personas, 7 commands, 2 hooks.
 
 Verdict from analysis: **import 4 P0/P1 patterns + 3 P2, defer 1 P3, ignore the rest.** Their orchestration is much weaker than ours; their skill catalog is narrower; their multi-agent story is essentially absent. But two genuinely novel hooks and a few crisp prose patterns filled real gaps.
 
