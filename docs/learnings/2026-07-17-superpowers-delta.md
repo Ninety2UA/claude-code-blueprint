@@ -15,7 +15,7 @@ tags: [imports, ecosystem, superpowers, version-pin, harness-portability, review
 
 # obra/superpowers delta analysis — baseline → v6.1.1
 
-Source: <https://github.com/obra/superpowers> (MIT). Analyzed 2026-07-17 as unit U12 of the platform-sync cycle. **Gate 2 outcome: import nothing (confirmed).** First version pin established: v6.1.1. Leftover superpowers branding in three blueprint skills was cleaned up in v3.5.0.
+Source: <https://github.com/obra/superpowers> (MIT). Analyzed 2026-07-17 as unit U12 of the platform-sync cycle. **Gate 2 outcome: import nothing (confirmed).** First version pin established: v6.1.1. Leftover superpowers branding in four blueprint skills was cleaned up in v3.5.0.
 
 ## Version pin
 

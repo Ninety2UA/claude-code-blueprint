@@ -41,7 +41,7 @@ It gives Claude Code a **structured operating system** — a set of skills, agen
 Before committing to any tool, it helps to understand the landscape. We've analyzed **19 repos and frameworks** across the Claude Code ecosystem — over 550K combined GitHub stars — through direct source code inspection, not marketing claims.
 
 <p align="center">
-  <img src="docs/images/ecosystem-guide.png" alt="Claude Code Tools Guide — 14 tools evaluated" width="90%">
+  <img src="docs/images/ecosystem-guide.png" alt="Claude Code Tools Guide — curated ecosystem subset" width="90%">
 </p>
 
 **[Download the free ecosystem guide (PDF)](ebook/claude-code-tools-guide.pdf)** — covers tool profiles, classification matrices, scenario-based recommendations, combination safety, and confidence-scored final rankings.
@@ -85,7 +85,7 @@ Delta re-analysis of four external repos at the source level, refreshing imports
 
 - **compound-engineering** (re-analyzed v3.7.0 → **v3.19.0**): imported the **blindspot pass** (brainstorming maps the decision surface for users in unfamiliar territory) and **reversibility-tiering** (size scrutiny by two-way vs one-way door in ideation).
 - **agent-skills** (re-analyzed → **0.6.4**): imported **cross-skill description-collision detection** (a CI gate flagging near-duplicate skill descriptions that a single-skill trigger test can't catch), the **OWASP-LLM lens** + "system prompt is not a security boundary" (grafted onto systematic-debugging), and **doubt-driven reviewer input-hygiene** (feed reviewers the artifact + contract, strip the author's claim, demand disproof).
-- **superpowers** (first pin, **v6.1.1**): **import nothing** — the blueprint already carries 13 of its 14 skills by name; recent work is internal refactors and multi-harness portability out of scope here. Leftover superpowers branding in three skills was cleaned up.
+- **superpowers** (first pin, **v6.1.1**): **import nothing** — the blueprint already carries 13 of its 14 skills by name; recent work is internal refactors and multi-harness portability out of scope here. Leftover superpowers branding in four skills was cleaned up.
 - **gsd-core** (**v1.7.0**, new row): **import nothing** — a post-fork 16-runtime orchestration + MCP build-out, the multi-runtime direction the blueprint repeatedly rejects; four verifier/plan refinements deferred. Provenance recorded above.
 
 ### What's New in v3.4.0 — Platform Currency Sync
@@ -390,7 +390,7 @@ Plugin (installed globally, zero files in your project)
 ├── 55 skills            /build-pipeline, /ship-pipeline, /brainstorming, /review-swarm, /orchestrate, /forensics, ...
 │                        TDD, wave-orchestration, swarms, iterative-refinement, ...
 ├── 29 agents            team-lead, reviewer, security, perf, doc-claim-verifier, pattern-mapper, ...
-└── 10 hooks              session-start, context-monitor, prompt-guard, read-injection-scanner, validate-commit (opt-in), ship-loop + 2 Agent Teams
+└── 10 hooks              session-start, context-monitor, prompt-guard, read-injection-scanner, validate-commit (opt-in), ship-loop, sdd-cache (pre/post) + 2 Agent Teams
 
 your-project/ (scaffolded by /project-start)
 ├── docs/

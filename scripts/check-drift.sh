@@ -184,6 +184,35 @@ check_triple("marketplace.json plugin description", marketplace,
 check_triple("templates/CLAUDE.md Plugin-provided line", "%s/templates/CLAUDE.md" % PLUGIN,
              rd("%s/templates/CLAUDE.md" % PLUGIN))
 check_triple("index.html meta/og description", "index.html", rd("index.html"), min_matches=2)
+
+# index.html current-state count WIDGETS (hero stats, "By The Numbers" bar, feature
+# cards, "All N Skills" heading). Restricted to everything BEFORE the #whats-new
+# changelog section so frozen historical counts (e.g. an old "53 skills, zero
+# commands") are never gated. Covers both widget shapes: inline ("55 Skills") and
+# span-separated ('...__number">55</span> ... >Skills<'). The span form guards against
+# pairing a number with a distant label by refusing to cross another __number.
+idx_html = rd("index.html")
+if idx_html is not None:
+    prefix = idx_html.split('id="whats-new"')[0]
+    label_gt = {"skills": SK, "agents": AG, "hooks": HK}
+    widgets = 0
+    for m in re.finditer(r"(\d+)\s+(Skills|Agents|Hooks)\b", prefix):
+        widgets += 1
+        num, lab = int(m.group(1)), m.group(2).lower()
+        if num != label_gt[lab]:
+            failures.append("index.html widget (inline '%d %s'): expected %d — homepage count drifted"
+                            % (num, m.group(2), label_gt[lab]))
+    for m in re.finditer(r'__number">(\d+)K?\+?</span>(?:(?!__number">).)*?<(?:h3|span[^>]*)>(Skills|Agents|Hooks)<',
+                         prefix, re.DOTALL):
+        widgets += 1
+        num, lab = int(m.group(1)), m.group(2).lower()
+        if num != label_gt[lab]:
+            failures.append("index.html widget (badge '%d %s'): expected %d — homepage count drifted"
+                            % (num, m.group(2), label_gt[lab]))
+    if widgets < 4:
+        failures.append("index.html: expected >=4 Skills/Agents/Hooks count widgets before #whats-new, "
+                        "found %d — anchor changed, re-point the gate" % widgets)
+
 check_triple("install.sh 'Plugin provides' summary", "install.sh", rd("install.sh"),
              min_matches=2, pattern=PROVIDES)
 

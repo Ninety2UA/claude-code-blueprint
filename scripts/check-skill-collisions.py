@@ -58,10 +58,26 @@ def description(path):
     if not m:
         return None
     fm = m.group(1)
-    d = re.search(r"^description:\s*(.+)$", fm, re.MULTILINE)
+    d = re.search(r"^description:[ \t]*(.*)$", fm, re.MULTILINE)
     if not d:
         return None
-    return d.group(1).strip().strip("\"'")
+    val = d.group(1).strip()
+    # YAML block scalar ('>' folded or '|' literal, with optional +/- chomping): the
+    # real text is on the following more-indented lines. Gather them so a folded
+    # description is still compared instead of collapsing to the indicator character
+    # (which would token-empty and silently drop the skill from collision detection).
+    if re.fullmatch(r"[>|][+-]?", val):
+        block = []
+        for ln in fm[d.end():].split("\n"):
+            if ln.strip() == "":
+                continue
+            if ln[:1] in (" ", "\t"):
+                block.append(ln.strip())
+            else:
+                break
+        joined = " ".join(block).strip()
+        return joined or None
+    return val.strip("\"'") or None
 
 
 def main():

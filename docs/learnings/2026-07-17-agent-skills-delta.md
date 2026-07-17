@@ -18,7 +18,7 @@ tags: [imports, ecosystem, delta, skill-evals, collision-detection, doubt-driven
 
 **Gate 2 outcome (2026-07-17): approved.** Cross-skill collision detection, the OWASP-LLM lens, and doubt-driven reviewer hygiene were imported and shipped in v3.5.0. This is a delta re-analysis (unit U11) covering only what is new since the 2026-05-08 baseline.
 
-Source: <https://github.com/addyosmani/agent-skills> (MIT, by Addy Osmani). 18th repo in the ecosystem table; previously analyzed 2026-05-08 (see <addy-osmani-agent-skills-imports.md>).
+Source: <https://github.com/addyosmani/agent-skills> (MIT, by Addy Osmani). 18th repo in the ecosystem table; previously analyzed 2026-05-08 (see [addy-osmani-agent-skills-imports.md](addy-osmani-agent-skills-imports.md)).
 
 ## Version pin and the v1.0.0 discrepancy
 
