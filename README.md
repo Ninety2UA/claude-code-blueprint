@@ -38,7 +38,7 @@ It gives Claude Code a **structured operating system** — a set of skills, agen
 
 ## How Does This Compare?
 
-Before committing to any tool, it helps to understand the landscape. We've analyzed **16 repos and frameworks** across the Claude Code ecosystem — over 320K combined GitHub stars — through direct source code inspection, not marketing claims.
+Before committing to any tool, it helps to understand the landscape. We've analyzed **19 repos and frameworks** across the Claude Code ecosystem — over 550K combined GitHub stars — through direct source code inspection, not marketing claims.
 
 <p align="center">
   <img src="docs/images/ecosystem-guide.png" alt="Claude Code Tools Guide — 14 tools evaluated" width="90%">
@@ -57,9 +57,10 @@ Every component in Blueprint is informed by what works (and what doesn't) across
 | [**gstack**](https://github.com/garrytan/gstack) | 22K | **15 patterns** | Suppressions lists, premise challenge, AI slop detection, confidence tiering, WTF-likelihood scoring |
 | [**GSD**](https://github.com/gsd-build/get-shit-done) | 24.7K | **4 patterns** | Interface context in plans, prompt injection guard hook, stub tracking, verification commands |
 | [**GSD-2**](https://github.com/gsd-build/gsd-2) | KB | **6 patterns** | Error classification fast-path, degradation detection, structured escalation, assumption tracking |
+| [**gsd-core**](https://github.com/open-gsd/gsd-core) [†](#gsd-core-provenance) | 6.8K | **Import nothing** | Community fork of GSD (4th GSD-lineage pass, v1.7.0); post-fork build-out is 16-runtime embeddable-orchestration + MCP infra — the multi-runtime direction we repeatedly reject; 4 verifier/plan refinements deferred |
 | [**Anthropic skill-creator**](https://github.com/anthropics/skills) | Official | **3 concepts** | Description trigger testing, structured assertions, iteration strategy by skill type |
-| [**Superpowers**](https://github.com/obra/superpowers) | 71K | Patterns adopted | Anti-rationalization guards, TDD quality gates |
-| [**Compound Eng.**](https://github.com/EveryInc/compound-engineering-plugin) | 9.9K | Patterns adopted | Parallel review swarm architecture, agent tool restrictions |
+| [**Superpowers**](https://github.com/obra/superpowers) | 257K | Patterns adopted | Anti-rationalization guards, TDD quality gates (re-analyzed v6.1.1 — superset fork, nothing new) |
+| [**Compound Eng.**](https://github.com/EveryInc/compound-engineering-plugin) | 9.9K | Patterns adopted | Parallel review swarm, agent tool restrictions, confidence-anchored scoring, blindspot pass, reversibility-tiering (re-analyzed v3.19.0) |
 | [**Ralphy**](https://github.com/michaelshimeles/ralphy) | 2.5K | Pattern adopted | External bash loop for context-exhaustion recovery |
 | [**Ralph**](https://github.com/snarktank/ralph) | 13.5K | Pattern adopted | Original autonomous agent loop that inspired the external ship loop |
 | [**claude-mem**](https://github.com/thedotmack/claude-mem) | 39.7K | **Import nothing** | Exhaustive capture conflicts with selective curation philosophy |
@@ -71,9 +72,21 @@ Every component in Blueprint is informed by what works (and what doesn't) across
 | [**Plugins+Skills**](https://github.com/jeremylongshore/claude-code-plugins-plus-skills) | 1.5K | Reference | Community patterns |
 | [**oh-my-claudecode**](https://github.com/Yeachan-Heo/oh-my-claudecode) | 21.9K | **3 patterns** | Evidence hierarchy for debugging, ambiguity gating for requirements, deslop pass for AI text cleanup |
 | **Multi-Agent Framework** | Doc | **3 patterns** | Worker failure protocol, contradiction resolution, structured escalation |
-| [**agent-skills**](https://github.com/addyosmani/agent-skills) | 79K | **7 patterns** | HTTP-revalidating WebFetch cache, source-driven-development skill, rationalization tables, severity prefixes, When-NOT-to-Use sections |
+| [**agent-skills**](https://github.com/addyosmani/agent-skills) | 79K | **10 patterns** | HTTP-revalidating WebFetch cache, source-driven-development skill, rationalization tables, severity prefixes, When-NOT-to-Use sections; cross-skill collision detection, OWASP-LLM lens, doubt-driven review (re-analyzed 0.6.4) |
 
 > **"Import nothing" is a feature, not a failure.** The gravitational pull to adopt *something* from impressive repos is a real bias. Sometimes the right answer after deep analysis is to change nothing — and documenting why is just as valuable as documenting what you imported.
+
+<a id="gsd-core-provenance"></a>
+> **† gsd-core provenance.** `open-gsd/gsd-core` is a **post-abandonment community fork** of `gsd-build/get-shit-done` (created 2026-05-22, after the original maintainer went dark and the associated `$GSD` token was linked to a rug-pull). Maintainer safety is **unconfirmed**. It appears here for analysis completeness only; any pattern from a GSD-lineage repo is re-implemented from the described idea, never copied from fork source — so the supply-chain risk to this project is nil.
+
+### What's New in v3.5.0 — Ecosystem Delta Sweep
+
+Delta re-analysis of four external repos at the source level, refreshing imports since the last cycle. Each closed with a recorded version pin so future deltas have a baseline. **5 patterns imported; two repos yielded nothing (a documented outcome).**
+
+- **compound-engineering** (re-analyzed v3.7.0 → **v3.19.0**): imported the **blindspot pass** (brainstorming maps the decision surface for users in unfamiliar territory) and **reversibility-tiering** (size scrutiny by two-way vs one-way door in ideation).
+- **agent-skills** (re-analyzed → **0.6.4**): imported **cross-skill description-collision detection** (a CI gate flagging near-duplicate skill descriptions that a single-skill trigger test can't catch), the **OWASP-LLM lens** + "system prompt is not a security boundary" (grafted onto systematic-debugging), and **doubt-driven reviewer input-hygiene** (feed reviewers the artifact + contract, strip the author's claim, demand disproof).
+- **superpowers** (first pin, **v6.1.1**): **import nothing** — the blueprint already carries 13 of its 14 skills by name; recent work is internal refactors and multi-harness portability out of scope here. Leftover superpowers branding in three skills was cleaned up.
+- **gsd-core** (**v1.7.0**, new row): **import nothing** — a post-fork 16-runtime orchestration + MCP build-out, the multi-runtime direction the blueprint repeatedly rejects; four verifier/plan refinements deferred. Provenance recorded above.
 
 ### What's New in v3.4.0 — Platform Currency Sync
 

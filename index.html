@@ -2242,7 +2242,7 @@
       <div class="hero__content">
         <div class="hero__badge">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-          v3.4.0 &mdash; Platform Currency Sync
+          v3.5.0 &mdash; Ecosystem Delta Sweep
         </div>
         <h1>Claude Code<br><span class="gradient-text">Blueprint</span></h1>
         <p class="hero__tagline">"Each unit of engineering work should make subsequent units easier &mdash; not harder."</p>
@@ -3489,8 +3489,41 @@
   <!-- ===== WHAT'S NEW ===== -->
   <section class="whats-new" id="whats-new">
     <div class="container">
-      <!-- v3.4.0 -->
+      <!-- v3.5.0 -->
       <div class="section-header reveal">
+        <span class="new__badge">v3.5.0</span>
+        <h2>What's New</h2>
+        <p>Ecosystem delta sweep &mdash; source-level re-analysis of four external repos, 5 patterns imported, two repos yielded nothing (a documented outcome)</p>
+      </div>
+      <div class="grid-4 reveal reveal-stagger">
+        <div class="new-card">
+          <h3>Blindspot Pass</h3>
+          <p>brainstorming now maps the decision surface for users in unfamiliar territory &mdash; "I know nothing about X but need to…" &mdash; surfacing the blind spots before asking questions. Imported from compound-engineering.</p>
+        </div>
+        <div class="new-card">
+          <h3>Reversibility-Tiering</h3>
+          <p>ideation sizes scrutiny by two-way vs one-way door: reversible calls decide fast, irreversible ones (migrations, public APIs) demand deeper grounding. From compound-engineering.</p>
+        </div>
+        <div class="new-card">
+          <h3>Skill-Collision Detector</h3>
+          <p>New CI gate flags near-duplicate skill descriptions (warn &ge;50% / fail &ge;75%) that a single-skill trigger test can't catch. From agent-skills.</p>
+        </div>
+        <div class="new-card">
+          <h3>Doubt-Driven Review</h3>
+          <p>review-swarm reviewers now get the artifact + contract with the author's correctness claim stripped, and are told to demand disproof, not confirmation. From agent-skills.</p>
+        </div>
+        <div class="new-card">
+          <h3>OWASP-LLM Lens</h3>
+          <p>systematic-debugging gains an OWASP-LLM threat lens and the load-bearing rule that the system prompt is not a security boundary &mdash; enforce at permissions, validation, and isolation.</p>
+        </div>
+        <div class="new-card">
+          <h3>Ecosystem Table Refresh</h3>
+          <p>New gsd-core row (import-nothing community fork, provenance-noted), refreshed pins for all four repos, and corrected star counts &mdash; 19 repos, 550K+ combined stars.</p>
+        </div>
+      </div>
+
+      <!-- v3.4.0 -->
+      <div class="section-header reveal" style="margin-top: 4rem;">
         <span class="new__badge">v3.4.0</span>
         <h2>What's New</h2>
         <p>Platform currency sync &mdash; the blueprint now tracks and adopts the latest Claude Code platform features as stability-guarded opt-ins</p>
