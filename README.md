@@ -79,6 +79,14 @@ Every component in Blueprint is informed by what works (and what doesn't) across
 <a id="gsd-core-provenance"></a>
 > **† gsd-core provenance.** `open-gsd/gsd-core` is a **post-abandonment community fork** of `gsd-build/get-shit-done` (created 2026-05-22, after the original maintainer went dark and the associated `$GSD` token was linked to a rug-pull). Maintainer safety is **unconfirmed**. It appears here for analysis completeness only; any pattern from a GSD-lineage repo is re-implemented from the described idea, never copied from fork source — so the supply-chain risk to this project is negligible.
 
+### The latest two releases: a platform-sync cycle
+
+v3.4.0 and v3.5.0 were produced by a single **platform-sync cycle** — one initiative in two maintainer-gated parts. Part 1 audited the entire Claude Code platform delta since the last sync and adopted what fit; Part 2 re-analyzed four external repos and imported what earned its place. The audit method is now a reusable `/platform-sync` radar so the next cycle is one command.
+
+<p align="center">
+  <img src="docs/images/platform-sync-cycle.png" alt="Platform-sync cycle — Audit (68 CLI versions) → Gate 1 → Adopt + verify (Part 1, v3.4.0) → Delta sweep (Part 2, 4 repos) → Gate 2 → Import + close (v3.5.0), codified into the /platform-sync radar" width="90%">
+</p>
+
 ### What's New in v3.5.0 — Ecosystem Delta Sweep
 
 Delta re-analysis of four external repos at the source level, refreshing imports since the last cycle. Each closed with a recorded version pin so future deltas have a baseline. **5 patterns imported; two repos yielded nothing (a documented outcome).**
@@ -481,6 +489,12 @@ For well-defined features you want to fire and forget, `/ship-pipeline` runs the
 
 The external loop (`ship.sh`) is inspired by [Ralph](https://github.com/snarktank/ralph) — each iteration is a brand new Claude process with clean context. State persists via git commits, plan files, and progress tracking. The inner Stop hook guards against Claude stopping before `<promise>DONE</promise>` is output within a single session.
 
+As of v3.4.0, interactive runs can also opt into the platform-native `/goal` command for condition-based completion. It's a **complement, never a replacement**: a skill can't invoke `/goal`, and `ship-loop.sh` is the only guard that works headless (`-p` / CI / `ship.sh`), so the Stop hook stays the guarantee while `/goal` adds a live overlay for interactive sessions.
+
+<p align="center">
+  <img src="docs/images/goal-opt-in.png" alt="/ship completion guard — ship-loop.sh is the always-on default that works headless; native /goal is an interactive opt-in complement, never a replacement" width="90%">
+</p>
+
 **Pipeline comparison:**
 
 | Pipeline | Checkpoints | Review | Best for |
@@ -509,6 +523,17 @@ Five non-negotiable checkpoints enforce quality at every stage:
 | **5** | No merge without code review | `requesting-code-review` skill |
 
 These aren't suggestions — they're hard gates. Claude will stop and course-correct if any gate is skipped.
+
+### Consistency gates (CI)
+
+Beyond the workflow gates above, two exact-match gates run in CI to keep the repo honest — both derive their truth from the filesystem rather than trusting hand-maintained numbers:
+
+<p align="center">
+  <img src="docs/images/consistency-gates.png" alt="Two CI consistency gates — check-drift.sh derives counts from the filesystem and verifies them everywhere including website widgets; check-skill-collisions.py flags near-duplicate skill descriptions by Jaccard overlap" width="90%">
+</p>
+
+- **Drift gate** (`scripts/check-drift.sh`) — derives skill/agent/hook counts from the filesystem and checks them against every manifest, doc, installer, and **website widget**, plus exact version-string equality. It retired the manual count sweeps that drifted three times.
+- **Skill-collision gate** (`scripts/check-skill-collisions.py`) — computes pairwise description overlap (Jaccard) across all skills and fails on near-duplicates (warn ≥50%, fail ≥75%) that would route ambiguously — a failure a single-skill trigger test can't catch.
 
 ## Agent Teams & Swarms
 
@@ -831,6 +856,10 @@ You are a [role] specializing in [domain].
 
 Every bundled agent now carries an `effort:` tier in its frontmatter — `low`, `medium`, or `high` — chosen from the depth of reasoning its job demands (all 29 agents set exactly one):
 
+<p align="center">
+  <img src="docs/images/effort-tiers.png" alt="Effort tiers — 2 low, 14 medium, 13 high across 29 agents; model: inherit stays default with an opt-in per-tier model mapping" width="90%">
+</p>
+
 | Tier | Assigned to | Examples |
 |------|-------------|----------|
 | `high` | Reviewers, synthesizers, oracles, and the orchestrator — deep reasoning, cross-checking, adversarial review | `code-reviewer`, `security-sentinel`, `findings-synthesizer`, `team-lead` |
@@ -852,6 +881,10 @@ This mapping is documentation, not shipped configuration — leaving `model: inh
 ### Platform currency (2026-07 sync)
 
 The blueprint tracks new Claude Code platform features and adopts them as **opt-ins** — no core pipeline is allowed to depend on a gated or experimental capability (a deliberate stability guardrail). Where a native feature overlaps something the template already does, the table records why the template's own mechanism stays the default.
+
+<p align="center">
+  <img src="docs/images/platform-currency.png" alt="Native platform features adopted as guarded opt-ins — effort tiers and Claude 5 shipped, /goal and /loop and caps opt-in, Workflow tool and fast mode gated" width="90%">
+</p>
 
 | Platform feature | Blueprint's stance | Gating |
 |------------------|--------------------|--------|

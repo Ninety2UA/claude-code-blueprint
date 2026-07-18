@@ -2199,6 +2199,9 @@
     @media (max-width: 768px) {
       .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
     }
+    /* Platform Currency section — responsive diagram grid */
+    .platform-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+    @media (max-width: 768px) { .platform-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -2223,6 +2226,7 @@
         <li><a href="#ralph">Ralph Loop</a></li>
         <li><a href="#quality">Quality</a></li>
         <li><a href="#knowledge">Knowledge</a></li>
+        <li><a href="#platform">Platform</a></li>
         <li><a href="#install">Install</a></li>
         <li><a href="#skills-reference">Skills</a></li>
         <li><a href="#faq">FAQ</a></li>
@@ -3483,6 +3487,33 @@
         </table>
       </div>
       <p class="eco-quote reveal">"Import nothing is a feature, not a failure. Sometimes the right answer after deep analysis is to change nothing."</p>
+    </div>
+  </section>
+
+  <!-- ===== PLATFORM CURRENCY ===== -->
+  <section id="platform" style="background: linear-gradient(180deg, var(--navy-mid), var(--navy-deep));">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>Platform Currency</h2>
+        <p>Every sync cycle audits the Claude Code platform and adopts what fits &mdash; as guarded opt-ins, never core dependencies</p>
+      </div>
+      <div class="reveal" style="background:#fff; border-radius:16px; padding:22px; margin-bottom:1.5rem; box-shadow:0 10px 30px rgba(0,0,0,0.25);">
+        <img src="docs/images/platform-sync-cycle.png" alt="Platform-sync cycle — Audit (68 CLI versions) → Gate 1 → Adopt + verify (Part 1, v3.4.0) → Delta sweep (Part 2, 4 repos) → Gate 2 → Import + close (v3.5.0), codified into the /platform-sync radar" style="display:block; width:100%; height:auto; border-radius:8px;" loading="lazy">
+      </div>
+      <div class="reveal reveal-stagger platform-grid">
+        <div style="background:#fff; border-radius:14px; padding:18px; box-shadow:0 10px 30px rgba(0,0,0,0.25);">
+          <img src="docs/images/platform-currency.png" alt="Native platform features adopted as guarded opt-ins" style="display:block; width:100%; height:auto; border-radius:6px;" loading="lazy">
+        </div>
+        <div style="background:#fff; border-radius:14px; padding:18px; box-shadow:0 10px 30px rgba(0,0,0,0.25);">
+          <img src="docs/images/effort-tiers.png" alt="Effort tiers across 29 agents — 2 low, 14 medium, 13 high; model: inherit stays default" style="display:block; width:100%; height:auto; border-radius:6px;" loading="lazy">
+        </div>
+        <div style="background:#fff; border-radius:14px; padding:18px; box-shadow:0 10px 30px rgba(0,0,0,0.25);">
+          <img src="docs/images/consistency-gates.png" alt="Two CI consistency gates — drift gate derives counts from the filesystem; skill-collision gate flags near-duplicate descriptions" style="display:block; width:100%; height:auto; border-radius:6px;" loading="lazy">
+        </div>
+        <div style="background:#fff; border-radius:14px; padding:18px; box-shadow:0 10px 30px rgba(0,0,0,0.25);">
+          <img src="docs/images/goal-opt-in.png" alt="/ship completion guard — ship-loop.sh default guard plus native /goal opt-in complement" style="display:block; width:100%; height:auto; border-radius:6px;" loading="lazy">
+        </div>
+      </div>
     </div>
   </section>
 

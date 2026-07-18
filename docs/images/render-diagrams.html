@@ -1516,6 +1516,80 @@
     font-weight: 600;
     color: #64748b;
   }
+  /* ════════════ PLATFORM-SYNC CYCLE DIAGRAMS (2026-07) ════════════ */
+  /* Shared tokens reused from the house palette:
+     green #ecfdf5/#6ee7b7/#059669 · blue #eff6ff/#93c5fd/#2563eb
+     amber #fefce8/#fde68a/#d97706 · pink #fdf2f8/#f9a8d4/#db2777
+     purple #f5f3ff/#c4b5fd/#7c3aed · slate ink #0f172a / muted #64748b */
+
+  .fx-cap { font-size: 12px; font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase; color: #94a3b8; margin-bottom: 20px; }
+  .fx-note { margin-top: 22px; text-align: center; font-size: 12.5px; color: #64748b; }
+  .fx-note code, .fx-mono { font-family: 'JetBrains Mono', monospace; }
+  .fx-pill { display: inline-block; border-radius: 999px; padding: 3px 11px; font-size: 11px; font-weight: 700; letter-spacing: 0.2px; }
+
+  /* ── EFFORT TIERS ─────────────────────────────────── */
+  .et-cols { display: flex; gap: 16px; align-items: stretch; }
+  .et-col { flex: 1; border-radius: 14px; border: 1.5px solid; padding: 20px 18px 18px; }
+  .et-badge { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 800; margin-bottom: 4px; }
+  .et-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .et-count { font-size: 34px; font-weight: 800; letter-spacing: -1px; line-height: 1.1; }
+  .et-count span { font-size: 14px; font-weight: 600; color: #64748b; letter-spacing: 0; }
+  .et-role { font-size: 12.5px; color: #475569; margin: 6px 0 12px; font-weight: 500; }
+  .et-ex { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #64748b; line-height: 1.7; }
+  .et-low { background: #ecfdf5; border-color: #6ee7b7; } .et-low .et-dot { background: #059669; } .et-low .et-badge { color: #047857; }
+  .et-med { background: #eff6ff; border-color: #93c5fd; } .et-med .et-dot { background: #2563eb; } .et-med .et-badge { color: #1d4ed8; }
+  .et-high { background: #f5f3ff; border-color: #c4b5fd; } .et-high .et-dot { background: #7c3aed; } .et-high .et-badge { color: #6d28d9; }
+
+  /* ── CONSISTENCY GATES ────────────────────────────── */
+  .cg-row { display: flex; gap: 18px; align-items: stretch; }
+  .cg-card { flex: 1; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 20px; }
+  .cg-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .cg-ico { width: 34px; height: 34px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 17px; }
+  .cg-name { font-size: 15px; font-weight: 800; letter-spacing: -0.3px; }
+  .cg-file { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: #94a3b8; }
+  .cg-desc { font-size: 12.5px; color: #475569; line-height: 1.6; }
+  .cg-desc b { color: #0f172a; }
+  .cg-a .cg-ico { background: #ecfdf5; } .cg-b .cg-ico { background: #eff6ff; }
+  .cg-ci { margin: 20px auto 0; width: fit-content; background: #0f172a; color: #fff; border-radius: 10px; padding: 10px 22px; font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+  .cg-ci .fx-mono { font-size: 11px; color: #94a3b8; font-weight: 500; }
+  .cg-feeds { display: flex; justify-content: center; gap: 220px; margin: 10px 0 2px; color: #cbd5e1; font-size: 16px; }
+
+  /* ── /goal OPT-IN ─────────────────────────────────── */
+  .go-row { display: flex; gap: 18px; align-items: stretch; }
+  .go-card { flex: 1; border-radius: 14px; border: 1.5px solid; padding: 20px; position: relative; }
+  .go-default { background: #ecfdf5; border-color: #6ee7b7; }
+  .go-opt { background: #eff6ff; border-color: #93c5fd; }
+  .go-tag { position: absolute; top: -11px; left: 20px; border-radius: 999px; padding: 3px 12px; font-size: 10.5px; font-weight: 800; letter-spacing: 0.3px; color: #fff; }
+  .go-default .go-tag { background: #059669; } .go-opt .go-tag { background: #2563eb; }
+  .go-title { font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 600; margin: 6px 0 10px; color: #0f172a; }
+  .go-li { font-size: 12.5px; color: #475569; line-height: 1.9; }
+  .go-li b { color: #0f172a; }
+  .go-mid { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 4px; }
+  .go-plus { width: 40px; height: 40px; border-radius: 50%; background: #f1f5f9; color: #475569; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; }
+  .go-mid-l { font-size: 10px; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; margin-top: 8px; text-align: center; }
+
+  /* ── PLATFORM CURRENCY ────────────────────────────── */
+  .pc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .pc-item { display: flex; align-items: center; gap: 14px; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 13px 16px; }
+  .pc-name { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; font-weight: 600; color: #0f172a; flex: 1; }
+  .pc-name small { display: block; font-family: 'Inter', sans-serif; font-size: 10.5px; font-weight: 500; color: #94a3b8; margin-top: 2px; }
+  .pc-ship { background: #dcfce7; color: #15803d; } .pc-opt { background: #dbeafe; color: #1d4ed8; } .pc-gated { background: #fef3c7; color: #b45309; }
+
+  /* ── PLATFORM-SYNC CYCLE ──────────────────────────── */
+  .ps-flow { display: flex; align-items: center; justify-content: center; gap: 0; }
+  .ps-stage { border-radius: 13px; border: 1.5px solid; padding: 14px 12px; width: 142px; text-align: center; }
+  .ps-stage-t { font-size: 13px; font-weight: 800; letter-spacing: -0.2px; margin-bottom: 5px; }
+  .ps-stage-d { font-size: 10.5px; color: #64748b; line-height: 1.45; }
+  .ps-a { background: #eff6ff; border-color: #93c5fd; } .ps-a .ps-stage-t { color: #1d4ed8; }
+  .ps-b { background: #f5f3ff; border-color: #c4b5fd; } .ps-b .ps-stage-t { color: #6d28d9; }
+  .ps-gate { width: 60px; text-align: center; color: #d97706; flex-shrink: 0; }
+  .ps-gate-d { width: 44px; height: 44px; margin: 0 auto 5px; transform: rotate(45deg); background: #fefce8; border: 1.5px solid #fde68a; border-radius: 9px; display: flex; align-items: center; justify-content: center; }
+  .ps-gate-d span { transform: rotate(-45deg); font-size: 15px; font-weight: 800; }
+  .ps-gate-l { font-size: 10px; font-weight: 700; color: #b45309; }
+  .ps-conn { color: #cbd5e1; font-size: 16px; padding: 0 3px; flex-shrink: 0; }
+  .ps-radar { margin: 18px auto 0; width: fit-content; display: flex; align-items: center; gap: 10px; background: #ecfdf5; border: 1.5px dashed #6ee7b7; border-radius: 10px; padding: 9px 18px; font-size: 12px; color: #047857; font-weight: 600; }
+  .ps-radar .fx-mono { font-size: 11px; }
+
 </style>
 </head>
 <body>
@@ -2356,6 +2430,136 @@
       <text x="410" y="27" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="500" fill="#64748b">compounds over time</text>
     </svg>
   </div>
+</div>
+
+<!-- ════════════ EFFORT TIERS ════════════ -->
+<div class="diagram" id="effort-tiers">
+  <div class="fx-cap">effort: tiers across 29 agents</div>
+  <div class="et-cols">
+    <div class="et-col et-low">
+      <div class="et-badge"><span class="et-dot"></span>low</div>
+      <div class="et-count">2 <span>agents</span></div>
+      <div class="et-role">Mechanical validators — rule-match &amp; existence checks</div>
+      <div class="et-ex">convention-enforcer<br>doc-claim-verifier</div>
+    </div>
+    <div class="et-col et-med">
+      <div class="et-badge"><span class="et-dot"></span>medium</div>
+      <div class="et-count">14 <span>agents</span></div>
+      <div class="et-role">Standard workers &amp; researchers</div>
+      <div class="et-ex">pr-comment-resolver<br>best-practices-researcher<br>integration-checker · …</div>
+    </div>
+    <div class="et-col et-high">
+      <div class="et-badge"><span class="et-dot"></span>high</div>
+      <div class="et-count">13 <span>agents</span></div>
+      <div class="et-role">Reviewers, synthesizers, oracles &amp; the orchestrator</div>
+      <div class="et-ex">code-reviewer · security-sentinel<br>findings-synthesizer · team-lead · …</div>
+    </div>
+  </div>
+  <div class="fx-note"><code>model: inherit</code> stays the shipped default · opt-in mapping: low→Haiku 4.5 · medium→Sonnet 5 · high→Opus 4.8 / Fable 5</div>
+</div>
+
+<!-- ════════════ CONSISTENCY GATES ════════════ -->
+<div class="diagram" id="consistency-gates">
+  <div class="fx-cap">exact-match consistency gates, wired into CI</div>
+  <div class="cg-row">
+    <div class="cg-card cg-a">
+      <div class="cg-head">
+        <div class="cg-ico fx-mono" style="color:#059669;font-weight:700;">#</div>
+        <div>
+          <div class="cg-name">Drift Gate</div>
+          <div class="cg-file">scripts/check-drift.sh</div>
+        </div>
+      </div>
+      <div class="cg-desc">Counts <b>derived from the filesystem</b> (55 · 29 · 10) checked against every manifest, doc, installer &amp; <b>website widget</b> — plus exact version-string equality.</div>
+    </div>
+    <div class="cg-card cg-b">
+      <div class="cg-head">
+        <div class="cg-ico fx-mono" style="color:#2563eb;font-weight:700;">≈</div>
+        <div>
+          <div class="cg-name">Skill-Collision Gate</div>
+          <div class="cg-file">scripts/check-skill-collisions.py</div>
+        </div>
+      </div>
+      <div class="cg-desc">Pairwise description overlap, <b>Jaccard</b> — <b>warn ≥50%</b>, <b>fail ≥75%</b>. Catches near-duplicate routing a single-skill test can't.</div>
+    </div>
+  </div>
+  <div class="cg-feeds"><span>↓</span><span>↓</span></div>
+  <div class="cg-ci">CI · required <span class="fx-mono">ends the count-drift that recurred 3×</span></div>
+</div>
+
+<!-- ════════════ /goal OPT-IN ════════════ -->
+<div class="diagram" id="goal-opt-in">
+  <div class="fx-cap">/ship completion guard — default + opt-in</div>
+  <div class="go-row">
+    <div class="go-card go-default">
+      <div class="go-tag">DEFAULT · ALWAYS ON</div>
+      <div class="go-title">ship-loop.sh</div>
+      <div class="go-li">Stop-hook guard, <b>zero config</b><br>Works <b>headless</b> (-p · CI · ship.sh)<br>Blocks premature exit until <span class="fx-mono">&lt;promise&gt;DONE&lt;/promise&gt;</span><br><b>The guarantee</b></div>
+    </div>
+    <div class="go-mid">
+      <div class="go-plus">+</div>
+      <div class="go-mid-l">complements ·<br>never replaces</div>
+    </div>
+    <div class="go-card go-opt">
+      <div class="go-tag">OPT-IN · INTERACTIVE</div>
+      <div class="go-title">/goal</div>
+      <div class="go-li">Native condition-completion<br>CLI <b>2.1.139+</b>, pasted at Stage 0<br>Live elapsed / turns / tokens overlay<br><b>A convenience, not a dependency</b></div>
+    </div>
+  </div>
+  <div class="fx-note">A skill can't invoke <code>/goal</code>, so the hook stays the guarantee · both release on <span class="fx-mono">&lt;promise&gt;DONE&lt;/promise&gt;</span></div>
+</div>
+
+<!-- ════════════ PLATFORM CURRENCY ════════════ -->
+<div class="diagram" id="platform-currency">
+  <div class="fx-cap">native platform features — adopted as guarded opt-ins</div>
+  <div class="pc-grid">
+    <div class="pc-item"><span class="pc-name">effort: tiers<small>per-agent reasoning depth</small></span><span class="fx-pill pc-ship">SHIPPED</span></div>
+    <div class="pc-item"><span class="pc-name">Claude 5 lineup<small>model: inherit rides it</small></span><span class="fx-pill pc-ship">AUTO</span></div>
+    <div class="pc-item"><span class="pc-name">/goal<small>condition completion</small></span><span class="fx-pill pc-opt">OPT-IN</span></div>
+    <div class="pc-item"><span class="pc-name">/loop + ScheduleWakeup<small>circuit breaker retained</small></span><span class="fx-pill pc-opt">COMPLEMENT</span></div>
+    <div class="pc-item"><span class="pc-name">injection hardening<small>reinforces custom scanners</small></span><span class="fx-pill pc-ship">REINFORCES</span></div>
+    <div class="pc-item"><span class="pc-name">session caps · 200<small>subagents · WebSearches</small></span><span class="fx-pill pc-opt">DOCUMENTED</span></div>
+    <div class="pc-item"><span class="pc-name">Workflow tool / ultracode<small>very large fan-outs</small></span><span class="fx-pill pc-gated">GATED</span></div>
+    <div class="pc-item"><span class="pc-name">fast mode<small>research preview</small></span><span class="fx-pill pc-gated">GATED</span></div>
+  </div>
+  <div class="fx-note">No core pipeline depends on a gated or experimental feature — a deliberate stability guardrail</div>
+</div>
+
+<!-- ════════════ PLATFORM-SYNC CYCLE ════════════ -->
+<div class="diagram" id="platform-sync-cycle">
+  <div class="fx-cap">the platform-sync cycle — two maintainer-gated parts</div>
+  <div class="ps-flow">
+    <div class="ps-stage ps-a">
+      <div class="ps-stage-t">Audit</div>
+      <div class="ps-stage-d">68 CLI versions · 1,328 entries</div>
+    </div>
+    <div class="ps-conn">→</div>
+    <div class="ps-gate">
+      <div class="ps-gate-d"><span>1</span></div>
+      <div class="ps-gate-l">Gate&nbsp;1</div>
+    </div>
+    <div class="ps-conn">→</div>
+    <div class="ps-stage ps-a">
+      <div class="ps-stage-t">Adopt + verify</div>
+      <div class="ps-stage-d">Part 1 · v3.4.0 · keep-old-until-pass</div>
+    </div>
+    <div class="ps-conn">→</div>
+    <div class="ps-stage ps-b">
+      <div class="ps-stage-t">Delta sweep</div>
+      <div class="ps-stage-d">Part 2 · 4 repos re-analyzed</div>
+    </div>
+    <div class="ps-conn">→</div>
+    <div class="ps-gate">
+      <div class="ps-gate-d"><span>2</span></div>
+      <div class="ps-gate-l">Gate&nbsp;2</div>
+    </div>
+    <div class="ps-conn">→</div>
+    <div class="ps-stage ps-b">
+      <div class="ps-stage-t">Import + close</div>
+      <div class="ps-stage-d">v3.5.0 · verified re-sweep</div>
+    </div>
+  </div>
+  <div class="ps-radar">codified into <span class="fx-mono">/platform-sync</span> radar — one command next cycle</div>
 </div>
 
 </body>
