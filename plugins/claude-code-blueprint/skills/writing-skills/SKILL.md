@@ -93,7 +93,8 @@ skills/
 ## SKILL.md Structure
 
 **Frontmatter (YAML):**
-- Only two fields supported: `name` and `description`
+- Required fields (the portable Skill standard): `name` and `description`
+- Optional (Claude Code extension): `allowed-tools` / `disallowed-tools` (CLI 2.1.152+) scope which tools the skill may use while active — omit unless you need to restrict tool exposure; they are ignored by runtimes that only honor the portable core
 - Max 1024 characters total
 - `name`: Use letters, numbers, and hyphens only (no parentheses, special chars)
 - `description`: Third-person, describes ONLY when to use (NOT what it does)
@@ -101,6 +102,7 @@ skills/
   - Include specific symptoms, situations, and contexts
   - **NEVER summarize the skill's process or workflow** (see CSO section for why)
   - Keep under 500 characters if possible
+  - **Stay distinguishable from sibling skills.** A description that overlaps another skill's triggering conditions causes prompts to route ambiguously between them — a failure a single-skill trigger test cannot catch. Name the conditions that are *unique* to this skill. `scripts/check-skill-collisions.py` (wired into CI) flags near-duplicate descriptions: it warns at ≥50% content-token overlap (Jaccard) and fails at ≥75%. If it flags a pair, narrow one description's trigger conditions rather than widening both.
 
 ```markdown
 ---
@@ -745,7 +747,7 @@ Deploying untested skills = deploying untested code. It's a violation of quality
 
 **GREEN Phase - Write Minimal Skill:**
 - [ ] Name uses only letters, numbers, hyphens (no parentheses/special chars)
-- [ ] YAML frontmatter with only name and description (max 1024 chars)
+- [ ] YAML frontmatter with required name and description (max 1024 chars); optional `allowed-tools`/`disallowed-tools` only if scoping tools
 - [ ] Description starts with "Use when..." and includes specific triggers/symptoms
 - [ ] Description written in third person
 - [ ] Keywords throughout for search (errors, symptoms, tools)

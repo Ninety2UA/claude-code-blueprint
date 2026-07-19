@@ -6,7 +6,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/handlers/session-start.js",
+            "command": "node",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/hooks/handlers/session-start.js"],
             "timeout": 10000
           }
         ]
@@ -18,7 +19,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/handlers/prompt-guard.js",
+            "command": "node",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/hooks/handlers/prompt-guard.js"],
             "timeout": 3000
           }
         ]
@@ -28,7 +30,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/handlers/validate-commit.js",
+            "command": "node",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/hooks/handlers/validate-commit.js"],
             "timeout": 2500
           }
         ]
@@ -38,7 +41,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/handlers/sdd-cache-pre.sh",
+            "command": "bash",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/hooks/handlers/sdd-cache-pre.sh"],
             "timeout": 10000
           }
         ]
@@ -49,7 +53,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/handlers/context-monitor.js",
+            "command": "node",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/hooks/handlers/context-monitor.js"],
             "timeout": 3000
           }
         ]
@@ -59,7 +64,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/handlers/read-injection-scanner.js",
+            "command": "node",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/hooks/handlers/read-injection-scanner.js"],
             "timeout": 2500
           }
         ]
@@ -69,7 +75,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/handlers/sdd-cache-post.sh",
+            "command": "bash",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/hooks/handlers/sdd-cache-post.sh"],
             "timeout": 10000
           }
         ]
@@ -80,7 +87,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/handlers/ship-loop.sh",
+            "command": "bash",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/hooks/handlers/ship-loop.sh"],
             "timeout": 10000
           }
         ]
@@ -91,7 +99,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/handlers/task-completed.js",
+            "command": "node",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/hooks/handlers/task-completed.js"],
             "timeout": 60000
           }
         ]
@@ -102,7 +111,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/handlers/teammate-idle.js",
+            "command": "node",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/hooks/handlers/teammate-idle.js"],
             "timeout": 60000
           }
         ]

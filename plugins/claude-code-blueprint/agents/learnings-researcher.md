@@ -2,6 +2,7 @@
 name: learnings-researcher
 description: "Searches project documentation for past solutions, patterns, decisions, and learnings relevant to the current task. Dispatched by /deep-research, /deepen, and /build Stage 3 (planning)."
 model: inherit
+effort: medium
 tools: [Read, Glob, Grep]
 ---
 

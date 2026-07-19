@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "claude-code-blueprint",
-      "description": "54 skills, 29 agents, 8 hooks covering the full development lifecycle",
+      "description": "55 skills, 29 agents, 10 hooks covering the full development lifecycle",
       "source": "./plugins/claude-code-blueprint",
       "category": "productivity"
     }

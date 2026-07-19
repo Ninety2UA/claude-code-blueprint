@@ -2,6 +2,7 @@
 name: doc-claim-verifier
 description: "Extracts factual claims from a document and verifies each against the live codebase. Catches doc drift after refactors. Use when reviewing READMEs, ADRs, runbooks, or any doc that names files, commands, endpoints, functions, or dependencies."
 model: inherit
+effort: low
 tools: [Read, Glob, Grep, Bash]
 ---
 

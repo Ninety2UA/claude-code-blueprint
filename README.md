@@ -38,10 +38,10 @@ It gives Claude Code a **structured operating system** — a set of skills, agen
 
 ## How Does This Compare?
 
-Before committing to any tool, it helps to understand the landscape. We've analyzed **16 repos and frameworks** across the Claude Code ecosystem — over 320K combined GitHub stars — through direct source code inspection, not marketing claims.
+Before committing to any tool, it helps to understand the landscape. We've analyzed **19 repos and frameworks** across the Claude Code ecosystem — over 550K combined GitHub stars — through direct source code inspection, not marketing claims.
 
 <p align="center">
-  <img src="docs/images/ecosystem-guide.png" alt="Claude Code Tools Guide — 14 tools evaluated" width="90%">
+  <img src="docs/images/ecosystem-guide.png" alt="Claude Code Tools Guide — curated ecosystem subset" width="90%">
 </p>
 
 **[Download the free ecosystem guide (PDF)](ebook/claude-code-tools-guide.pdf)** — covers tool profiles, classification matrices, scenario-based recommendations, combination safety, and confidence-scored final rankings.
@@ -57,9 +57,10 @@ Every component in Blueprint is informed by what works (and what doesn't) across
 | [**gstack**](https://github.com/garrytan/gstack) | 22K | **15 patterns** | Suppressions lists, premise challenge, AI slop detection, confidence tiering, WTF-likelihood scoring |
 | [**GSD**](https://github.com/gsd-build/get-shit-done) | 24.7K | **4 patterns** | Interface context in plans, prompt injection guard hook, stub tracking, verification commands |
 | [**GSD-2**](https://github.com/gsd-build/gsd-2) | KB | **6 patterns** | Error classification fast-path, degradation detection, structured escalation, assumption tracking |
+| [**gsd-core**](https://github.com/open-gsd/gsd-core) [†](#gsd-core-provenance) | 6.8K | **Import nothing** | Community fork of GSD (4th GSD-lineage pass, v1.7.0); post-fork build-out is 16-runtime embeddable-orchestration + MCP infra — the multi-runtime direction we repeatedly reject; 4 verifier/plan refinements deferred |
 | [**Anthropic skill-creator**](https://github.com/anthropics/skills) | Official | **3 concepts** | Description trigger testing, structured assertions, iteration strategy by skill type |
-| [**Superpowers**](https://github.com/obra/superpowers) | 71K | Patterns adopted | Anti-rationalization guards, TDD quality gates |
-| [**Compound Eng.**](https://github.com/EveryInc/compound-engineering-plugin) | 9.9K | Patterns adopted | Parallel review swarm architecture, agent tool restrictions |
+| [**Superpowers**](https://github.com/obra/superpowers) | 257K | Patterns adopted | Anti-rationalization guards, TDD quality gates (re-analyzed v6.1.1 — blueprint already carries 13/14 of its skills, nothing new) |
+| [**Compound Eng.**](https://github.com/EveryInc/compound-engineering-plugin) | 9.9K | Patterns adopted | Parallel review swarm, agent tool restrictions, confidence-anchored scoring, blindspot pass, reversibility-tiering (re-analyzed v3.19.0) |
 | [**Ralphy**](https://github.com/michaelshimeles/ralphy) | 2.5K | Pattern adopted | External bash loop for context-exhaustion recovery |
 | [**Ralph**](https://github.com/snarktank/ralph) | 13.5K | Pattern adopted | Original autonomous agent loop that inspired the external ship loop |
 | [**claude-mem**](https://github.com/thedotmack/claude-mem) | 39.7K | **Import nothing** | Exhaustive capture conflicts with selective curation philosophy |
@@ -71,8 +72,42 @@ Every component in Blueprint is informed by what works (and what doesn't) across
 | [**Plugins+Skills**](https://github.com/jeremylongshore/claude-code-plugins-plus-skills) | 1.5K | Reference | Community patterns |
 | [**oh-my-claudecode**](https://github.com/Yeachan-Heo/oh-my-claudecode) | 21.9K | **3 patterns** | Evidence hierarchy for debugging, ambiguity gating for requirements, deslop pass for AI text cleanup |
 | **Multi-Agent Framework** | Doc | **3 patterns** | Worker failure protocol, contradiction resolution, structured escalation |
+| [**agent-skills**](https://github.com/addyosmani/agent-skills) | 79K | **10 patterns** | HTTP-revalidating WebFetch cache, source-driven-development skill, rationalization tables, severity prefixes, When-NOT-to-Use sections; cross-skill collision detection, OWASP-LLM lens, doubt-driven review (re-analyzed 0.6.4) |
 
 > **"Import nothing" is a feature, not a failure.** The gravitational pull to adopt *something* from impressive repos is a real bias. Sometimes the right answer after deep analysis is to change nothing — and documenting why is just as valuable as documenting what you imported.
+
+<a id="gsd-core-provenance"></a>
+> **† gsd-core provenance.** `open-gsd/gsd-core` is a **post-abandonment community fork** of `gsd-build/get-shit-done` (created 2026-05-22, after the original maintainer went dark and the associated `$GSD` token was linked to a rug-pull). Maintainer safety is **unconfirmed**. It appears here for analysis completeness only; any pattern from a GSD-lineage repo is re-implemented from the described idea, never copied from fork source — so the supply-chain risk to this project is negligible.
+
+### The latest two releases: a platform-sync cycle
+
+v3.4.0 and v3.5.0 were produced by a single **platform-sync cycle** — one initiative in two maintainer-gated parts. Part 1 audited the entire Claude Code platform delta since the last sync and adopted what fit; Part 2 re-analyzed four external repos and imported what earned its place. The audit method is now a reusable `/platform-sync` radar so the next cycle is one command.
+
+<p align="center">
+  <img src="docs/images/platform-sync-cycle.png" alt="Platform-sync cycle — Audit (68 CLI versions) → Gate 1 → Adopt + verify (Part 1, v3.4.0) → Delta sweep (Part 2, 4 repos) → Gate 2 → Import + close (v3.5.0), codified into the /platform-sync radar" width="90%">
+</p>
+
+### What's New in v3.5.0 — Ecosystem Delta Sweep
+
+Delta re-analysis of four external repos at the source level, refreshing imports since the last cycle. Each closed with a recorded version pin so future deltas have a baseline. **5 patterns imported; two repos yielded nothing (a documented outcome).**
+
+- **compound-engineering** (re-analyzed v3.7.0 → **v3.19.0**): imported the **blindspot pass** (brainstorming maps the decision surface for users in unfamiliar territory) and **reversibility-tiering** (size scrutiny by two-way vs one-way door in ideation).
+- **agent-skills** (re-analyzed → **0.6.4**): imported **cross-skill description-collision detection** (a CI gate flagging near-duplicate skill descriptions that a single-skill trigger test can't catch), the **OWASP-LLM lens** + "system prompt is not a security boundary" (grafted onto systematic-debugging), and **doubt-driven reviewer input-hygiene** (feed reviewers the artifact + contract, strip the author's claim, demand disproof).
+- **superpowers** (first pin, **v6.1.1**): **import nothing** — the blueprint already carries 13 of its 14 skills by name; recent work is internal refactors and multi-harness portability out of scope here. Leftover superpowers branding in four skills was cleaned up.
+- **gsd-core** (**v1.7.0**, new row): **import nothing** — a post-fork 16-runtime orchestration + MCP build-out, the multi-runtime direction the blueprint repeatedly rejects; four verifier/plan refinements deferred. Provenance recorded above.
+
+### What's New in v3.4.0 — Platform Currency Sync
+
+A full audit of the Claude Code platform delta since the last sync (68 CLI versions, 1,328 changelog entries) brought the template back to currency. New native features are adopted as **stability-guarded opt-ins** — no core pipeline depends on a gated or experimental capability. Every supersede candidate was evaluated under a keep-old-until-pass rebuild lifecycle; all four resolved to keep, with committed decision records.
+
+**Adopted:**
+- **Effort tiers on all 29 agents** — per-agent `effort:` frontmatter (low/medium/high) by reasoning depth. `model: inherit` stays the shipped default; an opt-in per-tier model mapping (`low`→Haiku 4.5, `medium`→Sonnet 5, `high`→Opus 4.8 / Fable 5) is documented for plans that support it.
+- **Native `/goal` opt-in** — `/ship` can emit a copyable `/goal` prompt for platform-native condition completion (mirroring compound-engineering's copyable-prompt pattern). The `ship-loop.sh` Stop-hook guard stays the zero-config, headless-safe default; `/goal` complements it, never replaces it.
+- **Exact-match drift gate** — new `scripts/check-drift.sh` CI job derives skill/agent/hook counts from the filesystem and enforces version-string equality across every manifest, doc, and the website. Retires the manual count sweeps that drifted three times.
+- **Hooks exec-form** — all 10 handlers converted to `args[]` exec-form spawning (no shell tokenization; robust to install paths with spaces).
+- **Platform currency docs** — native `/loop`/ScheduleWakeup, dynamic workflows/ultracode, per-session caps (200 subagents/WebSearches), and Agent-tool injection hardening are documented as gated opt-ins, each with the blueprint's stance recorded.
+
+**Evaluated and kept (decision records in `docs/learnings/`):** `ship.sh` (fresh-context respawn; native `/loop` never resets context), wave orchestration (native Workflow tool is triple-gated + forbids mid-run sign-off), and the injection scanners (native hardening observes only the subagent-read surface; the custom layers uniquely cover Write/Edit + main-session Read — 7/7 positive-fixture catch verified).
 
 ### What's New in v3.3.0 — GSD Deep-Analysis Imports
 
@@ -360,10 +395,10 @@ Already using the blueprint with in-project files? Install the plugin, then run 
 
 ```
 Plugin (installed globally, zero files in your project)
-├── 54 skills            /build-pipeline, /ship-pipeline, /brainstorming, /review-swarm, /orchestrate, /forensics, ...
+├── 55 skills            /build-pipeline, /ship-pipeline, /brainstorming, /review-swarm, /orchestrate, /forensics, ...
 │                        TDD, wave-orchestration, swarms, iterative-refinement, ...
 ├── 29 agents            team-lead, reviewer, security, perf, doc-claim-verifier, pattern-mapper, ...
-└── 8 hooks              session-start, context-monitor, prompt-guard, read-injection-scanner, validate-commit (opt-in), ship-loop + 2 Agent Teams
+└── 10 hooks              session-start, context-monitor, prompt-guard, read-injection-scanner, validate-commit (opt-in), ship-loop, sdd-cache (pre/post) + 2 Agent Teams
 
 your-project/ (scaffolded by /project-start)
 ├── docs/
@@ -454,6 +489,12 @@ For well-defined features you want to fire and forget, `/ship-pipeline` runs the
 
 The external loop (`ship.sh`) is inspired by [Ralph](https://github.com/snarktank/ralph) — each iteration is a brand new Claude process with clean context. State persists via git commits, plan files, and progress tracking. The inner Stop hook guards against Claude stopping before `<promise>DONE</promise>` is output within a single session.
 
+As of v3.4.0, interactive runs can also opt into the platform-native `/goal` command for condition-based completion. It's a **complement, never a replacement**: a skill can't invoke `/goal`, and `ship-loop.sh` is the only guard that works headless (`-p` / CI / `ship.sh`), so the Stop hook stays the guarantee while `/goal` adds a live overlay for interactive sessions.
+
+<p align="center">
+  <img src="docs/images/goal-opt-in.png" alt="/ship completion guard — ship-loop.sh is the always-on default that works headless; native /goal is an interactive opt-in complement, never a replacement" width="90%">
+</p>
+
 **Pipeline comparison:**
 
 | Pipeline | Checkpoints | Review | Best for |
@@ -482,6 +523,17 @@ Five non-negotiable checkpoints enforce quality at every stage:
 | **5** | No merge without code review | `requesting-code-review` skill |
 
 These aren't suggestions — they're hard gates. Claude will stop and course-correct if any gate is skipped.
+
+### Consistency gates (CI)
+
+Beyond the workflow gates above, two exact-match gates run in CI to keep the repo honest — both derive their truth from the filesystem rather than trusting hand-maintained numbers:
+
+<p align="center">
+  <img src="docs/images/consistency-gates.png" alt="Two CI consistency gates — check-drift.sh derives counts from the filesystem and verifies them everywhere including website widgets; check-skill-collisions.py flags near-duplicate skill descriptions by Jaccard overlap" width="90%">
+</p>
+
+- **Drift gate** (`scripts/check-drift.sh`) — derives skill/agent/hook counts from the filesystem and checks them against every manifest, doc, installer, and **website widget**, plus exact version-string equality. It retired the manual count sweeps that drifted three times.
+- **Skill-collision gate** (`scripts/check-skill-collisions.py`) — computes pairwise description overlap (Jaccard) across all skills and fails on near-duplicates (warn ≥50%, fail ≥75%) that would route ambiguously — a failure a single-skill trigger test can't catch.
 
 ## Agent Teams & Swarms
 
@@ -774,6 +826,7 @@ In plugin mode, agents are provided by the plugin. To add project-specific agent
 name: your-agent-name
 description: "When to use this agent. Be specific so Claude knows when to delegate."
 model: inherit
+effort: medium
 tools: [Read, Glob, Grep, Bash]
 ---
 
@@ -795,8 +848,54 @@ You are a [role] specializing in [domain].
 |-------|---------|---------|
 | `tools` | Restrict which tools the agent can use (principle of least privilege) | `[Read, Glob, Grep, Bash]` for read-only; add `Edit, Write` for agents that modify code |
 | `model` | Override the model (`sonnet`, `opus`, `haiku`, or `inherit`) | `inherit` to use the session's model |
+| `effort` | Reasoning-depth tier — `low`, `medium`, or `high`. Every bundled agent sets one (see Effort tiers below) | `high` for reviewers/oracles, `low` for mechanical validators |
 | `isolation` | Set to `worktree` for agents that modify files in parallel | Used by `pr-comment-resolver` |
 | `maxTurns` | Limit agentic turns to prevent runaway token consumption | `20` for focused tasks |
+
+### Effort tiers & opt-in model mapping
+
+Every bundled agent now carries an `effort:` tier in its frontmatter — `low`, `medium`, or `high` — chosen from the depth of reasoning its job demands (all 29 agents set exactly one):
+
+<p align="center">
+  <img src="docs/images/effort-tiers.png" alt="Effort tiers — 2 low, 14 medium, 13 high across 29 agents; model: inherit stays default with an opt-in per-tier model mapping" width="90%">
+</p>
+
+| Tier | Assigned to | Examples |
+|------|-------------|----------|
+| `high` | Reviewers, synthesizers, oracles, and the orchestrator — deep reasoning, cross-checking, adversarial review | `code-reviewer`, `security-sentinel`, `findings-synthesizer`, `team-lead` |
+| `medium` | Standard workers and researchers — implementers, verifiers, doc and research gathering | `pr-comment-resolver`, `best-practices-researcher`, `integration-checker` |
+| `low` | Mechanical validators — rule-matching or existence checks against a known source | `convention-enforcer`, `doc-claim-verifier` |
+
+`effort:` is a plain frontmatter scalar. CLIs that don't recognize the key ignore it harmlessly, so the tiers are safe to ship in a portable template.
+
+The shipped default stays `model: inherit` on every agent, so agents ride whatever model your session runs and the template assumes nothing about your plan tier. If your plan supports per-model selection, you *may* opt in by adding a `model:` line per agent in your project's `.claude/agents/` copies, mapping tiers to models:
+
+| Effort tier | Suggested opt-in model |
+|-------------|------------------------|
+| `low` | Haiku 4.5 |
+| `medium` | Sonnet 5 |
+| `high` | Opus 4.8 / Fable 5 |
+
+This mapping is documentation, not shipped configuration — leaving `model: inherit` in place is the supported default.
+
+### Platform currency (2026-07 sync)
+
+The blueprint tracks new Claude Code platform features and adopts them as **opt-ins** — no core pipeline is allowed to depend on a gated or experimental capability (a deliberate stability guardrail). Where a native feature overlaps something the template already does, the table records why the template's own mechanism stays the default.
+
+<p align="center">
+  <img src="docs/images/platform-currency.png" alt="Native platform features adopted as guarded opt-ins — effort tiers and Claude 5 shipped, /goal and /loop and caps opt-in, Workflow tool and fast mode gated" width="90%">
+</p>
+
+| Platform feature | Blueprint's stance | Gating |
+|------------------|--------------------|--------|
+| **Effort tiers** (`effort: low/medium/high`) | Shipped on every bundled agent (see "Effort tiers & opt-in model mapping" above) | None — an unrecognized key is ignored by older CLIs |
+| **`/goal`** (condition-based completion) | Opt-in complement to the ship loop's Stop-hook guard | None; generally available in the CLI |
+| **Native `/loop` + ScheduleWakeup** | Add interval/scheduled reruns, but `/loop` is session-scoped and does **not** reset context, circuit-break, or detect degradation — so `autonomous-loop` keeps its own circuit breaker and degradation detection | None; complementary, not a replacement |
+| **Workflow tool / `/workflows` / ultracode** | Opt-in for very large autonomous fan-outs (25+ independent tasks); wave orchestration stays the ungated, portable default | Gated: CLI v2.1.154+, paid plans only, disable-able per-user and org-wide |
+| **Fast mode** | Opt-in only | Gated: research preview, pricing subject to change |
+| **Claude 5 lineup** (Sonnet 5 default, Fable 5, Opus 4.8, Haiku 4.5) | Every agent ships `model: inherit`, so agents ride the session model automatically — no per-agent pins | None; opt-in model mapping documented above |
+| **Per-session caps** | Large swarms and research sweeps stay within the native limits | 200 subagents and 200 WebSearches per session |
+| **Native injection hardening** (Agent tool, CLI v2.1.210) | Reinforces — does not replace — the template's custom read/prompt scanners and `<<DATA_START>>`/`<<DATA_END>>` markers, which still cover the main-session Write/Edit and Read surfaces native hardening does not observe | None; defense-in-depth |
 
 ### Adjusting quality gates
 

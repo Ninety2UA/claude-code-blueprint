@@ -2,6 +2,7 @@
 name: pattern-mapper
 description: "For each new file in an implementation plan, finds 3-5 existing analog files in the codebase and produces line-numbered code excerpts the executor can follow. Use between research and execution to ground new code in existing conventions."
 model: inherit
+effort: medium
 tools: [Read, Glob, Grep, Bash, Write]
 ---
 

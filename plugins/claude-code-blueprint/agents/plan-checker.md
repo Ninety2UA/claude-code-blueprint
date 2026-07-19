@@ -2,6 +2,7 @@
 name: plan-checker
 description: "Verifies implementation plans will work BEFORE execution begins. Checks for missing dependencies, incorrect assumptions, and impossible steps."
 model: inherit
+effort: high
 tools: [Read, Glob, Grep, Bash]
 ---
 

@@ -42,6 +42,8 @@ Task("codebase-context-mapper: Map all files, functions, and integration points 
 
 **Important:** Dispatch ALL agents in a single message to maximize parallelism.
 
+**Session caps:** Claude Code allows up to 200 subagents and 200 WebSearches per session. A standard research swarm (5 agents) stays well within both; large or repeated sweeps in one session should track cumulative subagent and search usage.
+
 ## Step 3: Synthesize
 
 When all agents return, dispatch the **research-synthesizer** agent:

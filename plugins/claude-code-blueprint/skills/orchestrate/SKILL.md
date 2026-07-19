@@ -64,3 +64,7 @@ The team-lead agent runs autonomously in its own 200K context window. When it re
 | Called from build-pipeline | Yes | build-pipeline Stage 5 (review-swarm) |
 
 When called standalone, orchestrate is **self-contained**: execution + review + sign-off, all handled by the team-lead agent. When called from a pipeline, the pipeline handles review to avoid double work.
+
+## When to reach for a native workflow instead
+
+For very large autonomous fan-outs (roughly 25+ independent tasks), users on CLI v2.1.154+ with a paid plan can opt into a native dynamic workflow ("use a workflow" / ultracode) instead of wave orchestration. Wave orchestration stays the ungated, portable default: it assumes no specific CLI floor, no paid plan, and keeps working where the Workflow tool is disabled per-user or org-wide. No core pipeline depends on the Workflow tool, so reaching for a native workflow is a deliberate opt-in for scale — not a replacement.

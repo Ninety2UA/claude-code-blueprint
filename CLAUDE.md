@@ -10,33 +10,23 @@ Quality over speed. Small steps compound. The patterns you establish will be cop
 
 <!-- Updated by /wrap. For full state: read docs/context/STATUS.md -->
 
-**Last session:** 2026-04-21
+**Last session:** 2026-07-17
 
-**What was done:**
-- Full framework audit (5 reviewers + Team Lead cross-check) — 21 findings total, 0 critical
-- Fixed install.sh VERSION 3.1.0 → 3.2.0
-- Fixed stale command names in 7 template files (/start, /backlog, /wrap, /compound, /planning → current names)
-- Fixed stale command names in 6 skill files (ideation, swarm-orchestration, knowledge-compounding, session-continuity, context-checkpoint, backlog-triage)
-- Fixed task-completed.js: removed .ts/.tsx from `node --check` (false positives), changed `python` → `python3`
-- Fixed README TOC anchor (#whats-new-in-v30 → #whats-new-in-v31--v32)
-- Fixed render-graphs.js: `execSync` → `execFileSync`
-- Fixed find-polluter.sh: word splitting on file paths with spaces
-- Fixed team count disagreement: index.html 6→4 teams (matches render-diagrams.html)
-- Documented --local flag in install.sh usage()
-- Bumped version to v3.2.1 across plugin.json, install.sh, CLAUDE.md
-- Added v3.2.1 changelog to README.md and index.html (GitHub Pages)
+**What was done:** Platform-sync & ecosystem-sweep cycle (two minor releases).
+- **Part 1 (v3.4.0) — platform currency:** audited the full Claude Code delta since 2026-05-08 (68 CLI versions). Shipped effort tiers on all 29 agents, a native `/goal` opt-in for `/ship` (the rebuild of `ship-loop.sh` was attempted and *reverted* per the keep-old-until-pass lifecycle — a skill can't invoke `/goal`; decision record in `docs/learnings/`), hooks.json exec-form conversion, an exact-match drift gate (`scripts/check-drift.sh`, now covering the homepage count widgets too), and platform-currency docs. Four supersede candidates all resolved to keep.
+- **Part 2 (v3.5.0) — ecosystem delta sweep:** re-analyzed compound-engineering (v3.19.0), agent-skills (0.6.4), superpowers (v6.1.1), gsd-core (v1.7.0). Imported 5 patterns (blindspot pass, reversibility-tiering, skill-collision detector + CI gate, doubt-driven review, OWASP-LLM lens); superpowers + gsd-core imported nothing (documented). New gsd-core ecosystem row + provenance footnote; de-branded leftover superpowers references.
+- Added a workspace `/platform-sync` radar command (not shipped in the plugin).
 
 **What's remaining:**
-- Untracked `docs/images/icon.png` — decide whether to commit or remove
-- Add OG image (`og-image.png`) for social preview cards when URL is shared
-- `bug-reproduction-validator` agent is unreferenced by any skill — consider integrating into systematic-debugging
-- Reinstall plugin after changes: `/plugin install claude-code-blueprint`
+- Untracked `docs/images/icon.png` — decide whether to commit or remove.
+- README media (`overview.gif`, `ecosystem-guide.png`) shows pre-cycle counts; the HTML sources are updated (55/29/10) but the baked images need re-rendering via the Playwright pipeline.
+- `bug-reproduction-validator` agent is unreferenced by any skill — consider integrating into systematic-debugging.
 
-**Start here:** No in-flight work. v3.2.1 on `main`. Audit fixes uncommitted.
+**Start here:** Platform-sync cycle on `chore/platform-sync-ecosystem-sweep`; v3.5.0. PR pending.
 
 **Current state of the code:**
 - Build: n/a (template repo, no build step)
-- Tests: CI green on `714157e` — all 4 jobs passing
+- Gates: drift gate + skill-collision gate green; markdownlint + shellcheck clean locally
 - Website: live at <https://ninety2ua.github.io/claude-code-blueprint/>
 - Uncommitted changes: 1 untracked file (`docs/images/icon.png`)
 
@@ -65,8 +55,8 @@ Run `/project-start` after install to configure `docs/context/CONVENTIONS.md` wi
 ```
 .claude-plugin/                          # Marketplace manifest (marketplace.json)
 plugins/claude-code-blueprint/           # Plugin root
-  skills/                                # 54 skills (slash commands + workflows)
-  agents/                                # 27 specialized subagents
+  skills/                                # 55 skills (slash commands + workflows)
+  agents/                                # 29 specialized subagents
   hooks/hooks.json                       # Hook definitions (${CLAUDE_PLUGIN_ROOT})
   hooks/handlers/                        # Hook scripts (session-start, context-monitor, etc.)
   templates/                             # Project scaffolding source (copied by /start)
@@ -78,6 +68,8 @@ install.sh                               # Plugin installer + legacy mode
 ```
 
 Skills and agents are self-describing via frontmatter — read their files for when/how to use them.
+
+Each agent carries an `effort:` tier (`low`/`medium`/`high`) in frontmatter, set by reasoning depth (mechanical validators → `low`; workers/researchers → `medium`; reviewers/synthesizers/oracles/orchestrator → `high`). Default stays `model: inherit` so agents ride the session model; an opt-in per-agent model mapping (`low`→Haiku 4.5, `medium`→Sonnet 5, `high`→Opus 4.8 / Fable 5) is documented in README under "Effort tiers & opt-in model mapping" — apply only if your plan tier supports it.
 
 ## Behavioral Rules
 
@@ -177,4 +169,4 @@ Types: `feat`, `fix`, `refactor`, `docs`, `test`, `chore`, `style`, `perf`
 
 ## Key Learnings
 
-See `docs/learnings/LEARNINGS.md` for project-specific patterns, gotchas, and insights. Updated by `/session-wrap`.
+See `docs/learnings/` for project-specific patterns, gotchas, and insights — one doc per import/analysis cycle (e.g. `pipeline-discipline.md`, `addy-osmani-agent-skills-imports.md`). Updated by `/session-wrap`.
