@@ -81,10 +81,10 @@ Every component in Blueprint is informed by what works (and what doesn't) across
 
 ### The latest two releases: a platform-sync cycle
 
-v3.4.0 and v3.5.0 were produced by a single **platform-sync cycle** — one initiative in two maintainer-gated parts. Part 1 audited the entire Claude Code platform delta since the last sync and adopted what fit; Part 2 re-analyzed four external repos and imported what earned its place. The audit method is now a reusable `/platform-sync` radar so the next cycle is one command.
+v3.4.0 and v3.5.0 were produced by a single **platform-sync cycle** — one initiative in two maintainer-gated parts. Part 1 audited the entire Claude Code platform delta since the last sync and adopted what fit; Part 2 re-analyzed four external repos and imported what earned its place. The audit method is now codified into two reusable monthly watchers — `/cli-watch` (platform) and `/repo-watch` (external repos).
 
 <p align="center">
-  <img src="docs/images/platform-sync-cycle.png" alt="Platform-sync cycle — Audit (68 CLI versions) → Gate 1 → Adopt + verify (Part 1, v3.4.0) → Delta sweep (Part 2, 4 repos) → Gate 2 → Import + close (v3.5.0), codified into the /platform-sync radar" width="90%">
+  <img src="docs/images/platform-sync-cycle.png" alt="Platform-sync cycle — Audit (68 CLI versions) → Gate 1 → Adopt + verify (Part 1, v3.4.0) → Delta sweep (Part 2, 4 repos) → Gate 2 → Import + close (v3.5.0), codified into the /cli-watch + /repo-watch watchers" width="90%">
 </p>
 
 ### What's New in v3.5.0 — Ecosystem Delta Sweep
