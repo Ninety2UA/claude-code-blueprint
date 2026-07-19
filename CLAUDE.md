@@ -8,27 +8,27 @@ Quality over speed. Small steps compound. The patterns you establish will be cop
 
 ## Session Continuity
 
-<!-- Updated by /wrap. For full state: read docs/context/STATUS.md -->
+<!-- Updated by /wrap. Full history: git log + docs/learnings/ -->
 
-**Last session:** 2026-07-17
+**Last session:** 2026-07-19
 
-**What was done:** Platform-sync & ecosystem-sweep cycle (two minor releases).
-- **Part 1 (v3.4.0) — platform currency:** audited the full Claude Code delta since 2026-05-08 (68 CLI versions). Shipped effort tiers on all 29 agents, a native `/goal` opt-in for `/ship` (the rebuild of `ship-loop.sh` was attempted and *reverted* per the keep-old-until-pass lifecycle — a skill can't invoke `/goal`; decision record in `docs/learnings/`), hooks.json exec-form conversion, an exact-match drift gate (`scripts/check-drift.sh`, now covering the homepage count widgets too), and platform-currency docs. Four supersede candidates all resolved to keep.
-- **Part 2 (v3.5.0) — ecosystem delta sweep:** re-analyzed compound-engineering (v3.19.0), agent-skills (0.6.4), superpowers (v6.1.1), gsd-core (v1.7.0). Imported 5 patterns (blindspot pass, reversibility-tiering, skill-collision detector + CI gate, doubt-driven review, OWASP-LLM lens); superpowers + gsd-core imported nothing (documented). New gsd-core ecosystem row + provenance footnote; de-branded leftover superpowers references.
-- Added a workspace `/platform-sync` radar command (not shipped in the plugin).
+**What was done:** Platform-sync cycle shipped and closed out — v3.4.0 + v3.5.0 merged to `main` (PR #3), followed by release housekeeping and verification passes:
+- Git tags + GitHub Releases backfilled; chain complete v3.2.1 → v3.5.0 (Latest), notes sourced from README What's New.
+- Docs/visual pass: 5 new premium diagrams, all 17 re-rendered at 2× (`docs/images/render-diagrams.js`), new "Platform Currency" homepage section.
+- Promo pipeline repaired (PR #4): `record-promo.js` root path fixed, system-Chrome fallback, mp4→GIF conversion added; stray `icon.png` removed.
+- Watcher rename reflected publicly (PR #5): the workspace `/platform-sync` radar is now `/cli-watch` + `/repo-watch` (workspace-level, not in the plugin). "Platform-sync cycle" is kept where it names the historical cycle.
+- Post-merge verification loop: live site inspected at desktop + mobile (chrome-devtools CLI), console clean, CI green, Pages current. Caught stale promo scenes the GIF regeneration had preserved (old 35/26/27/6 stat cards incl. a defunct Commands category, legacy `/planning` `/build` `/review` `/ship` names, v2.x install command) — fixed the source, re-rendered `overview.gif`/`.mp4`, and extended the drift gate to cover `promo-video.html`.
 
 **What's remaining:**
-- Untracked `docs/images/icon.png` — decide whether to commit or remove.
-- README media (`overview.gif`, `ecosystem-guide.png`) shows pre-cycle counts; the HTML sources are updated (55/29/10) but the baked images need re-rendering via the Playwright pipeline.
 - `bug-reproduction-validator` agent is unreferenced by any skill — consider integrating into systematic-debugging.
 
-**Start here:** Platform-sync cycle on `chore/platform-sync-ecosystem-sweep`; v3.5.0. PR pending.
+**Start here:** `main` is current and fully released (v3.5.0 tagged, Pages live). Monthly watchers `/cli-watch` + `/repo-watch` are ready to run on schedule.
 
 **Current state of the code:**
 - Build: n/a (template repo, no build step)
-- Gates: drift gate + skill-collision gate green; markdownlint + shellcheck clean locally
+- Gates: drift gate (now also gating `promo-video.html`) + skill-collision gate green; markdownlint + shellcheck clean locally
 - Website: live at <https://ninety2ua.github.io/claude-code-blueprint/>
-- Uncommitted changes: 1 untracked file (`docs/images/icon.png`)
+- Uncommitted changes: none
 
 ## Skills
 
