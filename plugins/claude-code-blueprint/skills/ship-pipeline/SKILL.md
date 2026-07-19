@@ -76,7 +76,7 @@ stages done, review converged, changes committed, and the pipeline has emitted
 ```
 
 - **Emit only in interactive mode** (never when `--external` is set — a headless loop has no one to paste it, which is why the Stop hook, not `/goal`, is the guarantee). **Do not stall waiting for the paste** — continue the pipeline immediately; the `ship-loop.sh` hook protects the run whether or not the user pastes.
-- If pasted, native `/goal` and the Stop hook coexist harmlessly: both release the session once `<promise>DONE</promise>` appears, and `/goal` just adds an overlay. `/goal` is an opt-in convenience, **not** a dependency — the pipeline never relies on it, so no minimum-CLI floor is imposed on `/ship` itself.
+- If pasted, native `/goal` and the Stop hook coexist harmlessly: both release the session once `<promise>DONE</promise>` appears, and `/goal` just adds an overlay. `/goal` is an opt-in convenience, **not** a dependency — the pipeline never relies on it, so no minimum-CLI floor is imposed on `/ship-pipeline` itself.
 - Native `STOP_HOOK_BLOCK_CAP` (default 8, since CLI 2.1.143) backstops the hook against runaway blocking even if `max_iterations` is misconfigured — defense in depth, no action needed.
 
 ---

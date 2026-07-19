@@ -8,7 +8,7 @@ Quality over speed. Small steps compound. The patterns you establish will be cop
 
 ## Session Continuity
 
-<!-- Updated by /wrap. Full history: git log + docs/learnings/ -->
+<!-- Updated by /session-wrap. Full history: git log + docs/learnings/ -->
 
 **Last session:** 2026-07-19
 
@@ -59,9 +59,9 @@ plugins/claude-code-blueprint/           # Plugin root
   agents/                                # 29 specialized subagents
   hooks/hooks.json                       # Hook definitions (${CLAUDE_PLUGIN_ROOT})
   hooks/handlers/                        # Hook scripts (session-start, context-monitor, etc.)
-  templates/                             # Project scaffolding source (copied by /start)
+  templates/                             # Project scaffolding source (scaffolded by install.sh / /project-start)
     CLAUDE.md, BACKLOG.md, docs/...      # Template files for new projects
-  scripts/ship.sh                        # Ralph-style external loop for /ship
+  scripts/ship.sh                        # Ralph-style external loop for /ship-pipeline
   .claude-plugin/plugin.json             # Plugin manifest
 docs/images/                             # README images (repo-only)
 install.sh                               # Plugin installer + legacy mode

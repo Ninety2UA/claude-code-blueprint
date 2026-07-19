@@ -6,7 +6,7 @@ argument-hint: "[optional: focus area, constraint, or volume hint]"
 
 # Generate Improvement Ideas
 
-`/ideate` answers: **"What are the strongest ideas worth exploring?"**
+`/ideation` answers: **"What are the strongest ideas worth exploring?"**
 
 This skill produces a ranked ideation artifact in `docs/research/`. It does **not** produce requirements, plans, or code. When the user selects an idea, hand off to `/writing-plans`.
 

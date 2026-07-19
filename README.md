@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="#how-does-this-compare">Compare</a> ·
-  <a href="#whats-new-in-v321--framework-audit-fixes">What's New</a> ·
+  <a href="#whats-new-in-v350--ecosystem-delta-sweep">What's New</a> ·
   <a href="#quick-start">Quick Start</a> ·
   <a href="#what-you-get">What You Get</a> ·
   <a href="#workflow">Workflow</a> ·
@@ -38,7 +38,7 @@ It gives Claude Code a **structured operating system** — a set of skills, agen
 
 ## How Does This Compare?
 
-Before committing to any tool, it helps to understand the landscape. We've analyzed **19 repos and frameworks** across the Claude Code ecosystem — over 550K combined GitHub stars — through direct source code inspection, not marketing claims.
+Before committing to any tool, it helps to understand the landscape. We've analyzed **19 repos and frameworks** across the Claude Code ecosystem — over 1.1M combined GitHub stars — through direct source code inspection, not marketing claims.
 
 <p align="center">
   <img src="docs/images/ecosystem-guide.png" alt="Claude Code Tools Guide — curated ecosystem subset" width="90%">
@@ -54,23 +54,23 @@ Every component in Blueprint is informed by what works (and what doesn't) across
 
 | Repo / Tool | Stars | Verdict | What We Took |
 |---|---|---|---|
-| [**gstack**](https://github.com/garrytan/gstack) | 22K | **15 patterns** | Suppressions lists, premise challenge, AI slop detection, confidence tiering, WTF-likelihood scoring |
-| [**GSD**](https://github.com/gsd-build/get-shit-done) | 24.7K | **4 patterns** | Interface context in plans, prompt injection guard hook, stub tracking, verification commands |
-| [**GSD-2**](https://github.com/gsd-build/gsd-2) | KB | **6 patterns** | Error classification fast-path, degradation detection, structured escalation, assumption tracking |
+| [**gstack**](https://github.com/garrytan/gstack) | 123K | **15 patterns** | Suppressions lists, premise challenge, AI slop detection, confidence tiering, WTF-likelihood scoring |
+| [**GSD**](https://github.com/gsd-build/get-shit-done) | 64.8K | **4 patterns** | Interface context in plans, prompt injection guard hook, stub tracking, verification commands |
+| [**GSD-2**](https://github.com/gsd-build/gsd-2) | 7.8K | **6 patterns** | Error classification fast-path, degradation detection, structured escalation, assumption tracking |
 | [**gsd-core**](https://github.com/open-gsd/gsd-core) [†](#gsd-core-provenance) | 6.8K | **Import nothing** | Community fork of GSD (4th GSD-lineage pass, v1.7.0); post-fork build-out is 16-runtime embeddable-orchestration + MCP infra — the multi-runtime direction we repeatedly reject; 4 verifier/plan refinements deferred |
 | [**Anthropic skill-creator**](https://github.com/anthropics/skills) | Official | **3 concepts** | Description trigger testing, structured assertions, iteration strategy by skill type |
 | [**Superpowers**](https://github.com/obra/superpowers) | 257K | Patterns adopted | Anti-rationalization guards, TDD quality gates (re-analyzed v6.1.1 — blueprint already carries 13/14 of its skills, nothing new) |
-| [**Compound Eng.**](https://github.com/EveryInc/compound-engineering-plugin) | 9.9K | Patterns adopted | Parallel review swarm, agent tool restrictions, confidence-anchored scoring, blindspot pass, reversibility-tiering (re-analyzed v3.19.0) |
-| [**Ralphy**](https://github.com/michaelshimeles/ralphy) | 2.5K | Pattern adopted | External bash loop for context-exhaustion recovery |
-| [**Ralph**](https://github.com/snarktank/ralph) | 13.5K | Pattern adopted | Original autonomous agent loop that inspired the external ship loop |
-| [**claude-mem**](https://github.com/thedotmack/claude-mem) | 39.7K | **Import nothing** | Exhaustive capture conflicts with selective curation philosophy |
-| [**claude-squad**](https://github.com/smtg-ai/claude-squad) | 6.5K | **Import nothing** | External process manager — our internal agent approach is strictly more powerful |
-| [**OpenCLI**](https://github.com/jackwener/opencli) | v1.3 | **Import nothing** | Browser automation tool — completely different problem domain |
-| [**Everything CC**](https://github.com/affaan-m/everything-claude-code) | 50K+ | Reference | Security-first approach, 992 tests |
-| [**UI/UX Pro Max**](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | 37K | Reference | 100+ reasoning rules |
-| [**Claude Skills**](https://github.com/alirezarezvani/claude-skills) | 4.9K | Reference | Progressive disclosure |
-| [**Plugins+Skills**](https://github.com/jeremylongshore/claude-code-plugins-plus-skills) | 1.5K | Reference | Community patterns |
-| [**oh-my-claudecode**](https://github.com/Yeachan-Heo/oh-my-claudecode) | 21.9K | **3 patterns** | Evidence hierarchy for debugging, ambiguity gating for requirements, deslop pass for AI text cleanup |
+| [**Compound Eng.**](https://github.com/EveryInc/compound-engineering-plugin) | 23.2K | Patterns adopted | Parallel review swarm, agent tool restrictions, confidence-anchored scoring, blindspot pass, reversibility-tiering (re-analyzed v3.19.0) |
+| [**Ralphy**](https://github.com/michaelshimeles/ralphy) | 2.9K | Pattern adopted | External bash loop for context-exhaustion recovery |
+| [**Ralph**](https://github.com/snarktank/ralph) | 21.2K | Pattern adopted | Original autonomous agent loop that inspired the external ship loop |
+| [**claude-mem**](https://github.com/thedotmack/claude-mem) | 87.9K | **Import nothing** | Exhaustive capture conflicts with selective curation philosophy |
+| [**claude-squad**](https://github.com/smtg-ai/claude-squad) | 8.1K | **Import nothing** | External process manager — our internal agent approach is strictly more powerful |
+| [**OpenCLI**](https://github.com/jackwener/opencli) | 26.9K | **Import nothing** | Browser automation tool — completely different problem domain |
+| [**Everything CC**](https://github.com/affaan-m/everything-claude-code) | 231K | Reference | Security-first approach, 992 tests |
+| [**UI/UX Pro Max**](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | 108K | Reference | 100+ reasoning rules |
+| [**Claude Skills**](https://github.com/alirezarezvani/claude-skills) | 22.8K | Reference | Progressive disclosure |
+| [**Plugins+Skills**](https://github.com/jeremylongshore/claude-code-plugins-plus-skills) | 2.5K | Reference | Community patterns |
+| [**oh-my-claudecode**](https://github.com/Yeachan-Heo/oh-my-claudecode) | 37.9K | **3 patterns** | Evidence hierarchy for debugging, ambiguity gating for requirements, deslop pass for AI text cleanup |
 | **Multi-Agent Framework** | Doc | **3 patterns** | Worker failure protocol, contradiction resolution, structured escalation |
 | [**agent-skills**](https://github.com/addyosmani/agent-skills) | 79K | **10 patterns** | HTTP-revalidating WebFetch cache, source-driven-development skill, rationalization tables, severity prefixes, When-NOT-to-Use sections; cross-skill collision detection, OWASP-LLM lens, doubt-driven review (re-analyzed 0.6.4) |
 
@@ -81,7 +81,7 @@ Every component in Blueprint is informed by what works (and what doesn't) across
 
 ### The latest two releases: a platform-sync cycle
 
-v3.4.0 and v3.5.0 were produced by a single **platform-sync cycle** — one initiative in two maintainer-gated parts. Part 1 audited the entire Claude Code platform delta since the last sync and adopted what fit; Part 2 re-analyzed four external repos and imported what earned its place. The audit method is now codified into two reusable monthly watchers — `/cli-watch` (platform) and `/repo-watch` (external repos).
+v3.4.0 and v3.5.0 were produced by a single **platform-sync cycle** — one initiative in two maintainer-gated parts. Part 1 audited the entire Claude Code platform delta since the last sync and adopted what fit; Part 2 re-analyzed four external repos and imported what earned its place. The audit method is now codified into two reusable monthly watchers — `/cli-watch` (platform) and `/repo-watch` (external repos) — maintainer workspace tooling that drives the release cadence, not part of the shipped plugin.
 
 <p align="center">
   <img src="docs/images/platform-sync-cycle.png" alt="Platform-sync cycle — Audit (68 CLI versions) → Gate 1 → Adopt + verify (Part 1, v3.4.0) → Delta sweep (Part 2, 4 repos) → Gate 2 → Import + close (v3.5.0), codified into the /cli-watch + /repo-watch watchers" width="90%">
@@ -641,7 +641,7 @@ Skills are workflow modules that activate at specific development phases. They c
 | Skill | What it does | Trigger |
 |-------|-------------|---------|
 | [**codebase-mapping**](plugins/claude-code-blueprint/skills/codebase-mapping/) | Maps unfamiliar codebase into structured documentation | `/codebase-mapping` or before modifying unfamiliar code |
-| [**context-checkpoint**](plugins/claude-code-blueprint/skills/context-checkpoint/) | Mid-session state capture — lighter than `/wrap` | `/pause-checkpoint` or before risky operations |
+| [**context-checkpoint**](plugins/claude-code-blueprint/skills/context-checkpoint/) | Mid-session state capture — lighter than `/session-wrap` | `/pause-checkpoint` or before risky operations |
 | [**pr-workflow**](plugins/claude-code-blueprint/skills/pr-workflow/) | End-to-end PR lifecycle — create, self-review, handle feedback | `/pr-workflow` or when creating pull requests |
 | [**resolve-in-parallel**](plugins/claude-code-blueprint/skills/resolve-in-parallel/) | Batch-resolves independent items concurrently | 2+ independent items to fix |
 | [**deployment-verification**](plugins/claude-code-blueprint/skills/deployment-verification/) | Go/no-go pre-deploy checklist across 8 areas | Before any production deployment |
@@ -705,6 +705,9 @@ Agents are specialized subprocesses dispatched via Claude's Task tool. Each agen
 | [**codebase-context-mapper**](plugins/claude-code-blueprint/agents/codebase-context-mapper.md) | Focused impact map for a specific change | Before planning — maps files and dependencies a change will touch |
 | [**integration-verifier**](plugins/claude-code-blueprint/agents/integration-verifier.md) | Cross-task integration verification | After wave completion — ensures parallel implementations work together |
 | [**findings-synthesizer**](plugins/claude-code-blueprint/agents/findings-synthesizer.md) | Review swarm output consolidation | After `/review-swarm` — de-duplicates and prioritizes all findings |
+| [**pattern-mapper**](plugins/claude-code-blueprint/agents/pattern-mapper.md) | Analog-file mapping for new code | Between research and execution — grounds new files in existing conventions |
+| [**doc-claim-verifier**](plugins/claude-code-blueprint/agents/doc-claim-verifier.md) | Doc claims vs live codebase | Reviewing READMEs, ADRs, runbooks — catches doc drift after refactors |
+| [**findings-validator**](plugins/claude-code-blueprint/agents/findings-validator.md) | Independent re-verification of review findings | Between `/review-swarm` and synthesis — suppresses false positives |
 | [**team-lead**](plugins/claude-code-blueprint/agents/team-lead.md) | Dedicated orchestrator (200K fresh context) | Coordinates `/orchestrate` and `/team-execution` — delegates to workers, monitors progress, reviews, signs off |
 
 ### How agents work

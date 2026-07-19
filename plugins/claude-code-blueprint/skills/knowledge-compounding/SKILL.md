@@ -104,7 +104,7 @@ Tell the user:
 ```
 Knowledge compounded: docs/solutions/[filename]
 Tags: [tags]
-Future /planning and /deep-research commands will find this automatically.
+Future /brainstorming and /deep-research commands will find this automatically.
 ```
 
 ## How This Integrates with Other Skills

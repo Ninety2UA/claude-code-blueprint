@@ -92,11 +92,11 @@ When the user runs `/pause-checkpoint` or you need to save state:
 
 3. **Update Session Continuity** in CLAUDE.md with a one-line summary
 
-4. **Confirm to user:** "State saved. Resume with `/resume` in a new session."
+4. **Confirm to user:** "State saved. Resume with `/resume-session` in a new session."
 
 ## Process: Resuming Work
 
-When the user runs `/resume`:
+When the user runs `/resume-session`:
 
 1. **Read STATE.md** — full state including wave progress, blockers, next steps
 2. **Read CLAUDE.md Session Continuity** — summary and "start here" instruction

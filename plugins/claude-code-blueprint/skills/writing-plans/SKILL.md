@@ -234,18 +234,18 @@ After saving the plan, offer execution choice:
 
 **"Plan complete and saved to `docs/plans/<filename>.md`. What's next?**
 
-**1. Deepen the plan (`/deepen`)** — Dispatch parallel research agents to enrich each section with best practices, prior solutions, and framework docs before executing
+**1. Deepen the plan (`/deepen-plan`)** — Dispatch parallel research agents to enrich each section with best practices, prior solutions, and framework docs before executing
 
 **2. Subagent-Driven (this session)** — I dispatch a fresh subagent per task, review between tasks, fast iteration. Good for hands-on oversight.
 
 **3. Parallel Orchestration (`/orchestrate`)** — Executes the wave plan: independent tasks run in parallel within each wave. Faster total time for plans with concurrent tasks.
 
-**4. Agent Teams (`/team`)** — Collaborative teammates with file ownership and shared task list. Best for 4+ tasks touching different areas. Requires `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS`.
+**4. Agent Teams (`/team-execution`)** — Collaborative teammates with file ownership and shared task list. Best for 4+ tasks touching different areas. Requires `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS`.
 
 **Which approach?"**
 
 **If Deepen chosen:**
-- Invoke `/deepen` with the plan file path
+- Invoke `/deepen-plan` with the plan file path
 - After deepening, re-present execution options (2-4)
 
 **If Subagent-Driven chosen:**
@@ -258,5 +258,5 @@ After saving the plan, offer execution choice:
 - Team-lead agent handles wave grouping and parallel dispatch
 
 **If Agent Teams chosen:**
-- Invoke `/team` with the plan file path
+- Invoke `/team-execution` with the plan file path
 - Team-lead agent designs team structure and assigns file ownership

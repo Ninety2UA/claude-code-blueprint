@@ -21,8 +21,8 @@ review-agents:
   # - schema-drift-detector      # Uncomment for projects with ORM schemas
 
 # Specialized agents (auto-dispatched by pipelines — not user-configurable)
-# These agents are used internally by /build, /ship, /orchestrate, and /team:
-#   - team-lead               # Orchestrates /orchestrate and /team workflows
+# These agents are used internally by /build-pipeline, /ship-pipeline, /orchestrate, and /team-execution:
+#   - team-lead               # Orchestrates /orchestrate and /team-execution workflows
 #   - plan-checker             # Verifies plans are achievable before execution
 #   - integration-verifier     # Verifies tasks work together after each wave
 #   - deployment-verifier      # Pre-deployment verification (8 areas)
@@ -46,7 +46,7 @@ research-agents:
 # Options: web-fullstack, api-backend, cli-tool, library, mobile, data-pipeline
 project-type: web-fullstack
 
-# Agent Teams configuration (experimental — /team command)
+# Agent Teams configuration (experimental — /team-execution)
 # Requires CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS: "1" in settings.json
 agent-teams:
   enabled: false  # Set to true after enabling the experimental feature
