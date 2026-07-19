@@ -216,6 +216,58 @@ if idx_html is not None:
 check_triple("install.sh 'Plugin provides' summary", "install.sh", rd("install.sh"),
              min_matches=2, pattern=PROVIDES)
 
+# index.html structural grids (before #whats-new): every skill and agent must be
+# rendered — v3.4.0 added skills/agents that never reached the site grids — and
+# each group/category count badge must equal the items it actually renders.
+if idx_html is not None:
+    tag_count = len(re.findall(r'class="skill-tag"', prefix))
+    if tag_count != SK:
+        failures.append("index.html skills grid: renders %d skill-tag entries, expected %d "
+                        "— grid is missing skills" % (tag_count, SK))
+    name_count = len(re.findall(r'agent-item__name"', prefix))
+    if name_count != AG:
+        failures.append("index.html agents grid: renders %d agent entries, expected %d "
+                        "— grid is missing agents" % (name_count, AG))
+    for kind, item_pat in (("agent-group", r'agent-item__name"'),
+                           ("skill-category", r'class="skill-tag"')):
+        parts = re.split(r'%s__count">(\d+)</span>' % kind, prefix)
+        for k in range(1, len(parts) - 1, 2):
+            declared, got = int(parts[k]), len(re.findall(item_pat, parts[k + 1]))
+            if got != declared:
+                failures.append("index.html %s #%d: count badge says %d but %d items render under it"
+                                % (kind, (k + 1) // 2, declared, got))
+
+# Ecosystem repo count: the README table is ground truth; intro prose, the site
+# widget, and site prose must match it exactly (the "15+"/"16+" fossils understated
+# a growing table).
+readme = rd("README.md")
+if readme is not None:
+    m = re.search(r'\| Repo / Tool \| Stars \|[^\n]*\n\|[-| ]*\n((?:\|[^\n]*\n)+)', readme)
+    if not m:
+        failures.append("README.md ecosystem table: 'Repo / Tool | Stars' header not found "
+                        "— anchor changed, re-point the gate")
+    else:
+        repos = len(m.group(1).strip().splitlines())
+        claims = []
+        rm = re.search(r'analyzed \*\*(\d+) repos', readme)
+        if rm:
+            claims.append(("README.md intro 'analyzed **N repos'", int(rm.group(1))))
+        else:
+            failures.append("README.md: 'analyzed **N repos' intro claim not found "
+                            "— anchor changed, re-point the gate")
+        if idx_html is not None:
+            for wm in re.finditer(r'__number">(\d+)\+?</span>(?:(?!__number">).)*?>Repos Analyzed<',
+                                  prefix, re.DOTALL):
+                claims.append(("index.html 'Repos Analyzed' widget", int(wm.group(1))))
+            for pm2 in re.finditer(r'(\d+)\+? repos analyzed', prefix):
+                claims.append(("index.html 'repos analyzed' prose", int(pm2.group(1))))
+        if len(claims) < 3:
+            failures.append("ecosystem repo-count: expected >=3 claims (README intro + site widget "
+                            "+ site prose), found %d — anchor changed, re-point the gate" % len(claims))
+        for label, val in claims:
+            if val != repos:
+                failures.append("%s: claims %d repos, ecosystem table has %d rows" % (label, val, repos))
+
 # docs/images/promo-video.html — source of the baked overview.gif (regenerated via
 # scripts/record-promo.js). Gating the source keeps the shipped GIF honest: scene 2
 # stat cards must match ground truth and use only current-state categories (the old
