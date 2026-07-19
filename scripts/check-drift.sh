@@ -216,6 +216,28 @@ if idx_html is not None:
 check_triple("install.sh 'Plugin provides' summary", "install.sh", rd("install.sh"),
              min_matches=2, pattern=PROVIDES)
 
+# docs/images/promo-video.html — source of the baked overview.gif (regenerated via
+# scripts/record-promo.js). Gating the source keeps the shipped GIF honest: scene 2
+# stat cards must match ground truth and use only current-state categories (the old
+# GIF shipped a defunct "27 Commands" card for months), and scene 6's install
+# terminal carries a TRIPLE claim.
+promo_rel = "docs/images/promo-video.html"
+promo = rd(promo_rel)
+check_triple("promo-video.html install terminal", promo_rel, promo)
+if promo is not None:
+    cards = re.findall(r'stat-number">(\d+)</div>\s*<div class="stat-label-txt">(\w+)<', promo)
+    if len(cards) < 3:
+        failures.append("%s: expected >=3 scene-2 stat cards, found %d — anchor changed, "
+                        "re-point the gate" % (promo_rel, len(cards)))
+    for num, lab in cards:
+        key = lab.lower()
+        if key not in GT:
+            failures.append("%s stat card '%s': not a current-state category — remove or "
+                            "rename the card (promo GIF must be re-rendered after)" % (promo_rel, lab))
+        elif int(num) != GT[key]:
+            failures.append("%s stat card '%s': expected %d, found %s — promo GIF source drifted"
+                            % (promo_rel, lab, GT[key], num))
+
 claude_md = rd("CLAUDE.md")
 check_single("CLAUDE.md architecture", "CLAUDE.md", claude_md, r"(\d+) skills \(slash commands", "skills")
 check_single("CLAUDE.md architecture", "CLAUDE.md", claude_md, r"(\d+) specialized subagents", "agents")
