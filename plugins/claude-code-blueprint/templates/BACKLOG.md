@@ -8,7 +8,7 @@ Dump anything here — ideas, bugs, tasks, notes. No structure required for new 
 
 ## Triaged
 
-<!-- Items that have been reviewed and tagged but not yet started. Processed by /backlog. -->
+<!-- Items that have been reviewed and tagged but not yet started. Processed by /backlog-triage. -->
 
 <!-- Priority tags: P0 (this week), P1 (2 weeks), P2 (this quarter), P3 (someday) -->
 <!-- Type tags: [bug] [feature] [research] [chore] [idea] -->

@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="#how-does-this-compare">Compare</a> ·
-  <a href="#whats-new-in-v321--framework-audit-fixes">What's New</a> ·
+  <a href="#whats-new-in-v350--ecosystem-delta-sweep">What's New</a> ·
   <a href="#quick-start">Quick Start</a> ·
   <a href="#what-you-get">What You Get</a> ·
   <a href="#workflow">Workflow</a> ·
@@ -81,7 +81,7 @@ Every component in Blueprint is informed by what works (and what doesn't) across
 
 ### The latest two releases: a platform-sync cycle
 
-v3.4.0 and v3.5.0 were produced by a single **platform-sync cycle** — one initiative in two maintainer-gated parts. Part 1 audited the entire Claude Code platform delta since the last sync and adopted what fit; Part 2 re-analyzed four external repos and imported what earned its place. The audit method is now codified into two reusable monthly watchers — `/cli-watch` (platform) and `/repo-watch` (external repos).
+v3.4.0 and v3.5.0 were produced by a single **platform-sync cycle** — one initiative in two maintainer-gated parts. Part 1 audited the entire Claude Code platform delta since the last sync and adopted what fit; Part 2 re-analyzed four external repos and imported what earned its place. The audit method is now codified into two reusable monthly watchers — `/cli-watch` (platform) and `/repo-watch` (external repos) — maintainer workspace tooling that drives the release cadence, not part of the shipped plugin.
 
 <p align="center">
   <img src="docs/images/platform-sync-cycle.png" alt="Platform-sync cycle — Audit (68 CLI versions) → Gate 1 → Adopt + verify (Part 1, v3.4.0) → Delta sweep (Part 2, 4 repos) → Gate 2 → Import + close (v3.5.0), codified into the /cli-watch + /repo-watch watchers" width="90%">
@@ -641,7 +641,7 @@ Skills are workflow modules that activate at specific development phases. They c
 | Skill | What it does | Trigger |
 |-------|-------------|---------|
 | [**codebase-mapping**](plugins/claude-code-blueprint/skills/codebase-mapping/) | Maps unfamiliar codebase into structured documentation | `/codebase-mapping` or before modifying unfamiliar code |
-| [**context-checkpoint**](plugins/claude-code-blueprint/skills/context-checkpoint/) | Mid-session state capture — lighter than `/wrap` | `/pause-checkpoint` or before risky operations |
+| [**context-checkpoint**](plugins/claude-code-blueprint/skills/context-checkpoint/) | Mid-session state capture — lighter than `/session-wrap` | `/pause-checkpoint` or before risky operations |
 | [**pr-workflow**](plugins/claude-code-blueprint/skills/pr-workflow/) | End-to-end PR lifecycle — create, self-review, handle feedback | `/pr-workflow` or when creating pull requests |
 | [**resolve-in-parallel**](plugins/claude-code-blueprint/skills/resolve-in-parallel/) | Batch-resolves independent items concurrently | 2+ independent items to fix |
 | [**deployment-verification**](plugins/claude-code-blueprint/skills/deployment-verification/) | Go/no-go pre-deploy checklist across 8 areas | Before any production deployment |
@@ -705,6 +705,9 @@ Agents are specialized subprocesses dispatched via Claude's Task tool. Each agen
 | [**codebase-context-mapper**](plugins/claude-code-blueprint/agents/codebase-context-mapper.md) | Focused impact map for a specific change | Before planning — maps files and dependencies a change will touch |
 | [**integration-verifier**](plugins/claude-code-blueprint/agents/integration-verifier.md) | Cross-task integration verification | After wave completion — ensures parallel implementations work together |
 | [**findings-synthesizer**](plugins/claude-code-blueprint/agents/findings-synthesizer.md) | Review swarm output consolidation | After `/review-swarm` — de-duplicates and prioritizes all findings |
+| [**pattern-mapper**](plugins/claude-code-blueprint/agents/pattern-mapper.md) | Analog-file mapping for new code | Between research and execution — grounds new files in existing conventions |
+| [**doc-claim-verifier**](plugins/claude-code-blueprint/agents/doc-claim-verifier.md) | Doc claims vs live codebase | Reviewing READMEs, ADRs, runbooks — catches doc drift after refactors |
+| [**findings-validator**](plugins/claude-code-blueprint/agents/findings-validator.md) | Independent re-verification of review findings | Between `/review-swarm` and synthesis — suppresses false positives |
 | [**team-lead**](plugins/claude-code-blueprint/agents/team-lead.md) | Dedicated orchestrator (200K fresh context) | Coordinates `/orchestrate` and `/team-execution` — delegates to workers, monitors progress, reviews, signs off |
 
 ### How agents work

@@ -1,6 +1,6 @@
 ---
 name: forensics
-description: "Trigger this skill for post-mortem diagnosis of failed, stalled, or aborted automated runs. Trigger when the user says 'why did /ship fail', 'what went wrong with the last run', 'investigate the failed pipeline', 'forensics', 'post-mortem', 'autopsy', 'diagnose this run', 'last build crashed', 'iteration didn't converge', 'agent stopped without finishing', 'where did this go wrong'. Trigger when ship-logs/, orchestrate output, or a build pipeline produced incomplete or contradictory results and the user wants to know why before retrying. Use after the failure has happened — this is read-only diagnostic, not active recovery. DO NOT TRIGGER for live debugging of code bugs — use systematic-debugging instead. DO NOT TRIGGER to fix the issue — this skill diagnoses; remediation is a separate step."
+description: "Trigger this skill for post-mortem diagnosis of failed, stalled, or aborted automated runs. Trigger when the user says 'why did /ship-pipeline fail', 'what went wrong with the last run', 'investigate the failed pipeline', 'forensics', 'post-mortem', 'autopsy', 'diagnose this run', 'last build crashed', 'iteration didn't converge', 'agent stopped without finishing', 'where did this go wrong'. Trigger when ship-logs/, orchestrate output, or a build pipeline produced incomplete or contradictory results and the user wants to know why before retrying. Use after the failure has happened — this is read-only diagnostic, not active recovery. DO NOT TRIGGER for live debugging of code bugs — use systematic-debugging instead. DO NOT TRIGGER to fix the issue — this skill diagnoses; remediation is a separate step."
 argument-hint: "[run id, log path, or symptom]"
 ---
 
@@ -8,13 +8,13 @@ argument-hint: "[run id, log path, or symptom]"
 
 ## Overview
 
-When `/ship`, `/orchestrate`, `/team`, or any iterative pipeline ends without delivering, the operator needs to know *why* before retrying. Re-running blindly often produces the same failure, just slower. This skill performs read-only post-mortem diagnosis against logs, git state, and planning artifacts.
+When `/ship-pipeline`, `/orchestrate`, `/team-execution`, or any iterative pipeline ends without delivering, the operator needs to know *why* before retrying. Re-running blindly often produces the same failure, just slower. This skill performs read-only post-mortem diagnosis against logs, git state, and planning artifacts.
 
 **Core principle:** Ground every conclusion in specific evidence — commits, log lines, file timestamps, planning artifacts. Speculation without evidence is worse than "unknown".
 
 ## When to Use
 
-- `/ship` exited without merging
+- `/ship-pipeline` exited without merging
 - `/orchestrate` produced partial output across waves
 - Iterative refinement hit max iterations without convergence
 - A long-running session ended in an unexpected state

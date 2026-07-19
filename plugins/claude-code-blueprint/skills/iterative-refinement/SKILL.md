@@ -14,8 +14,8 @@ Dispatch repeated review→fix→review cycles to iteratively improve code quali
 ## When to Use
 
 - After implementing a feature — iterate to production quality
-- When `/ship` reaches the review stage — automated quality improvement
-- When `/build --iterate N` is invoked — add iteration to the supervised pipeline
+- When `/ship-pipeline` reaches the review stage — automated quality improvement
+- When `/build-pipeline --iterate N` is invoked — add iteration to the supervised pipeline
 - When you want to polish code beyond a single review pass
 
 **Don't use when:**
@@ -172,7 +172,7 @@ If NOT converged, continue to 2c.
 
 The synthesized report groups findings by remediation tier. Process each tier differently:
 
-**1. Decisions Required (present tier)** — STOP and ask the user. These are strategic choices with multiple valid approaches. Do not proceed until the user decides. In autonomous mode (`/ship`), choose the more conservative option and log the decision.
+**1. Decisions Required (present tier)** — STOP and ask the user. These are strategic choices with multiple valid approaches. Do not proceed until the user decides. In autonomous mode (`/ship-pipeline`), choose the more conservative option and log the decision.
 
 **2. Auto-fixable (safe_auto tier)** — Apply immediately without confirmation. These are mechanical fixes with zero ambiguity (typos, missing imports, formatting). Log what was auto-applied.
 
@@ -292,8 +292,8 @@ Present both the reviewers' perspectives AND your recommendation — don't just 
 
 | Situation | What Happens |
 |-----------|-------------|
-| Called by `/ship` | Runs after execution, default 3 iterations, fast convergence |
-| Called by `/build --iterate N` | Replaces single-pass review (Stage 5) with N-iteration loop |
+| Called by `/ship-pipeline` | Runs after execution, default 3 iterations, fast convergence |
+| Called by `/build-pipeline --iterate N` | Replaces single-pass review (Stage 5) with N-iteration loop |
 | Called standalone | User invokes directly for iterative polish |
 | Finding requires architecture change | EXIT loop, report blocker, escalate to user |
 | All findings are P3 in fast mode | Converged — P3s are suggestions, not blockers |

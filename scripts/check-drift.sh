@@ -267,6 +267,16 @@ if readme is not None:
         for label, val in claims:
             if val != repos:
                 failures.append("%s: claims %d repos, ecosystem table has %d rows" % (label, val, repos))
+    # README Agents Reference table must enumerate the full roster — it sat at 26
+    # rows for three releases while 29 agents shipped.
+    am = re.search(r'\| Agent \| Domain \| When to dispatch \|\n\|[-| ]*\n((?:\|[^\n]*\n)+)', readme)
+    if not am:
+        failures.append("README.md Agents Reference table: header not found — anchor changed, "
+                        "re-point the gate")
+    else:
+        arows = len(am.group(1).strip().splitlines())
+        if arows != AG:
+            failures.append("README.md Agents Reference table: %d rows, plugin ships %d agents" % (arows, AG))
 
 # docs/images/promo-video.html — source of the baked overview.gif (regenerated via
 # scripts/record-promo.js). Gating the source keeps the shipped GIF honest: scene 2
