@@ -7,10 +7,14 @@ const { execFileSync, spawn } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 
-const ROOT = path.resolve(__dirname, '..');
+// Repo root is three levels up from plugins/claude-code-blueprint/scripts/.
+const ROOT = path.resolve(__dirname, '../../..');
 const OUTPUT_DIR = path.join(ROOT, 'docs/images');
 const FRAMES_DIR = path.join(OUTPUT_DIR, '_frames');
 const MP4_PATH = path.join(OUTPUT_DIR, 'overview.mp4');
+const GIF_PATH = path.join(OUTPUT_DIR, 'overview.gif');
+const GIF_WIDTH = 800;
+const GIF_FPS = 10;
 
 const FPS = 25;
 const FRAME_INTERVAL = 1000 / FPS; // 40ms per frame
@@ -48,7 +52,13 @@ const TIMELINE = [
   await new Promise(r => setTimeout(r, 800));
 
   console.log('Launching browser...');
-  const browser = await chromium.launch();
+  // Prefer the bundled Chromium; fall back to system Chrome if it isn't installed.
+  let browser;
+  try {
+    browser = await chromium.launch();
+  } catch (e) {
+    browser = await chromium.launch({ channel: 'chrome' });
+  }
   const page = await browser.newPage({ viewport: { width: 1280, height: 720 } });
   await page.goto('http://localhost:8769/promo-video.html', { waitUntil: 'networkidle' });
 
@@ -107,8 +117,18 @@ const TIMELINE = [
     MP4_PATH,
   ], { stdio: 'inherit' });
 
+  // Convert the mp4 into the README-embeddable GIF (GitHub strips <video> tags,
+  // so the README uses <img src="overview.gif">). Two-pass palette for quality.
+  console.log('Converting to GIF...');
+  const palette = path.join(OUTPUT_DIR, '_palette.png');
+  const vf = `fps=${GIF_FPS},scale=${GIF_WIDTH}:-1:flags=lanczos`;
+  execFileSync('ffmpeg', ['-y', '-i', MP4_PATH, '-vf', `${vf},palettegen=stats_mode=diff`, palette], { stdio: 'inherit' });
+  execFileSync('ffmpeg', ['-y', '-i', MP4_PATH, '-i', palette, '-lavfi', `${vf}[x];[x][1:v]paletteuse=dither=bayer:bayer_scale=3`, GIF_PATH], { stdio: 'inherit' });
+  fs.rmSync(palette);
+
   // Clean up frames
   fs.rmSync(FRAMES_DIR, { recursive: true });
-  const size = (fs.statSync(MP4_PATH).size / 1024).toFixed(0);
-  console.log(`Done! ${MP4_PATH} (${size} KB, ${frameNum} frames, ${(frameNum / FPS).toFixed(1)}s)`);
+  const mp4Size = (fs.statSync(MP4_PATH).size / 1024).toFixed(0);
+  const gifSize = (fs.statSync(GIF_PATH).size / 1024).toFixed(0);
+  console.log(`Done! overview.mp4 (${mp4Size} KB) + overview.gif (${gifSize} KB, ${GIF_WIDTH}px, ${GIF_FPS}fps, ${(frameNum / FPS).toFixed(1)}s)`);
 })();
