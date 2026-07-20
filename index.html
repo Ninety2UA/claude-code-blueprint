@@ -2246,7 +2246,7 @@
       <div class="hero__content">
         <div class="hero__badge">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-          v3.5.1 &mdash; Verification Sweep
+          v3.5.2 &mdash; Validator Wiring
         </div>
         <h1>Claude Code<br><span class="gradient-text">Blueprint</span></h1>
         <p class="hero__tagline">"Each unit of engineering work should make subsequent units easier &mdash; not harder."</p>
@@ -3543,8 +3543,29 @@
   <!-- ===== WHAT'S NEW ===== -->
   <section class="whats-new" id="whats-new">
     <div class="container">
-      <!-- v3.5.1 -->
+      <!-- v3.5.2 -->
       <div class="section-header reveal">
+        <span class="new__badge">v3.5.2</span>
+        <h2>What's New</h2>
+        <p>Validator wiring &amp; guide refresh &mdash; the last unreferenced agent gets a home, and the ecosystem guide gets a July 2026 data edition</p>
+      </div>
+      <div class="grid-4 reveal reveal-stagger">
+        <div class="new-card">
+          <h3>Independent Fix Verification</h3>
+          <p>bug-reproduction-validator is now wired into systematic-debugging: it independently establishes disputed repros before investigation, and re-verifies non-trivial fixes in a fresh context &mdash; no session assumptions.</p>
+        </div>
+        <div class="new-card">
+          <h3>July 2026 Guide Edition</h3>
+          <p>The Claude Code Tools Guide refreshed with live GitHub data &mdash; stars, forks, and versions across all 14 profiled tools (950K+ combined stars). Corrupted cells gone.</p>
+        </div>
+        <div class="new-card">
+          <h3>Committed PDF Pipeline</h3>
+          <p>New render-ebook.js joins render-diagrams.js and record-promo.js &mdash; every visual artifact now regenerates from source with one command. No more ad-hoc renders that drift.</p>
+        </div>
+      </div>
+
+      <!-- v3.5.1 -->
+      <div class="section-header reveal" style="margin-top: 4rem;">
         <span class="new__badge">v3.5.1</span>
         <h2>What's New</h2>
         <p>Verification sweep &mdash; post-release loops (three review agents + mechanical cross-checks) caught every stale surface, and each class is now drift-gated</p>

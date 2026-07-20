@@ -8,7 +8,7 @@ set -euo pipefail
 
 REPO_URL="https://github.com/Ninety2UA/claude-code-blueprint"
 TEMP_DIR=""
-VERSION="3.5.1"
+VERSION="3.5.2"
 
 # Colors
 RED='\033[0;31m'

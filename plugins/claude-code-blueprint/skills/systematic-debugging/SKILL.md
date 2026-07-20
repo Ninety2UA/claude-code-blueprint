@@ -89,6 +89,7 @@ You MUST complete each phase before proceeding to the next (unless Step 0 author
    - What are the exact steps?
    - Does it happen every time?
    - If not reproducible → gather more data, don't guess
+   - If reproduction is disputed or intermittent, dispatch the `bug-reproduction-validator` agent to independently establish the repro before investing in investigation
 
 3. **Check Recent Changes**
    - What changed that could cause this?
@@ -228,6 +229,8 @@ You MUST complete each phase before proceeding to the next (unless Step 0 author
    - Test passes now?
    - No other tests broken?
    - Issue actually resolved?
+
+   For non-trivial fixes — intermittent bugs, disputed repro steps, fixes touching shared state, or long sessions where confirmation bias accumulates — dispatch the `bug-reproduction-validator` agent with the bug report, repro steps, and the fix. It re-runs the reproduction and verifies the fix in a fresh context, with none of this session's assumptions.
 
 4. **If Fix Doesn't Work**
    - STOP
