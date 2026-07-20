@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="#how-does-this-compare">Compare</a> ·
-  <a href="#whats-new-in-v350--ecosystem-delta-sweep">What's New</a> ·
+  <a href="#whats-new-in-v351--verification-sweep">What's New</a> ·
   <a href="#quick-start">Quick Start</a> ·
   <a href="#what-you-get">What You Get</a> ·
   <a href="#workflow">Workflow</a> ·
@@ -86,6 +86,15 @@ v3.4.0 and v3.5.0 were produced by a single **platform-sync cycle** — one init
 <p align="center">
   <img src="docs/images/platform-sync-cycle.png" alt="Platform-sync cycle — Audit (68 CLI versions) → Gate 1 → Adopt + verify (Part 1, v3.4.0) → Delta sweep (Part 2, 4 repos) → Gate 2 → Import + close (v3.5.0), codified into the /cli-watch + /repo-watch watchers" width="90%">
 </p>
+
+### What's New in v3.5.1 — Verification Sweep
+
+Post-release verification loops — three parallel review agents plus mechanical cross-checks against the filesystem and the live GitHub API — caught every stale surface left behind by three releases of growth, and taught the drift gate to catch each class.
+
+- **Total rename purge** — ~35 surviving pre-v3.2 command names eliminated (install.sh next-steps, scaffolded templates, 21 skill/agent prose refs, hook comments).
+- **Complete rosters** — the site agents grid and README table now list all 29 agents; the skills grid all 55; the promo GIF re-rendered with real stats.
+- **Live ecosystem data** — star columns refreshed from the GitHub API (19 repos, ~1.1M combined stars); corrupted cells fixed.
+- **Gate expansion** — `check-drift.sh` now verifies grid completeness and badge integrity, ecosystem repo-count claims, the README agents table, and the promo GIF source. Every new check is negative-tested against the pre-fix files.
 
 ### What's New in v3.5.0 — Ecosystem Delta Sweep
 
