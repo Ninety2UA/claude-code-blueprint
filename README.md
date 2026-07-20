@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="#how-does-this-compare">Compare</a> ·
-  <a href="#whats-new-in-v351--verification-sweep">What's New</a> ·
+  <a href="#whats-new-in-v352--validator-wiring--guide-refresh">What's New</a> ·
   <a href="#quick-start">Quick Start</a> ·
   <a href="#what-you-get">What You Get</a> ·
   <a href="#workflow">Workflow</a> ·
@@ -86,6 +86,12 @@ v3.4.0 and v3.5.0 were produced by a single **platform-sync cycle** — one init
 <p align="center">
   <img src="docs/images/platform-sync-cycle.png" alt="Platform-sync cycle — Audit (68 CLI versions) → Gate 1 → Adopt + verify (Part 1, v3.4.0) → Delta sweep (Part 2, 4 repos) → Gate 2 → Import + close (v3.5.0), codified into the /cli-watch + /repo-watch watchers" width="90%">
 </p>
+
+### What's New in v3.5.2 — Validator Wiring & Guide Refresh
+
+- **Independent fix verification** — the `bug-reproduction-validator` agent is now wired into `systematic-debugging`: it independently establishes disputed or intermittent repros before investigation, and re-verifies non-trivial fixes in a fresh context with none of the session's assumptions.
+- **July 2026 guide edition** — [The Claude Code Tools Guide](ebook/claude-code-tools-guide.pdf) refreshed with live GitHub data: stars, forks, and versions across all 14 profiled tools (950K+ combined stars); corrupted data cells fixed.
+- **Committed PDF pipeline** — new `docs/images/render-ebook.js` regenerates the guide PDF from source, joining `render-diagrams.js` and `record-promo.js` so every visual artifact rebuilds with one command.
 
 ### What's New in v3.5.1 — Verification Sweep
 
