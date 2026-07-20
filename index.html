@@ -2246,7 +2246,7 @@
       <div class="hero__content">
         <div class="hero__badge">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-          v3.5.0 &mdash; Ecosystem Delta Sweep
+          v3.5.1 &mdash; Verification Sweep
         </div>
         <h1>Claude Code<br><span class="gradient-text">Blueprint</span></h1>
         <p class="hero__tagline">"Each unit of engineering work should make subsequent units easier &mdash; not harder."</p>
@@ -3543,8 +3543,33 @@
   <!-- ===== WHAT'S NEW ===== -->
   <section class="whats-new" id="whats-new">
     <div class="container">
-      <!-- v3.5.0 -->
+      <!-- v3.5.1 -->
       <div class="section-header reveal">
+        <span class="new__badge">v3.5.1</span>
+        <h2>What's New</h2>
+        <p>Verification sweep &mdash; post-release loops (three review agents + mechanical cross-checks) caught every stale surface, and each class is now drift-gated</p>
+      </div>
+      <div class="grid-4 reveal reveal-stagger">
+        <div class="new-card">
+          <h3>Total Rename Purge</h3>
+          <p>~35 surviving pre-v3.2 command names eliminated &mdash; install next-steps, scaffolded templates, 21 skill/agent prose refs, hook comments. The v3.2 rename is finally total.</p>
+        </div>
+        <div class="new-card">
+          <h3>Complete Rosters</h3>
+          <p>The agents grid and README table now list all 29 agents; the skills grid all 55. The promo GIF re-renders with real stats instead of v2.x fossils.</p>
+        </div>
+        <div class="new-card">
+          <h3>Live Ecosystem Data</h3>
+          <p>Star columns refreshed from the GitHub API across README + site &mdash; 19 repos, ~1.1M combined stars. Corrupted cells (GSD-2 "KB", OpenCLI "v1.3") fixed.</p>
+        </div>
+        <div class="new-card">
+          <h3>Gate Expansion</h3>
+          <p>check-drift.sh now verifies grid completeness, badge-vs-rendered integrity, repo-count claims, the README agents table, and the promo source &mdash; every check negative-tested.</p>
+        </div>
+      </div>
+
+      <!-- v3.5.0 -->
+      <div class="section-header reveal" style="margin-top: 4rem;">
         <span class="new__badge">v3.5.0</span>
         <h2>What's New</h2>
         <p>Ecosystem delta sweep &mdash; source-level re-analysis of four external repos, 5 patterns imported, two repos yielded nothing (a documented outcome)</p>
