@@ -10,7 +10,7 @@ Quality over speed. Small steps compound. The patterns you establish will be cop
 
 <!-- Updated by /session-wrap. Full history: git log + docs/learnings/ -->
 
-**Last session:** 2026-07-19
+**Last session:** 2026-07-20
 
 **What was done:** Platform-sync cycle shipped and closed out — v3.4.0 + v3.5.0 merged to `main` (PR #3), followed by release housekeeping and verification passes:
 - Git tags + GitHub Releases backfilled; chain complete v3.2.1 → v3.5.0 (Latest), notes sourced from README What's New.
@@ -18,15 +18,17 @@ Quality over speed. Small steps compound. The patterns you establish will be cop
 - Promo pipeline repaired (PR #4): `record-promo.js` root path fixed, system-Chrome fallback, mp4→GIF conversion added; stray `icon.png` removed.
 - Watcher rename reflected publicly (PR #5): the workspace `/platform-sync` radar is now `/cli-watch` + `/repo-watch` (workspace-level, not in the plugin). "Platform-sync cycle" is kept where it names the historical cycle.
 - Post-merge verification loop: live site inspected at desktop + mobile (chrome-devtools CLI), console clean, CI green, Pages current. Caught stale promo scenes the GIF regeneration had preserved (old 35/26/27/6 stat cards incl. a defunct Commands category, legacy `/planning` `/build` `/review` `/ship` names, v2.x install command) — fixed the source, re-rendered `overview.gif`/`.mp4`, and extended the drift gate to cover `promo-video.html`.
+- Round-2 staleness sweep (PR #7): completed the v3.2 rename purge (~35 survivors across install.sh, templates, skill/agent prose, hook comments), completed the site agents/skills grids (29/55) + README agents table, refreshed ecosystem stars from the live GitHub API (~1.1M total), fixed the GitHub About description (pre-v2 counts; not CI-gateable), and extended the drift gate to all of these classes (negative-tested).
+- v3.5.1 "Verification Sweep" patch release (PR #8): version bump so installed plugin caches sync the #6/#7 content fixes; What's New entries on site + README; tagged + GitHub Release (Latest).
 
 **What's remaining:**
 - `bug-reproduction-validator` agent is unreferenced by any skill — consider integrating into systematic-debugging.
 
-**Start here:** `main` is current and fully released (v3.5.0 tagged, Pages live). Monthly watchers `/cli-watch` + `/repo-watch` are ready to run on schedule.
+**Start here:** `main` is current and fully released (v3.5.1 tagged, Pages live). Monthly watchers `/cli-watch` + `/repo-watch` are ready to run on schedule.
 
 **Current state of the code:**
 - Build: n/a (template repo, no build step)
-- Gates: drift gate (now also gating `promo-video.html`) + skill-collision gate green; markdownlint + shellcheck clean locally
+- Gates: drift gate (promo source, site grids + badge integrity, repo-count claims, README agents table, version equality) + skill-collision gate green; markdownlint + shellcheck clean locally
 - Website: live at <https://ninety2ua.github.io/claude-code-blueprint/>
 - Uncommitted changes: none
 
