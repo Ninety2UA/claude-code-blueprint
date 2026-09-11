@@ -10,6 +10,8 @@ Spawn a swarm of research agents in parallel, then synthesize their findings int
 
 **Announce at start:** "Starting deep research on: [topic]"
 
+**Name collision with the bundled workflow:** Claude Code ships its own `/deep-research` workflow — a web-search fan-out that starts only when invoked manually (CLI 2.1.218). This skill is the five-agent research swarm below. When the slash menu shows both, `/claude-code-blueprint:deep-research` is the swarm. Custom skills override bundled skills of the same name, so a legacy (copied-skill) install of `deep-research` is expected to take precedence; precedence over the bundled *workflow* is unverified.
+
 ## Step 0: Load Project Configuration
 
 Check `blueprint.local.md` for configured research agents. If not found, use defaults below.
@@ -42,7 +44,7 @@ Task("codebase-context-mapper: Map all files, functions, and integration points 
 
 **Important:** Dispatch ALL agents in a single message to maximize parallelism.
 
-**Session caps:** Claude Code allows up to 200 subagents and 200 WebSearches per session. A standard research swarm (5 agents) stays well within both; large or repeated sweeps in one session should track cumulative subagent and search usage.
+**Session caps:** Claude Code no longer caps subagents per session (the 200-subagent total was removed in CLI 2.1.224). What applies now is a concurrency cap of 20 subagents by default (`CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS`, 2.1.217) and a nesting depth of 3 by default (`CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH`, 2.1.219); WebSearch stays at 200 per session. A standard research swarm (5 agents) stays well within all three, but any subagent a researcher spawns itself counts against the depth-3 default, and large or repeated sweeps in one session should still track cumulative search usage.
 
 ## Step 3: Synthesize
 

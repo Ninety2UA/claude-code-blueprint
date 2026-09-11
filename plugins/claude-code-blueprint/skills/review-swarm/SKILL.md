@@ -80,7 +80,7 @@ Task("code-reviewer: Review [scope] against plan and standards. run_id={run_id}.
 
 **Important:** Dispatch ALL agents in a single message to maximize parallelism.
 
-**Session cap:** Claude Code allows up to 200 subagents per session. A single swarm (6-10 reviewers plus the optional validator/synthesizer) stays well within it; if you run many swarms in one session, watch the cumulative total.
+**Session cap:** Claude Code no longer caps subagents per session (the 200-subagent total was removed in CLI 2.1.224). What applies now is a concurrency cap of 20 subagents by default (`CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS`, 2.1.217) and a nesting depth of 3 by default (`CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH`, 2.1.219). A single swarm (6-10 reviewers plus the optional validator/synthesizer) stays within the concurrency cap; a reviewer that spawns its own helpers counts against the depth-3 default, and running many swarms in one session no longer accumulates against a total.
 
 ## Step 5: Collect, Validate, Synthesize
 
