@@ -53,15 +53,15 @@ digraph process {
         "Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)" [shape=box];
         "Code quality reviewer subagent approves?" [shape=diamond];
         "Implementer subagent fixes quality issues" [shape=box];
-        "Mark task complete in TodoWrite" [shape=box];
+        "Tick task in progress file" [shape=box];
     }
 
-    "Read plan, extract all tasks with full text, note context, create TodoWrite" [shape=box];
+    "Read plan, extract all tasks with full text, note context, create progress file" [shape=box];
     "More tasks remain?" [shape=diamond];
     "Dispatch final code reviewer subagent for entire implementation" [shape=box];
     "Use finishing-a-development-branch" [shape=box style=filled fillcolor=lightgreen];
 
-    "Read plan, extract all tasks with full text, note context, create TodoWrite" -> "Dispatch implementer subagent (./implementer-prompt.md)";
+    "Read plan, extract all tasks with full text, note context, create progress file" -> "Dispatch implementer subagent (./implementer-prompt.md)";
     "Dispatch implementer subagent (./implementer-prompt.md)" -> "Implementer subagent asks questions?";
     "Implementer subagent asks questions?" -> "Answer questions, provide context" [label="yes"];
     "Answer questions, provide context" -> "Dispatch implementer subagent (./implementer-prompt.md)";
@@ -74,11 +74,41 @@ digraph process {
     "Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)" -> "Code quality reviewer subagent approves?";
     "Code quality reviewer subagent approves?" -> "Implementer subagent fixes quality issues" [label="no"];
     "Implementer subagent fixes quality issues" -> "Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)" [label="re-review"];
-    "Code quality reviewer subagent approves?" -> "Mark task complete in TodoWrite" [label="yes"];
-    "Mark task complete in TodoWrite" -> "More tasks remain?";
+    "Code quality reviewer subagent approves?" -> "Tick task in progress file" [label="yes"];
+    "Tick task in progress file" -> "More tasks remain?";
     "More tasks remain?" -> "Dispatch implementer subagent (./implementer-prompt.md)" [label="yes"];
     "More tasks remain?" -> "Dispatch final code reviewer subagent for entire implementation" [label="no"];
     "Dispatch final code reviewer subagent for entire implementation" -> "Use finishing-a-development-branch";
+}
+```
+
+## Progress File
+
+The controller tracks tasks in `.claude/plans/<plan-basename>.progress.local.md` (`<plan-basename>` is the plan's filename without `.md`); native task-list tools are not the mechanism because current models do not have them:
+
+- First line names the plan; one checkbox per task.
+- If the file already exists, reuse it and its ticks instead of recreating it.
+- At creation, run `git check-ignore -q` on it; if that fails, append `.claude/plans/*.progress.local.md` to the file named by `git rev-parse --git-path info/exclude`.
+- Tick a task's box once its code quality reviewer approves.
+- Delete it after the final code reviewer approves — before invoking finishing-a-development-branch.
+- An interrupted run leaves it in place; the STATE.md handoff (session-continuity) points at it.
+- The session's native task list is the alternative only when the model offers one: Claude Code exposes its native task-list tools only on Claude 3.x, Opus 4.0–4.7, Sonnet 4.0–4.6 and Haiku 4.5 (CLI 2.1.233; verified on 2.1.268); `CLAUDE_CODE_ENABLE_TODO_TOOLS=1` restores them elsewhere.
+
+```bash
+plan=docs/plans/<plan-basename>.md
+progress=".claude/plans/$(basename "$plan" .md).progress.local.md"
+mkdir -p .claude/plans
+if [ ! -f "$progress" ]; then   # an existing file keeps its ticks
+  printf '# Progress: %s\n\n' "$plan" > "$progress"
+  # then append one "- [ ] Task N: <title>" line per task in the plan
+fi
+git check-ignore -q "$progress" || {   # projects scaffolded before v3.6.0 lack the ignore rule
+  if exclude="$(git rev-parse --git-path info/exclude 2>/dev/null)" && [ -n "$exclude" ]; then
+    mkdir -p "$(dirname "$exclude")"
+    echo '.claude/plans/*.progress.local.md' >> "$exclude"
+  else
+    echo "warning: not a git repository - add .claude/plans/*.progress.local.md to your ignore rules yourself" >&2
+  fi
 }
 ```
 
@@ -95,7 +125,7 @@ You: I'm using Subagent-Driven Development to execute this plan.
 
 [Read plan file once: docs/plans/feature-plan.md]
 [Extract all 5 tasks with full text and context]
-[Create TodoWrite with all tasks]
+[Create .claude/plans/feature-plan.progress.local.md with one checkbox per task]
 
 Task 1: Hook installation script
 
@@ -160,6 +190,8 @@ Code reviewer: ✅ Approved
 [After all tasks]
 [Dispatch final code-reviewer]
 Final reviewer: All requirements met, ready to merge
+
+[Final reviewer approved: delete .claude/plans/feature-plan.progress.local.md]
 
 Done!
 ```

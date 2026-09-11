@@ -117,7 +117,7 @@ isolation: "worktree")
 
 Dispatch ALL tasks in the wave in a single message for maximum parallelism.
 
-**Session cap:** Claude Code allows up to 200 subagents per session. Very wide waves plus their between-wave integration verifiers accumulate against that limit, so keep individual waves reasonably sized on large plans.
+**Session cap:** Claude Code no longer caps subagents per session (the 200-subagent total was removed in CLI 2.1.224). What applies now is a concurrency cap of 20 subagents by default (`CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS`, 2.1.217) and a nesting depth of 3 by default (`CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH`, 2.1.219). Very wide waves are bounded by the concurrency cap rather than by a session total, so keep individual waves reasonably sized on large plans; and because each implementer already sits two spawn levels deep (session → team-lead → implementer), any subagent an implementer spawns counts against the depth-3 default.
 
 **Why worktree isolation matters:** Without isolation, parallel implementers can overwrite each other's changes to the same files. Worktrees give each implementer a clean copy. Changes are merged back after the wave completes.
 

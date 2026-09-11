@@ -10,25 +10,25 @@ Quality over speed. Small steps compound. The patterns you establish will be cop
 
 <!-- Updated by /session-wrap. Full history: git log + docs/learnings/ -->
 
-**Last session:** 2026-07-20
+**Last session:** 2026-09-11
 
-**What was done:** Platform-sync cycle shipped and closed out — v3.4.0 + v3.5.0 merged to `main` (PR #3), followed by release housekeeping and verification passes:
-- Git tags + GitHub Releases backfilled; chain complete v3.2.1 → v3.5.0 (Latest), notes sourced from README What's New.
-- Docs/visual pass: 5 new premium diagrams, all 17 re-rendered at 2× (`docs/images/render-diagrams.js`), new "Platform Currency" homepage section.
-- Promo pipeline repaired (PR #4): `record-promo.js` root path fixed, system-Chrome fallback, mp4→GIF conversion added; stray `icon.png` removed.
-- Watcher rename reflected publicly (PR #5): the workspace `/platform-sync` radar is now `/cli-watch` + `/repo-watch` (workspace-level, not in the plugin). "Platform-sync cycle" is kept where it names the historical cycle.
-- Post-merge verification loop: live site inspected at desktop + mobile (chrome-devtools CLI), console clean, CI green, Pages current. Caught stale promo scenes the GIF regeneration had preserved (old 35/26/27/6 stat cards incl. a defunct Commands category, legacy `/planning` `/build` `/review` `/ship` names, v2.x install command) — fixed the source, re-rendered `overview.gif`/`.mp4`, and extended the drift gate to cover `promo-video.html`.
-- Round-2 staleness sweep (PR #7): completed the v3.2 rename purge (~35 survivors across install.sh, templates, skill/agent prose, hook comments), completed the site agents/skills grids (29/55) + README agents table, refreshed ecosystem stars from the live GitHub API (~1.1M total), fixed the GitHub About description (pre-v2 counts; not CI-gateable), and extended the drift gate to all of these classes (negative-tested).
-- v3.5.1 "Verification Sweep" patch release (PR #8): version bump so installed plugin caches sync the #6/#7 content fixes; What's New entries on site + README; tagged + GitHub Release (Latest).
+**What was done:** The 2026-09-11 `/cli-watch` + `/repo-watch` cycle audited 47 CLI releases (2.1.213–2.1.268) and shipped v3.6.0 "Platform Currency Refresh":
+- TodoWrite (gone from current models) replaced by a plan-scoped progress file (`.claude/plans/<plan>.progress.local.md`) in `executing-plans`, `subagent-driven-development`, and `writing-skills`; scaffolded projects ignore it.
+- Subagent caps refreshed (no per-session total since 2.1.224; 20 concurrent + spawn depth 3 via `CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS` / `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH`) and the Claude 5 lineup (Opus 5 / Fable 5.1 in the opt-in mapping; every agent stays `model: inherit`).
+- Workflow-tool gating and `/goal` check-in notes refreshed; bundled `/deep-research` workflow collision documented (no rename).
+- `plugin-update` is native-first (`claude plugin update`) with the manual clone path as fallback; README + site update copy now say `/reload-plugins` (or restart).
+- CI: `claude plugin validate --strict` job added; drift gate extended to the README nav "What's New" anchor (negative-tested).
+- Decision record: `docs/learnings/2026-09-11-cli-watch-cycle-verdicts.md`.
+- Before this cycle, v3.5.2 "Validator Wiring & Guide Refresh" (PR #10, tagged) and a site stats-bar fix (PR #11) had already landed on `main`.
 
 **What's remaining:**
-- `bug-reproduction-validator` agent is unreferenced by any skill — consider integrating into systematic-debugging.
+- v3.7.0: ecosystem imports from the `/repo-watch` report (next release).
 
-**Start here:** `main` is current and fully released (v3.5.1 tagged, Pages live). Monthly watchers `/cli-watch` + `/repo-watch` are ready to run on schedule.
+**Start here:** `main` is current (v3.6.0 released). Next cycle picks up the `/repo-watch` imports as v3.7.0; monthly watchers `/cli-watch` + `/repo-watch` stay on schedule.
 
 **Current state of the code:**
 - Build: n/a (template repo, no build step)
-- Gates: drift gate (promo source, site grids + badge integrity, repo-count claims, README agents table, version equality) + skill-collision gate green; markdownlint + shellcheck clean locally
+- Gates: drift gate (promo source, site grids + badge integrity, repo-count claims, README agents table, version equality, README nav anchor) + skill-collision gate + plugin-validate job green; markdownlint + shellcheck clean locally
 - Website: live at <https://ninety2ua.github.io/claude-code-blueprint/>
 - Uncommitted changes: none
 
@@ -71,7 +71,7 @@ install.sh                               # Plugin installer + legacy mode
 
 Skills and agents are self-describing via frontmatter — read their files for when/how to use them.
 
-Each agent carries an `effort:` tier (`low`/`medium`/`high`) in frontmatter, set by reasoning depth (mechanical validators → `low`; workers/researchers → `medium`; reviewers/synthesizers/oracles/orchestrator → `high`). Default stays `model: inherit` so agents ride the session model; an opt-in per-agent model mapping (`low`→Haiku 4.5, `medium`→Sonnet 5, `high`→Opus 4.8 / Fable 5) is documented in README under "Effort tiers & opt-in model mapping" — apply only if your plan tier supports it.
+Each agent carries an `effort:` tier (`low`/`medium`/`high`) in frontmatter, set by reasoning depth (mechanical validators → `low`; workers/researchers → `medium`; reviewers/synthesizers/oracles/orchestrator → `high`). Default stays `model: inherit` so agents ride the session model; an opt-in per-agent model mapping (`low`→Haiku 4.5, `medium`→Sonnet 5, `high`→Opus 5 / Fable 5.1) is documented in README under "Effort tiers & opt-in model mapping" — apply only if your plan tier supports it. Tiers are honored on every model from CLI 2.1.267 (earlier CLIs silently ignored per-agent `effort:` whenever the session ran Opus 4.7, Opus 4.8, or Fable 5 — which affects `model: inherit` agents on those sessions).
 
 ## Behavioral Rules
 

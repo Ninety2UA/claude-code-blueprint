@@ -28,16 +28,43 @@ Load plan, review critically, execute tasks in batches, report for review betwee
 2. Review critically - identify any questions or concerns about the plan
 3. If concerns: Raise them with your human partner before starting
 4. **Pattern mapping (optional but recommended for plans with 3+ new files):** dispatch the `pattern-mapper` agent to produce `.claude/plans/PATTERNS.md` mapping each new file to existing analogs with line-numbered excerpts. Read PATTERNS.md before each task — it grounds new code in existing conventions and prevents structural drift.
-5. If no concerns: Create TodoWrite and proceed
+5. If no concerns: create the progress file (below) and proceed
+
+**Progress file — `.claude/plans/<plan-basename>.progress.local.md`** (`<plan-basename>` is the plan's filename without `.md`):
+
+- First line names the plan; one checkbox per task.
+- If the file already exists, reuse it and its ticks instead of recreating it.
+- At creation, run `git check-ignore -q` on it; if that fails, append `.claude/plans/*.progress.local.md` to the file named by `git rev-parse --git-path info/exclude`.
+- Delete it when the run's final review is clean — Step 5, before invoking finishing-a-development-branch.
+- An interrupted run leaves it in place; the STATE.md handoff (session-continuity) points at it.
+- The session's native task list is the alternative only when the model offers one: Claude Code exposes its native task-list tools only on Claude 3.x, Opus 4.0–4.7, Sonnet 4.0–4.6 and Haiku 4.5 (CLI 2.1.233; verified on 2.1.268); `CLAUDE_CODE_ENABLE_TODO_TOOLS=1` restores them elsewhere.
+
+```bash
+plan=docs/plans/<plan-basename>.md
+progress=".claude/plans/$(basename "$plan" .md).progress.local.md"
+mkdir -p .claude/plans
+if [ ! -f "$progress" ]; then   # an existing file keeps its ticks
+  printf '# Progress: %s\n\n' "$plan" > "$progress"
+  # then append one "- [ ] Task N: <title>" line per task in the plan
+fi
+git check-ignore -q "$progress" || {   # projects scaffolded before v3.6.0 lack the ignore rule
+  if exclude="$(git rev-parse --git-path info/exclude 2>/dev/null)" && [ -n "$exclude" ]; then
+    mkdir -p "$(dirname "$exclude")"
+    echo '.claude/plans/*.progress.local.md' >> "$exclude"
+  else
+    echo "warning: not a git repository - add .claude/plans/*.progress.local.md to your ignore rules yourself" >&2
+  fi
+}
+```
 
 ### Step 2: Execute Batch
 **Default: First 3 tasks**
 
 For each task:
-1. Mark as in_progress
+1. Start at the first unticked box in the progress file
 2. Follow each step exactly (plan has bite-sized steps)
 3. Run verifications as specified
-4. Mark as completed
+4. Tick the box (`- [ ]` → `- [x]`)
 
 **Framework-specific code:** if a task touches a framework or library API (forms, routing, data fetching, hooks, ORM queries, framework config), invoke the `source-driven-development` skill — detect the version, fetch the relevant docs page, follow the documented pattern, and cite the URL. The `sdd-cache` hook revalidates each WebFetch via HTTP `If-None-Match`, so repeat fetches are cheap and citations stay fresh.
 
@@ -56,6 +83,7 @@ Based on feedback:
 ### Step 5: Complete Development
 
 After all tasks complete and verified:
+- Delete the progress file (`.claude/plans/<plan-basename>.progress.local.md`) — every box is ticked and the final review is clean, so nothing is left to resume
 - Announce: "I'm using the finishing-a-development-branch skill to complete this work."
 - **REQUIRED SUB-SKILL:** Use finishing-a-development-branch
 - Follow that skill to verify tests, present options, execute choice

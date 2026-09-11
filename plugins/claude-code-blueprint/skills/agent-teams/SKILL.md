@@ -93,7 +93,9 @@ Tasks have states: `pending` → `in_progress` → `completed`
 
 - **Direct message:** Send to one specific teammate (use for coordination)
 - **Broadcast:** Send to all teammates (use sparingly — costs scale with team size)
-- **Idle notifications:** Automatic when a teammate finishes all tasks
+- **Idle notifications:** Automatic when a teammate finishes all tasks; the teammate's final answer arrives inside that notification (CLI 2.1.251), so the lead reads the result there instead of polling
+- **Teammate model:** Teammates run on the leader's model unless the spawn names one (CLI 2.1.234); the former `/config` "Default teammate model" setting is gone
+- **Live roster:** `ListAgents` lists the live teammates (CLI 2.1.239) — check it before broadcasting or waiting on a teammate
 
 ### Quality Gates
 

@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="#how-does-this-compare">Compare</a> ·
-  <a href="#whats-new-in-v352--validator-wiring--guide-refresh">What's New</a> ·
+  <a href="#whats-new-in-v360--platform-currency-refresh">What's New</a> ·
   <a href="#quick-start">Quick Start</a> ·
   <a href="#what-you-get">What You Get</a> ·
   <a href="#workflow">Workflow</a> ·
@@ -86,6 +86,19 @@ v3.4.0 and v3.5.0 were produced by a single **platform-sync cycle** — one init
 <p align="center">
   <img src="docs/images/platform-sync-cycle.png" alt="Platform-sync cycle — Audit (68 CLI versions) → Gate 1 → Adopt + verify (Part 1, v3.4.0) → Delta sweep (Part 2, 4 repos) → Gate 2 → Import + close (v3.5.0), codified into the /cli-watch + /repo-watch watchers" width="90%">
 </p>
+
+### What's New in v3.6.0 — Platform Currency Refresh
+
+The second `/cli-watch` cycle audited 47 CLI releases (2.1.213 → 2.1.268, 1,381 changelog entries) and refreshed every platform claim the template makes. No rebuilds and no new skills or agents: every supersede candidate resolved to keep again, with the cycle's probes and verdicts recorded in `docs/learnings/2026-09-11-cli-watch-cycle-verdicts.md`.
+
+- **Model-agnostic task tracking** — Claude Code removed TodoWrite and the Task tools on Opus 4.8, Sonnet 5, Fable 5 and newer, so `executing-plans`, `subagent-driven-development` and `writing-skills` now track progress in a plan-scoped `.claude/plans/<plan>.progress.local.md` (git-ignored in new scaffolds, with a `git check-ignore` guard for older projects).
+- **Limits and lineup refreshed** — the 200-subagent session cap is gone; the real limits are 20 concurrent subagents and a spawn depth of 3. The opt-in effort mapping now points at Opus 5 / Fable 5.1, and effort tiers are documented as honored on every model from CLI 2.1.267.
+- **Native alternatives as they behave today** — dynamic-workflow gating (paid plans, Pro opt-in, org switch, `-p`/SDK support), `/goal` check-ins and its headless loop, teammate model rules, and the bundled `/deep-research` workflow that shares a name with the research-swarm skill.
+- **Native-first plugin update** — `/plugin-update` tries `claude plugin update` (scope-aware, cache-verified) before falling back to the manual sync; README and site copy now say `/reload-plugins` instead of "restart".
+- **Two new gates** — a CI job runs `claude plugin validate --strict` on the plugin and marketplace manifests, and the drift gate now catches a stale README "What's New" nav anchor (negative-tested).
+- **Diagrams re-rendered** — the effort-tiers and platform-currency images are regenerated from source with the new labels.
+
+**Evaluated and kept:** `ship-loop.sh` vs `/goal` (still not skill-invocable), `ship.sh` vs `claude -p "/goal …"` (a headless goal loop trades against fresh-context iteration — an opt-in flag is deferred), wave orchestration vs the Workflow tool (a plugin-bundled workflow is deferred), and the injection scanners (native observers now cover Artifact reads and auto-mode probes, still not main-session Read/Write/Edit).
 
 ### What's New in v3.5.2 — Validator Wiring & Guide Refresh
 
@@ -388,13 +401,13 @@ curl -fsSL https://raw.githubusercontent.com/Ninety2UA/claude-code-blueprint/mai
 
 ### Update to latest version
 
-Inside any Claude Code session:
+From a terminal:
 
-```
-/plugin install claude-code-blueprint
+```bash
+claude plugin update claude-code-blueprint@claude-code-blueprint
 ```
 
-Re-fetches the latest version from GitHub and updates the plugin cache. All projects get the update automatically — restart your session to use the new version.
+Or, inside any Claude Code session, `/plugin install claude-code-blueprint@claude-code-blueprint` — which refreshes the marketplace catalog first. Either path re-fetches the latest version from GitHub and updates the plugin cache. All projects get the update automatically — run `/reload-plugins` (or restart) to use the new version.
 
 ### Migrate from v2.x
 
@@ -549,6 +562,8 @@ Beyond the workflow gates above, two exact-match gates run in CI to keep the rep
 
 - **Drift gate** (`scripts/check-drift.sh`) — derives skill/agent/hook counts from the filesystem and checks them against every manifest, doc, installer, and **website widget**, plus exact version-string equality. It retired the manual count sweeps that drifted three times.
 - **Skill-collision gate** (`scripts/check-skill-collisions.py`) — computes pairwise description overlap (Jaccard) across all skills and fails on near-duplicates (warn ≥50%, fail ≥75%) that would route ambiguously — a failure a single-skill trigger test can't catch.
+
+A third CI job validates the plugin and marketplace manifests with the CLI's own validator (`claude plugin validate --strict`).
 
 ## Agent Teams & Swarms
 
@@ -865,7 +880,7 @@ You are a [role] specializing in [domain].
 | Field | Purpose | Example |
 |-------|---------|---------|
 | `tools` | Restrict which tools the agent can use (principle of least privilege) | `[Read, Glob, Grep, Bash]` for read-only; add `Edit, Write` for agents that modify code |
-| `model` | Override the model (`sonnet`, `opus`, `haiku`, or `inherit`) | `inherit` to use the session's model |
+| `model` | Override the model (`sonnet`, `opus`, `fable`, `haiku`, or `inherit`) | `inherit` to use the session's model |
 | `effort` | Reasoning-depth tier — `low`, `medium`, or `high`. Every bundled agent sets one (see Effort tiers below) | `high` for reviewers/oracles, `low` for mechanical validators |
 | `isolation` | Set to `worktree` for agents that modify files in parallel | Used by `pr-comment-resolver` |
 | `maxTurns` | Limit agentic turns to prevent runaway token consumption | `20` for focused tasks |
@@ -892,11 +907,13 @@ The shipped default stays `model: inherit` on every agent, so agents ride whatev
 |-------------|------------------------|
 | `low` | Haiku 4.5 |
 | `medium` | Sonnet 5 |
-| `high` | Opus 4.8 / Fable 5 |
+| `high` | Opus 5 / Fable 5.1 |
 
 This mapping is documentation, not shipped configuration — leaving `model: inherit` in place is the supported default.
 
-### Platform currency (2026-07 sync)
+Effort tiers are honored on every model from CLI 2.1.267. Earlier CLIs silently ignored per-agent `effort:` whenever the session ran Opus 4.7, Opus 4.8, or Fable 5 — which affects `model: inherit` agents on those sessions, so a CLI upgrade, not a model pin, is what restores the tiers. The `maxEffortLevel` setting caps every tier from above. To give subagents a different default model without editing agent files, set `CLAUDE_CODE_SUBAGENT_MODEL`; an agent's own `model:` line and a per-spawn model still take precedence over it, and `CLAUDE_CODE_SUBAGENT_MODEL_FORCE` overrides all of them.
+
+### Platform currency (2026-07 sync, refreshed 2026-09)
 
 The blueprint tracks new Claude Code platform features and adopts them as **opt-ins** — no core pipeline is allowed to depend on a gated or experimental capability (a deliberate stability guardrail). Where a native feature overlaps something the template already does, the table records why the template's own mechanism stays the default.
 
@@ -909,11 +926,12 @@ The blueprint tracks new Claude Code platform features and adopts them as **opt-
 | **Effort tiers** (`effort: low/medium/high`) | Shipped on every bundled agent (see "Effort tiers & opt-in model mapping" above) | None — an unrecognized key is ignored by older CLIs |
 | **`/goal`** (condition-based completion) | Opt-in complement to the ship loop's Stop-hook guard | None; generally available in the CLI |
 | **Native `/loop` + ScheduleWakeup** | Add interval/scheduled reruns, but `/loop` is session-scoped and does **not** reset context, circuit-break, or detect degradation — so `autonomous-loop` keeps its own circuit breaker and degradation detection | None; complementary, not a replacement |
-| **Workflow tool / `/workflows` / ultracode** | Opt-in for very large autonomous fan-outs (25+ independent tasks); wave orchestration stays the ungated, portable default | Gated: CLI v2.1.154+, paid plans only, disable-able per-user and org-wide |
-| **Fast mode** | Opt-in only | Gated: research preview, pricing subject to change |
-| **Claude 5 lineup** (Sonnet 5 default, Fable 5, Opus 4.8, Haiku 4.5) | Every agent ships `model: inherit`, so agents ride the session model automatically — no per-agent pins | None; opt-in model mapping documented above |
-| **Per-session caps** | Large swarms and research sweeps stay within the native limits | 200 subagents and 200 WebSearches per session |
+| **Workflow tool / `/workflows` / ultracode** | Opt-in for very large autonomous fan-outs — default size guideline `medium` (under 15 agents), runtime caps of 16 concurrent agents and 1,000 per run, no mid-run user input; wave orchestration stays the ungated, portable default | Available on all paid plans, the API, and Bedrock/Vertex/Foundry (Pro enables it in `/config`); runs in `claude -p`/SDK only behind a `Workflow` allow rule, auto or bypass mode, or a PreToolUse hook; disable-able per user (`disableWorkflows` / `CLAUDE_CODE_DISABLE_WORKFLOWS=1`) and org-wide |
+| **Fast mode** | Opt-in only | Gated: Opus 5 and Opus 4.8 only; research preview, pricing subject to change |
+| **Claude 5 lineup** (Opus 5, Sonnet 5, Fable 5.1, Haiku 4.5) | Every agent ships `model: inherit`, so agents ride the session model automatically — no per-agent pins. Opus 5 is the default on Max / Team Premium / Enterprise / API, Sonnet 5 on Pro / Team Standard; Fable 5.1 answers to the `fable` alias | None; opt-in model mapping documented above |
+| **Per-session caps** | Large swarms and research sweeps stay within the native limits — there is no per-session subagent total since CLI 2.1.224, only a concurrency cap and a nesting depth | 20 concurrent subagents by default (`CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS`), nested spawns to depth 3 (`CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH`), 200 WebSearches per session unchanged |
 | **Native injection hardening** (Agent tool, CLI v2.1.210) | Reinforces — does not replace — the template's custom read/prompt scanners and `<<DATA_START>>`/`<<DATA_END>>` markers, which still cover the main-session Write/Edit and Read surfaces native hardening does not observe | None; defense-in-depth |
+| **Bundled `/deep-research` workflow** | Claude Code bundles a web-search fan-out workflow of that name (manual-invoke only); the blueprint's `deep-research` skill is the five-agent research swarm. When the slash menu shows both, `/claude-code-blueprint:deep-research` is the swarm | None; custom skills override bundled skills of the same name — precedence over the bundled workflow is unverified |
 
 ### Adjusting quality gates
 
@@ -991,6 +1009,8 @@ Large features can exhaust Claude's context window. The template has layered def
 
 The inner guard and outer loop solve different problems: the Stop hook catches Claude quitting early (same session, growing context), while the external bash loop handles genuine context exhaustion (fresh 200K per iteration, state persists via git).
 
+To trim what loads in the first place, run `/skill-doctor` (CLI 2.1.261+) — it reports which loaded skills go unused and what each costs in context.
+
 ### Session continuity
 
 The `Session Continuity` section in CLAUDE.md acts as a handoff note between sessions:
@@ -1067,7 +1087,7 @@ Yes. The template works identically in VS Code, JetBrains, and the CLI. Slash co
 <details>
 <summary><strong>How do I update the blueprint?</strong></summary>
 
-**Plugin mode (v3.0+):** Run `/plugin install claude-code-blueprint` again — it updates the cached plugin for all projects.
+**Plugin mode (v3.0+):** Run `claude plugin update claude-code-blueprint@claude-code-blueprint` (or `/plugin install claude-code-blueprint@claude-code-blueprint` again) — it updates the cached plugin for all projects; then run `/reload-plugins` (or restart).
 
 **Legacy mode (v2.x):** Use `--legacy` with `--force` to refresh in-project files.
 

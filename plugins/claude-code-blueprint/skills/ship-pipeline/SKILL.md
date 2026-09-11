@@ -75,9 +75,15 @@ stages done, review converged, changes committed, and the pipeline has emitted
 <promise>DONE</promise> with every item verified. Do not stop before then.
 ```
 
+Check-in opt-out: set `CLAUDE_CODE_GOAL_CHECKIN_MINUTES=0` in the environment Claude starts from before pasting, so the platform's idle check-ins (CLI 2.1.234+) never conflict with the pipeline's no-questions rule.
+
 - **Emit only in interactive mode** (never when `--external` is set — a headless loop has no one to paste it, which is why the Stop hook, not `/goal`, is the guarantee). **Do not stall waiting for the paste** — continue the pipeline immediately; the `ship-loop.sh` hook protects the run whether or not the user pastes.
 - If pasted, native `/goal` and the Stop hook coexist harmlessly: both release the session once `<promise>DONE</promise>` appears, and `/goal` just adds an overlay. `/goal` is an opt-in convenience, **not** a dependency — the pipeline never relies on it, so no minimum-CLI floor is imposed on `/ship-pipeline` itself.
 - Native `STOP_HOOK_BLOCK_CAP` (default 8, since CLI 2.1.143) backstops the hook against runaway blocking even if `max_iterations` is misconfigured — defense in depth, no action needed.
+- The goal clears itself on an unrecoverable error (CLI 2.1.234), which matches Error Recovery below: the pipeline stops and removes its loop state files rather than restarting a broken run.
+- An idle session with an active goal checks in on 30+ minute background work at 30 m, then 1 h, then 2 h, at most three times per goal (CLI 2.1.234–2.1.246). `CLAUDE_CODE_GOAL_CHECKIN_MINUTES=0` opts out — see the note above the bullets — so a pasted goal never turns into a question the pipeline is not allowed to ask.
+- `--resume` restores an active goal (CLI 2.1.239), so a resumed interactive session keeps the overlay without re-pasting; the Stop hook state file (`iteration` > 1) is what actually resumes the pipeline.
+- `claude -p "/goal …"` is a documented headless goal loop, but a skill or hook still cannot start a goal, so `ship-loop.sh` remains the guarantee and `scripts/ship.sh` keeps its fresh-process-per-iteration design rather than wrapping a goal loop.
 
 ---
 
@@ -277,7 +283,7 @@ Skip if the work was straightforward.
 
 ### Interactive: `/ship-pipeline` inside Claude
 
-Type `/ship-pipeline <feature>` in a Claude session. The Stop hook (`ship-loop.sh`) guards against premature exit — if Claude tries to stop before outputting `<promise>DONE</promise>`, the hook blocks exit and re-injects the prompt. This does NOT reset context — the conversation keeps growing. Best for features that fit within a single context window. On CLI v2.1.139+ you can optionally paste the native `/goal` prompt emitted at Stage 0 for an elapsed/turns/tokens overlay — the Stop hook remains the guarantee regardless (see Stage 0).
+Type `/ship-pipeline <feature>` in a Claude session. The Stop hook (`ship-loop.sh`) guards against premature exit — if Claude tries to stop before outputting `<promise>DONE</promise>`, the hook blocks exit and re-injects the prompt. This does NOT reset context — the conversation keeps growing. Best for features that fit within a single context window. On CLI v2.1.139+ you can optionally paste the native `/goal` prompt emitted at Stage 0 for an elapsed/turns/tokens overlay; set `CLAUDE_CODE_GOAL_CHECKIN_MINUTES=0` first so the goal's idle check-ins (CLI 2.1.234+) never interrupt the no-questions run, and `--resume` restores the goal (CLI 2.1.239) — the Stop hook remains the guarantee regardless (see Stage 0).
 
 ### External loop: `scripts/ship.sh`
 
