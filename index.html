@@ -2252,7 +2252,7 @@
       <div class="hero__content">
         <div class="hero__badge">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-          v3.5.2 &mdash; Validator Wiring
+          v3.6.0 &mdash; Platform Currency
         </div>
         <h1>Claude Code<br><span class="gradient-text">Blueprint</span></h1>
         <p class="hero__tagline">"Each unit of engineering work should make subsequent units easier &mdash; not harder."</p>
@@ -3544,8 +3544,33 @@
   <!-- ===== WHAT'S NEW ===== -->
   <section class="whats-new" id="whats-new">
     <div class="container">
-      <!-- v3.5.2 -->
+      <!-- v3.6.0 -->
       <div class="section-header reveal">
+        <span class="new__badge">v3.6.0</span>
+        <h2>What's New</h2>
+        <p>Platform currency refresh &mdash; every platform claim re-verified against Claude Code 2.1.268; no rebuilds, no new components, verdicts recorded</p>
+      </div>
+      <div class="grid-4 reveal reveal-stagger">
+        <div class="new-card">
+          <h3>Model-Agnostic Task Tracking</h3>
+          <p>TodoWrite is gone from current models. executing-plans, subagent-driven-development and writing-skills now track progress in a plan-scoped <code>.claude/plans/&lt;plan&gt;.progress.local.md</code> with a git-hygiene guard.</p>
+        </div>
+        <div class="new-card">
+          <h3>Limits &amp; Lineup Refreshed</h3>
+          <p>The 200-subagent session cap is gone; the real limits are 20 concurrent subagents and spawn depth 3. The opt-in effort mapping points at Opus 5 / Fable 5.1, and effort tiers are honored on every model from CLI 2.1.267.</p>
+        </div>
+        <div class="new-card">
+          <h3>Native-First Plugin Update</h3>
+          <p><code>/plugin-update</code> tries <code>claude plugin update</code> first &mdash; scope-aware and cache-verified &mdash; and keeps the manual sync as fallback. Update copy now says <code>/reload-plugins</code>, not restart.</p>
+        </div>
+        <div class="new-card">
+          <h3>Validator Job &amp; Anchor Gate</h3>
+          <p>CI runs <code>claude plugin validate --strict</code> on the plugin and marketplace manifests, and the drift gate now catches a stale README What's New nav anchor &mdash; negative-tested like every gate before it.</p>
+        </div>
+      </div>
+
+      <!-- v3.5.2 -->
+      <div class="section-header reveal" style="margin-top: 4rem;">
         <span class="new__badge">v3.5.2</span>
         <h2>What's New</h2>
         <p>Validator wiring &amp; guide refresh &mdash; the last unreferenced agent gets a home, and the ecosystem guide gets a July 2026 data edition</p>
