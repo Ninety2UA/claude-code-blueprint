@@ -101,7 +101,8 @@ import json, os, sys
 root = os.path.realpath(os.environ['PROJECT_ROOT'])
 rows = [r for r in json.load(sys.stdin)
         if r.get('id') == os.environ['PLUGIN_ID'] and r.get('scope') == os.environ['SCOPE']
-        and (r.get('scope') == 'user' or os.path.realpath(r.get('projectPath', '')) == root)]
+        and (r.get('scope') == 'user'
+             or (r.get('projectPath') and os.path.realpath(r['projectPath']) == root))]
 print(rows[0].get('version', '') if len(rows) == 1 else '')
 ") || fall_through "claude plugin list --json failed"
   LOCAL_SOURCE="claude plugin list --json"

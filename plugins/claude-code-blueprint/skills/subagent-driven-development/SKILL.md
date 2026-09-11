@@ -96,14 +96,17 @@ The controller tracks tasks in `.claude/plans/<plan-basename>.progress.local.md`
 
 ```bash
 plan=docs/plans/<plan-basename>.md
-progress=".claude/plans/$(basename "${plan%.md}").progress.local.md"
+progress=".claude/plans/$(basename "$plan" .md).progress.local.md"
 mkdir -p .claude/plans
 if [ ! -f "$progress" ]; then   # an existing file keeps its ticks
   printf '# Progress: %s\n\n' "$plan" > "$progress"
   # then append one "- [ ] Task N: <title>" line per task in the plan
 fi
-exclude="$(git rev-parse --git-path info/exclude)"
-git check-ignore -q "$progress" || { mkdir -p "$(dirname "$exclude")"; echo '.claude/plans/*.progress.local.md' >> "$exclude"; }
+git check-ignore -q "$progress" || {   # projects scaffolded before v3.6.0 lack the ignore rule
+  exclude="$(git rev-parse --git-path info/exclude)"
+  mkdir -p "$(dirname "$exclude")"
+  echo '.claude/plans/*.progress.local.md' >> "$exclude"
+}
 ```
 
 ## Prompt Templates
