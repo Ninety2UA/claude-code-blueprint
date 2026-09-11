@@ -363,6 +363,32 @@ else:
         except (json.JSONDecodeError, IndexError, AttributeError, TypeError):
             pass  # count check already reported any shape problem
 
+# README navigation anchor: the nav's "What's New" link must point at the slug of
+# the FIRST "### What's New in v…" heading (the v3.2.1 sweep found this exact
+# anchor stuck on an old version). Slug rule mirrors GitHub's: lowercase; drop
+# every character that is not a letter, digit, space, or hyphen; spaces become
+# hyphens (so "v3.5.2 — X" -> "v352--x", the double hyphen is kept). Older
+# What's-New headings are frozen history and stay ungated.
+def gh_slug(heading):
+    kept = "".join(c for c in heading.strip().lower() if c.isalnum() or c in " -")
+    return kept.replace(" ", "-")
+
+readme = rd("README.md")
+if readme is not None:
+    hm = re.search(r"^### (What's New in v[^\n]*)$", readme, re.MULTILINE)
+    nm = re.search(r'href="(#whats-new[^"]*)"', readme)
+    if not hm:
+        failures.append("README.md: first '### What's New in v…' heading not found "
+                        "— anchor changed, re-point the gate")
+    if not nm:
+        failures.append("README.md nav: href=\"#whats-new…\" What's-New link not found "
+                        "— anchor changed, re-point the gate")
+    if hm and nm:
+        expected = "#" + gh_slug(hm.group(1))
+        if nm.group(1) != expected:
+            failures.append("README nav What's-New anchor: expected %s, found %s"
+                            % (expected, nm.group(1)))
+
 # ── Report ──
 if failures:
     print("DRIFT DETECTED — %d mismatch(es):" % len(failures))

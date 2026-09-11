@@ -131,3 +131,21 @@ jobs:
 
       - name: Check skill-description collisions
         run: python3 scripts/check-skill-collisions.py
+
+  plugin-validate:
+    name: Plugin Validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Unpinned on purpose: a new validator rule is a platform-currency signal,
+      # not a silent skip. Isolated from the drift gate so a CLI install failure
+      # cannot turn the python gate red.
+      - name: Install Claude Code CLI
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Validate plugin manifest
+        run: claude plugin validate --strict --json plugins/claude-code-blueprint
+
+      - name: Validate marketplace manifest
+        run: claude plugin validate --strict --json .
