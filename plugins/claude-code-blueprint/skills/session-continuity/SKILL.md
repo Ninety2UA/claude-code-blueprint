@@ -49,6 +49,7 @@ status: [active | paused | blocked | complete]
 - [x] Task 1: [description] — commit [sha]
 - [x] Task 2: [description] — commit [sha]
 - [ ] Task 3: [description] — IN PROGRESS
+- Progress file: .claude/plans/<plan-basename>.progress.local.md — [when one exists: its ticks are the per-task resume point; an interrupted run leaves it in place]
 
 ## Context Needed to Resume
 - [Key decision that was made and must be honored]

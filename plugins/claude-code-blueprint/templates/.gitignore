@@ -44,5 +44,8 @@ blueprint.local.md
 .claude/ship-loop.local.md
 .claude/ship-progress.local.md
 
+# Plan progress ledger (session-local, not committed)
+.claude/plans/*.progress.local.md
+
 # WebFetch revalidating cache (sdd-cache hook)
 .claude/sdd-cache/
