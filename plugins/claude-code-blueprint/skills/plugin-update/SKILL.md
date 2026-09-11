@@ -81,7 +81,7 @@ UPDATE_OUT=$(claude plugin update "$PLUGIN_ID" --scope "$SCOPE" --json --yes) ||
 echo "$UPDATE_OUT"
 
 # Remote version on main.
-REMOTE_VERSION=$(curl -fsSL "$REMOTE_MANIFEST" | python3 -c "import json,sys; print(json.load(sys.stdin)['version'])") || fall_through "could not fetch remote plugin.json from main"
+REMOTE_VERSION=$(curl -fsSL --max-time 15 "$REMOTE_MANIFEST" | python3 -c "import json,sys; print(json.load(sys.stdin)['version'])") || fall_through "could not fetch remote plugin.json from main"
 [ -n "$REMOTE_VERSION" ] || fall_through "remote plugin.json has no version"
 
 # Re-resolve: a successful update rewrites the entry's installPath to the new

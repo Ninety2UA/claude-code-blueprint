@@ -48,9 +48,12 @@ if [ ! -f "$progress" ]; then   # an existing file keeps its ticks
   # then append one "- [ ] Task N: <title>" line per task in the plan
 fi
 git check-ignore -q "$progress" || {   # projects scaffolded before v3.6.0 lack the ignore rule
-  exclude="$(git rev-parse --git-path info/exclude)"
-  mkdir -p "$(dirname "$exclude")"
-  echo '.claude/plans/*.progress.local.md' >> "$exclude"
+  if exclude="$(git rev-parse --git-path info/exclude 2>/dev/null)" && [ -n "$exclude" ]; then
+    mkdir -p "$(dirname "$exclude")"
+    echo '.claude/plans/*.progress.local.md' >> "$exclude"
+  else
+    echo "warning: not a git repository - add .claude/plans/*.progress.local.md to your ignore rules yourself" >&2
+  fi
 }
 ```
 

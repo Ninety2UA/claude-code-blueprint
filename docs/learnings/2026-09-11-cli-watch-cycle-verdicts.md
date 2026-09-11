@@ -51,8 +51,8 @@ native-first adoption with the manual path kept as fallback, released as v3.6.0 
   mode) and Fable 5.1 (`claude-fable-5-1`, 2.1.257; default Fable; 1M). Defaults: Opus 5 on
   Max / Team Premium / Enterprise / API, Sonnet 5 on Pro / Team Standard. `effort:` frontmatter
   was silently ignored on Opus 4.7 / 4.8 / Fable 5 until 2.1.267; `maxEffortLevel` caps it.
-  `CLAUDE_CODE_SUBAGENT_MODEL` / `_FORCE` precedence: agent `model:` > per-spawn > FORCE >
-  default > session. Fast mode is Opus 5 + Opus 4.8 only. TodoWrite / TaskCreate removed on
+  `CLAUDE_CODE_SUBAGENT_MODEL` / `_FORCE` precedence: FORCE > agent `model:` / per-spawn model >
+  `CLAUDE_CODE_SUBAGENT_MODEL` (default) > session model. Fast mode is Opus 5 + Opus 4.8 only. TodoWrite / TaskCreate removed on
   Opus 4.8 / Sonnet 5 / Fable 5 and newer (2.1.233, 2.1.268). `model: inherit` stays correct.
 - **(e) Subagent caps → CHANGED.** The 200-subagent total cap is gone (2.1.224); 20 concurrent by
   default (`CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS`, 2.1.217); nesting depth 3 by default
