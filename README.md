@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="#how-does-this-compare">Compare</a> ·
-  <a href="#whats-new-in-v370--ecosystem-imports">What's New</a> ·
+  <a href="#whats-new-in-v371--size-sweep-and-fixes">What's New</a> ·
   <a href="#quick-start">Quick Start</a> ·
   <a href="#what-you-get">What You Get</a> ·
   <a href="#workflow">Workflow</a> ·
@@ -86,6 +86,12 @@ v3.4.0 and v3.5.0 were produced by a single **platform-sync cycle** — one init
 <p align="center">
   <img src="docs/images/platform-sync-cycle.png" alt="Platform-sync cycle — Audit (68 CLI versions) → Gate 1 → Adopt + verify (Part 1, v3.4.0) → Delta sweep (Part 2, 4 repos) → Gate 2 → Import + close (v3.5.0), codified into the /cli-watch + /repo-watch watchers" width="90%">
 </p>
+
+### What's New in v3.7.1 — Size Sweep and Fixes
+
+- **Skill size sweep** — `writing-skills`, `ship-pipeline`, `session-wrap`, and `systematic-debugging` keep a lean `SKILL.md` and load templates, optional modes, worked examples, and long-session procedures from `references/` at the point of use. Every SKILL.md body is now under the 16 KB tier (the collision gate's size report shows it); nothing was deleted, only relocated behind a pointer.
+- **Finishing path fixes** — Option 1 (merge locally) runs from the main checkout and removes the worktree before deleting the branch, the order git accepts; a refused discard on a plain branch reports the branch instead of a non-existent worktree.
+- **Resume and wrap precision** — `resume-session` requires the STATE.md stamp to be an ancestor of HEAD before counting commits, so a squash or rebase merge no longer reads as "HEAD moved"; `session-wrap`'s STATUS.md step points ADR links at Step 12, where ADRs are created.
 
 ### What's New in v3.7.0 — Ecosystem Imports
 

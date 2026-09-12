@@ -17,13 +17,13 @@ Quality over speed. Small steps compound. The patterns you establish will be cop
 - v3.7.0 "Ecosystem Imports": twenty-one ideas from seven watched repos grafted onto existing skills and agents — plan audit before finishing, discard only on request, one decision-boundary rule, ship-loop iteration ceiling, converging SDD fix loop, test falsifiability and a quality-bar lens, external text as data, session/knowledge hygiene, ceremony sizing, plan Objective/Means header, SKILL.md byte budget with a warn-only size report, ecosystem table refresh. Record: `docs/learnings/2026-09-11-ecosystem-import-verdicts.md`.
 
 **What's remaining:**
-- Nothing queued. Deferred items live in the two decision records above.
+- Nothing queued. Deferred items live in the two decision records above; the size sweep they deferred shipped as v3.7.1.
 
-**Start here:** `main` is current (v3.7.0 released). Monthly watchers `/cli-watch` + `/repo-watch` stay on schedule; the next cycle starts from the baselines those records pin. The size sweep of the four largest skills is the first candidate for a maintenance session.
+**Start here:** `main` is current (v3.7.1 released: size sweep of the four largest skills into `references/`, finishing-path and resume-session fixes). Monthly watchers `/cli-watch` + `/repo-watch` stay on schedule; the next cycle starts from the baselines those records pin.
 
 **Current state of the code:**
 - Build: n/a (template repo, no build step)
-- Gates: drift gate (promo source, site grids + badge integrity, repo-count claims, README agents table, version equality, README nav anchor) + skill-collision gate (with a warn-only SKILL.md size report) + plugin-validate job green; markdownlint + shellcheck clean locally
+- Gates: drift gate (promo source, site grids + badge integrity, repo-count claims, README agents table, version equality, README nav anchor) + skill-collision gate (warn-only SKILL.md size report: no body over 16 KB since v3.7.1) + plugin-validate job green; markdownlint + shellcheck clean locally
 - Website: live at <https://ninety2ua.github.io/claude-code-blueprint/>
 - Uncommitted changes: none
 
