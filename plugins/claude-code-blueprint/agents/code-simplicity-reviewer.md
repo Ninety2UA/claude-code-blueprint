@@ -131,7 +131,7 @@ Recommended action: [Proceed with simplifications/Minor tweaks only/Already mini
 
 When uncertain between tiers, choose the more conservative (higher-touch) tier.
 
-Tests, error paths, edge cases, trust-boundary validation, data-loss handling, security checks, accessibility code, and anything in the requested scope are never `safe_auto` — route them to `gated_auto` or higher even when the mechanical change looks trivial.
+Trust-boundary validation, data-loss handling, security checks, accessibility code, and anything in the requested scope are never `safe_auto` — route them to `gated_auto` or higher even when the mechanical change looks trivial.
 
 **Finding format** — Each finding must include:
 ```

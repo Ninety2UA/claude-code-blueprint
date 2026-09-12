@@ -21,7 +21,9 @@ Every plan MUST include:
 
 > **Status:** [IN PROGRESS / COMPLETE as of YYYY-MM-DD / ABANDONED — reason]
 
-**Goal:** [One sentence describing what this builds]
+**Objective:** [One sentence describing the outcome — what's true for users after this ships, not the mechanism]
+**Means:** [Only when an approach is already fixed — the chosen technique, in one sentence]
+**Spec:** [Optional — link to the design doc or spec this plan implements]
 **Architecture:** [2-3 sentences about the approach]
 **Tech Stack:** [Key technologies/libraries]
 **Estimated tasks:** [N tasks, ~X hours]

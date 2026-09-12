@@ -202,6 +202,7 @@ Append new entries to `docs/learnings/LEARNINGS.md` (create the file if it doesn
 - Only add learnings that will matter in future sessions — not every commit needs an entry
 - Keep each entry to 2-4 sentences but be specific (include file paths, commands, error messages)
 - If a learning invalidates a previous entry, update the previous entry rather than adding a contradictory new one
+- If a new learning contradicts or supersedes an existing entry, also run the knowledge-compounding skill's Gardening Checklist over the affected entries and any docs/solutions/ pages they cite before wrapping
 - If conventions or patterns were established, ALSO update docs/context/CONVENTIONS.md (Step 7)
 - If nothing this session clears the bar, add nothing to LEARNINGS.md — instead state "No durable learnings this session" in the Step 17 confirmation report. That sentence belongs in the report only; never append it to LEARNINGS.md itself
 

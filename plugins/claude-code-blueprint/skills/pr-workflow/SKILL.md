@@ -61,7 +61,7 @@ Description rules:
 
 ```bash
 # Body scan — must print nothing before gh pr create / gh pr edit / any push of the body
-grep -nE 'AKIA[0-9A-Z]{16}|ghp_[A-Za-z0-9]{36}|sk-[A-Za-z0-9_-]{20,}|-----BEGIN [A-Z ]*PRIVATE KEY-----|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}|/(Users|home)/[A-Za-z0-9._-]+' pr-body.md
+grep -nE 'AKIA[0-9A-Z]{16}|ghp_[A-Za-z0-9]{36}|(^|[^A-Za-z0-9_-])sk-[A-Za-z0-9_-]{20,}|-----BEGIN [A-Z ]*PRIVATE KEY-----|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}|/(Users|home)/[A-Za-z0-9._-]+' pr-body.md
 ```
 
 PR description template:

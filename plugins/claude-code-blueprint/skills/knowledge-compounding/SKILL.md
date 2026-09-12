@@ -135,7 +135,7 @@ A bad solution document:
 
 ## Gardening Checklist
 
-Compounding isn't only additive — the existing knowledge base needs periodic weeding. When invoked for a gardening pass rather than a fresh solution, check for:
+Compounding isn't only additive — the existing knowledge base needs periodic weeding. A gardening pass runs when the user asks to tidy, prune, or audit the knowledge base, or when session-wrap's learnings step (Step 5) finds a new learning that contradicts or supersedes an existing one. When invoked for a gardening pass rather than a fresh solution, check for:
 
 - **Orphans** — solution docs nothing links to and nothing would search for; fold the insight into a doc that gets found, or drop the orphan.
 - **Stale content** — a solution describing a version, API, or pattern the codebase no longer uses.

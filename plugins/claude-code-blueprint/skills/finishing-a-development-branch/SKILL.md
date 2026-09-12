@@ -58,7 +58,7 @@ git log --name-only --format= <base-branch>..HEAD -- docs/plans/ | grep -v -- '-
 
 Plan items are `### U<N>.` headings, `### Task N:` headings, or checklist lines. No plan file, or a file with no items, reports `NO PLAN`. Show that line, skip the table, and continue to Step 4 — a missing plan never blocks.
 
-**Dispatch.** Dispatch a fresh `code-reviewer` subagent (read-only tools) with this prompt and nothing else:
+**Dispatch.** Dispatch a fresh `code-reviewer` subagent with this prompt and nothing else (its tool grant includes Bash; the prompt, not the grant, holds it to reads):
 
 ```
 Task tool (code-reviewer):
@@ -279,7 +279,7 @@ No force flag, ever — using-git-worktrees, "Removing a Worktree", owns that ru
 ## Integration
 
 **Called by:**
-- **subagent-driven-development** (Step 7) - After all tasks complete; passes the plan path
+- **subagent-driven-development** (Progress File) - After all tasks complete; passes the plan path
 - **executing-plans** (Step 5) - After all batches complete; passes the plan path
 
 **Pairs with:**

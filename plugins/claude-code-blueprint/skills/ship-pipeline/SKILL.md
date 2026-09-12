@@ -233,6 +233,8 @@ Skip if the work was straightforward.
    - Review iterations completed and convergence status
    - Test results
 
+   If pr-workflow's plan audit blocks the PR (a NOT DONE or PARTIAL row): STOP the pipeline, report the blocking rows per Error Recovery, clean up loop state, and open no PR — steps 3-6 do not run and no completion signal is emitted.
+
 3. **Deploy check** (if `--deploy` flag): Use the Task tool to dispatch the **deployment-verifier** agent to verify deployment readiness. Report the go/no-go checklist in the completion report.
 
    ```

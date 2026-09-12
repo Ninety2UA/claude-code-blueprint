@@ -182,6 +182,7 @@ flowchart TB
 - The README intro's combined-star phrase is editorial (no gate reads it); "over 1.15M" reflects the refreshed sum of about 1.17M.
 - R21's stale-description and "Boil the Lake" corrections apply to current-state surfaces only: the only occurrences of "13 role-based skills" and "Boil the Lake" sit inside the frozen v2.3 release notes, which the settled frozen-history decision keeps unchanged, so U8 carried the current gstack description in its ecosystem table cell instead (recorded during execution; U8 is CHANGED, not PARTIAL).
 - CLAUDE.md's last-session date reads 2026-09-12 because the release session crossed midnight; the plan's 2026-09-11 cycle date is unchanged elsewhere.
+- KTD6's "has no write tools" overstates the guarantee: `code-reviewer`'s tool grant includes Bash, so the audit dispatch is held read-only by its prompt, and finishing-a-development-branch Step 3 now says so (review finding, applied during execution).
 
 ### System-Wide Impact
 
