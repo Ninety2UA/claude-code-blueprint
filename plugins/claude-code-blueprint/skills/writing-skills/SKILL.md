@@ -71,23 +71,7 @@ API docs, syntax guides, tool documentation (office docs)
 
 ## Directory Structure
 
-```
-skills/
-  skill-name/
-    SKILL.md              # Main reference (required)
-    supporting-file.*     # Only if needed
-```
-
-**Flat namespace** - all skills in one searchable namespace
-
-**Separate files for:**
-1. **Heavy reference** (100+ lines) - API docs, comprehensive syntax
-2. **Reusable tools** - Scripts, utilities, templates
-
-**Keep inline:**
-- Principles and concepts
-- Code patterns (< 50 lines)
-- Everything else
+Flat namespace: one `SKILL.md` per skill, supporting files only for heavy reference (100+ lines) or reusable tools; principles, concepts, and short code patterns stay inline. Layouts in `references/skill-architecture.md` § Directory Structure.
 
 ## SKILL.md Structure
 
@@ -103,56 +87,7 @@ skills/
   - Keep under 500 characters if possible
   - **Stay distinguishable from sibling skills.** A description that overlaps another skill's triggering conditions causes prompts to route ambiguously between them — a failure a single-skill trigger test cannot catch. Name the conditions that are *unique* to this skill. `scripts/check-skill-collisions.py` (wired into CI) flags near-duplicate descriptions: it warns at ≥50% content-token overlap (Jaccard) and fails at ≥75%. If it flags a pair, narrow one description's trigger conditions rather than widening both.
 
-```markdown
----
-name: Skill-Name-With-Hyphens
-description: Use when [specific triggering conditions and symptoms]
----
-
-# Skill Name
-
-## Overview
-What is this? Core principle in 1-2 sentences.
-
-## When to Use
-[Small inline flowchart IF decision non-obvious]
-
-Bullet list with SYMPTOMS and use cases.
-
-## When NOT to Use
-**Required section.** Bulleted list of cases that look like a match but aren't, plus the skill that *should* trigger instead. Symmetric to "When to Use" — readers compare the two before deciding to invoke.
-
-## Core Pattern (for techniques/patterns)
-Before/after code comparison
-
-## Quick Reference
-Table or bullets for scanning common operations
-
-## Implementation
-Inline code for simple patterns
-Link to file for heavy reference or reusable tools
-
-## Common Mistakes
-What goes wrong + fixes
-
-## Common Rationalizations
-**Required section** for any skill that enforces a discipline (gates, mandatory hops, quality bars). Two-column table:
-
-| Rationalization | Reality |
-|---|---|
-| "It's working, no need to touch it" | Working code that's hard to read will be hard to fix when it breaks. |
-| "I'll just quickly skip the test for this one" | Skipped tests become permanent. The convention is the value. |
-
-Anticipate 5–7 excuses an agent might use to bypass the skill, with a one-line direct counter. Keep entries punchy — multi-line prose dilutes the format. Tables are denser and harder to skim past than prose lists, which is the point.
-
-## Real-World Impact (optional)
-Concrete results
-```
-
-**Why these sections are required:**
-
-- **When NOT to Use** prevents skill mis-triggering. Every skill has near-neighbors; without explicit boundaries, the wrong skill fires.
-- **Common Rationalizations** is the loophole patch. Every discipline-enforcing skill that ships without one accumulates skip patterns. Catalog them in the table so the next agent reads its own excuse refuted before it speaks.
+The full section skeleton — Overview, When to Use, When NOT to Use (required), Core Pattern, Quick Reference, Implementation, Common Mistakes, Common Rationalizations (required for discipline skills), Real-World Impact — and why the two required sections exist: `references/skill-template.md`.
 
 ## Claude Search Optimization (CSO)
 
@@ -164,29 +99,7 @@ Concrete results
 
 **Format:** Start with "Use when..." to focus on triggering conditions
 
-**CRITICAL: Description = When to Use, NOT What the Skill Does**
-
-The description should ONLY describe triggering conditions. Do NOT summarize the skill's process or workflow in the description.
-
-**Why this matters:** Testing revealed that when a description summarizes the skill's workflow, Claude may follow the description instead of reading the full skill content. A description saying "code review between tasks" caused Claude to do ONE review, even though the skill's flowchart clearly showed TWO reviews (spec compliance then code quality).
-
-When the description was changed to just "Use when executing implementation plans with independent tasks" (no workflow summary), Claude correctly read the flowchart and followed the two-stage review process.
-
-**The trap:** Descriptions that summarize workflow create a shortcut Claude will take. The skill body becomes documentation Claude skips.
-
-```yaml
-# ❌ BAD: Summarizes workflow - Claude may follow this instead of reading skill
-description: Use when executing plans - dispatches subagent per task with code review between tasks
-
-# ❌ BAD: Too much process detail
-description: Use for TDD - write test first, watch it fail, write minimal code, refactor
-
-# ✅ GOOD: Just triggering conditions, no workflow summary
-description: Use when executing implementation plans with independent tasks in the current session
-
-# ✅ GOOD: Triggering conditions only
-description: Use when implementing any feature or bugfix, before writing implementation code
-```
+**CRITICAL: Description = When to Use, NOT What the Skill Does.** A description that summarizes the workflow becomes a shortcut Claude follows instead of reading the skill (observed: a two-review flowchart collapsed to one review). Evidence and bad/good examples: `references/cso-examples.md` § Description = when, not what.
 
 **Content:**
 - Use concrete triggers, symptoms, and situations that signal this skill applies
@@ -196,22 +109,7 @@ description: Use when implementing any feature or bugfix, before writing impleme
 - Write in third person (injected into system prompt)
 - **NEVER summarize the skill's process or workflow**
 
-```yaml
-# ❌ BAD: Too abstract, vague, doesn't include when to use
-description: For async testing
-
-# ❌ BAD: First person
-description: I can help you with async tests when they're flaky
-
-# ❌ BAD: Mentions technology but skill isn't specific to it
-description: Use when tests use setTimeout/sleep and are flaky
-
-# ✅ GOOD: Starts with "Use when", describes problem, no workflow
-description: Use when tests have race conditions, timing dependencies, or pass/fail inconsistently
-
-# ✅ GOOD: Technology-specific skill with explicit trigger
-description: Use when using React Router and handling authentication redirects
-```
+Examples of bad and good descriptions: `references/cso-examples.md` § Description examples.
 
 ### 2. Keyword Coverage
 
@@ -235,61 +133,7 @@ Use words Claude would search for:
 
 `scripts/check-skill-collisions.py` runs a warn-only size report over every SKILL.md: a WARN at 8,192 bytes, a second-tier WARN at 16,384 bytes. It never fails the gate. On a WARN, move phase procedures to `references/` — don't respond by squeezing the remaining sentences tighter.
 
-**Techniques:**
-
-**Move details to tool help:**
-```bash
-# ❌ BAD: Document all flags in SKILL.md
-search-conversations supports --text, --both, --after DATE, --before DATE, --limit N
-
-# ✅ GOOD: Reference --help
-search-conversations supports multiple modes and filters. Run --help for details.
-```
-
-**Use cross-references:**
-```markdown
-# ❌ BAD: Repeat workflow details
-When searching, dispatch subagent with template...
-[20 lines of repeated instructions]
-
-# ✅ GOOD: Reference other skill
-Always use subagents (50-100x context savings). REQUIRED: Use [other-skill-name] for workflow.
-```
-
-**Compress examples:**
-```markdown
-# ❌ BAD: Verbose example (42 words)
-your human partner: "How did we handle authentication errors in React Router before?"
-You: I'll search past conversations for React Router authentication patterns.
-[Dispatch subagent with search query: "React Router authentication error handling 401"]
-
-# ✅ GOOD: Minimal example (20 words)
-Partner: "How did we handle auth errors in React Router?"
-You: Searching...
-[Dispatch subagent → synthesis]
-```
-
-**Eliminate redundancy:**
-- Don't repeat what's in cross-referenced skills
-- Don't explain what's obvious from command
-- Don't include multiple examples of same pattern
-
-**Verification:**
-```bash
-wc -c skills/path/SKILL.md
-# body budget: aim for under 8,192 bytes (subtract the frontmatter);
-# check-skill-collisions.py's size report flags anything over
-```
-
-**Name by what you DO or core insight:**
-- ✅ `condition-based-waiting` > `async-test-helpers`
-- ✅ `using-skills` not `skill-usage`
-- ✅ `flatten-with-flags` > `data-structure-refactoring`
-- ✅ `root-cause-tracing` > `debugging-techniques`
-
-**Gerunds (-ing) work well for processes:**
-- `creating-skills`, `testing-skills`, `debugging-with-logs`
-- Active, describes the action you're taking
+**Techniques** — move details to tool help, cross-reference instead of repeating, one compressed example per pattern, eliminate redundancy — with before/after examples, the `wc -c` check, and naming guidance (name by what you do or the core insight; gerunds for processes): `references/cso-examples.md` § Token-efficiency techniques and naming.
 
 ### 4. Cross-Referencing Other Skills
 
@@ -309,164 +153,13 @@ Use skill name only, with explicit requirement markers:
 
 **The test:** Could an agent that skips the reference still complete the skill correctly? If no — if the agent without the reference would stop, guess, or render a menu without firing the routed action — the missing content is **load-bearing** and belongs inline.
 
-**Rules of thumb:**
+Rules of thumb (per-option menu routing and always-executed steps stay inline; conditional sub-flows and heavy material go to references) and the authoring checklist to run before extracting any block: `references/skill-architecture.md` § Load-bearing rules of thumb.
 
-| Pattern | Belongs in |
-|---------|-----------|
-| **Per-option routing for an interactive menu the skill renders** | **Inline** (SKILL.md) — the bare per-option action lives here, even if the elaborate sub-flow stays in a reference |
-| **Always-executed step in this phase** | **Inline** — references are for branches the agent enters only sometimes |
-| **Conditional sub-flow that only fires under specific signals** | **Reference** — load-on-demand is appropriate |
-| **Heavy reference material (API docs, syntax, comprehensive examples)** | **Reference** — too large for inline |
-| **Sub-flow used in a minority of invocations** | **Reference** — extracts >50 lines from skill body, saves tokens on every other invocation |
+**Platform-explicit invocation language:** when a routing line says "Call `/foo`", name the platform primitive (the Skill tool in Claude Code) and the argument shape so it cannot be read as "tell the user to type"; example in `references/cso-examples.md` § Platform-explicit invocation language.
 
-**Platform-explicit invocation language:** When a routing line says "Call `/foo`," ask whether an agent could read it as "tell the user to type" rather than "fire the tool now." Name the platform primitive and the argument shape:
+## Flowcharts, Examples, Scripts, File Organization
 
-```
-❌ Bad:  "Start /ce-work" → "Call /ce-work with the plan path"
-            (Reads as "tell the user to invoke /ce-work")
-
-✅ Good: "Invoke the ce-work skill via the platform's skill-invocation primitive
-          (Skill in Claude Code), passing the plan path as the skill argument.
-          Do NOT merely tell the user to type /ce-work — fire the invocation now
-          so the plan executes in this session."
-```
-
-**Why this matters:** The agent that skipped your reference is still going to render the menu. If you didn't put the routing inline, the menu becomes a dead end.
-
-**Authoring checklist before extracting a block to a reference:**
-
-- [ ] Is the block always executed when this phase is reached? If yes, lean toward inlining.
-- [ ] Does the block carry routing for an interactive menu? If yes, the bare per-option action belongs inline.
-- [ ] Could an agent that skips the reference still complete the skill correctly? If no, the content is load-bearing — inline it.
-- [ ] Is the language platform-explicit? Name the primitive (Skill tool) and the argument shape.
-
-## Flowchart Usage
-
-```dot
-digraph when_flowchart {
-    "Need to show information?" [shape=diamond];
-    "Decision where I might go wrong?" [shape=diamond];
-    "Use markdown" [shape=box];
-    "Small inline flowchart" [shape=box];
-
-    "Need to show information?" -> "Decision where I might go wrong?" [label="yes"];
-    "Decision where I might go wrong?" -> "Small inline flowchart" [label="yes"];
-    "Decision where I might go wrong?" -> "Use markdown" [label="no"];
-}
-```
-
-**Use flowcharts ONLY for:**
-- Non-obvious decision points
-- Process loops where you might stop too early
-- "When to use A vs B" decisions
-
-**Never use flowcharts for:**
-- Reference material → Tables, lists
-- Code examples → Markdown blocks
-- Linear instructions → Numbered lists
-- Labels without semantic meaning (step1, helper2)
-
-See @graphviz-conventions.dot for graphviz style rules.
-
-**Visualizing for your human partner:** Use `render-graphs.js` in this directory to render a skill's flowcharts to SVG:
-```bash
-./render-graphs.js ../some-skill           # Each diagram separately
-./render-graphs.js ../some-skill --combine # All diagrams in one SVG
-```
-
-## Code Examples
-
-**One excellent example beats many mediocre ones**
-
-Choose most relevant language:
-- Testing techniques → TypeScript/JavaScript
-- System debugging → Shell/Python
-- Data processing → Python
-
-**Good example:**
-- Complete and runnable
-- Well-commented explaining WHY
-- From real scenario
-- Shows pattern clearly
-- Ready to adapt (not generic template)
-
-**Don't:**
-- Implement in 5+ languages
-- Create fill-in-the-blank templates
-- Write contrived examples
-
-You're good at porting - one great example is enough.
-
-## Script-First Skill Architecture
-
-When a skill processes large datasets (session transcripts, log files, configuration inventories, JSONL output), having the model do the processing is a token-expensive anti-pattern. Moving data processing into a bundled script and having the model present results cuts tokens by 60-75%.
-
-**The pattern:**
-
-```
-skills/<skill-name>/
-  SKILL.md              # Instructions: run script, present output
-  scripts/
-    process.py          # Does ALL data processing, outputs JSON
-```
-
-1. **Script does all mechanical work.** Reading files, parsing structured formats, applying classification rules (regex, keyword lists), normalizing results, computing counts. Outputs pre-classified JSON to stdout.
-2. **SKILL.md instructs presentation only.** Run the script, read the JSON, format it for the user. Explicitly prohibit re-classifying, re-parsing, or loading reference files.
-3. **Single source of truth for rules.** Classification logic lives exclusively in the script. The SKILL.md references the script's output categories as given facts but does not define them.
-
-**Apply when** the skill meets ANY of:
-- Processes more than ~50 items or reads files larger than a few KB
-- Classification rules are deterministic (regex, keyword lists, lookup tables)
-- Input data follows a consistent schema (JSONL, CSV, structured logs)
-- The skill runs frequently or feeds into further analysis
-
-**Do NOT apply when:**
-- The skill's core value is the model's judgment (code review, architectural analysis)
-- Input is unstructured natural language
-- The dataset is small enough that processing costs are negligible
-
-### Anti-patterns
-
-- **Instruction-only optimization** — Adding "don't do X" to SKILL.md without providing a script alternative. The model finds other token-expensive paths to the same result.
-- **Hybrid classification** — Script classifies some items and the model classifies the rest. This still loads context. Go all-in on the script. Items the script can't classify should be dropped as "unclassified," not handed to the model.
-- **Dual rule definitions** — Classification rules in BOTH the script AND SKILL.md. They drift apart, the model may override the script's decisions, and tokens are wasted on re-evaluation. One source of truth.
-
-### Prefer Python over bash for multi-step scripts
-
-When a script orchestrates 2+ external CLI tools or needs retry logic, **Python beats bash**:
-
-- Bash `set -euo pipefail` becomes a footgun when you need controlled failure paths — `url=$(curl ...)` exits the entire script before retry logic runs.
-- Bash 3.2 (default on macOS) lacks negative array indexing, can't spawn shell builtins from non-shell test runners, and integer-math edge cases recur.
-- Python's `subprocess` model makes error handling explicit and testable: `result = subprocess.run(cmd, check=False); if result.returncode != 0: retry()`.
-
-Bash is still the right choice for simple sequential scripts with no error recovery, one-liner wrappers around a single tool, or git hooks where the only failure mode is "abort the pipeline."
-
-## File Organization
-
-### Self-Contained Skill
-```
-defense-in-depth/
-  SKILL.md    # Everything inline
-```
-When: All content fits, no heavy reference needed
-
-### Skill with Reusable Tool
-```
-condition-based-waiting/
-  SKILL.md    # Overview + patterns
-  example.ts  # Working helpers to adapt
-```
-When: Tool is reusable code, not just narrative
-
-### Skill with Heavy Reference
-```
-pptx/
-  SKILL.md       # Overview + workflows
-  pptxgenjs.md   # 600 lines API reference
-  ooxml.md       # 500 lines XML structure
-  scripts/       # Executable tools
-```
-When: Reference material too large for inline
+`references/skill-architecture.md` owns: when a flowchart earns its place (non-obvious decisions, loops you might exit early) and the graphviz rules; one excellent example over many; script-first architecture for skills that process large datasets (the script does all mechanical work, SKILL.md presents; Python over bash for multi-step scripts); and the three file layouts (self-contained, reusable tool, heavy reference).
 
 ## The Iron Law (Same as TDD)
 
@@ -491,52 +184,7 @@ Edit skill without testing? Same violation.
 
 ## Testing All Skill Types
 
-Different skill types need different test approaches:
-
-### Discipline-Enforcing Skills (rules/requirements)
-
-**Examples:** TDD, verification-before-completion, brainstorming
-
-**Test with:**
-- Academic questions: Do they understand the rules?
-- Pressure scenarios: Do they comply under stress?
-- Multiple pressures combined: time + sunk cost + exhaustion
-- Identify rationalizations and add explicit counters
-
-**Success criteria:** Agent follows rule under maximum pressure
-
-### Technique Skills (how-to guides)
-
-**Examples:** condition-based-waiting, root-cause-tracing, defensive-programming
-
-**Test with:**
-- Application scenarios: Can they apply the technique correctly?
-- Variation scenarios: Do they handle edge cases?
-- Missing information tests: Do instructions have gaps?
-
-**Success criteria:** Agent successfully applies technique to new scenario
-
-### Pattern Skills (mental models)
-
-**Examples:** reducing-complexity, information-hiding concepts
-
-**Test with:**
-- Recognition scenarios: Do they recognize when pattern applies?
-- Application scenarios: Can they use the mental model?
-- Counter-examples: Do they know when NOT to apply?
-
-**Success criteria:** Agent correctly identifies when/how to apply pattern
-
-### Reference Skills (documentation/APIs)
-
-**Examples:** API documentation, command references, library guides
-
-**Test with:**
-- Retrieval scenarios: Can they find the right information?
-- Application scenarios: Can they use what they found correctly?
-- Gap testing: Are common use cases covered?
-
-**Success criteria:** Agent finds and correctly applies reference information
+Discipline, technique, pattern, and reference skills each need a different test shape and success criterion — see `references/testing-and-bulletproofing.md` § Testing All Skill Types.
 
 ## Common Rationalizations for Skipping Testing
 
@@ -555,77 +203,7 @@ Different skill types need different test approaches:
 
 ## Bulletproofing Skills Against Rationalization
 
-Skills that enforce discipline (like TDD) need to resist rationalization. Agents are smart and will find loopholes when under pressure.
-
-**Psychology note:** Understanding WHY persuasion techniques work helps you apply them systematically. See persuasion-principles.md for research foundation (Cialdini, 2021; Meincke et al., 2025) on authority, commitment, scarcity, social proof, and unity principles.
-
-### Close Every Loophole Explicitly
-
-Don't just state the rule - forbid specific workarounds:
-
-<Bad>
-```markdown
-Write code before test? Delete it.
-```
-</Bad>
-
-<Good>
-```markdown
-Write code before test? Delete it. Start over.
-
-**No exceptions:**
-- Don't keep it as "reference"
-- Don't "adapt" it while writing tests
-- Don't look at it
-- Delete means delete
-```
-</Good>
-
-### Address "Spirit vs Letter" Arguments
-
-Add foundational principle early:
-
-```markdown
-**Violating the letter of the rules is violating the spirit of the rules.**
-```
-
-This cuts off entire class of "I'm following the spirit" rationalizations.
-
-### Build Rationalization Table
-
-Capture rationalizations from baseline testing (see Testing section below). Every excuse agents make goes in the table:
-
-```markdown
-| Excuse | Reality |
-|--------|---------|
-| "Too simple to test" | Simple code breaks. Test takes 30 seconds. |
-| "I'll test after" | Tests passing immediately prove nothing. |
-| "Tests after achieve same goals" | Tests-after = "what does this do?" Tests-first = "what should this do?" |
-```
-
-### Create Red Flags List
-
-Make it easy for agents to self-check when rationalizing:
-
-```markdown
-## Red Flags - STOP and Start Over
-
-- Code before test
-- "I already manually tested it"
-- "Tests after achieve the same purpose"
-- "It's about spirit not ritual"
-- "This is different because..."
-
-**All of these mean: Delete code. Start over with TDD.**
-```
-
-### Update CSO for Violation Symptoms
-
-Add to description: symptoms of when you're ABOUT to violate the rule:
-
-```yaml
-description: use when implementing any feature or bugfix, before writing implementation code
-```
+Discipline skills must resist rationalization under pressure: close every loophole explicitly, add the letter-versus-spirit principle early, build the rationalization table from baseline runs, keep a red-flags list, and put violation symptoms in the description. Worked examples and the persuasion research behind them: `references/testing-and-bulletproofing.md` § Bulletproofing Skills Against Rationalization.
 
 ## RED-GREEN-REFACTOR for Skills
 
@@ -658,67 +236,11 @@ Agent found new rationalization? Add explicit counter. Re-test until bulletproof
 
 ## Iteration Strategy by Skill Type
 
-Different skill types need different iteration approaches. Using the wrong strategy produces either brittle skills or vague ones.
-
-### Discipline-Enforcing Skills (TDD, verification, coding standards)
-
-**Strategy: Close every loophole explicitly.**
-
-These skills have a compliance cost — agents are incentivized to skip them. Iteration means finding specific rationalizations and adding specific counters.
-
-- Each test failure reveals a specific excuse → add explicit negation
-- Build rationalization table from all observed excuses
-- Fiddly, targeted changes work because you're plugging specific holes
-- "Violating the letter IS violating the spirit" cuts off an entire rationalization class
-
-**When it's working:** Agent follows rule under maximum pressure and cites specific skill sections.
-
-### Technique/Pattern Skills (debugging methods, design patterns, mental models)
-
-**Strategy: Generalize with different metaphors, don't make fiddly adjustments.**
-
-If a technique skill isn't working, the problem is usually that the agent doesn't *understand* — not that it's trying to cheat. Adding more rules makes it worse.
-
-- Reframe using a different analogy or metaphor
-- Transmit *understanding* into instructions, not rigid ALL-CAPS directives
-- If one explanation doesn't land, try a completely different angle
-- Explain the WHY behind each step — agents that understand comply naturally
-
-**When it's working:** Agent applies technique correctly to novel scenarios not covered by examples.
-
-### Reference Skills (API docs, syntax guides, tool documentation)
-
-**Strategy: Iterate on organization, not content.**
-
-If Claude can't find information in a reference skill, the problem is structure — not missing text.
-
-- Restructure sections so Claude's natural search patterns hit the right content
-- Add a table of contents for files over 100 lines
-- Keep references one level deep from SKILL.md
-- If Claude repeatedly reads the wrong file, your navigation cues are misleading
-
-**When it's working:** Agent finds and correctly applies reference information on first attempt.
+Discipline skills: close loopholes one by one. Technique and pattern skills: reframe with a different metaphor instead of adding rules. Reference skills: iterate on organization, not content. Detail: `references/testing-and-bulletproofing.md` § Iteration Strategy by Skill Type.
 
 ## Anti-Patterns
 
-### ❌ Narrative Example
-"In session 2025-10-03, we found empty projectDir caused..."
-**Why bad:** Too specific, not reusable
-
-### ❌ Multi-Language Dilution
-example-js.js, example-py.py, example-go.go
-**Why bad:** Mediocre quality, maintenance burden
-
-### ❌ Code in Flowcharts
-```dot
-step1 [label="import fs"];
-step2 [label="read file"];
-```
-**Why bad:** Can't copy-paste, hard to read
-
-### ❌ Generic Labels
-helper1, helper2, step3, pattern4
-**Why bad:** Labels should have semantic meaning
+Narrative examples, multi-language dilution, code inside flowcharts, generic labels — each with why it fails: `references/skill-architecture.md` § Anti-Patterns.
 
 ## STOP: Before Moving to Next Skill
 
@@ -746,52 +268,11 @@ Deploying untested skills = deploying untested code. It's a violation of quality
 - An interrupted run leaves it in place; the STATE.md handoff (session-continuity) points at it.
 - The session's native task list is the alternative only when the model offers one: Claude Code exposes its native task-list tools only on Claude 3.x, Opus 4.0–4.7, Sonnet 4.0–4.6 and Haiku 4.5 (CLI 2.1.233; verified on 2.1.268); `CLAUDE_CODE_ENABLE_TODO_TOOLS=1` restores them elsewhere.
 
-**RED Phase - Write Failing Test:**
-- [ ] Create pressure scenarios (3+ combined pressures for discipline skills)
-- [ ] Run scenarios WITHOUT skill - document baseline behavior verbatim
-- [ ] Identify patterns in rationalizations/failures
-
-**GREEN Phase - Write Minimal Skill:**
-- [ ] Name uses only letters, numbers, hyphens (no parentheses/special chars)
-- [ ] YAML frontmatter with required name and description (max 1024 chars); optional `allowed-tools`/`disallowed-tools` only if scoping tools
-- [ ] Description starts with "Use when..." and includes specific triggers/symptoms
-- [ ] Description written in third person
-- [ ] Keywords throughout for search (errors, symptoms, tools)
-- [ ] Clear overview with core principle
-- [ ] Address specific baseline failures identified in RED
-- [ ] Code inline OR link to separate file
-- [ ] One excellent example (not multi-language)
-- [ ] Run scenarios WITH skill - verify agents now comply
-
-**REFACTOR Phase - Close Loopholes:**
-- [ ] Identify NEW rationalizations from testing
-- [ ] Add explicit counters (if discipline skill)
-- [ ] Build rationalization table from all test iterations
-- [ ] Create red flags list
-- [ ] Re-test until bulletproof
-
-**Quality Checks:**
-- [ ] Small flowchart only if decision non-obvious
-- [ ] Quick reference table
-- [ ] Common mistakes section
-- [ ] No narrative storytelling
-- [ ] Supporting files only for tools or heavy reference
-
-**Deployment:**
-- [ ] Commit skill to git and push to your fork (if configured)
-- [ ] Consider contributing back via PR (if broadly useful)
+The checklist items — RED (pressure scenarios, baseline run, rationalization patterns), GREEN (name and frontmatter rules, description form, keywords, overview, baseline failures addressed, one example, compliance run), REFACTOR (new rationalizations, counters, table, red flags, re-test), Quality Checks, and Deployment — are in `references/skill-template.md` § Skill Creation Checklist. Copy them into the progress file as its checkboxes.
 
 ## Discovery Workflow
 
-How future Claude finds your skill:
-
-1. **Encounters problem** ("tests are flaky")
-2. **Finds SKILL** (description matches)
-3. **Scans overview** (is this relevant?)
-4. **Reads patterns** (quick reference table)
-5. **Loads example** (only when implementing)
-
-**Optimize for this flow** - put searchable terms early and often.
+Future Claude finds a skill by problem → description match → overview scan → quick reference → example on demand; put searchable terms early and often (`references/cso-examples.md` § Discovery Workflow).
 
 ## The Bottom Line
 

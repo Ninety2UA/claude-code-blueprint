@@ -2252,7 +2252,7 @@
       <div class="hero__content">
         <div class="hero__badge">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-          v3.7.0 &mdash; Ecosystem Imports
+          v3.7.1 &mdash; Size Sweep
         </div>
         <h1>Claude Code<br><span class="gradient-text">Blueprint</span></h1>
         <p class="hero__tagline">"Each unit of engineering work should make subsequent units easier &mdash; not harder."</p>
@@ -3544,8 +3544,29 @@
   <!-- ===== WHAT'S NEW ===== -->
   <section class="whats-new" id="whats-new">
     <div class="container">
-      <!-- v3.7.0 -->
+      <!-- v3.7.1 -->
       <div class="section-header reveal">
+        <span class="new__badge">v3.7.1</span>
+        <h2>What's New</h2>
+        <p>Size sweep and fixes &mdash; the four largest skills now load a lean body and pull procedures from references on demand; two finishing-path defects and two resume-session edge cases closed</p>
+      </div>
+      <div class="grid-4 reveal reveal-stagger">
+        <div class="new-card">
+          <h3>Skill Size Sweep</h3>
+          <p>writing-skills, ship-pipeline, session-wrap, and systematic-debugging move templates, optional modes, worked examples, and long-session procedures into references/ files. Every SKILL.md body is now under the 16 KB tier; nothing was deleted, only relocated behind a pointer at the point of use.</p>
+        </div>
+        <div class="new-card">
+          <h3>Finishing Path Fixes</h3>
+          <p>Option 1 (merge locally) now runs from the main checkout and removes the worktree before deleting the branch &mdash; the order git actually accepts. A refused discard on a plain branch reports the branch, not a worktree that does not exist.</p>
+        </div>
+        <div class="new-card">
+          <h3>Resume and Wrap Precision</h3>
+          <p>resume-session checks that the STATE.md stamp is an ancestor of HEAD before counting commits, so a squash or rebase merge no longer reads as "HEAD moved". session-wrap's STATUS.md step points ADR links at the step that creates them.</p>
+        </div>
+      </div>
+
+      <!-- v3.7.0 -->
+      <div class="section-header reveal" style="margin-top: 4rem;">
         <span class="new__badge">v3.7.0</span>
         <h2>What's New</h2>
         <p>Ecosystem imports &mdash; twenty-one ideas from seven watched repositories grafted onto existing skills and agents; no new components, every idea re-implemented in the blueprint's own words, provenance recorded</p>

@@ -41,13 +41,15 @@ git stash list
 **Freshness stamp check** — only when `docs/context/STATE.md` exists and its frontmatter (read in Step 1) has a `head:` field:
 
 ```bash
+# The stamp must be an ancestor of HEAD before it can anchor a count
+git merge-base --is-ancestor <head> HEAD && echo ancestor
 # Non-merge commits since the stamped HEAD
 git log --oneline --no-merges <head>..HEAD
 ```
 
 - Zero or one commit listed → fresh (the one commit is session-wrap's own wrap commit).
 - More than one commit listed → warn "HEAD moved since the handoff" and list the commits.
-- `<head>` doesn't resolve (e.g. a squash or rebase merge rewrote history) → anchor on the last commit that touched the file instead, then re-run the count from there: `git log -1 --format=%H -- docs/context/STATE.md`.
+- `<head>` doesn't resolve, or is not an ancestor of HEAD (a squash or rebase merge rewrote history; the old sha may still resolve from the branch or reflog) → anchor on the last commit that touched the file instead, then re-run the count from there: `git log -1 --format=%H -- docs/context/STATE.md`.
 - STATE.md doesn't exist, or exists without a `head:` field → skip this check; there's no stamp to compare against.
 
 ## Step 3: Present Orientation

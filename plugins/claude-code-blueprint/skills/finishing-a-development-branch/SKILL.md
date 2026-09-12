@@ -127,23 +127,21 @@ Discarding the branch is not on the menu. It runs only on an explicit request �
 #### Option 1: Merge Locally
 
 ```bash
-# Switch to base branch
+# From the main checkout — a worktree cannot check out the branch the main checkout holds
+cd <main-checkout>
 git checkout <base-branch>
-
-# Pull latest
 git pull
-
-# Merge feature branch
 git merge <feature-branch>
 
 # Verify tests on merged result
 <test command>
 
-# If tests pass
+# If tests pass: the worktree goes first (git refuses to delete a branch a worktree still holds), then the branch
+git worktree remove <worktree-path>   # skip when the branch had no worktree
 git branch -d <feature-branch>
 ```
 
-Then: Cleanup worktree (Step 6)
+Then: confirm the cleanup (Step 6). If `git worktree remove` refuses, keep the worktree and the branch and report the dirty state (Option 3 behaviour).
 
 #### Option 2: Push and Create PR
 
@@ -192,7 +190,7 @@ Not a menu option. Run this path only when the user says "Discard this work" or 
    ```
    Remove the worktree before deleting the branch; git refuses to delete a branch a worktree still holds. If git refuses the removal, stop: keep the worktree and the branch, then go to **Refused removal**.
 
-**Refused removal.** Report the state and relay the commands. Never run them yourself:
+**Refused removal.** Report the state and relay the commands. Never run them yourself. With a worktree:
 
 ```
 Worktree <path> has uncommitted changes and was not removed:
@@ -203,21 +201,25 @@ To discard anyway, run these yourself:
   git branch -D <feature-branch>
 ```
 
+Plain branch, no worktree:
+
+```
+Branch <name> has uncommitted changes and was not deleted:
+<git status --porcelain output>
+
+Commit or stash them first, or to discard anyway run these yourself:
+  git checkout <base-branch>
+  git branch -D <feature-branch>
+```
+
 ### Step 6: Cleanup Worktree
 
-**For Option 1:**
-
-Check if in worktree:
+**For Option 1:** the merge sequence already removed the worktree before deleting the branch. Confirm nothing is left:
 ```bash
-git worktree list | grep <feature-branch>
+git worktree list | grep <feature-branch>   # must print nothing
 ```
 
-If yes:
-```bash
-git worktree remove <worktree-path>
-```
-
-No force flag, ever — using-git-worktrees, "Removing a Worktree", owns that rule. If git refuses, report the dirty state and keep the worktree (Option 3 behaviour).
+No force flag, ever — using-git-worktrees, "Removing a Worktree", owns that rule. If git refused the removal, the branch still exists and the worktree is intact: report the dirty state and keep both (Option 3 behaviour).
 
 **For Options 2 and 3:** Keep worktree.
 

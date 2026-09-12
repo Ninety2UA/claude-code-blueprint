@@ -66,6 +66,8 @@ The plan-scoped progress ledger (superpowers 6.2.0) landed earlier in v3.6.0 as 
 - gsd-core: honest-verifier abstention, review dispositions ledger.
 - Blueprint-side: the size sweep of the four SKILL.md bodies over 16,384 bytes (writing-skills, ship-pipeline, session-wrap, systematic-debugging), paired with `/skill-doctor`; a `ship.sh` stop marker so an escalation can end the external loop (until then ship-pipeline keeps its lock-and-proceed rule for must-ask categories); broader untrusted-text hardening beyond the receivers and dispatchers named in R13; a STATE.md completion cleanup rule.
 
+**Update 2026-09-12:** the SKILL.md size sweep shipped as v3.7.1 (writing-skills, ship-pipeline, session-wrap, systematic-debugging restructured into `SKILL.md` + `references/`).
+
 ## Rejected classes (standing rationale in the July records)
 
 - Multi-harness, cross-model, and runtime-platform work (Codex/Cursor/Grok adapters, MCP servers, Bun runtime, browser stacks, telemetry): outside the single-harness, zero-dependency scope.
