@@ -10,25 +10,20 @@ Quality over speed. Small steps compound. The patterns you establish will be cop
 
 <!-- Updated by /session-wrap. Full history: git log + docs/learnings/ -->
 
-**Last session:** 2026-09-11
+**Last session:** 2026-09-12
 
-**What was done:** The 2026-09-11 `/cli-watch` + `/repo-watch` cycle audited 47 CLI releases (2.1.213–2.1.268) and shipped v3.6.0 "Platform Currency Refresh":
-- TodoWrite (gone from current models) replaced by a plan-scoped progress file (`.claude/plans/<plan>.progress.local.md`) in `executing-plans`, `subagent-driven-development`, and `writing-skills`; scaffolded projects ignore it.
-- Subagent caps refreshed (no per-session total since 2.1.224; 20 concurrent + spawn depth 3 via `CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS` / `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH`) and the Claude 5 lineup (Opus 5 / Fable 5.1 in the opt-in mapping; every agent stays `model: inherit`).
-- Workflow-tool gating and `/goal` check-in notes refreshed; bundled `/deep-research` workflow collision documented (no rename).
-- `plugin-update` is native-first (`claude plugin update`) with the manual clone path as fallback; README + site update copy now say `/reload-plugins` (or restart).
-- CI: `claude plugin validate --strict` job added; drift gate extended to the README nav "What's New" anchor (negative-tested).
-- Decision record: `docs/learnings/2026-09-11-cli-watch-cycle-verdicts.md`.
-- Before this cycle, v3.5.2 "Validator Wiring & Guide Refresh" (PR #10, tagged) and a site stats-bar fix (PR #11) had already landed on `main`.
+**What was done:** The 2026-09-11 `/cli-watch` + `/repo-watch` cycle shipped two releases:
+- v3.6.0 "Platform Currency Refresh" (PR #12): platform claims re-verified against Claude Code 2.1.268; TodoWrite replaced by the plan-scoped progress ledger; native-first `plugin-update`; `plugin validate --strict` CI job; README nav-anchor drift check. Record: `docs/learnings/2026-09-11-cli-watch-cycle-verdicts.md`.
+- v3.7.0 "Ecosystem Imports": twenty-one ideas from seven watched repos grafted onto existing skills and agents — plan audit before finishing, discard only on request, one decision-boundary rule, ship-loop iteration ceiling, converging SDD fix loop, test falsifiability and a quality-bar lens, external text as data, session/knowledge hygiene, ceremony sizing, plan Objective/Means header, SKILL.md byte budget with a warn-only size report, ecosystem table refresh. Record: `docs/learnings/2026-09-11-ecosystem-import-verdicts.md`.
 
 **What's remaining:**
-- v3.7.0: ecosystem imports from the `/repo-watch` report (next release).
+- Nothing queued. Deferred items live in the two decision records above.
 
-**Start here:** `main` is current (v3.6.0 released). Next cycle picks up the `/repo-watch` imports as v3.7.0; monthly watchers `/cli-watch` + `/repo-watch` stay on schedule.
+**Start here:** `main` is current (v3.7.0 released). Monthly watchers `/cli-watch` + `/repo-watch` stay on schedule; the next cycle starts from the baselines those records pin. The size sweep of the four largest skills is the first candidate for a maintenance session.
 
 **Current state of the code:**
 - Build: n/a (template repo, no build step)
-- Gates: drift gate (promo source, site grids + badge integrity, repo-count claims, README agents table, version equality, README nav anchor) + skill-collision gate + plugin-validate job green; markdownlint + shellcheck clean locally
+- Gates: drift gate (promo source, site grids + badge integrity, repo-count claims, README agents table, version equality, README nav anchor) + skill-collision gate (with a warn-only SKILL.md size report) + plugin-validate job green; markdownlint + shellcheck clean locally
 - Website: live at <https://ninety2ua.github.io/claude-code-blueprint/>
 - Uncommitted changes: none
 

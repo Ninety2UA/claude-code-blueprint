@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="#how-does-this-compare">Compare</a> ·
-  <a href="#whats-new-in-v360--platform-currency-refresh">What's New</a> ·
+  <a href="#whats-new-in-v370--ecosystem-imports">What's New</a> ·
   <a href="#quick-start">Quick Start</a> ·
   <a href="#what-you-get">What You Get</a> ·
   <a href="#workflow">Workflow</a> ·
@@ -86,6 +86,22 @@ v3.4.0 and v3.5.0 were produced by a single **platform-sync cycle** — one init
 <p align="center">
   <img src="docs/images/platform-sync-cycle.png" alt="Platform-sync cycle — Audit (68 CLI versions) → Gate 1 → Adopt + verify (Part 1, v3.4.0) → Delta sweep (Part 2, 4 repos) → Gate 2 → Import + close (v3.5.0), codified into the /cli-watch + /repo-watch watchers" width="90%">
 </p>
+
+### What's New in v3.7.0 — Ecosystem Imports
+
+The second `/repo-watch` cycle compared seven watched repositories against their July baselines and grafted twenty-one ideas onto existing skills and agents. No new skills, agents, or hooks; every idea re-implemented in the blueprint's own words, with provenance, deferrals, and rejections recorded in `docs/learnings/2026-09-11-ecosystem-import-verdicts.md`.
+
+- **Plan audit before a branch is finished** — `finishing-a-development-branch` dispatches a fresh-context `code-reviewer` that classifies every plan item against the diff (DONE, CHANGED, PARTIAL, NOT DONE, DEFERRED, UNVERIFIABLE) and lists unplanned work; NOT DONE or PARTIAL blocks merge and PR, and `pr-workflow` renders the table in the PR body.
+- **Discard only on request** — the default finishing menu has three options; an explicit discard lists untracked files first and relays the force commands for you to run, and no skill ever runs `git worktree remove --force`.
+- **One decision boundary** — "if this is done wrong, can the system detect it and roll it back?" decides versus stops, stated once in `executing-plans` and cited by `autonomous-loop`, `team-lead`, `build-pipeline`, and `ship-pipeline`; must-ask categories are checked first, workers return `NEEDS_INPUT` instead of guessing and never spawn subagents, and `ship.sh` runs stop at a fixed 20-iteration ceiling read from the progress file.
+- **Converging fix loop** — `subagent-driven-development` messages the same named implementer for fix rounds, re-reviews cumulatively from the pre-task commit, caps five rounds per phase, and marks a stuck task blocked in the progress ledger.
+- **Tests that can fail, reviewers that catch a lowered bar** — Anti-Pattern 6 (falsifiability), a failing direction on every acceptance command, a quality-bar regression lens in `code-reviewer`, newly skipped tests and loosened assertions flagged, and a neutral-is-revert ledger in `performance-profiling`.
+- **External text is data** — fetched documentation and tracker comments enter prompts inside the plugin's DATA markers; `pr-comment-resolver` never executes a quoted command and returns `NEEDS_INPUT` when a comment's intent is ambiguous.
+- **Handoffs you can trust** — `session-wrap`'s learnings step always runs (and says "No durable learnings this session" when true), applies a three-part ADR admission test, and stamps `STATE.md` with the HEAD sha so `resume-session` can tell whether HEAD moved; `knowledge-compounding` gains a gardening checklist.
+- **Authoring refinements** — `brainstorming` sizes ceremony (spike, bounded, architectural) behind a fog test; `writing-plans` headers carry Objective, Means, and Spec; SKILL.md bodies get an 8 KB budget with a warn-only size report in the collision gate (17 bodies over 8 KB and 4 over 16 KB after these grafts); three UI anti-slop signals; contributor AI disclosure.
+- **Ecosystem table refreshed** — current stars and 2026-09 verdicts for all seven watched repos (1.15M+ combined stars); get-shit-done is archived upstream and its lineage continues in gsd-core.
+
+**Evaluated and deferred:** the watch-to-merge PR loop, retuning and eval harnesses, design spikes, release-rule discovery, worktree merge-back, the DX lens and edit lock, honest-verifier abstention, the size sweep of the four largest skills, and a `ship.sh` stop marker for must-ask categories.
 
 ### What's New in v3.6.0 — Platform Currency Refresh
 

@@ -180,6 +180,8 @@ flowchart TB
 - `resume-session` priorities may draw on STATE.md, STATUS.md, GOALS.md, and BACKLOG.md; the rule forbids inventing items, not sources.
 - The "No durable learnings this session" line appears only in the session-wrap confirmation report, never in `LEARNINGS.md`.
 - The README intro's combined-star phrase is editorial (no gate reads it); "over 1.15M" reflects the refreshed sum of about 1.17M.
+- R21's stale-description and "Boil the Lake" corrections apply to current-state surfaces only: the only occurrences of "13 role-based skills" and "Boil the Lake" sit inside the frozen v2.3 release notes, which the settled frozen-history decision keeps unchanged, so U8 carried the current gstack description in its ecosystem table cell instead (recorded during execution; U8 is CHANGED, not PARTIAL).
+- CLAUDE.md's last-session date reads 2026-09-12 because the release session crossed midnight; the plan's 2026-09-11 cycle date is unchanged elsewhere.
 
 ### System-Wide Impact
 
