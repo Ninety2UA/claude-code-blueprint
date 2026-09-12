@@ -141,6 +141,21 @@ Tests passing (<N> tests, 0 failures)
 Ready to implement <feature-name>
 ```
 
+## Removing a Worktree
+
+Remove a worktree only after its branch is merged, or on the explicit discard path in finishing-a-development-branch.
+
+```bash
+git worktree remove <path>
+```
+
+Git refuses a worktree with uncommitted changes, untracked files, or a submodule. That refusal is the safety check, so keep it:
+
+- Never run `git worktree remove --force`; the user runs it by hand when they choose to lose the changes.
+- On refusal, report the state (`git -C <path> status --short`), keep the worktree, and hand back.
+- Do not clean, stash, or commit inside the worktree to make the removal succeed.
+- Delete the branch only after the worktree is gone; git refuses to delete a branch a worktree still holds.
+
 ## Quick Reference
 
 | Situation | Action |
@@ -152,6 +167,7 @@ Ready to implement <feature-name>
 | Directory not ignored | Add to .gitignore + commit |
 | Tests fail during baseline | Report failures + ask |
 | No package.json/Cargo.toml | Skip dependency install |
+| Removal refused (dirty tree) | Report state, keep worktree, relay the force command to the user |
 
 ## Common Mistakes
 
@@ -199,6 +215,7 @@ Ready to implement auth feature
 - Proceed with failing tests without asking
 - Assume directory location when ambiguous
 - Skip CLAUDE.md check
+- Force a worktree removal, or tidy a dirty worktree so the removal passes
 
 **Always:**
 - Follow directory priority: existing > CLAUDE.md > ask
@@ -215,4 +232,4 @@ Ready to implement auth feature
 - Any skill needing isolated workspace
 
 **Pairs with:**
-- **finishing-a-development-branch** - REQUIRED for cleanup after work complete
+- **finishing-a-development-branch** - REQUIRED for cleanup after work complete; its Step 6 and discard path follow "Removing a Worktree" above

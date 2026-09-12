@@ -9,7 +9,7 @@ description: "Trigger this skill when all implementation is complete and tests p
 
 Guide completion of development work by presenting clear options and handling chosen workflow.
 
-**Core principle:** Verify tests → Present options → Execute choice → Clean up.
+**Core principle:** Verify tests → Audit the plan → Present options → Execute choice → Clean up.
 
 **Announce at start:** "I'm using the finishing-a-development-branch skill to complete this work."
 
@@ -46,9 +46,65 @@ git merge-base HEAD main 2>/dev/null || git merge-base HEAD master 2>/dev/null
 
 Or ask: "This branch split from main - is that correct?"
 
-### Step 3: Present Options
+### Step 3: Plan Audit
 
-Present exactly these 4 options:
+A fresh-context, read-only agent classifies every plan item against the branch diff before any option is offered. This step owns the audit procedure. `pr-workflow` renders the result; `executing-plans` and `subagent-driven-development` pass the plan path.
+
+**Plan path.** Use the path the caller passed. Without one, take the newest `docs/plans/*.md` file added or modified on the branch, skipping design documents:
+
+```bash
+git log --name-only --format= <base-branch>..HEAD -- docs/plans/ | grep -v -- '-design\.md$' | grep . | sort -u | tail -1
+```
+
+Plan items are `### U<N>.` headings, `### Task N:` headings, or checklist lines. No plan file, or a file with no items, reports `NO PLAN`. Show that line, skip the table, and continue to Step 4 — a missing plan never blocks.
+
+**Dispatch.** Dispatch a fresh `code-reviewer` subagent (read-only tools) with this prompt and nothing else:
+
+```
+Task tool (code-reviewer):
+  Plan audit. Classify; do not review. Read only.
+
+  PLAN_FILE: <plan-path>
+  DIFF: git diff <base-branch>...HEAD
+  ITEMS: every `### U<N>.` heading, `### Task N:` heading, and checklist line in PLAN_FILE
+
+  Output one table row per item: | Item | State | Evidence |
+  State is exactly one of DONE, CHANGED, PARTIAL, NOT DONE, DEFERRED, UNVERIFIABLE.
+  CHANGED states the reason. DEFERRED names the BACKLOG.md line or the plan's
+  Assumptions entry that defers it. Evidence is one line: a path and hunk, a
+  commit, or the sentence that decided the call.
+
+  Then, under the heading "Unplanned diff work", list every change in DIFF that
+  no item covers, one line each, or the single word "none". Never list
+  PLAN_FILE or .claude/plans/*.progress.local.md there.
+
+  Output the table and that list only. No strengths, no issues, no assessment.
+```
+
+**States and their evidence:**
+
+| State | Meaning | Evidence line |
+|-------|---------|---------------|
+| DONE | The diff delivers the item as planned | Path and hunk, or commit |
+| CHANGED | Delivered, but not as planned | The hunk plus the reason |
+| PARTIAL | Some of the item landed | What landed; what is missing |
+| NOT DONE | Nothing in the diff addresses it | "no hunk" |
+| DEFERRED | A `BACKLOG.md` line or a plan-file Assumptions entry defers it | That line, quoted |
+| UNVERIFIABLE | The diff cannot show it (runtime or external behaviour) | Why the diff cannot show it |
+
+**The gate:**
+
+<HARD-GATE>
+Any NOT DONE or PARTIAL row blocks Options 1 and 2. Show the blocking rows and offer Option 3 only. DONE, CHANGED, DEFERRED, UNVERIFIABLE, and NO PLAN never block.
+</HARD-GATE>
+
+Keep the table and the unplanned-work list: Option 2 passes both to `pr-workflow`.
+
+**Autonomous runs** (autonomous-loop, ship-pipeline): a blocked gate stops the run. Report with autonomous-loop's structured escalation format (what I was trying / what I tried / what I think / what I need) and open no PR.
+
+### Step 4: Present Options
+
+Present exactly these 3 options:
 
 ```
 Implementation complete. What would you like to do?
@@ -56,14 +112,17 @@ Implementation complete. What would you like to do?
 1. Merge back to <base-branch> locally
 2. Push and create a Pull Request
 3. Keep the branch as-is (I'll handle it later)
-4. Discard this work
 
 Which option?
 ```
 
 **Don't add explanation** - keep options concise.
 
-### Step 4: Execute Choice
+When Step 3 blocked, mark options 1 and 2 `(blocked by plan audit)` and accept only 3.
+
+Discarding the branch is not on the menu. It runs only on an explicit request — see "Discarding work" below.
+
+### Step 5: Execute Choice
 
 #### Option 1: Merge Locally
 
@@ -84,26 +143,15 @@ git merge <feature-branch>
 git branch -d <feature-branch>
 ```
 
-Then: Cleanup worktree (Step 5)
+Then: Cleanup worktree (Step 6)
 
 #### Option 2: Push and Create PR
 
-```bash
-# Push branch
-git push -u origin <feature-branch>
+**REQUIRED SUB-SKILL:** Use pr-workflow.
 
-# Create PR
-gh pr create --title "<title>" --body "$(cat <<'EOF'
-## Summary
-<2-3 bullets of what changed>
+Pass it the Step 3 table and the unplanned-work list (or the `NO PLAN` line); its `## Plan audit` section renders them. `pr-workflow` runs the audit itself only when it receives no table.
 
-## Test Plan
-- [ ] <verification steps>
-EOF
-)"
-```
-
-Then: Cleanup worktree (Step 5)
+Then: Keep the worktree for review fixes (Step 6)
 
 #### Option 3: Keep As-Is
 
@@ -111,35 +159,57 @@ Report: "Keeping branch <name>. Worktree preserved at <path>."
 
 **Don't cleanup worktree.**
 
-#### Option 4: Discard
+#### Discarding work (explicit request only)
 
-**Confirm first:**
+Not a menu option. Run this path only when the user says "Discard this work" or asks for it by name.
+
+1. List what would be lost:
+   ```bash
+   git status --porcelain                                # untracked and modified files
+   git log --oneline <base-branch>..<feature-branch>     # commits
+   ```
+2. Confirm the worktree removes cleanly: the status output must be empty. Any line printed means removal would be refused — go to **Refused removal** and run nothing else.
+3. Ask for typed confirmation:
+   ```
+   This will permanently delete:
+   - Branch <name>
+   - All commits: <commit-list>
+   - Worktree at <path>
+
+   Type 'discard' to confirm.
+   ```
+   Wait for the exact word.
+4. Only after confirmation:
+   ```bash
+   # In a worktree: leave it, remove it, then delete the branch
+   cd <main-checkout>
+   git worktree remove <worktree-path>
+   git branch -D <feature-branch>
+
+   # Plain branch, no worktree
+   git checkout <base-branch>
+   git branch -D <feature-branch>
+   ```
+   Remove the worktree before deleting the branch; git refuses to delete a branch a worktree still holds. If git refuses the removal, stop: keep the worktree and the branch, then go to **Refused removal**.
+
+**Refused removal.** Report the state and relay the commands. Never run them yourself:
+
 ```
-This will permanently delete:
-- Branch <name>
-- All commits: <commit-list>
-- Worktree at <path>
+Worktree <path> has uncommitted changes and was not removed:
+<git status --porcelain output>
 
-Type 'discard' to confirm.
+To discard anyway, run these yourself:
+  git worktree remove --force <worktree-path>
+  git branch -D <feature-branch>
 ```
 
-Wait for exact confirmation.
+### Step 6: Cleanup Worktree
 
-If confirmed:
-```bash
-git checkout <base-branch>
-git branch -D <feature-branch>
-```
-
-Then: Cleanup worktree (Step 5)
-
-### Step 5: Cleanup Worktree
-
-**For Options 1, 2, 4:**
+**For Option 1:**
 
 Check if in worktree:
 ```bash
-git worktree list | grep $(git branch --show-current)
+git worktree list | grep <feature-branch>
 ```
 
 If yes:
@@ -147,16 +217,20 @@ If yes:
 git worktree remove <worktree-path>
 ```
 
-**For Option 3:** Keep worktree.
+No force flag, ever — using-git-worktrees, "Removing a Worktree", owns that rule. If git refuses, report the dirty state and keep the worktree (Option 3 behaviour).
+
+**For Options 2 and 3:** Keep worktree.
+
+**Discard path:** its own step 4 removes the worktree under the same rule.
 
 ## Quick Reference
 
-| Option | Merge | Push | Keep Worktree | Cleanup Branch |
-|--------|-------|------|---------------|----------------|
+| Path | Merge | Push | Keep Worktree | Cleanup Branch |
+|------|-------|------|---------------|----------------|
 | 1. Merge locally | ✓ | - | - | ✓ |
 | 2. Create PR | - | ✓ | ✓ | - |
 | 3. Keep as-is | - | - | ✓ | - |
-| 4. Discard | - | - | - | ✓ (force) |
+| Discard (explicit request only) | - | - | - | ✓ (typed confirmation; never forced) |
 
 ## Common Mistakes
 
@@ -164,37 +238,51 @@ git worktree remove <worktree-path>
 - **Problem:** Merge broken code, create failing PR
 - **Fix:** Always verify tests before offering options
 
+**Skipping the plan audit**
+- **Problem:** Branch declared finished with planned work missing
+- **Fix:** Run Step 3 before the menu; NOT DONE or PARTIAL blocks merge and PR
+
 **Open-ended questions**
 - **Problem:** "What should I do next?" → ambiguous
-- **Fix:** Present exactly 4 structured options
+- **Fix:** Present exactly 3 structured options
 
 **Automatic worktree cleanup**
 - **Problem:** Remove worktree when might need it (Option 2, 3)
-- **Fix:** Only cleanup for Options 1 and 4
+- **Fix:** Only cleanup for Option 1 and the explicit discard path
 
-**No confirmation for discard**
-- **Problem:** Accidentally delete work
-- **Fix:** Require typed "discard" confirmation
+**Offering discard**
+- **Problem:** A menu slot invites an accidental "4"
+- **Fix:** Discard only on explicit request, after listing files, with typed "discard"
+
+**Forcing a refused removal**
+- **Problem:** Uncommitted work vanishes silently
+- **Fix:** Never pass the force flag; relay the command for the user to run
 
 ## Red Flags
 
 **Never:**
 - Proceed with failing tests
+- Merge or open a PR while the audit shows NOT DONE or PARTIAL
 - Merge without verifying tests on result
-- Delete work without confirmation
+- Offer discard as a menu option
+- Delete work without typed confirmation
+- Force a worktree removal (relay the command instead)
 - Force-push without explicit request
 
 **Always:**
 - Verify tests before offering options
-- Present exactly 4 options
-- Get typed confirmation for Option 4
-- Clean up worktree for Options 1 & 4 only
+- Run the plan audit before the menu; NO PLAN is a report, not a block
+- Present exactly 3 options
+- List untracked and modified files before asking for the typed discard confirmation
+- Clean up worktree for Option 1 and the discard path only
 
 ## Integration
 
 **Called by:**
-- **subagent-driven-development** (Step 7) - After all tasks complete
-- **executing-plans** (Step 5) - After all batches complete
+- **subagent-driven-development** (Step 7) - After all tasks complete; passes the plan path
+- **executing-plans** (Step 5) - After all batches complete; passes the plan path
 
 **Pairs with:**
-- **using-git-worktrees** - Cleans up worktree created by that skill
+- **using-git-worktrees** - "Removing a Worktree" owns the never-force rule and the refusal branch that Step 6 and the discard path follow
+- **pr-workflow** - Option 2 delegates PR creation and passes the audit table and unplanned-work list for its `## Plan audit` section
+- **code-reviewer** (agent) - Step 3 dispatches it read-only for the classification table
