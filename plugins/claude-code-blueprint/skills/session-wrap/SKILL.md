@@ -189,6 +189,8 @@ Update the **Session Continuity** section at the top of CLAUDE.md. This is what 
 
 ## Step 5: Update docs/learnings/LEARNINGS.md
 
+This step always runs. Every session evaluates whether a learning qualifies — even when the answer is no, that evaluation still happens and gets reported.
+
 Append new entries to `docs/learnings/LEARNINGS.md` (create the file if it doesn't exist):
 
 ```markdown
@@ -201,6 +203,7 @@ Append new entries to `docs/learnings/LEARNINGS.md` (create the file if it doesn
 - Keep each entry to 2-4 sentences but be specific (include file paths, commands, error messages)
 - If a learning invalidates a previous entry, update the previous entry rather than adding a contradictory new one
 - If conventions or patterns were established, ALSO update docs/context/CONVENTIONS.md (Step 7)
+- If nothing this session clears the bar, add nothing to LEARNINGS.md — instead state "No durable learnings this session" in the Step 17 confirmation report. That sentence belongs in the report only; never append it to LEARNINGS.md itself
 
 ## Step 6: Update docs/context/STATUS.md
 
@@ -309,15 +312,13 @@ If no spec was being followed, skip this step.
 
 ## Step 12: Create ADRs (if applicable)
 
-If significant architectural decisions were made this session, create new ADR files:
+Create an ADR only when a decision this session passes all three parts of the admission test: it would be hard to reverse, it would surprise someone reading the code without this context, and it involved a real trade-off rather than one obvious choice. See `docs/decisions/README.md` ("## When to Create an ADR") for the full criteria.
 
 - File: `docs/decisions/NNN-kebab-case-title.md`
 - Use the template from `docs/decisions/README.md`
 - Number sequentially (check existing ADRs for the next number)
 - Focus on the *why* — the code shows *what*, the ADR captures the reasoning
 - Link the ADR from STATUS.md Decisions Made table
-
-Only create ADRs for decisions that would be non-obvious to someone reading the code 6 months later. Don't create ADRs for routine choices.
 
 ## Step 13: Update Auto-Memory (if it exists)
 
@@ -356,7 +357,11 @@ ls -la *.tmp *.bak *~ 2>/dev/null
 - Remove any temp/backup files that shouldn't be committed
 - If completed plans should be archived, add a completion note at the top rather than moving/deleting them
 
-## Step 15: Commit Documentation Updates
+## Step 15: Stamp STATE.md (if it exists)
+
+If `docs/context/STATE.md` already exists, invoke the `session-continuity` skill and follow it to record the current HEAD sha (`head:`) and timestamp (`last-updated:`) in the file's frontmatter — this is the freshness stamp `resume-session` compares against next time. Never create STATE.md here; a project with no execution state stays without one.
+
+## Step 16: Commit Documentation Updates
 
 After all documentation updates are complete:
 
@@ -370,7 +375,7 @@ If ADRs were created, mention them in the commit message:
 git commit -m "docs: session wrap-up YYYY-MM-DD — [summary]. ADR-NNN: [decision title]"
 ```
 
-## Step 16: Final Verification
+## Step 17: Final Verification
 
 After committing:
 
@@ -390,6 +395,7 @@ git checkout -- [file]
 Present final confirmation to the user:
 - List which files were updated (with brief reason for each)
 - List which files were skipped (and why — "no changes in that domain")
+- If no learning cleared the bar in Step 5, state "No durable learnings this session" — this line belongs only in the report, never in LEARNINGS.md
 - Flag any items that need human attention
 - Confirm the docs commit was made
 
@@ -409,7 +415,7 @@ Present final confirmation to the user:
 - [ ] User received clear, accurate summary of session work with file paths and commit hashes
 - [ ] User confirmed summary before docs were updated
 - [ ] CLAUDE.md Session Continuity section has specific "start here" instruction
-- [ ] docs/learnings/LEARNINGS.md has new entries (if learnings exist)
+- [ ] docs/learnings/LEARNINGS.md reviewed this session — new entries added, or the confirmation report states "No durable learnings this session"
 - [ ] docs/context/STATUS.md reflects actual current state with updated tables
 - [ ] docs/context/STATUS.md commit log has new entries with real commit hashes
 - [ ] docs/context/GOALS.md updated only if goals/milestones were affected

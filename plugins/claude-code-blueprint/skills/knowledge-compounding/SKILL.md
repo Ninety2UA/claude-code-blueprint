@@ -37,6 +37,8 @@ Ask yourself:
 4. **What would we do differently?** (Retrospective insight)
 5. **When would this apply again?** (Searchable keywords)
 
+If nothing here clears the bar — the fix was trivial, or it's already covered in framework docs — say so explicitly (e.g. "nothing from this session is worth a solution doc") rather than ending silently. This skill stays conditionally triggered: being invoked doesn't obligate a new file.
+
 ### Step 2: Write the Solution Document
 
 Create `docs/solutions/YYYY-MM-DD-[slug].md`:
@@ -130,6 +132,18 @@ A bad solution document:
 - Has no context about why the bug occurred
 - Is so generic it's not actionable
 - Duplicates framework documentation
+
+## Gardening Checklist
+
+Compounding isn't only additive — the existing knowledge base needs periodic weeding. When invoked for a gardening pass rather than a fresh solution, check for:
+
+- **Orphans** — solution docs nothing links to and nothing would search for; fold the insight into a doc that gets found, or drop the orphan.
+- **Stale content** — a solution describing a version, API, or pattern the codebase no longer uses.
+- **Broken cross-references** — links to ADRs, other solutions, or CONVENTIONS.md entries that were renamed, merged, or deleted since.
+- **Oversized pages** — a solution that grew past a research paper; split it or trim it back toward the 50-100 line target.
+- **Contradictions** — two solutions, or a solution and a CLAUDE.md Key Learning, that recommend opposite approaches to the same problem.
+- **Learnings vs. guidance** — compare each learning against the guidance it names (a skill, a convention, an ADR); if that guidance changed and the learning is now wrong, fix or remove it.
+- **Regressions** — when a regression is fixed, check whether it reintroduces something an existing solution already covered, and keep that guidance rather than letting the fix silently drop it.
 
 ## Common Mistakes
 
