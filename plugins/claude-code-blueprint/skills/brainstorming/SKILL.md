@@ -17,13 +17,28 @@ Do NOT invoke any implementation skill, write any code, scaffold any project, or
 Do NOT use Claude Code's native EnterPlanMode tool or enter plan mode. This skill IS the planning process — it replaces native plan mode with a structured brainstorming workflow. Stay in the normal conversation flow and follow the steps below.
 </HARD-GATE>
 
-## Exception: Lightweight Changes
+## Ceremony Sizing
 
-If a change qualifies under the **Lightweight Workflow** defined in CLAUDE.md (bug fix with obvious root cause touching < 3 files, typo fix, adding a test for existing behavior), you may skip brainstorming and go directly to TDD. When in doubt, brainstorm anyway — the cost of a 2-minute design review is much lower than rework.
+Not every change earns the full ceremony below. Size it first:
+
+- **Spike** — an exploratory probe with no fixed destination yet (a timeboxed "what's actually here" investigation, a throwaway prototype to answer one question). Skip brainstorming; do the probe, then decide afterward whether what you learned needs a real design.
+- **Bounded** — the existing **Lightweight Workflow** exception in CLAUDE.md (bug fix with obvious root cause touching < 3 files, typo fix, adding a test for existing behavior). Skip brainstorming and go directly to TDD.
+- **Architectural** — everything else: new features, components, or architecture decisions, or a change touching 3+ files or more than one viable approach. Run the full process below.
+
+When in doubt, treat it as architectural — the cost of a 2-minute design review is much lower than rework.
 
 ## Anti-Pattern: "This Is Too Simple To Need A Design"
 
-For changes that DON'T qualify as lightweight: every project goes through this process. A todo list, a single-function utility, a config change — all of them. "Simple" projects are where unexamined assumptions cause the most wasted work. The design can be short (a few sentences for truly simple projects), but you MUST present it and get approval.
+For changes that land in the **Architectural** tier: every one of them goes through this process. A todo list, a single-function utility, a config change — all of them, once they're architectural by the sizing above. "Simple" projects are where unexamined assumptions cause the most wasted work. The design can be short (a few sentences for truly simple projects), but you MUST present it and get approval.
+
+## Fog Test
+
+Before challenging the premise, check whether there is enough shape to challenge yet:
+
+1. **Can you state the destination in one sentence?** If "done" can't be named yet, that's fog — the next step is narrowing the destination, not designing toward it.
+2. **Can you name the first three decisions right now?** If the immediate next choices aren't nameable yet, the work needs more exploration (or a Spike, see Ceremony Sizing), not more design.
+
+Both checks pass → proceed to Premise Challenge. Either fails → resolve the fog first.
 
 ## Premise Challenge
 
@@ -63,7 +78,7 @@ If the user doesn't specify, infer from context and state your assumption. Once 
 
 ## Checklist
 
-You MUST create a task for each of these items and complete them in order:
+Work through these items in order, tracked as a checklist file — `.claude/plans/<topic-slug>.progress.local.md`, one checkbox per item, same convention as `executing-plans` — rather than a native task-list tool (not every model exposes one):
 
 1. **Explore project context** — check files, docs, recent commits
 2. **Ask clarifying questions** — one at a time, understand purpose/constraints/success criteria
@@ -99,10 +114,10 @@ digraph brainstorming {
 ## The Process
 
 **Understanding the idea:**
-- Check out the current project state first (files, docs, recent commits)
-- Ask questions one at a time to refine the idea
+- Check out the current project state first (files, docs, recent commits) and settle from it whatever it already answers — don't ask the user something the repository already tells you
+- Ask what's left one at a time to refine the idea
 - Prefer multiple choice questions when possible, but open-ended is fine too
-- Only one question per message - if a topic needs more exploration, break it into multiple questions
+- Only one question per message, with one narrow exception: once you've settled what the repository and context answer, if several genuinely residual questions remain, ask them together in a single batch rather than one at a time
 - Focus on understanding: purpose, constraints, success criteria
 
 **Exploring approaches:**
@@ -130,12 +145,13 @@ digraph brainstorming {
 
 ## Key Principles
 
-- **One question at a time** - Don't overwhelm with multiple questions
+- **Settle first, then one at a time** - Resolve what the repository and context already answer before asking anything; ask what's left one question at a time, with the narrow exception above for batching genuinely residual questions once
 - **Multiple choice preferred** - Easier to answer than open-ended when possible
 - **YAGNI ruthlessly** - Remove unnecessary features from all designs
 - **Explore alternatives** - Always propose 2-3 approaches before settling
 - **Incremental validation** - Present design, get approval before moving on
 - **Be flexible** - Go back and clarify when something doesn't make sense
+- **Non-interactive fallback** - In a pipeline stage or headless run with no one to answer, don't stall: record the recommended defaults as explicit assumptions and proceed (the same rule the Blindspot Pass uses)
 
 ## Common Rationalizations
 
@@ -148,3 +164,4 @@ digraph brainstorming {
 | "I'll just propose one approach" | One option is a recommendation disguised as a decision. Two-to-three options give the user something to choose between. |
 | "Premise challenge feels confrontational" | Challenging the premise *before* design is collaborative. Discovering at review that you solved the wrong problem is not. |
 | "I can hold the design in my head" | Context windows compress, sessions end, teammates forget. The design doc is the artifact that survives all three. |
+| "I'll just batch all my questions to save time" | Batching is a narrow exception for questions that are genuinely residual after settling from the repository and context — not a shortcut around asking one at a time when you haven't checked what's already answered. |

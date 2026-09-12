@@ -62,7 +62,11 @@ Before diving into planning, verify the incoming requirements are solid. If requ
 
 > **For Claude:** REQUIRED SUB-SKILL: Use executing-plans to implement this plan task-by-task.
 
-**Goal:** [One sentence describing what this builds]
+**Objective:** [One sentence describing the outcome — a holdable statement of what's true for users after this ships, not the mechanism]
+
+**Means:** [Only when an approach is already fixed — the chosen technique, in one sentence]
+
+**Spec:** [Optional — link to a design doc or spec this plan implements]
 
 **Architecture:** [2-3 sentences about approach]
 
@@ -70,6 +74,8 @@ Before diving into planning, verify the incoming requirements are solid. If requ
 
 ---
 ```
+
+The plan-completion audit (`finishing-a-development-branch` Step 3) reads `### Task N:` headings (this template's unit shape), `### U<N>.` headings, or checklist lines as the plan's items, whichever shape a given plan uses.
 
 ## Task Structure
 

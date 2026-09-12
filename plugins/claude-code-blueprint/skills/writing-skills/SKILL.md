@@ -229,12 +229,11 @@ Use words Claude would search for:
 
 ### 4. Token Efficiency (Critical)
 
-**Problem:** getting-started and frequently-referenced skills load into EVERY conversation. Every token counts.
+**Problem:** SKILL.md is the always-loaded file — every skill pays its byte cost the moment it triggers, not just getting-started and frequently-loaded skills.
 
-**Target word counts:**
-- getting-started workflows: <150 words each
-- Frequently-loaded skills: <200 words total
-- Other skills: <500 words (still be concise)
+**Target: an 8,192-byte body.** Keep everything after the frontmatter under 8,192 bytes. Phase-by-phase procedures, exhaustive flag lists, and worked examples belong in `references/` files the skill loads on demand — not inlined in the always-loaded body. Savings come from structure (moving detail out, cross-referencing, one example per pattern), not from squeezing sentences into fewer words.
+
+`scripts/check-skill-collisions.py` runs a warn-only size report over every SKILL.md: a WARN at 8,192 bytes, a second-tier WARN at 16,384 bytes. It never fails the gate. On a WARN, move phase procedures to `references/` — don't respond by squeezing the remaining sentences tighter.
 
 **Techniques:**
 
@@ -277,9 +276,9 @@ You: Searching...
 
 **Verification:**
 ```bash
-wc -w skills/path/SKILL.md
-# getting-started workflows: aim for <150 each
-# Other frequently-loaded: aim for <200 total
+wc -c skills/path/SKILL.md
+# body budget: aim for under 8,192 bytes (subtract the frontmatter);
+# check-skill-collisions.py's size report flags anything over
 ```
 
 **Name by what you DO or core insight:**

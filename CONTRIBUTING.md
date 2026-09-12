@@ -36,6 +36,8 @@ If you've built a useful skill or agent:
 - **Test with Claude Code** — verify your changes work in practice
 - **Follow the template style** — match the tone and structure of existing skills
 - **Document triggers** — clearly state when a skill should activate
+- **Disclose AI assistance** — end your PR body with an `AI assistance:` line; `pr-workflow` adds it for you when you use that skill, so say so by hand otherwise
+- **Report only what you can verify** — name the model identity the agent can actually report; "not disclosed" is an honest answer when it can't, since every agent in this template runs `model: inherit` and rides whatever model the session used
 
 ## Code of conduct
 
