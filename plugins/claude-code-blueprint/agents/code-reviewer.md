@@ -64,7 +64,7 @@ Suppress entirely — do not emit even at low confidence. These are non-findings
 4. **Issues already handled elsewhere.** Check callers, guards, middleware, framework defaults, and parallel handlers before flagging. If a controller's input is already validated by parent middleware, the controller-level check is redundant.
 5. **Suggestions that restate what the code already does in different words.** "Consider extracting this into a helper" when the code is already a small helper.
 6. **Generic "consider adding" advice without a concrete failure mode.** If you cannot name what breaks, the finding is not actionable.
-7. **Issues with a relevant lint-ignore comment.** Code carrying an explicit lint-disable comment for the rule you are about to flag (`eslint-disable-next-line no-unused-vars`, `# rubocop:disable`, `# noqa: E501`) — suppress unless the suppression itself violates a project-standards rule. The author already chose to suppress; re-flagging via a different reviewer creates noise.
+7. **Issues with a pre-existing lint-ignore comment.** Code carrying an explicit lint-disable comment for the rule you are about to flag (`eslint-disable-next-line no-unused-vars`, `# rubocop:disable`, `# noqa: E501`) — suppress unless the suppression itself violates a project-standards rule. The author already chose to suppress; re-flagging via a different reviewer creates noise. **Carve-out:** this covers only suppressions that predate the diff. A lint-ignore the diff itself adds is not a settled choice — it is a signal under the Quality-Bar Regression Lens below, on the same diff-introduced-versus-pre-existing line item 1 draws.
 8. **General code-quality concerns not codified in CLAUDE.md / CONVENTIONS.md.** "This file is getting long," "this method has too many parameters" — without a project-standards rule to anchor the concern, suppress.
 9. **Speculative future-work concerns with no current signal.** "This might break under load," "what if requirements change" — not findings unless the diff introduces concrete evidence the concern is reachable now.
 10. **Redundancy that aids readability** (e.g., `present?` alongside a length check).
@@ -74,6 +74,22 @@ Suppress entirely — do not emit even at low confidence. These are non-findings
 **Advisory routing rule (precedence over FP catalog):** If the honest answer to "what actually breaks if we do not fix this?" is "nothing breaks, but...", the finding is advisory. Set `tier: advisory` and `confidence: 50` so synthesis routes to a soft bucket. Do not suppress — the observation may have value; it just does not warrant user judgment. Typical advisory shapes: design asymmetry the diff improves but does not fully resolve, opportunity to consolidate two similar helpers when neither is broken, residual risk worth noting.
 
 **Precedence:** if a shape matches the FP catalog above, it is a non-finding and must be suppressed entirely. Do NOT route it to anchor 50 / advisory. The advisory rule applies only to shapes that are NOT in the FP catalog.
+
+## Quality-Bar Regression Lens
+
+**Scope:** shapes the diff introduces. A diff can pass every other check while lowering the bar the codebase held before it; this lens catches that. The same shapes already present before the diff stay under catalog item 1.
+
+Each of the following is a finding when the diff adds it, carrying the same severity, confidence anchor, and `suggested_fix` discipline as any other finding:
+
+- **A suppression the diff adds:** a new lint-ignore, type-check ignore, or warning filter (`# noqa`, `eslint-disable`, `@ts-ignore`, `# type: ignore`, `rubocop:disable`) on a line the diff touches. The default fix is the underlying issue; a suppression stands only with a comment stating why the rule does not apply here.
+- **A test the diff skips or removes:** `.skip`, `xit`, `xdescribe`, `it.todo`, `@pytest.mark.skip`, a deleted test file, or a test case removed with no replacement covering the same behavior.
+- **An assertion the diff strips or weakens:** an assertion deleted, an exact match loosened to a truthiness or existence check, an expected value edited to match new output with no stated reason, or an error expectation widened to "any error".
+- **A stub the diff leaves unimplemented:** a body that is `pass`, `TODO`, `NotImplementedError`, `return null`, or a hardcoded return where the plan or a caller expects real behavior. Report it under Completeness Gap Detection, not as a style note.
+- **A threshold the diff edits down:** a coverage minimum, timeout budget, performance budget, complexity or size limit, retry count, or lint severity lowered in a config file or CI script with no stated reason.
+
+**Stated intent lowers confidence, it does not suppress:** a threshold lowered with a reason the diff or PR body states and the reader can check, or a skip whose comment names a tracked issue, lands at 50 rather than 75. A reason that does not hold up leaves the finding where it was.
+
+**How to check:** read the hunks for these shapes directly; the author's summary is not evidence. Hunks touching test files, CI config, lint config, or coverage config get read in full.
 
 ## Calibration
 

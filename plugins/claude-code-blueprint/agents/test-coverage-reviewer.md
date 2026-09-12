@@ -32,6 +32,7 @@ Red flags:
 - Tests with no assertions at all (just calling the function)
 - Tests that assert on mock call counts instead of behavior
 - Snapshot tests used as a substitute for behavioral assertions
+- Assertions stripped or loosened by the diff (an exact match turned into `toBeTruthy()`, an expected value edited to match new output, an assertion deleted)
 
 ### 2. Edge Case Coverage
 
@@ -67,6 +68,7 @@ Flag:
 - Excessive mocking (testing the mocks, not the code)
 - Flaky indicators (timeouts, sleeps, order-dependent)
 - Tests named "should work" or "test 1" (unclear intent)
+- Newly skipped tests (`.skip`, `xit`, `it.todo`, `@pytest.mark.skip` introduced by the diff) — a skip with no tracked reason is coverage lost, not deferred
 
 ## Output Format
 
