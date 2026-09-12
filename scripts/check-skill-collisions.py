@@ -35,7 +35,11 @@ FAIL = 0.75
 # SKILL.md body size budget (bytes after frontmatter), from writing-skills'
 # Token Efficiency section. Both tiers are warn-only — see print_size_report.
 SIZE_WARN = 8192
-SIZE_WARN2 = 16384
+SIZE_WARN_URGENT = 16384
+
+# A SKILL.md's frontmatter: the fenced block at the top of the file. Group 1 is
+# the frontmatter text; the match end is where the body starts.
+FRONTMATTER = re.compile(r"^---\s*\n(.*?)\n---\s*\n?", re.DOTALL)
 
 # Stopwords: generic English + the skill-description boilerplate that every
 # description shares ("trigger this skill when the user ..."). Removing these
@@ -66,7 +70,7 @@ def jaccard(a, b):
 
 def description(path):
     text = open(path, encoding="utf-8").read()
-    m = re.search(r"^---\s*\n(.*?)\n---", text, re.DOTALL)
+    m = FRONTMATTER.match(text)
     if not m:
         return None
     fm = m.group(1)
@@ -96,7 +100,7 @@ def body_bytes(path):
     """Byte length of a SKILL.md's body — everything after the frontmatter,
     which is what actually loads into a triggered conversation."""
     text = open(path, encoding="utf-8").read()
-    m = re.match(r"^---\s*\n.*?\n---\s*\n?", text, re.DOTALL)
+    m = FRONTMATTER.match(text)
     body = text[m.end():] if m else text
     return len(body.encode("utf-8"))
 
@@ -104,24 +108,17 @@ def body_bytes(path):
 def print_size_report(paths):
     """Warn-only report of SKILL.md bodies over the byte budget. Never
     appended to the warns/fails lists — it cannot affect the exit code."""
-    tier1, tier2 = [], []
-    for p in paths:
-        name = os.path.basename(os.path.dirname(p))
-        size = body_bytes(p)
-        if size > SIZE_WARN:
-            tier1.append((size, name))
-        if size > SIZE_WARN2:
-            tier2.append((size, name))
-    tier1.sort(reverse=True)
-    tier2.sort(reverse=True)
-    if tier1:
-        print("\n  WARN size (body over %d bytes — move phase procedures to references/, don't squeeze sentences):" % SIZE_WARN)
-        for size, name in tier1:
-            print("    %d bytes  %s" % (size, name))
-    if tier2:
-        print("\n  WARN size (body over %d bytes — second tier, split these first):" % SIZE_WARN2)
-        for size, name in tier2:
-            print("    %d bytes  %s" % (size, name))
+    sizes = [(body_bytes(p), os.path.basename(os.path.dirname(p))) for p in paths]
+    tiers = (
+        (SIZE_WARN, "move phase procedures to references/, don't squeeze sentences"),
+        (SIZE_WARN_URGENT, "second tier, split these first"),
+    )
+    for limit, advice in tiers:   # the tiers nest: an urgent file is listed under both
+        over = sorted((entry for entry in sizes if entry[0] > limit), reverse=True)
+        if over:
+            print("\n  WARN size (body over %d bytes — %s):" % (limit, advice))
+            for size, name in over:
+                print("    %d bytes  %s" % (size, name))
 
 
 def main():
