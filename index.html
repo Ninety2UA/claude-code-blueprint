@@ -2252,7 +2252,7 @@
       <div class="hero__content">
         <div class="hero__badge">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-          v3.6.0 &mdash; Platform Currency
+          v3.7.0 &mdash; Ecosystem Imports
         </div>
         <h1>Claude Code<br><span class="gradient-text">Blueprint</span></h1>
         <p class="hero__tagline">"Each unit of engineering work should make subsequent units easier &mdash; not harder."</p>
@@ -3496,11 +3496,11 @@
             <tr><th>Repo / Tool</th><th>Stars</th><th>Verdict</th></tr>
           </thead>
           <tbody>
-            <tr><td>gstack</td><td>123K</td><td><span class="eco-verdict eco-verdict--adopted">15 patterns adopted</span></td></tr>
-            <tr><td>oh-my-claudecode</td><td>37.9K</td><td><span class="eco-verdict eco-verdict--adopted">3 patterns adopted</span></td></tr>
-            <tr><td>GSD</td><td>64.8K</td><td><span class="eco-verdict eco-verdict--adopted">4 patterns adopted</span></td></tr>
-            <tr><td>Superpowers</td><td>257K</td><td><span class="eco-verdict eco-verdict--adopted">Patterns adopted</span></td></tr>
-            <tr><td>Compound Eng.</td><td>23.2K</td><td><span class="eco-verdict eco-verdict--adopted">Patterns adopted</span></td></tr>
+            <tr><td>gstack</td><td>132.6K</td><td><span class="eco-verdict eco-verdict--adopted">21 patterns adopted</span></td></tr>
+            <tr><td>oh-my-claudecode</td><td>39.1K</td><td><span class="eco-verdict eco-verdict--adopted">9 patterns adopted</span></td></tr>
+            <tr><td>GSD</td><td>64.6K</td><td><span class="eco-verdict eco-verdict--adopted">4 patterns adopted (archived upstream)</span></td></tr>
+            <tr><td>Superpowers</td><td>285.2K</td><td><span class="eco-verdict eco-verdict--adopted">Patterns adopted</span></td></tr>
+            <tr><td>Compound Eng.</td><td>25.0K</td><td><span class="eco-verdict eco-verdict--adopted">Patterns adopted</span></td></tr>
             <tr><td>Everything CC</td><td>231K</td><td><span class="eco-verdict eco-verdict--ref">Reference</span></td></tr>
             <tr><td>UI/UX Pro Max</td><td>108K</td><td><span class="eco-verdict eco-verdict--ref">Reference</span></td></tr>
             <tr><td>claude-mem</td><td>87.9K</td><td><span class="eco-verdict eco-verdict--rejected">Import nothing</span></td></tr>
@@ -3544,8 +3544,33 @@
   <!-- ===== WHAT'S NEW ===== -->
   <section class="whats-new" id="whats-new">
     <div class="container">
-      <!-- v3.6.0 -->
+      <!-- v3.7.0 -->
       <div class="section-header reveal">
+        <span class="new__badge">v3.7.0</span>
+        <h2>What's New</h2>
+        <p>Ecosystem imports &mdash; twenty-one ideas from seven watched repositories grafted onto existing skills and agents; no new components, every idea re-implemented in the blueprint's own words, provenance recorded</p>
+      </div>
+      <div class="grid-4 reveal reveal-stagger">
+        <div class="new-card">
+          <h3>Plan Audit &amp; Discard Safety</h3>
+          <p>finishing-a-development-branch now dispatches a fresh-context reviewer that classifies every plan item against the diff before the options appear; NOT DONE or PARTIAL blocks merge and PR. Discarding work left the default menu, and no skill ever force-removes a worktree.</p>
+        </div>
+        <div class="new-card">
+          <h3>Decision Boundary &amp; Converging Fix Loop</h3>
+          <p>One rule &mdash; can the system detect it and roll it back? &mdash; decides versus stops across executing-plans, autonomous-loop, team-lead, and the pipelines. Workers return <code>NEEDS_INPUT</code> instead of guessing and never spawn subagents; SDD fix rounds resume the same implementer with a five-round cap per phase.</p>
+        </div>
+        <div class="new-card">
+          <h3>External Text Is Data</h3>
+          <p>Fetched docs and tracker comments enter agent prompts inside DATA markers; the comment resolver never executes a quoted command. code-reviewer gains a quality-bar regression lens, tests must name what would fail them, and a noise-level speedup is a revert.</p>
+        </div>
+        <div class="new-card">
+          <h3>Hygiene, Size Budget &amp; Ecosystem Refresh</h3>
+          <p>session-wrap always records learnings (or says there were none) and stamps STATE.md so resume-session can tell whether HEAD moved. SKILL.md bodies get an 8 KB budget with a warn-only size report, and the ecosystem table carries fresh stars and 2026-09 verdicts for all seven watched repos.</p>
+        </div>
+      </div>
+
+      <!-- v3.6.0 -->
+      <div class="section-header reveal" style="margin-top: 4rem;">
         <span class="new__badge">v3.6.0</span>
         <h2>What's New</h2>
         <p>Platform currency refresh &mdash; every platform claim re-verified against Claude Code 2.1.268; no rebuilds, no new components, verdicts recorded</p>

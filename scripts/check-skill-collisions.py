@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""check-skill-collisions.py — Cross-skill description-collision detector.
+"""check-skill-collisions.py — Cross-skill description-collision detector
+and SKILL.md size report.
 
 A single-skill trigger test proves a skill fires on the right prompts, but it
 cannot catch TWO skills whose descriptions are similar enough that a prompt
@@ -14,6 +15,12 @@ lowercased, tokenized on non-alphanumerics, and stripped of stopwords plus the
 shared "trigger this skill when ..." boilerplate, so the score reflects what
 separates two skills, not the template they share.
 
+The same run also prints a warn-only size report: each SKILL.md's body (the
+file content after its frontmatter — the part that loads into every triggered
+conversation) is measured against the 8,192-byte budget from writing-skills,
+with a second, more urgent tier at 16,384 bytes. The size report never
+affects the exit code — it is informational, the same as the WARN tier above.
+
 Usage: check-skill-collisions.py [repo-root]   (default: parent of this script's dir)
 Exit:  0 = no collisions >= FAIL · 1 = collision(s) >= FAIL · 2 = no skills found
 """
@@ -24,6 +31,15 @@ import glob
 
 WARN = 0.50
 FAIL = 0.75
+
+# SKILL.md body size budget (bytes after frontmatter), from writing-skills'
+# Token Efficiency section. Both tiers are warn-only — see print_size_report.
+SIZE_WARN = 8192
+SIZE_WARN_URGENT = 16384
+
+# A SKILL.md's frontmatter: the fenced block at the top of the file. Group 1 is
+# the frontmatter text; the match end is where the body starts.
+FRONTMATTER = re.compile(r"^---\s*\n(.*?)\n---\s*\n?", re.DOTALL)
 
 # Stopwords: generic English + the skill-description boilerplate that every
 # description shares ("trigger this skill when the user ..."). Removing these
@@ -54,7 +70,7 @@ def jaccard(a, b):
 
 def description(path):
     text = open(path, encoding="utf-8").read()
-    m = re.search(r"^---\s*\n(.*?)\n---", text, re.DOTALL)
+    m = FRONTMATTER.match(text)
     if not m:
         return None
     fm = m.group(1)
@@ -78,6 +94,31 @@ def description(path):
         joined = " ".join(block).strip()
         return joined or None
     return val.strip("\"'") or None
+
+
+def body_bytes(path):
+    """Byte length of a SKILL.md's body — everything after the frontmatter,
+    which is what actually loads into a triggered conversation."""
+    text = open(path, encoding="utf-8").read()
+    m = FRONTMATTER.match(text)
+    body = text[m.end():] if m else text
+    return len(body.encode("utf-8"))
+
+
+def print_size_report(paths):
+    """Warn-only report of SKILL.md bodies over the byte budget. Never
+    appended to the warns/fails lists — it cannot affect the exit code."""
+    sizes = [(body_bytes(p), os.path.basename(os.path.dirname(p))) for p in paths]
+    tiers = (
+        (SIZE_WARN, "move phase procedures to references/, don't squeeze sentences"),
+        (SIZE_WARN_URGENT, "second tier, split these first"),
+    )
+    for limit, advice in tiers:   # the tiers nest: an urgent file is listed under both
+        over = sorted((entry for entry in sizes if entry[0] > limit), reverse=True)
+        if over:
+            print("\n  WARN size (body over %d bytes — %s):" % (limit, advice))
+            for size, name in over:
+                print("    %d bytes  %s" % (size, name))
 
 
 def main():
@@ -121,11 +162,13 @@ def main():
         for s, a, b in fails:
             print("    %.0f%%  %s  <->  %s" % (s * 100, a, b))
         print("\nDisambiguate the FAILing pairs' descriptions (narrow their trigger conditions).")
+        print_size_report(paths)
         return 1
 
     print("\n  No skill-description collisions at or above the %.0f%% fail threshold." % (FAIL * 100))
     if not warns:
         print("  No pairs above the %.0f%% warn threshold either." % (WARN * 100))
+    print_size_report(paths)
     return 0
 
 

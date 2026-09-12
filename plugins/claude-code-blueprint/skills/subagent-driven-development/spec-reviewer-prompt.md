@@ -18,6 +18,9 @@ Task tool (general-purpose):
 
     [From implementer's report]
 
+    BASE_SHA: [commit before this task started — stays fixed across fix rounds]
+    HEAD_SHA: [current commit]
+
     ## CRITICAL: Do Not Trust the Report
 
     The implementer finished suspiciously quickly. Their report may be incomplete,
@@ -33,8 +36,11 @@ Task tool (general-purpose):
     - Compare actual implementation to requirements line by line
     - Check for missing pieces they claimed to implement
     - Look for extra features they didn't mention
+    - Diff BASE_SHA..HEAD_SHA rather than guessing at what changed — on a fix round this is the cumulative range, not just the latest commit
 
     ## Your Job
+
+    Do not spawn subagents. A sub-task that seems to need its own agent: return BLOCKED describing it — the controller decides.
 
     Read the implementation code and verify:
 
@@ -55,7 +61,12 @@ Task tool (general-purpose):
 
     **Verify by reading code, not by trusting report.**
 
-    Report:
+    End your response with:
+
+    ## Return State
+    <DONE | BLOCKED | NEEDS_INPUT | INCONCLUSIVE>
+
+    ## Summary
     - ✅ Spec compliant (if everything matches after code inspection)
-    - ❌ Issues found: [list specifically what's missing or extra, with file:line references]
+    - ❌ Issues found: [list specifically what's missing or extra, with file:line references, same-shape issues batched together]
 ```

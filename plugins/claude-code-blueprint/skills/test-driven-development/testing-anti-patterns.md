@@ -248,6 +248,70 @@ TDD cycle:
 4. THEN claim complete
 ```
 
+## Anti-Pattern 6: Tests That Cannot Fail
+
+**The violation:**
+```typescript
+// ❌ BAD: String-presence trap - asserts the source contains a word, not that it behaves
+test('retry is configured', () => {
+  const source = readFileSync('src/config.ts', 'utf8');
+  expect(source).toContain('maxRetries');
+});
+
+// ❌ BAD: Change-detector trap - the expected value was pasted from the code's own output
+test('computes shipping', () => {
+  expect(shippingCost(order)).toBe(17.42);  // Nobody worked out 17.42; the first run printed it
+});
+```
+
+**Why this is wrong:**
+- No production change breaks the first test except deleting the word - `maxRetries = 0` still passes
+- The second test fails only when the implementation changes, right or wrong, so it protects nothing and blocks every refactor
+- Both expectations were read off the code instead of derived from the requirement, so the test agrees with whatever the code does
+- A test that cannot fail is coverage in name only
+
+**The fix:**
+```typescript
+// ✅ GOOD: Expectations derived from the requirement before reading the code
+test('retries a failed request up to the configured limit', async () => {
+  const client = new Client({ maxRetries: 3 });
+  server.failNext(3);
+  await client.get('/health');
+  expect(server.requestCount).toBe(4);  // 1 attempt + 3 retries, from the spec
+});
+
+test('computes shipping', () => {
+  // 2 kg at the zone-B rate of 5.00/kg + 4.00 handling = 14.00, worked out from the rate card
+  expect(shippingCost({ weightKg: 2, zone: 'B' })).toBe(14.0);
+});
+
+// Mutation check: set maxRetries to 0, or drop the handling fee - each test MUST fail
+```
+
+### Gate Function
+
+```
+BEFORE keeping any test:
+  Ask: "Which production change would make this test fail?"
+
+  IF the only answer is "deleting the code" or "changing the code at all":
+    STOP - This is a string check or a change detector, not a behavior test
+    Rewrite it around an observable outcome
+
+  Ask: "Where did the expected value come from?"
+
+  IF from running the implementation and pasting its output:
+    STOP - Derive the expectation from the requirement, the docs, or a hand computation
+
+  Mutation check:
+    Break the behavior in production (flip a comparison, zero a limit, drop a branch)
+    Run the test - it MUST fail
+    Restore the code - it MUST pass
+
+  IF the code under test has no branch and no computation (a getter, a constant, a pass-through):
+    Don't write the test - trivial code earns no test
+```
+
 ## When Mocks Become Too Complex
 
 **Warning signs:**
@@ -279,6 +343,7 @@ TDD cycle:
 | Mock without understanding | Understand dependencies first, mock minimally |
 | Incomplete mocks | Mirror real API completely |
 | Tests as afterthought | TDD - tests first |
+| Tests that cannot fail | Name the production change that fails it; derive expectations independently |
 | Over-complex mocks | Consider integration tests |
 
 ## Red Flags
@@ -289,6 +354,7 @@ TDD cycle:
 - Test fails when you remove mock
 - Can't explain why mock is needed
 - Mocking "just to be safe"
+- Can't name a production change that would make the test fail
 
 ## The Bottom Line
 

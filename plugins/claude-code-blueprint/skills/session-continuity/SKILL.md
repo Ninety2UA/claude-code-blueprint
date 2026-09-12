@@ -20,6 +20,7 @@ The central state tracking file. Updated automatically by `/pause-checkpoint`, `
 ```markdown
 ---
 last-updated: YYYY-MM-DD HH:MM
+head: [current HEAD sha at the time of the stamp — optional on read; older STATE.md files won't have it]
 session-id: [branch-name or task identifier]
 phase: [planning | researching | executing | reviewing | compounding]
 status: [active | paused | blocked | complete]

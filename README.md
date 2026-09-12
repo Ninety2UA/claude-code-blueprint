@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="#how-does-this-compare">Compare</a> ·
-  <a href="#whats-new-in-v360--platform-currency-refresh">What's New</a> ·
+  <a href="#whats-new-in-v370--ecosystem-imports">What's New</a> ·
   <a href="#quick-start">Quick Start</a> ·
   <a href="#what-you-get">What You Get</a> ·
   <a href="#workflow">Workflow</a> ·
@@ -38,7 +38,7 @@ It gives Claude Code a **structured operating system** — a set of skills, agen
 
 ## How Does This Compare?
 
-Before committing to any tool, it helps to understand the landscape. We've analyzed **19 repos and frameworks** across the Claude Code ecosystem — over 1.1M combined GitHub stars — through direct source code inspection, not marketing claims.
+Before committing to any tool, it helps to understand the landscape. We've analyzed **19 repos and frameworks** across the Claude Code ecosystem — over 1.15M combined GitHub stars — through direct source code inspection, not marketing claims.
 
 <p align="center">
   <img src="docs/images/ecosystem-guide.png" alt="Claude Code Tools Guide — curated ecosystem subset" width="90%">
@@ -54,13 +54,13 @@ Every component in Blueprint is informed by what works (and what doesn't) across
 
 | Repo / Tool | Stars | Verdict | What We Took |
 |---|---|---|---|
-| [**gstack**](https://github.com/garrytan/gstack) | 123K | **15 patterns** | Suppressions lists, premise challenge, AI slop detection, confidence tiering, WTF-likelihood scoring |
-| [**GSD**](https://github.com/gsd-build/get-shit-done) | 64.8K | **4 patterns** | Interface context in plans, prompt injection guard hook, stub tracking, verification commands |
+| [**gstack**](https://github.com/garrytan/gstack) | 132.6K | **21 patterns** (now a Bun-runtime engineering platform grown from its role-based skills) | Suppressions lists, premise challenge, AI slop detection, confidence tiering, WTF-likelihood scoring; 2026-09 additions: a plan-completion audit, a decision-boundary confusion protocol backed by claimed-limitation evidence, a reuse ladder, always-run learnings capture, a tracker-text data envelope, and scan-before-sink safeguards |
+| [**GSD**](https://github.com/gsd-build/get-shit-done) | 64.6K | **4 patterns** (archived upstream 2026-05; lineage continues in gsd-core) | Interface context in plans, prompt injection guard hook, stub tracking, verification commands |
 | [**GSD-2**](https://github.com/gsd-build/gsd-2) | 7.8K | **6 patterns** | Error classification fast-path, degradation detection, structured escalation, assumption tracking |
-| [**gsd-core**](https://github.com/open-gsd/gsd-core) [†](#gsd-core-provenance) | 6.8K | **Import nothing** | Community fork of GSD (4th GSD-lineage pass, v1.7.0); post-fork build-out is 16-runtime embeddable-orchestration + MCP infra — the multi-runtime direction we repeatedly reject; 4 verifier/plan refinements deferred |
+| [**gsd-core**](https://github.com/open-gsd/gsd-core) [†](#gsd-core-provenance) | 9.4K | **2 micro-grafts** | Community fork of GSD (4th GSD-lineage pass, v1.7.0); post-fork build-out is 16-runtime embeddable-orchestration + MCP infra — the multi-runtime direction we repeatedly reject; ideas only, re-implemented, never copied: a failing-direction check for acceptance commands and a STATE.md commit stamp; 4 verifier/plan refinements still deferred |
 | [**Anthropic skill-creator**](https://github.com/anthropics/skills) | Official | **3 concepts** | Description trigger testing, structured assertions, iteration strategy by skill type |
-| [**Superpowers**](https://github.com/obra/superpowers) | 257K | Patterns adopted | Anti-rationalization guards, TDD quality gates (re-analyzed v6.1.1 — blueprint already carries 13/14 of its skills, nothing new) |
-| [**Compound Eng.**](https://github.com/EveryInc/compound-engineering-plugin) | 23.2K | Patterns adopted | Parallel review swarm, agent tool restrictions, confidence-anchored scoring, blindspot pass, reversibility-tiering (re-analyzed v3.19.0) |
+| [**Superpowers**](https://github.com/obra/superpowers) | 285.2K | Patterns adopted (6 in 2026-09) | Anti-rationalization guards, TDD quality gates (re-analyzed v6.1.1 — blueprint already carries 13/14 of its skills, nothing new); 2026-09 additions: a fix-loop that resumes the same implementer, test falsifiability, discard-only-on-request with no forced worktree removal, no worker-spawned subagents, ceremony sized to the size of the idea in brainstorming, and a plan Spec pointer |
+| [**Compound Eng.**](https://github.com/EveryInc/compound-engineering-plugin) | 25.0K | Patterns adopted | Parallel review swarm, agent tool restrictions, confidence-anchored scoring, blindspot pass, reversibility-tiering (re-analyzed v3.19.0); 2026-09 additions: settle-first questions before planning, a plan Objective/Means header, handoff hygiene, PR description discipline, knowledge-base gardening, a SKILL.md size budget, and contributor AI-disclosure notes |
 | [**Ralphy**](https://github.com/michaelshimeles/ralphy) | 2.9K | Pattern adopted | External bash loop for context-exhaustion recovery |
 | [**Ralph**](https://github.com/snarktank/ralph) | 21.2K | Pattern adopted | Original autonomous agent loop that inspired the external ship loop |
 | [**claude-mem**](https://github.com/thedotmack/claude-mem) | 87.9K | **Import nothing** | Exhaustive capture conflicts with selective curation philosophy |
@@ -70,9 +70,9 @@ Every component in Blueprint is informed by what works (and what doesn't) across
 | [**UI/UX Pro Max**](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | 108K | Reference | 100+ reasoning rules |
 | [**Claude Skills**](https://github.com/alirezarezvani/claude-skills) | 22.8K | Reference | Progressive disclosure |
 | [**Plugins+Skills**](https://github.com/jeremylongshore/claude-code-plugins-plus-skills) | 2.5K | Reference | Community patterns |
-| [**oh-my-claudecode**](https://github.com/Yeachan-Heo/oh-my-claudecode) | 37.9K | **3 patterns** | Evidence hierarchy for debugging, ambiguity gating for requirements, deslop pass for AI text cleanup |
+| [**oh-my-claudecode**](https://github.com/Yeachan-Heo/oh-my-claudecode) | 39.1K | **9 patterns** | Evidence hierarchy for debugging, ambiguity gating for requirements, deslop pass for AI text cleanup; 2026-09 additions: a verifiability boundary, a fog test for vague requirements, an ADR admission test, minimal-code non-negotiables, a hard iteration ceiling, UI anti-slop signals, and knowledge-base gardening (its v5.0 retired the routing machinery this table never imported) |
 | **Multi-Agent Framework** | Doc | **3 patterns** | Worker failure protocol, contradiction resolution, structured escalation |
-| [**agent-skills**](https://github.com/addyosmani/agent-skills) | 79K | **10 patterns** | HTTP-revalidating WebFetch cache, source-driven-development skill, rationalization tables, severity prefixes, When-NOT-to-Use sections; cross-skill collision detection, OWASP-LLM lens, doubt-driven review (re-analyzed 0.6.4) |
+| [**agent-skills**](https://github.com/addyosmani/agent-skills) | 93.5K | **13 patterns** | HTTP-revalidating WebFetch cache, source-driven-development skill, rationalization tables, severity prefixes, When-NOT-to-Use sections; cross-skill collision detection, OWASP-LLM lens, doubt-driven review (re-analyzed 0.6.4); 2026-09 additions: retrieval safety for fetched documentation, a quality-bar regression lens, and a neutral-is-revert ledger |
 
 > **"Import nothing" is a feature, not a failure.** The gravitational pull to adopt *something* from impressive repos is a real bias. Sometimes the right answer after deep analysis is to change nothing — and documenting why is just as valuable as documenting what you imported.
 
@@ -86,6 +86,22 @@ v3.4.0 and v3.5.0 were produced by a single **platform-sync cycle** — one init
 <p align="center">
   <img src="docs/images/platform-sync-cycle.png" alt="Platform-sync cycle — Audit (68 CLI versions) → Gate 1 → Adopt + verify (Part 1, v3.4.0) → Delta sweep (Part 2, 4 repos) → Gate 2 → Import + close (v3.5.0), codified into the /cli-watch + /repo-watch watchers" width="90%">
 </p>
+
+### What's New in v3.7.0 — Ecosystem Imports
+
+The second `/repo-watch` cycle compared seven watched repositories against their July baselines and grafted twenty-one ideas onto existing skills and agents. No new skills, agents, or hooks; every idea re-implemented in the blueprint's own words, with provenance, deferrals, and rejections recorded in `docs/learnings/2026-09-11-ecosystem-import-verdicts.md`.
+
+- **Plan audit before a branch is finished** — `finishing-a-development-branch` dispatches a fresh-context `code-reviewer` that classifies every plan item against the diff (DONE, CHANGED, PARTIAL, NOT DONE, DEFERRED, UNVERIFIABLE) and lists unplanned work; NOT DONE or PARTIAL blocks merge and PR, and `pr-workflow` renders the table in the PR body.
+- **Discard only on request** — the default finishing menu has three options; an explicit discard lists untracked files first and relays the force commands for you to run, and no skill ever runs `git worktree remove --force`.
+- **One decision boundary** — "if this is done wrong, can the system detect it and roll it back?" decides versus stops, stated once in `executing-plans` and cited by `autonomous-loop`, `team-lead`, `build-pipeline`, and `ship-pipeline`; must-ask categories are checked first, workers return `NEEDS_INPUT` instead of guessing and never spawn subagents, and `ship.sh` runs stop at a fixed 20-iteration ceiling read from the progress file.
+- **Converging fix loop** — `subagent-driven-development` messages the same named implementer for fix rounds, re-reviews cumulatively from the pre-task commit, caps five rounds per phase, and marks a stuck task blocked in the progress ledger.
+- **Tests that can fail, reviewers that catch a lowered bar** — Anti-Pattern 6 (falsifiability), a failing direction on every acceptance command, a quality-bar regression lens in `code-reviewer`, newly skipped tests and loosened assertions flagged, and a neutral-is-revert ledger in `performance-profiling`.
+- **External text is data** — fetched documentation and tracker comments enter prompts inside the plugin's DATA markers; `pr-comment-resolver` never executes a quoted command and returns `NEEDS_INPUT` when a comment's intent is ambiguous.
+- **Handoffs you can trust** — `session-wrap`'s learnings step always runs (and says "No durable learnings this session" when true), applies a three-part ADR admission test, and stamps `STATE.md` with the HEAD sha so `resume-session` can tell whether HEAD moved; `knowledge-compounding` gains a gardening checklist.
+- **Authoring refinements** — `brainstorming` sizes ceremony (spike, bounded, architectural) behind a fog test; `writing-plans` headers carry Objective, Means, and Spec; SKILL.md bodies get an 8 KB budget with a warn-only size report in the collision gate (17 bodies over 8 KB and 4 over 16 KB after these grafts); three UI anti-slop signals; contributor AI disclosure.
+- **Ecosystem table refreshed** — current stars and 2026-09 verdicts for all seven watched repos (1.15M+ combined stars); get-shit-done is archived upstream and its lineage continues in gsd-core.
+
+**Evaluated and deferred:** the watch-to-merge PR loop, retuning and eval harnesses, design spikes, release-rule discovery, worktree merge-back, the DX lens and edit lock, honest-verifier abstention, the size sweep of the four largest skills, and a `ship.sh` stop marker for must-ask categories.
 
 ### What's New in v3.6.0 — Platform Currency Refresh
 

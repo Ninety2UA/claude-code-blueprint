@@ -69,11 +69,11 @@ digraph process {
     "Implementer subagent implements, tests, commits, self-reviews" -> "Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)";
     "Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)" -> "Spec reviewer subagent confirms code matches spec?";
     "Spec reviewer subagent confirms code matches spec?" -> "Implementer subagent fixes spec gaps" [label="no"];
-    "Implementer subagent fixes spec gaps" -> "Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)" [label="re-review"];
+    "Implementer subagent fixes spec gaps" -> "Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)" [label="re-review (same implementer, cumulative)"];
     "Spec reviewer subagent confirms code matches spec?" -> "Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)" [label="yes"];
     "Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)" -> "Code quality reviewer subagent approves?";
     "Code quality reviewer subagent approves?" -> "Implementer subagent fixes quality issues" [label="no"];
-    "Implementer subagent fixes quality issues" -> "Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)" [label="re-review"];
+    "Implementer subagent fixes quality issues" -> "Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)" [label="re-review (same implementer, cumulative)"];
     "Code quality reviewer subagent approves?" -> "Tick task in progress file" [label="yes"];
     "Tick task in progress file" -> "More tasks remain?";
     "More tasks remain?" -> "Dispatch implementer subagent (./implementer-prompt.md)" [label="yes"];
@@ -81,6 +81,8 @@ digraph process {
     "Dispatch final code reviewer subagent for entire implementation" -> "Use finishing-a-development-branch";
 }
 ```
+
+A reviewer batches same-shape findings into one pass rather than reporting them one at a time — the implementer fixes the batch, not each instance separately.
 
 ## Progress File
 
@@ -90,7 +92,7 @@ The controller tracks tasks in `.claude/plans/<plan-basename>.progress.local.md`
 - If the file already exists, reuse it and its ticks instead of recreating it.
 - At creation, run `git check-ignore -q` on it; if that fails, append `.claude/plans/*.progress.local.md` to the file named by `git rev-parse --git-path info/exclude`.
 - Tick a task's box once its code quality reviewer approves.
-- Delete it after the final code reviewer approves — before invoking finishing-a-development-branch.
+- Delete it after the final code reviewer approves — before invoking finishing-a-development-branch, passing the plan path (`docs/plans/<plan-basename>.md`) so its plan audit reads this plan.
 - An interrupted run leaves it in place; the STATE.md handoff (session-continuity) points at it.
 - The session's native task list is the alternative only when the model offers one: Claude Code exposes its native task-list tools only on Claude 3.x, Opus 4.0–4.7, Sonnet 4.0–4.6 and Haiku 4.5 (CLI 2.1.233; verified on 2.1.268); `CLAUDE_CODE_ENABLE_TODO_TOOLS=1` restores them elsewhere.
 
@@ -250,9 +252,11 @@ Done!
 - Don't rush them into implementation
 
 **If reviewer finds issues:**
-- Implementer (same subagent) fixes them
-- Reviewer reviews again
-- Repeat until approved
+- Continue the same implementer, not a new one — in Claude Code, spawn it with a unique name (e.g. `implementer-task-3`) and resume it by sending it a message addressed to that name
+- Batch same-shape findings into one message rather than sending them one at a time
+- If the harness cannot resume it, or no reply arrives within your wait window, re-dispatch a fresh implementer carrying the prior report and all findings
+- Reviewer re-reviews the cumulative range from the pre-task commit (BASE pinned) — not just the latest fix
+- Five rounds per review phase (spec compliance, then quality); on the fifth, mark the task blocked in the progress file with `— BLOCKED: <reason>` and escalate
 - Don't skip the re-review
 
 **If subagent fails task:**

@@ -37,6 +37,7 @@ Before changing anything, measure current performance:
 - **How:** [measurement method — timing, profiling tool, benchmark]
 - **Result:** [specific numbers — ms, ops/sec, memory MB]
 - **Conditions:** [load level, data size, environment]
+- **Variance:** [spread across repeated runs — the noise floor Step 4 compares against]
 ```
 
 **Measurement approaches by context:**
@@ -84,9 +85,9 @@ Based on profiling data, form specific hypotheses:
 
 Make ONE change at a time. For each change:
 1. Implement the optimization
-2. Measure performance again (same conditions as baseline)
-3. Compare: Did it actually improve?
-4. If yes, keep it. If no, revert it.
+2. Measure performance again (same conditions and run count as the baseline)
+3. Compare: Did it actually improve? An improvement smaller than the baseline's run-to-run variance is within measurement noise — treat it as no improvement
+4. If yes, keep it. If no, or if the improvement is within measurement noise, revert it and record the attempt (see Reverted Attempts below)
 
 **Common optimization patterns:**
 
@@ -115,6 +116,16 @@ After optimization:
 - [ ] Memory usage hasn't increased
 - [ ] Other endpoints not affected
 ```
+
+### Reverted Attempts
+
+Every reverted optimization is recorded so it is not retried. When a plan is executing, append one line per revert to the plan's progress ledger (`.claude/plans/<plan-basename>.progress.local.md`, the file `executing-plans` creates); with no plan running, put the line under the Performance Comparison block in Step 5 so it travels with the report.
+
+```markdown
+- Reverted: [change tried] — [before → after, variance] — [no improvement / within noise / regression]
+```
+
+Before trying an optimization, read the ledger: an entry for the same change ends the attempt.
 
 ## Quick Reference
 

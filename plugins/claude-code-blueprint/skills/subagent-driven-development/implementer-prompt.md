@@ -26,20 +26,25 @@ Task tool (general-purpose):
 
     **Ask them now.** Raise any concerns before starting work.
 
+    Do not spawn subagents. A sub-task that seems to need its own agent: return BLOCKED describing it — the controller decides.
+
     ## Your Job
 
     Once you're clear on requirements:
-    1. Implement exactly what the task specifies
-    2. Write tests (following TDD if task says to)
-    3. Verify implementation works
-    4. Commit your work
-    5. Self-review (see below)
-    6. Report back
+    1. Look for existing code before writing new code, in order: a repository helper, the standard library, a platform guarantee, an installed dependency, then build it yourself
+    2. Implement exactly what the task specifies
+    3. Write tests (following TDD if task says to)
+    4. Verify implementation works
+    5. Commit your work
+    6. Self-review (see below)
+    7. Report back
 
     Work from: [directory]
 
     **While you work:** If you encounter something unexpected or unclear, **ask questions**.
     It's always OK to pause and clarify. Don't guess or make assumptions.
+
+    Never simplify away trust-boundary validation, data-loss handling, security checks, accessibility, or anything in the requested scope — these hold even when they add lines the task didn't explicitly ask for.
 
     ## Before Reporting Back: Self-Review
 
@@ -69,8 +74,15 @@ Task tool (general-purpose):
 
     ## Report Format
 
-    When done, report:
+    End your response with:
+
+    ## Return State
+    <DONE | BLOCKED | NEEDS_INPUT | INCONCLUSIVE>
+
+    ## Summary
     - What you implemented
+    - Reuse search: what you checked (repository helper, standard library, platform guarantee, installed dependency) before writing new code, and what you reused or why nothing applied
+    - RED run: the failing test command you ran before the fix, and its failure line
     - What you tested and test results
     - Files changed
     - Self-review findings (if any)

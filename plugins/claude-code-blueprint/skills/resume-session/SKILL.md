@@ -38,23 +38,33 @@ git log --oneline -10
 git stash list
 ```
 
+**Freshness stamp check** — only when `docs/context/STATE.md` exists and its frontmatter (read in Step 1) has a `head:` field:
+
+```bash
+# Non-merge commits since the stamped HEAD
+git log --oneline --no-merges <head>..HEAD
+```
+
+- Zero or one commit listed → fresh (the one commit is session-wrap's own wrap commit).
+- More than one commit listed → warn "HEAD moved since the handoff" and list the commits.
+- `<head>` doesn't resolve (e.g. a squash or rebase merge rewrote history) → anchor on the last commit that touched the file instead, then re-run the count from there: `git log -1 --format=%H -- docs/context/STATE.md`.
+- STATE.md doesn't exist, or exists without a `head:` field → skip this check; there's no stamp to compare against.
+
 ## Step 3: Present Orientation
 
-Summarize for the user:
+Structure the orientation as status, pointers, traps.
 
-**Last session:** [date and brief summary from Session Continuity]
-
-**Current state:**
+**Status** — current state, from Step 2:
 - Branch: [branch name]
 - Build: [status]
 - Tests: [status]
 - Uncommitted changes: [list or "clean"]
+- Freshness: [fresh / "HEAD moved since the handoff" with the commit list / stamp check skipped, and why]
 
-**Where to start:** [the "Start here" instruction from Session Continuity]
+**Pointers** — quote the prior session's own words; don't re-summarize them:
 
-**Priority items:**
-1. [Most important remaining task]
-2. [Second priority]
-3. [Third priority]
+> [Quote the "What was done", "What's remaining", and "Start here" text verbatim from CLAUDE.md's Session Continuity section.]
+
+**Traps** — list only the priorities the project files actually record (STATE.md blockers, STATUS.md known issues, GOALS.md at-risk items, BACKLOG.md items flagged urgent). Omit a slot rather than inventing a filler priority — if none of these files name anything, say so instead of listing items by default.
 
 Ask: **"Ready to continue from here, or would you like to work on something else?"**

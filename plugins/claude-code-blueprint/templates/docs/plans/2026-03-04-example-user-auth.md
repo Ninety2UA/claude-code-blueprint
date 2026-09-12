@@ -2,7 +2,8 @@
 
 > **Status:** EXAMPLE — This is a template showing what a completed plan looks like. Delete this file when you start your project.
 
-**Goal:** Add JWT-based authentication with login, signup, and token refresh
+**Objective:** Users can sign up, log in, and stay signed in across visits without re-entering credentials
+**Means:** JWT access tokens in memory with httpOnly refresh cookies
 **Architecture:** Express middleware validates tokens on protected routes. Refresh tokens stored in httpOnly cookies. Access tokens in memory.
 **Tech Stack:** jsonwebtoken, bcrypt, cookie-parser
 **Estimated tasks:** 5 tasks, ~3 hours
