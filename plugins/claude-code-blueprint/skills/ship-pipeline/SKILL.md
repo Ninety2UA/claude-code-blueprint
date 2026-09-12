@@ -23,6 +23,8 @@ Extract from arguments:
 
 Execute ALL stages sequentially. Do NOT stop for user input. Make all decisions autonomously.
 
+Decisions follow the decision boundary in executing-plans with one difference: this contract cannot stop, so a CLAUDE.md must-ask category is decided conservatively and appended to `docs/context/DECISIONS.md` under Stage 1's locked-decision rule (the hard stop applies to build-pipeline and autonomous-loop runs).
+
 ---
 
 ### Stage 0: Initialize Loop & Detect Continuation
@@ -36,7 +38,10 @@ Check if this is a continuation of a previous ship pipeline run:
 1. Check git log on current branch for prior commits from this pipeline
 2. Check if a plan file already exists in `docs/plans/` for this feature
 3. Check for uncommitted changes
-4. Check if `.claude/ship-progress.local.md` exists (external loop progress file)
+4. Check if `.claude/ship-progress.local.md` exists (external loop progress file). If it does:
+   - Read its `Feature:` line. Another feature's name means a stale file: delete it and count from zero (no `Feature:` line means this feature).
+   - Count its `## Iteration` blocks — `scripts/ship.sh` appends one per pass that ends without `<promise>DONE</promise>`, so the count survives fresh processes and `ship.sh` restarts.
+   - **At 20 or more, STOP before Stage 1 regardless of `--max`.** Report what was completed and what failed (Error Recovery format), but keep this file — it is the counter — and name it as the file to delete for a deliberate restart. The ceiling is fixed; `--max` is the user's knob below it.
 
 If continuation detected, **skip to the stage that needs work** — don't redo requirements, planning, or deepening if those artifacts already exist on disk.
 

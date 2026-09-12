@@ -147,6 +147,7 @@ If the user specifies `--quick` or the change is small (< 3 files, clarity ≥ 0
 - If a stage fails, do NOT skip to the next stage
 - Use the systematic-debugging skill if you encounter bugs during execution
 - If blocked, stop and ask for help — don't guess
+- Decide or ask per the decision boundary in executing-plans: a must-ask category stops here (this pipeline has checkpoints), a decision you can detect and roll back is decided and recorded, and everything else is asked with two or three options
 - If review finds critical issues, return to Stage 4 to fix them before Stage 6
 
 ## Common Rationalizations

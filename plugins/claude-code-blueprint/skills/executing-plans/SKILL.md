@@ -85,8 +85,14 @@ Based on feedback:
 After all tasks complete and verified:
 - Delete the progress file (`.claude/plans/<plan-basename>.progress.local.md`) — every box is ticked and the final review is clean, so nothing is left to resume
 - Announce: "I'm using the finishing-a-development-branch skill to complete this work."
-- **REQUIRED SUB-SKILL:** Use finishing-a-development-branch
+- **REQUIRED SUB-SKILL:** Use finishing-a-development-branch, passing the plan path (`docs/plans/<plan-basename>.md`) so its plan audit reads this plan
 - Follow that skill to verify tests, present options, execute choice
+
+## Decision Boundary
+
+One rule settles decide-versus-stop; it refines CLAUDE.md's "when in doubt, ask" rule rather than replacing it. Check CLAUDE.md's must-ask categories first: a decision inside one stops for a human wherever the running pipeline's contract allows stopping (this skill and build-pipeline ask; autonomous-loop stops with its structured escalation; ship-pipeline, whose contract cannot stop, decides conservatively and locks the decision in `docs/context/DECISIONS.md`). Outside them, when you can both detect it and roll it back — name the rollback action — decide, record the choice under `### Assumptions` (see Assumption Tracking) plus a `BACKLOG.md` line when it defers work, and continue. Otherwise the posture decides: an interactive session asks in one sentence with two or three options; an autonomous session takes the conservative option and records it the same way; a subagent returns `NEEDS_INPUT` with the options, and team-lead routes that return instead of retrying with a narrower scope. A claim that something is impossible, blocked, or needs a credential requires evidence — a verbatim error, a documentation citation, or a live probe.
+
+Examples: a migration is a must-ask category, so every posture stops (ship-pipeline alone decides conservatively and records, because it cannot stop). A helper's default value is detectable with a grep and revertible with one edit, so it is decided, recorded, and continued.
 
 ## Deviation Scope Boundary
 

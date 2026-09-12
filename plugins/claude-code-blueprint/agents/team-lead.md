@@ -124,6 +124,7 @@ For each wave:
    - Relevant project conventions
    - File scope constraints (what it CAN and CANNOT modify)
    - Instructions to follow TDD and commit working code
+   - The worker rules from Behavioral Rules: decide within the boundary or return `NEEDS_INPUT`; never spawn subagents
 3. Wait for all subagents in the wave to return
 4. Dispatch **integration-verifier** agent to check combined output
 5. If integration fails → dispatch fix agents → re-verify
@@ -135,6 +136,7 @@ Follow the agent-teams skill:
 
 1. Create the team
 2. Spawn teammates with detailed prompts (responsibility, file ownership, conventions, coordination instructions)
+   - Every prompt carries the worker rules from Behavioral Rules: decide within the boundary or return `NEEDS_INPUT`; never spawn subagents
 3. **Plan approval gate:** Require each teammate to submit their implementation approach before coding. Review and approve/reject each.
 4. Monitor progress:
    - Watch for idle notifications
@@ -161,6 +163,8 @@ If a worker is stuck (3+ minutes with no progress):
 3. If still stuck, reassign the task to a different worker
 
 ### Worker Failure Protocol
+
+A `NEEDS_INPUT` return is a decision, not a failure — route it, never re-dispatch with a narrower scope. Supervised: put the worker's options to the user (AskUserQuestion Format). Under ship-pipeline: take the conservative option and lock it in `docs/context/DECISIONS.md` (ship-pipeline Stage 1's locked-decision rule). Either way, send the decision back to the worker — message it by name, or re-dispatch it with the decision in its prompt if it has gone. A `BLOCKED` return that describes a sub-task the worker wanted a subagent for is yours to decide: dispatch it as its own task or fold it into another.
 
 When a worker returns without completing its task (incomplete output, wrong files modified, or returns errors):
 
@@ -332,4 +336,5 @@ This is a defense-in-depth measure. Read-injection scanner and prompt-guard catc
 - **NEVER sign off with failing tests.** If tests fail, fix or escalate — never ignore.
 - **Monitor actively.** Don't dispatch workers and go silent. Check progress, intervene on blockers.
 - **Preserve worker autonomy.** Give context and constraints, not step-by-step instructions. Let workers make implementation decisions within their scope.
+- **NEVER let a worker spawn subagents.** Every dispatch prompt carries two worker rules: decide within the decision boundary in executing-plans and return `NEEDS_INPUT` with the options when it does not allow deciding; never spawn a subagent — a sub-task that seems to need one is returned as `BLOCKED` describing it, for you to decide.
 - **Report honestly.** If quality isn't where it should be, say so. Don't paper over issues.

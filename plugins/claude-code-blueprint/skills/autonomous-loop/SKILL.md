@@ -131,6 +131,8 @@ Check the specific acceptance criteria for the task too.
 | **Fixable** | Test failure from implementation bug | Debug and fix, then retry |
 | **Fatal** | Missing dependency, wrong architecture, unclear requirement | STOP and report |
 
+An unclear requirement is Fatal only after the decision boundary in executing-plans has been applied: a CLAUDE.md must-ask category stops here with the Step 5 structured escalation, and anything that rule lets an autonomous run decide is decided, recorded, and continued.
+
 #### 3e. Reflection Gate (before every retry)
 
 Before retrying, you MUST answer these three questions explicitly in your output:
@@ -344,6 +346,7 @@ Report the final state:
 
 | Parameter | Default | Override |
 |-----------|---------|----------|
+| Hard iteration ceiling | 20 loop passes | Fixed — no override. Count Step 3 passes in context; at 20, stop with the Step 5 structured escalation. Same ceiling as ship-pipeline Stage 0, which counts `## Iteration` blocks across fresh processes. Sits above every configurable cap: retries 3 per task, 50 total changes, Stop hook 5, `ship.sh --max` 10. |
 | Max retries per task | 3 | User can specify |
 | No-progress circuit breaker | 3 iterations | User can specify |
 | Same-error circuit breaker | 5 occurrences | User can specify |
