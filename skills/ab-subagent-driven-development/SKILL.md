@@ -2,7 +2,7 @@
 name: ab-subagent-driven-development
 description: "Runs a written plan in this session one task at a time: a fresh helper implements each task from its full text, a spec-compliance reviewer and then a code-quality reviewer check it, fix rounds repeat until both pass, and a final review covers the whole implementation. Use when a plan's tasks are mostly independent and you want clean context per task without leaving this session; usually invoked by another skill. Not for tightly coupled tasks that share state (execute those in order yourself), a separate session with human checkpoints (ab-executing-plans), or parallel team work (ab-orchestrate)."
 metadata:
-  version: "3.8.0"
+  version: "4.0.0"
 ---
 
 # Subagent-Driven Development
@@ -15,7 +15,7 @@ Diagrams: `references/flowcharts.md`. Comparison with ab-executing-plans: `refer
 
 **Working folder.** Blueprint working files live under `.agent-blueprint/` in the project root. Before the first write there, make sure `.agent-blueprint/.gitignore` exists and lists `run/`, `team/`, `review-runs/`, `cache/` and `.gitignore`, so run state and the ignore file itself stay out of commits while plans and notes stay tracked.
 
-**Provenance record.** When this skill starts, write `.agent-blueprint/run/provenance/<name>.json`, where `<name>` is the `name` in this skill's frontmatter: `skill` (that name), `version` (its `metadata.version`), `started_at` (the current UTC time, ISO 8601) and an empty `helper_steps` list, replacing any older record of that name. Before that, make sure `.agent-blueprint/.gitignore` exists and lists `run/`, `team/`, `review-runs/`, `cache/` and `.gitignore`. Each Helper step adds its entry to `helper_steps`. The record tells a run, and the smoke test, which skill ran and how; it is not a security control.
+**Provenance record.** When this skill starts, write `.agent-blueprint/run/provenance/<name>.json`, where `<name>` is the `name` in this skill's frontmatter: `skill` (that name), `version` (its `metadata.version`), `started_at` (the current UTC time, ISO 8601) and an empty `helper_steps` list, replacing any older record of that name. Before that, make sure `.agent-blueprint/.gitignore` exists and lists `run/`, `team/`, `review-runs/`, `cache/` and `.gitignore`. Each Helper step adds `{step, path: helper|inline}` to `helper_steps`. The record tells a run, and the smoke test, which skill ran and how; it is not a security control.
 
 Work in an isolated workspace (the ab-using-git-worktrees skill). On main or master, branch first unless the user said to work there, since every task commits.
 

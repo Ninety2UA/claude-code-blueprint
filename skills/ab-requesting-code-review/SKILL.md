@@ -2,7 +2,7 @@
 name: ab-requesting-code-review
 description: "Runs a fast single-reviewer code review: picks a guarded review range (one task's commit, a whole branch from its merge base, or the working tree in no-commit mode), hands it with the plan to the code-reviewer helper, and acts on the Critical, Important and Suggestion findings it returns. Use when a task or bug fix is finished, before committing or merging, when stuck, or when the user asks to review or check recent changes. Not for a multi-perspective or thorough review, or a change that could fail silently or touches auth, money, data or a public contract (ab-review-swarm)."
 metadata:
-  version: "3.8.0"
+  version: "4.0.0"
 ---
 
 # Requesting Code Review
@@ -11,7 +11,7 @@ The outcome is one well-defined range of changes reviewed by the code-reviewer h
 
 **Working folder.** Blueprint working files live under `.agent-blueprint/` in the project root. Before the first write there, make sure `.agent-blueprint/.gitignore` exists and lists `run/`, `team/`, `review-runs/`, `cache/` and `.gitignore`, so run state and the ignore file itself stay out of commits while plans and notes stay tracked.
 
-**Provenance record.** When this skill starts, write `.agent-blueprint/run/provenance/<name>.json`, where `<name>` is the `name` in this skill's frontmatter: `skill` (that name), `version` (its `metadata.version`), `started_at` (the current UTC time, ISO 8601) and an empty `helper_steps` list, replacing any older record of that name. Before that, make sure `.agent-blueprint/.gitignore` exists and lists `run/`, `team/`, `review-runs/`, `cache/` and `.gitignore`. Each Helper step adds its entry to `helper_steps`. The record tells a run, and the smoke test, which skill ran and how; it is not a security control.
+**Provenance record.** When this skill starts, write `.agent-blueprint/run/provenance/<name>.json`, where `<name>` is the `name` in this skill's frontmatter: `skill` (that name), `version` (its `metadata.version`), `started_at` (the current UTC time, ISO 8601) and an empty `helper_steps` list, replacing any older record of that name. Before that, make sure `.agent-blueprint/.gitignore` exists and lists `run/`, `team/`, `review-runs/`, `cache/` and `.gitignore`. Each Helper step adds `{step, path: helper|inline}` to `helper_steps`. The record tells a run, and the smoke test, which skill ran and how; it is not a security control.
 
 ## When to review
 

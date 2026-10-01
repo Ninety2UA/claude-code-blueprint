@@ -3,7 +3,7 @@ name: ab-review-swarm
 description: "Reviews a change with specialized reviewers in parallel (quality, simplicity and tests always; security, performance, conventions, frontend, architecture, data and schema as the diff calls for), validates the findings and merges them into one prioritized P1/P2/P3 report. Use when a change is large (5+ files, several concerns, crossing modules) or consequential at any size (auth, money, data, a public contract, silent failures), before a production ship or major merge, or when asked for a full or multi-perspective review. Not for a quick single-perspective review of a small change (use ab-requesting-code-review)."
 argument-hint: "[optional: files or path to review] [--pr] [--full]"
 metadata:
-  version: "3.8.0"
+  version: "4.0.0"
 ---
 
 # Review Swarm — Multi-Agent Parallel Review
@@ -14,7 +14,7 @@ Start specialized review helpers in parallel on one change, validate their findi
 
 **Working folder.** Blueprint working files live under `.agent-blueprint/` in the project root. Before the first write there, make sure `.agent-blueprint/.gitignore` exists and lists `run/`, `team/`, `review-runs/`, `cache/` and `.gitignore`, so run state and the ignore file itself stay out of commits while plans and notes stay tracked.
 
-**Provenance record.** When this skill starts, write `.agent-blueprint/run/provenance/<name>.json`, where `<name>` is the `name` in this skill's frontmatter: `skill` (that name), `version` (its `metadata.version`), `started_at` (the current UTC time, ISO 8601) and an empty `helper_steps` list, replacing any older record of that name. Before that, make sure `.agent-blueprint/.gitignore` exists and lists `run/`, `team/`, `review-runs/`, `cache/` and `.gitignore`. Each Helper step adds its entry to `helper_steps`. The record tells a run, and the smoke test, which skill ran and how; it is not a security control.
+**Provenance record.** When this skill starts, write `.agent-blueprint/run/provenance/<name>.json`, where `<name>` is the `name` in this skill's frontmatter: `skill` (that name), `version` (its `metadata.version`), `started_at` (the current UTC time, ISO 8601) and an empty `helper_steps` list, replacing any older record of that name. Before that, make sure `.agent-blueprint/.gitignore` exists and lists `run/`, `team/`, `review-runs/`, `cache/` and `.gitignore`. Each Helper step adds `{step, path: helper|inline}` to `helper_steps`. The record tells a run, and the smoke test, which skill ran and how; it is not a security control.
 
 ## Step 1: Determine Scope
 

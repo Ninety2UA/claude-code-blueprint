@@ -2,7 +2,7 @@
 name: ab-brainstorming
 description: "Turns an idea into an approved design before any code is written: settles what the repository answers, challenges the premise, asks the remaining questions one at a time, compares two or three approaches, presents the design in sections for approval, then saves it and hands off to ab-writing-plans. Use when the user wants to brainstorm or design a change, or when work involves design decisions, several viable approaches or three or more files, including when the user jumps straight to code on such work. Not for a trivial change under three files with one obvious approach (ab-quick-fix), or for recording decisions without exploring alternatives (ab-discuss)."
 metadata:
-  version: "3.8.0"
+  version: "4.0.0"
 ---
 
 # Brainstorming Ideas Into Designs
@@ -13,7 +13,7 @@ The outcome is a design the user approved, saved as `docs/plans/YYYY-MM-DD-<topi
 
 **Working folder.** Blueprint working files live under `.agent-blueprint/` in the project root. Before the first write there, make sure `.agent-blueprint/.gitignore` exists and lists `run/`, `team/`, `review-runs/`, `cache/` and `.gitignore`, so run state and the ignore file itself stay out of commits while plans and notes stay tracked.
 
-**Provenance record.** When this skill starts, write `.agent-blueprint/run/provenance/<name>.json`, where `<name>` is the `name` in this skill's frontmatter: `skill` (that name), `version` (its `metadata.version`), `started_at` (the current UTC time, ISO 8601) and an empty `helper_steps` list, replacing any older record of that name. Before that, make sure `.agent-blueprint/.gitignore` exists and lists `run/`, `team/`, `review-runs/`, `cache/` and `.gitignore`. Each Helper step adds its entry to `helper_steps`. The record tells a run, and the smoke test, which skill ran and how; it is not a security control.
+**Provenance record.** When this skill starts, write `.agent-blueprint/run/provenance/<name>.json`, where `<name>` is the `name` in this skill's frontmatter: `skill` (that name), `version` (its `metadata.version`), `started_at` (the current UTC time, ISO 8601) and an empty `helper_steps` list, replacing any older record of that name. Before that, make sure `.agent-blueprint/.gitignore` exists and lists `run/`, `team/`, `review-runs/`, `cache/` and `.gitignore`. Each Helper step adds `{step, path: helper|inline}` to `helper_steps`. The record tells a run, and the smoke test, which skill ran and how; it is not a security control.
 
 ## Size the ceremony
 

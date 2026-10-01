@@ -3,7 +3,7 @@ name: ab-deep-research
 description: "Researches a topic before planning: five helpers run in parallel (past learnings in docs/solutions/ and docs/research/, framework docs for the installed versions, industry best practices, git history, and a map of the code the change touches), and a synthesizer merges them into one brief in docs/research/ with consensus, unique insights, contradictions, gaps and a recommended approach. Use when planning or building in unfamiliar code or technology, before an architectural decision, major refactor or migration, when onboarding to an area of the codebase, or when the user asks to research, investigate or learn best practices before building. Not for a small, well-understood change (ab-quick-fix), debugging a failure (ab-systematic-debugging) or enriching an existing plan (ab-deepen-plan)."
 argument-hint: "<topic or feature to research>"
 metadata:
-  version: "3.8.0"
+  version: "4.0.0"
 ---
 
 # Deep Research — Multi-Agent Parallel Research
@@ -14,7 +14,7 @@ Five research helpers work in parallel, a synthesizer merges what they find, and
 
 **Working folder.** Blueprint working files live under `.agent-blueprint/` in the project root. Before the first write there, make sure `.agent-blueprint/.gitignore` exists and lists `run/`, `team/`, `review-runs/`, `cache/` and `.gitignore`, so run state and the ignore file itself stay out of commits while plans and notes stay tracked.
 
-**Provenance record.** When this skill starts, write `.agent-blueprint/run/provenance/<name>.json`, where `<name>` is the `name` in this skill's frontmatter: `skill` (that name), `version` (its `metadata.version`), `started_at` (the current UTC time, ISO 8601) and an empty `helper_steps` list, replacing any older record of that name. Before that, make sure `.agent-blueprint/.gitignore` exists and lists `run/`, `team/`, `review-runs/`, `cache/` and `.gitignore`. Each Helper step adds its entry to `helper_steps`. The record tells a run, and the smoke test, which skill ran and how; it is not a security control.
+**Provenance record.** When this skill starts, write `.agent-blueprint/run/provenance/<name>.json`, where `<name>` is the `name` in this skill's frontmatter: `skill` (that name), `version` (its `metadata.version`), `started_at` (the current UTC time, ISO 8601) and an empty `helper_steps` list, replacing any older record of that name. Before that, make sure `.agent-blueprint/.gitignore` exists and lists `run/`, `team/`, `review-runs/`, `cache/` and `.gitignore`. Each Helper step adds `{step, path: helper|inline}` to `helper_steps`. The record tells a run, and the smoke test, which skill ran and how; it is not a security control.
 
 ## Step 0: Load Project Configuration
 

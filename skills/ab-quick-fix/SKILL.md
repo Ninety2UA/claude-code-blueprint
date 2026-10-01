@@ -3,7 +3,7 @@ name: ab-quick-fix
 description: "Makes a small, well-understood change through a short test-first loop: checks that the change qualifies (under 3 files, obvious approach), writes a failing test, makes the minimal fix, runs the full test suite, build and lint, and commits on a branch. Use when the change is a bug fix whose cause is known, a typo, copy or config change, a rename, a changed default or minor refactor within one module, or a test for existing behavior, whether or not the user says 'quick'. Not for changes touching 4 or more files, new public APIs, endpoints or schemas, data-model changes, or an unclear approach (use ab-brainstorming, then ab-build-pipeline), nor for a bug whose cause is not yet known (use ab-systematic-debugging first)."
 argument-hint: "[describe the change]"
 metadata:
-  version: "3.8.0"
+  version: "4.0.0"
 ---
 
 # Quick Fix — Lightweight Change Workflow
@@ -12,7 +12,7 @@ A finished quick fix is one commit on a branch that holds the change and a test 
 
 **Working folder.** Blueprint working files live under `.agent-blueprint/` in the project root. Before the first write there, make sure `.agent-blueprint/.gitignore` exists and lists `run/`, `team/`, `review-runs/`, `cache/` and `.gitignore`, so run state and the ignore file itself stay out of commits while plans and notes stay tracked.
 
-**Provenance record.** When this skill starts, write `.agent-blueprint/run/provenance/<name>.json`, where `<name>` is the `name` in this skill's frontmatter: `skill` (that name), `version` (its `metadata.version`), `started_at` (the current UTC time, ISO 8601) and an empty `helper_steps` list, replacing any older record of that name. Before that, make sure `.agent-blueprint/.gitignore` exists and lists `run/`, `team/`, `review-runs/`, `cache/` and `.gitignore`. Each Helper step adds its entry to `helper_steps`. The record tells a run, and the smoke test, which skill ran and how; it is not a security control.
+**Provenance record.** When this skill starts, write `.agent-blueprint/run/provenance/<name>.json`, where `<name>` is the `name` in this skill's frontmatter: `skill` (that name), `version` (its `metadata.version`), `started_at` (the current UTC time, ISO 8601) and an empty `helper_steps` list, replacing any older record of that name. Before that, make sure `.agent-blueprint/.gitignore` exists and lists `run/`, `team/`, `review-runs/`, `cache/` and `.gitignore`. Each Helper step adds `{step, path: helper|inline}` to `helper_steps`. The record tells a run, and the smoke test, which skill ran and how; it is not a security control.
 
 ## When Not to Use
 
